@@ -1,0 +1,60 @@
+NAME
+
+	cow - launches a Cow instance.
+
+
+SYNOPSIS
+
+	java cow.jar -g <gameName> [-a <aiName>]* [-r <replayName>]* [-s <speed>]
+				[-v <viewType>] [-t] [-x] [-h]
+
+
+DESCRIPTION
+
+	Launches a Cow instance playing a game with the specified AIs.
+	Possible arguments are listed below:
+
+-a <aiName>
+	Adds an ai, named <aiName>. Several AIs can be added by using this option.
+	Each AI will be given an unique ID according to its position in the
+	arguments list, starting with ID 1, with an increment of 1.
+	A game can be played without any AI specified.
+
+-g <gameName>
+	Specifies the game <gameName> to be played. It must be specified.
+
+-h
+	Displays the help, ignoring every other option if any.
+
+-p <replayFile>	(not implemented yet)
+	Plays the replay from the given file named <replayPath>.
+
+-r <replayFile>
+	Saves the future game into a replay file named <replayFile>.
+	Several replays can be saved by using this option multiple times.
+
+-s <speed>
+	Defines the initial speed of the game as <speed>, in keyframes per seconds,
+	between 1 and 100 fps included (default is 5fps).
+	If <speed> is set to "unlimited" or "u", the game will go as fast as it
+	can go. If the speed is defined more than once, only the last definition
+	will prevail.
+
+-t
+	Starts the framework in test mode, making everything run into the same
+	process, thus accelerating the game speed.
+
+-v <viewType>
+	Tells which view is going to be used to display the game.
+	If the view is defined more than once, only the last definition will
+	prevail.
+	<viewType> can be one of the following:
+	none: no GUI, shows only the final result in the console.
+	console: no GUI, shows the text output and the results in the console.
+	text: Text GUI.
+	2d: 2D GUI.
+	3d: 3D GUI.
+	Default is none.
+
+-x
+	If set, starts automatically the game when the view is ready.

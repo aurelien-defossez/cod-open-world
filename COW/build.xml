@@ -1,0 +1,8 @@
+<?xml version="1.0" ?>
+<project default="makeJar">
+  <target name="makeJar" depends="" description="make jar">
+    <jar destfile="resources/COW.jar" basedir="bin" includes="**/*.class" />
+    <jar destfile="resources/RemoteAiLauncher.jar" basedir="bin"
+    	includes="**/*.class" manifest="RemoteManifest.mf" />
+  </target>
+</project>

@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Created-By: Didjor
+Main-Class: main.RemoteAiLauncher
+Class-Path: libraries\log4j\log4j.jar

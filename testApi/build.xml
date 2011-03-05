@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<project default="main">
+    <target name="main" depends="jar" description="Main target" />
+  
+    <target name="jar" description="Make jar in AI directory">
+    	<jar destfile="../COW/games/test/api/java/api.jar" basedir="bin"
+    	includes="**/*.class" update="true" />
+    </target>
+</project>
