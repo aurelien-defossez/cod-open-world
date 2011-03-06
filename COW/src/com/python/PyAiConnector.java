@@ -87,9 +87,8 @@ public class PyAiConnector extends AiConnector {
 	
 	/**
 	 * Tells the AI to initialize.
-	 * 
-	 * @Override
 	 */
+	@Override
 	public void init() {
 		aiCommunicator.init();
 	}
@@ -98,17 +97,16 @@ public class PyAiConnector extends AiConnector {
 	 * Executes the AI.
 	 * 
 	 * @param phase the phase to execute.
-	 * @Override
 	 */
+	@Override
 	public void execute(byte phase) {
 		aiCommunicator.execute(new PyInteger(phase));
 	}
 	
 	/**
 	 * Tells the AI to stop.
-	 * 
-	 * @Override
 	 */
+	@Override
 	public void stop() {
 		aiCommunicator.stop();
 	}

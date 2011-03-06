@@ -49,7 +49,7 @@ public class ConfigLoader {
 	/**
 	 * Returns the value of the desired attribute as a string.
 	 * 
-	 * @param the attribute name.
+	 * @param name the attribute name.
 	 * @throws IOException if the attribute doesn't exist.
 	 */
 	public final String getValue(String name) throws IOException {
@@ -66,7 +66,7 @@ public class ConfigLoader {
 	/**
 	 * Returns the value of the desired attribute as an integer.
 	 * 
-	 * @param the attribute name.
+	 * @param name the attribute name.
 	 * @throws IOException if the attribute doesn't exist.
 	 * @throws NumberFormatException if the value cannot be cast into an
 	 *             integer.
@@ -79,7 +79,7 @@ public class ConfigLoader {
 	/**
 	 * Returns the value of the desired attribute as a double.
 	 * 
-	 * @param the attribute name.
+	 * @param name the attribute name.
 	 * @throws IOException if the attribute doesn't exist.
 	 * @throws NumberFormatException if the value cannot be cast into a double.
 	 */
@@ -91,7 +91,7 @@ public class ConfigLoader {
 	/**
 	 * Returns the value of the desired attribute as a string.
 	 * 
-	 * @param the attribute name.
+	 * @param name the attribute name.
 	 * @param defaultValue the default value if the attribute doesn't exist.
 	 */
 	public final String getValue(String name, String defaultValue)
@@ -106,7 +106,7 @@ public class ConfigLoader {
 	/**
 	 * Returns the value of the desired attribute as an integer.
 	 * 
-	 * @param the attribute name.
+	 * @param name the attribute name.
 	 * @param defaultValue the default value if the attribute doesn't exist.
 	 * @throws NumberFormatException if the value cannot be cast into an
 	 *             integer.
@@ -123,7 +123,7 @@ public class ConfigLoader {
 	/**
 	 * Returns the value of the desired attribute as a double.
 	 * 
-	 * @param the attribute name.
+	 * @param name the attribute name.
 	 * @param defaultValue the default value if the attribute doesn't exist.
 	 * @throws NumberFormatException if the value cannot be cast into a double.
 	 */

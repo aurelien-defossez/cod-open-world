@@ -38,9 +38,8 @@ public abstract class Ui implements GameListener {
 	/**
 	 * Makes a view API call. Overrode so the subclasses doesn't need to
 	 * implement those.
-	 * 
-	 * @Override
 	 */
+	@Override
 	public void callViewApi(ApiCall call) {
 		// Do nothing
 	}
@@ -48,9 +47,8 @@ public abstract class Ui implements GameListener {
 	/**
 	 * Sets a game frame. Overrode so the subclasses doesn't need to implement
 	 * those.
-	 * 
-	 * @Override
 	 */
+	@Override
 	public void setFrame() {
 		// Do nothing
 	}

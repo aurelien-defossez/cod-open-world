@@ -110,9 +110,8 @@ public class ProxyAi extends Ai {
 	
 	/**
 	 * Initializes the AI for the new game.
-	 * 
-	 * @Override
 	 */
+	@Override
 	public void init() {
 		rpcServer.initGame();
 	}
@@ -121,17 +120,16 @@ public class ProxyAi extends Ai {
 	 * Executes the AI for the specific phase.
 	 * 
 	 * @param phase the phase to play.
-	 * @Override
 	 */
+	@Override
 	public void execute(byte phase) {
 		rpcServer.executeAi(phase);
 	}
 	
 	/**
 	 * Stops the AI from playing.
-	 * 
-	 * @Override
 	 */
+	@Override
 	public void stop() {
 		aiProcess.destroy();
 		rpcServer.stopAi();

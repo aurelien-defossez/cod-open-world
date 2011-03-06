@@ -64,8 +64,8 @@ public class ProxySimulator implements Simulator {
 	 * @param call the game API call.
 	 * @param ai the AI making the call.
 	 * @return the call result.
-	 * @Override
 	 */
+	@Override
 	public Variant callGameApi(ApiCall call, Ai ai) {
 		return rpcClient.callGameApi(call);
 	}

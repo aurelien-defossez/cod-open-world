@@ -45,17 +45,16 @@ public class SecureSimulator extends LiveSimulator {
 	 * 
 	 * @param aiId the AI id.
 	 * @param aiName the AI name.
-	 * @Override
 	 */
+	@Override
 	public void addAi(short aiId, String aiName) {
 		addAi(new ProxyAi(this, getGameName(), aiId, aiName, watchdog));
 	}
 	
 	/**
 	 * Ends the game.
-	 * 
-	 * @Override
 	 */
+	@Override
 	public void endGame() {
 		super.endGame();
 		

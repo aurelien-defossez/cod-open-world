@@ -286,9 +286,8 @@ public class Scheduler extends Thread {
 	
 	/**
 	 * Runs the game through its life cycle.
-	 * 
-	 * @Override
 	 */
+	@Override
 	public void run() {
 		if (logger.isTraceEnabled())
 			logger.trace("Thread started");

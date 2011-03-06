@@ -107,9 +107,9 @@ public class SocketRpcServer implements RpcServer {
 	/**
 	 * Returns the process parameters needed to connect to this RPC server.
 	 * 
-	 * @returns a list of parameters.
-	 * @Override
+	 * @return a list of parameters.
 	 */
+	@Override
 	public Vector<String> getProcessParameters() {
 		Vector<String> parameters = new Vector<String>();
 		parameters.add(RPC_SOCKET_TYPE);
@@ -124,8 +124,8 @@ public class SocketRpcServer implements RpcServer {
 	 * @param aiProcess the AI process.
 	 * @throws IOException if an error occurs while connecting to the AI
 	 *             process.
-	 * @Override
 	 */
+	@Override
 	public void connectAiProcess(Process aiProcess) throws IOException {
 		this.aiProcess = aiProcess;
 		
@@ -153,9 +153,8 @@ public class SocketRpcServer implements RpcServer {
 	
 	/**
 	 * Initializes the game.
-	 * 
-	 * @Override
 	 */
+	@Override
 	public void initGame() {
 		try {
 			// Send initialize AI command
@@ -173,8 +172,8 @@ public class SocketRpcServer implements RpcServer {
 	 * Executes an AI.
 	 * 
 	 * @param phase the phase to play.
-	 * @Override
 	 */
+	@Override
 	public void executeAi(byte phase) {
 		try {
 			// Send execute AI command
@@ -191,9 +190,8 @@ public class SocketRpcServer implements RpcServer {
 	
 	/**
 	 * Tells the AI to stop.
-	 * 
-	 * @Override
 	 */
+	@Override
 	public void stopAi() {
 		try {
 			// Send stop AI command

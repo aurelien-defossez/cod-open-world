@@ -89,10 +89,9 @@ public class SocketRpcClient implements RpcClient {
 	 * Makes a game API call.
 	 * 
 	 * @param call the game API call.
-	 * @param ai the AI making the call.
 	 * @return the call result.
-	 * @Override
 	 */
+	@Override
 	public Variant callGameApi(ApiCall call) {
 		// Read number of parameters
 		int nbParameters = call.getParameters().length;
@@ -125,9 +124,8 @@ public class SocketRpcClient implements RpcClient {
 	
 	/**
 	 * Synchronizes the RPC client and starts listening.
-	 * 
-	 * @Override
 	 */
+	@Override
 	public void start() {
 		logger.info("Remote AI started.");
 		

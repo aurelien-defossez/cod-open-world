@@ -17,7 +17,6 @@ public interface RpcClient {
 	 * Makes a game API call.
 	 * 
 	 * @param call the game API call.
-	 * @param ai the AI making the call.
 	 * @return the call result.
 	 */
 	public Variant callGameApi(ApiCall call);

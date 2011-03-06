@@ -34,8 +34,8 @@ public class TestSimulator extends LiveSimulator {
 	 * 
 	 * @param aiId the AI id.
 	 * @param aiName the AI name.
-	 * @Override
 	 */
+	@Override
 	public void addAi(short aiId, String aiName) {
 		addAi(new LocalAi(this, getGameName(), aiId, aiName));
 	}

@@ -69,9 +69,8 @@ public abstract class LiveSimulator extends GameSimulator {
 	/**
 	 * Initialize the game, by initializing the game, then the game listeners
 	 * and the AIs.
-	 * 
-	 * @Override
 	 */
+	@Override
 	public void initGame() {
 		engine.initGame(getAis());
 		
@@ -96,9 +95,8 @@ public abstract class LiveSimulator extends GameSimulator {
 	
 	/**
 	 * Ends the game by stopping every AI, every game listener, then the game.
-	 * 
-	 * @Override
 	 */
+	@Override
 	public void endGame() {
 		super.endGame();
 		
@@ -107,9 +105,8 @@ public abstract class LiveSimulator extends GameSimulator {
 	
 	/**
 	 * Plays the game.
-	 * 
-	 * @Override
 	 */
+	@Override
 	public void play() {
 		if (logger.isDebugEnabled())
 			logger.debug("Play.");

@@ -54,9 +54,8 @@ public class ProcessReader extends Thread {
 	/**
 	 * Listens to the process standard output and prints this on the current
 	 * standard output.
-	 * 
-	 * @Override
 	 */
+	@Override
 	public void run() {
 		if (logger.isDebugEnabled())
 			logger.debug("ProcessReader started");

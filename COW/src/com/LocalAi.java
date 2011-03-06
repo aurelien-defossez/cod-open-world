@@ -56,9 +56,8 @@ public class LocalAi extends Ai {
 	
 	/**
 	 * Initializes the AI for the new game.
-	 * 
-	 * @Override
 	 */
+	@Override
 	public void init() {
 		connector.init();
 	}
@@ -67,17 +66,16 @@ public class LocalAi extends Ai {
 	 * Executes the AI for the specific phase.
 	 * 
 	 * @param phase the phase to play.
-	 * @Override
 	 */
+	@Override
 	public void execute(byte phase) {
 		connector.execute(phase);
 	}
 	
 	/**
 	 * Stops the AI from playing.
-	 * 
-	 * @Override
 	 */
+	@Override
 	public void stop() {
 		connector.stop();
 	}

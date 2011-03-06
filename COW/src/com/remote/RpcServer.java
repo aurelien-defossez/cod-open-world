@@ -16,7 +16,7 @@ public interface RpcServer {
 	/**
 	 * Returns the process parameters needed to connect to this RPC server.
 	 * 
-	 * @returns a list of parameters.
+	 * @return a list of parameters.
 	 */
 	public abstract Vector<String> getProcessParameters();
 	

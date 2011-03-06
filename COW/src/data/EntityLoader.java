@@ -31,7 +31,7 @@ public class EntityLoader extends ConfigLoader {
 	/**
 	 * Returns the value of the desired attribute as an "entity center" type.
 	 * 
-	 * @param the attribute name.
+	 * @param name the attribute name.
 	 * @param defaultValue the default
 	 * @throws IOException if the attribute doesn't exist.
 	 */

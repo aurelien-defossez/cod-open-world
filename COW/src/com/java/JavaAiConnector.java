@@ -97,9 +97,8 @@ public class JavaAiConnector extends AiConnector {
 	
 	/**
 	 * Tells the AI to initialize.
-	 * 
-	 * @Override
 	 */
+	@Override
 	public void init() {
 		aiCommunicator.init();
 	}
@@ -108,17 +107,16 @@ public class JavaAiConnector extends AiConnector {
 	 * Executes the AI for the specific phase.
 	 * 
 	 * @param phase the phase to play.
-	 * @Override
 	 */
+	@Override
 	public void execute(byte phase) {
 		aiCommunicator.execute(phase);
 	}
 	
 	/**
 	 * Tells the AI to stop its execution.
-	 * 
-	 * @Override
 	 */
+	@Override
 	public void stop() {
 		aiCommunicator.stop();
 	}

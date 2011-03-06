@@ -80,9 +80,8 @@ public class WatchdogTimer extends Thread {
 	
 	/**
 	 * Runs the watchdog timer and times each AI execution.
-	 * 
-	 * @Override
 	 */
+	@Override
 	public void run() {
 		if (logger.isTraceEnabled())
 			logger.trace("Thread started");
