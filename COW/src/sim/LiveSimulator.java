@@ -9,7 +9,7 @@ import main.CowException;
 import org.apache.log4j.Logger;
 import com.Ai;
 import com.ApiCall;
-import com.GameEngine;
+import com.GameConnector;
 import com.Variant;
 
 public abstract class LiveSimulator extends GameSimulator {
@@ -29,7 +29,7 @@ public abstract class LiveSimulator extends GameSimulator {
 	/**
 	 * The game engine.
 	 */
-	private GameEngine engine;
+	private GameConnector engine;
 	
 	// -------------------------------------------------------------------------
 	// Constructor
@@ -46,7 +46,7 @@ public abstract class LiveSimulator extends GameSimulator {
 			throws CowException {
 		super(scheduler, gameName);
 		
-		this.engine = GameEngine.connectGame(this, gameName);
+		this.engine = GameConnector.connectGame(this, gameName);
 	}
 	
 	// -------------------------------------------------------------------------
@@ -67,8 +67,7 @@ public abstract class LiveSimulator extends GameSimulator {
 	}
 	
 	/**
-	 * Initialize the game, by initializing the game, then the game listeners
-	 * and the AIs.
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void initGame() {
@@ -94,7 +93,7 @@ public abstract class LiveSimulator extends GameSimulator {
 	}
 	
 	/**
-	 * Ends the game by stopping every AI, every game listener, then the game.
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void endGame() {
@@ -104,7 +103,7 @@ public abstract class LiveSimulator extends GameSimulator {
 	}
 	
 	/**
-	 * Plays the game.
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void play() {
@@ -115,12 +114,9 @@ public abstract class LiveSimulator extends GameSimulator {
 	}
 	
 	/**
-	 * Makes a game API call.
-	 * 
-	 * @param call the game API call.
-	 * @param ai the AI making the call.
-	 * @return the call result.
+	 * {@inheritDoc}
 	 */
+	@Override
 	public Variant callGameApi(ApiCall call, Ai ai) {
 		if (logger.isTraceEnabled())
 			logger.trace("Call API, function #" + call.getFunctionId() + ".");

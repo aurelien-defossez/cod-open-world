@@ -9,10 +9,10 @@ import org.python.util.PythonInterpreter;
 import sim.LiveSimulator;
 import com.Ai;
 import com.ApiCall;
-import com.GameEngine;
+import com.GameConnector;
 import com.Variant;
 
-public class PyGameEngine extends GameEngine {
+public class PyGameConnector extends GameConnector {
 	// -------------------------------------------------------------------------
 	// Attributes
 	// -------------------------------------------------------------------------
@@ -23,7 +23,7 @@ public class PyGameEngine extends GameEngine {
 	// Constructor
 	// -------------------------------------------------------------------------
 	
-	public PyGameEngine(LiveSimulator simulator, String gameName) {
+	public PyGameConnector(LiveSimulator simulator, String gameName) {
 		super(simulator, gameName);
 		
 		// Create and initialize Python interpreter

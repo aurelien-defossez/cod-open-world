@@ -47,19 +47,19 @@ public abstract class AiConnector {
 	// -------------------------------------------------------------------------
 	
 	/**
-	 * Initializes the AI for the new game.
+	 * Tells the AI to initialize itself.
 	 */
 	public abstract void init();
 	
 	/**
-	 * Executes the AI for the specific phase.
+	 * Executes an AI phase.
 	 * 
 	 * @param phase the phase to play.
 	 */
 	public abstract void execute(byte phase);
 	
 	/**
-	 * Stops the AI from playing.
+	 * Tells the AI to stop playing.
 	 */
 	public abstract void stop();
 }

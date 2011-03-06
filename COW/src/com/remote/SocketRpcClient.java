@@ -86,10 +86,7 @@ public class SocketRpcClient implements RpcClient {
 	// -------------------------------------------------------------------------
 	
 	/**
-	 * Makes a game API call.
-	 * 
-	 * @param call the game API call.
-	 * @return the call result.
+	 * {@inheritDoc}
 	 */
 	@Override
 	public Variant callGameApi(ApiCall call) {
@@ -123,7 +120,7 @@ public class SocketRpcClient implements RpcClient {
 	}
 	
 	/**
-	 * Synchronizes the RPC client and starts listening.
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void start() {

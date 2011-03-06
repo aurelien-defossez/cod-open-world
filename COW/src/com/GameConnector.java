@@ -9,10 +9,10 @@ import java.io.IOException;
 import java.util.Collection;
 import main.CowException;
 import sim.LiveSimulator;
-import com.python.PyGameEngine;
+import com.python.PyGameConnector;
 import data.ConfigLoader;
 
-public abstract class GameEngine {
+public abstract class GameConnector {
 	// -------------------------------------------------------------------------
 	// Constants
 	// -------------------------------------------------------------------------
@@ -47,7 +47,7 @@ public abstract class GameEngine {
 	 * @param gameName the game name.
 	 * @throws CowException if the game cannot be loaded.
 	 */
-	public static GameEngine connectGame(LiveSimulator simulator,
+	public static GameConnector connectGame(LiveSimulator simulator,
 			String gameName) throws CowException {
 		try {
 			// Load config.ini file
@@ -61,7 +61,7 @@ public abstract class GameEngine {
 			// Load game engine according to its language
 			// Python
 			if (language.equals("python")) {
-				return new PyGameEngine(simulator, gameName);
+				return new PyGameConnector(simulator, gameName);
 			}
 			// Not supported language
 			else {
@@ -87,7 +87,7 @@ public abstract class GameEngine {
 	 * @param simulator the game simulator.
 	 * @param gameName the game name.
 	 */
-	public GameEngine(LiveSimulator simulator, String gameName) {
+	public GameConnector(LiveSimulator simulator, String gameName) {
 		this.simulator = simulator;
 		this.gameName = gameName;
 	}

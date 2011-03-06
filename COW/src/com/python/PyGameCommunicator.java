@@ -11,7 +11,7 @@ public interface PyGameCommunicator {
 	// Abstract methods
 	// -------------------------------------------------------------------------
 	
-	public void init(PyGameEngine framework, PyObject game, PyObject api,
+	public void init(PyGameConnector framework, PyObject game, PyObject api,
 			PyObject apiDemux);
 	
 	public void initGame();

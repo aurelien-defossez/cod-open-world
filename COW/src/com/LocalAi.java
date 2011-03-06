@@ -55,7 +55,7 @@ public class LocalAi extends Ai {
 	// -------------------------------------------------------------------------
 	
 	/**
-	 * Initializes the AI for the new game.
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void init() {
@@ -63,9 +63,7 @@ public class LocalAi extends Ai {
 	}
 	
 	/**
-	 * Executes the AI for the specific phase.
-	 * 
-	 * @param phase the phase to play.
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void execute(byte phase) {
@@ -73,7 +71,7 @@ public class LocalAi extends Ai {
 	}
 	
 	/**
-	 * Stops the AI from playing.
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void stop() {

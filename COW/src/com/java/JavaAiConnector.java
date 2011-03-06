@@ -96,7 +96,7 @@ public class JavaAiConnector extends AiConnector {
 	// -------------------------------------------------------------------------
 	
 	/**
-	 * Tells the AI to initialize.
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void init() {
@@ -104,9 +104,7 @@ public class JavaAiConnector extends AiConnector {
 	}
 	
 	/**
-	 * Executes the AI for the specific phase.
-	 * 
-	 * @param phase the phase to play.
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void execute(byte phase) {
@@ -114,7 +112,7 @@ public class JavaAiConnector extends AiConnector {
 	}
 	
 	/**
-	 * Tells the AI to stop its execution.
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void stop() {

@@ -89,7 +89,7 @@ public class ReplaySimulator extends GameSimulator {
 	
 	@Override
 	/**
-	 * Initializes the game listeners.
+	 * {@inheritDoc}
 	 */
 	public void initGame() {
 		super.initGame();

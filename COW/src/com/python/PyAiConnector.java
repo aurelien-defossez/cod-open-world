@@ -86,7 +86,7 @@ public class PyAiConnector extends AiConnector {
 	// -------------------------------------------------------------------------
 	
 	/**
-	 * Tells the AI to initialize.
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void init() {
@@ -94,9 +94,7 @@ public class PyAiConnector extends AiConnector {
 	}
 	
 	/**
-	 * Executes the AI.
-	 * 
-	 * @param phase the phase to execute.
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void execute(byte phase) {
@@ -104,7 +102,7 @@ public class PyAiConnector extends AiConnector {
 	}
 	
 	/**
-	 * Tells the AI to stop.
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void stop() {

@@ -80,7 +80,7 @@ public abstract class GameSimulator implements Simulator {
 	}
 	
 	/**
-	 * Ends the game by stopping every AI and game listener.
+	 * Ends the game.
 	 */
 	public void endGame() {
 		for (Ai ai : ais.values()) {

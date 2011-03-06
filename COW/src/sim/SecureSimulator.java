@@ -41,10 +41,7 @@ public class SecureSimulator extends LiveSimulator {
 	// -------------------------------------------------------------------------
 	
 	/**
-	 * Adds an AI.
-	 * 
-	 * @param aiId the AI id.
-	 * @param aiName the AI name.
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void addAi(short aiId, String aiName) {
@@ -52,7 +49,7 @@ public class SecureSimulator extends LiveSimulator {
 	}
 	
 	/**
-	 * Ends the game.
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void endGame() {
