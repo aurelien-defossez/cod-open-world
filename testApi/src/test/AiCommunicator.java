@@ -27,7 +27,7 @@ public class AiCommunicator extends JavaAiCommunicator {
 	/**
 	 * The AI interface instance, to communicate with the AI.
 	 */
-	private AiInterface aiInterface;
+	private AiInterface aiInstance;
 	
 	// -------------------------------------------------------------------------
 	// Public methods
@@ -38,13 +38,13 @@ public class AiCommunicator extends JavaAiCommunicator {
 	 * 
 	 * @param aiConnector the Java AI connector to communicate with the
 	 *            simulator.
-	 * @param aiInterface the AI instance for this game.
+	 * @param aiInstance the AI instance for this game.
 	 * @Override
 	 */
 	public void
-			initCommunicator(JavaAiConnector aiConnector, Object aiInterface) {
+			initCommunicator(JavaAiConnector aiConnector, Object aiInstance) {
 		super.initCommunicator(aiConnector);
-		this.aiInterface = (AiInterface) aiInterface;
+		this.aiInstance = (AiInterface) aiInstance;
 	}
 	
 	/**
@@ -53,7 +53,7 @@ public class AiCommunicator extends JavaAiCommunicator {
 	 * @Override
 	 */
 	public void init() {
-		aiInterface.init();
+		aiInstance.init();
 	}
 	
 	/**
@@ -65,23 +65,23 @@ public class AiCommunicator extends JavaAiCommunicator {
 	public void execute(byte phase) {
 		switch (phase) {
 		case PHASE_TEST_BOOL:
-			aiInterface.testBool();
+			aiInstance.testBool();
 			break;
 		
 		case PHASE_TEST_INT:
-			aiInterface.testInt();
+			aiInstance.testInt();
 			break;
 		
 		case PHASE_TEST_DOUBLE:
-			aiInterface.testDouble();
+			aiInstance.testDouble();
 			break;
 		
 		case PHASE_TEST_STRING:
-			aiInterface.testString();
+			aiInstance.testString();
 			break;
 		
 		case PHASE_TEST_ARRAY:
-			aiInterface.testArray();
+			aiInstance.testArray();
 			break;
 		}
 	}
@@ -92,6 +92,6 @@ public class AiCommunicator extends JavaAiCommunicator {
 	 * @Override
 	 */
 	public void stop() {
-		aiInterface.stop();
+		aiInstance.stop();
 	}
 }

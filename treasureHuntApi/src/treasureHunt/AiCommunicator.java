@@ -14,8 +14,8 @@ public class AiCommunicator extends JavaAiCommunicator {
 	// -------------------------------------------------------------------------
 	
 	// Phases
-	public static final byte PHASE_REINIT = 0;
-	public static final byte PHASE_PLAY = 1;
+	private static final byte PHASE_REINIT = 0;
+	private static final byte PHASE_PLAY = 1;
 	
 	// -------------------------------------------------------------------------
 	// Attributes
@@ -24,7 +24,7 @@ public class AiCommunicator extends JavaAiCommunicator {
 	/**
 	 * The AI interface instance, to communicate with the AI.
 	 */
-	private AiInterface aiInterface;
+	private AiInterface aiInstance;
 	
 	// -------------------------------------------------------------------------
 	// Public methods
@@ -35,13 +35,13 @@ public class AiCommunicator extends JavaAiCommunicator {
 	 * 
 	 * @param aiConnector the Java AI connector to communicate with the
 	 *            simulator.
-	 * @param aiInterface the AI instance for this game.
+	 * @param aiInstance the AI instance for this game.
 	 * @Override
 	 */
 	public void
-			initCommunicator(JavaAiConnector aiConnector, Object aiInterface) {
+			initCommunicator(JavaAiConnector aiConnector, Object aiInstance) {
 		super.initCommunicator(aiConnector);
-		this.aiInterface = (AiInterface) aiInterface;
+		this.aiInstance = (AiInterface) aiInstance;
 	}
 	
 	/**
@@ -50,7 +50,7 @@ public class AiCommunicator extends JavaAiCommunicator {
 	 * @Override
 	 */
 	public void init() {
-		aiInterface.init();
+		aiInstance.init();
 	}
 	
 	/**
@@ -62,11 +62,11 @@ public class AiCommunicator extends JavaAiCommunicator {
 	public void execute(byte phase) {
 		switch (phase) {
 		case PHASE_REINIT:
-			aiInterface.reInit();
+			aiInstance.reInit();
 			break;
 		
 		case PHASE_PLAY:
-			aiInterface.play();
+			aiInstance.play();
 			break;
 		}
 	}
@@ -77,6 +77,6 @@ public class AiCommunicator extends JavaAiCommunicator {
 	 * @Override
 	 */
 	public void stop() {
-		aiInterface.stop();
+		aiInstance.stop();
 	}
 }
