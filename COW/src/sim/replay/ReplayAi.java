@@ -5,6 +5,7 @@
 package sim.replay;
 
 import com.Ai;
+import com.ApiCall;
 
 public class ReplayAi extends Ai {
 	// -------------------------------------------------------------------------
@@ -26,26 +27,26 @@ public class ReplayAi extends Ai {
 	// Public methods
 	// -------------------------------------------------------------------------
 	
-	@Override
 	/**
 	 * Does nothing.
 	 */
+	@Override
 	public void init() {
 		// Do nothing
 	}
 	
-	@Override
 	/**
 	 * Does nothing.
 	 */
-	public void execute(byte phase) {
+	@Override
+	public void execute(ApiCall call) {
 		// Do nothing
 	}
 	
-	@Override
 	/**
 	 * Does nothing.
 	 */
+	@Override
 	public void stop() {
 		// Do nothing
 	}

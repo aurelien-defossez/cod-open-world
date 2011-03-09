@@ -7,6 +7,7 @@ package com.remote;
 
 import java.io.IOException;
 import java.util.Vector;
+import com.ApiCall;
 
 public interface RpcServer {
 	// -------------------------------------------------------------------------
@@ -37,9 +38,9 @@ public interface RpcServer {
 	/**
 	 * Executes an AI.
 	 * 
-	 * @param phase the phase to play.
+	 * @param call the phase call.
 	 */
-	public abstract void executeAi(byte phase);
+	public abstract void executeAi(ApiCall call);
 	
 	/**
 	 * Tells the AI to stop.

@@ -115,8 +115,8 @@ public abstract class Game implements GameInterface {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final void executeAi(short aiId, byte phase) {
-		simulator.executeAi(aiId, phase);
+	public final void executeAi(short aiId, ApiCall call) {
+		simulator.executeAi(aiId, call);
 	}
 	
 	/**

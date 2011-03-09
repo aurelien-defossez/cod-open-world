@@ -167,11 +167,11 @@ public class SocketRpcServer implements RpcServer {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void executeAi(byte phase) {
+	public void executeAi(ApiCall call) {
 		try {
 			// Send execute AI command
 			out.writeByte(RpcValues.CMD_AI_EXE);
-			out.writeByte(phase);
+			call.serialize(out);
 			out.flush();
 			
 			// Read AI stream

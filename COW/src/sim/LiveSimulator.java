@@ -82,15 +82,16 @@ public abstract class LiveSimulator extends GameSimulator {
 	 * Executes an AI phase.
 	 * 
 	 * @param aiId the AI id.
-	 * @param phase the phase id.
+	 * @param call the phase call.
 	 */
-	public void executeAi(short aiId, byte phase) {
+	public void executeAi(short aiId, ApiCall call) {
 		if (logger.isDebugEnabled())
-			logger.debug("Execute AI #" + aiId + ", phase #" + phase + ".");
+			logger.debug("Execute AI #" + aiId + ", phase #"
+					+ call.getFunctionId() + ".");
 		
 		Ai ai = getAi(aiId);
 		if (ai != null) {
-			ai.execute(phase);
+			ai.execute(call);
 		}
 	}
 	

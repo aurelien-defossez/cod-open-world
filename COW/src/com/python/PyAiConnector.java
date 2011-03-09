@@ -11,6 +11,7 @@ import org.python.core.PyObject;
 import org.python.util.PythonInterpreter;
 import com.Ai;
 import com.AiConnector;
+import com.ApiCall;
 
 public class PyAiConnector extends AiConnector {
 	// -------------------------------------------------------------------------
@@ -97,8 +98,9 @@ public class PyAiConnector extends AiConnector {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void execute(byte phase) {
-		aiCommunicator.execute(new PyInteger(phase));
+	public void execute(ApiCall call) {
+		// TODO: pass parameters
+		aiCommunicator.execute(new PyInteger(call.getFunctionId()));
 	}
 	
 	/**

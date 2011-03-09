@@ -76,10 +76,10 @@ public class ProxySimulator implements Simulator {
 	/**
 	 * Executes the AI.
 	 * 
-	 * @param phase the phase to play.
+	 * @param call the phase call.
 	 */
-	public void executeAi(byte phase) {
-		ai.execute(phase);
+	public void executeAi(ApiCall call) {
+		ai.execute(call);
 	}
 	
 	/**

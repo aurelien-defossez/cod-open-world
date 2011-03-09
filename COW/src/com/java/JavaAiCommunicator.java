@@ -69,9 +69,9 @@ public abstract class JavaAiCommunicator {
 	/**
 	 * Executes the AI for the specific phase.
 	 * 
-	 * @param phase the phase to play.
+	 * @param call the phase call.
 	 */
-	public abstract void execute(byte phase);
+	public abstract void execute(ApiCall call);
 	
 	/**
 	 * Tells the AI to stop its execution.

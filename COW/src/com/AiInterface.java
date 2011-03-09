@@ -18,9 +18,9 @@ public interface AiInterface {
 	/**
 	 * Executes an AI phase.
 	 * 
-	 * @param phase the phase to play.
+	 * @param call the phase call.
 	 */
-	public void execute(byte phase);
+	public void execute(ApiCall call);
 	
 	/**
 	 * Tells the AI to stop playing.

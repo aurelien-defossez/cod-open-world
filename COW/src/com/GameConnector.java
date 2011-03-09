@@ -35,8 +35,8 @@ public abstract class GameConnector implements GameInterface {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final void executeAi(short aiId, byte phase) {
-		game.executeAi(aiId, phase);
+	public final void executeAi(short aiId, ApiCall call) {
+		game.executeAi(aiId, call);
 	}
 	
 	/**

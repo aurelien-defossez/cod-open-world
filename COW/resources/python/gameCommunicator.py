@@ -45,7 +45,7 @@ class GameCommunicator(PyGameCommunicator):
 	
 	#Executes the only AI for the given phase
 	def executeAi(self, aiId, phase):
-		self.framework.executeAi(aiId, phase)
+		self.framework.executeAi(aiId, ApiCall(phase, 0))
 	
 	def setFrame(self):
 		self.framework.setFrame()

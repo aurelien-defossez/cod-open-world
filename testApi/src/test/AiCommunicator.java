@@ -5,6 +5,7 @@
 
 package test;
 
+import com.ApiCall;
 import com.java.JavaAiCommunicator;
 import com.java.JavaAiConnector;
 
@@ -39,8 +40,8 @@ public class AiCommunicator extends JavaAiCommunicator {
 	 * @param aiConnector the Java AI connector to communicate with the
 	 *            simulator.
 	 * @param aiInstance the AI instance for this game.
-	 * @Override
 	 */
+	@Override
 	public void
 			initCommunicator(JavaAiConnector aiConnector, Object aiInstance) {
 		super.initCommunicator(aiConnector);
@@ -49,9 +50,8 @@ public class AiCommunicator extends JavaAiCommunicator {
 	
 	/**
 	 * Tells the AI to initialize.
-	 * 
-	 * @Override
 	 */
+	@Override
 	public void init() {
 		aiInstance.init();
 	}
@@ -59,11 +59,11 @@ public class AiCommunicator extends JavaAiCommunicator {
 	/**
 	 * Executes the AI for the specific phase.
 	 * 
-	 * @param phase the phase to play.
-	 * @Override
+	 * @param call the phase call.
 	 */
-	public void execute(byte phase) {
-		switch (phase) {
+	@Override
+	public void execute(ApiCall call) {
+		switch (call.getFunctionId()) {
 		case PHASE_TEST_BOOL:
 			aiInstance.testBool();
 			break;
@@ -88,9 +88,8 @@ public class AiCommunicator extends JavaAiCommunicator {
 	
 	/**
 	 * Tells the AI to stop its execution.
-	 * 
-	 * @Override
 	 */
+	@Override
 	public void stop() {
 		aiInstance.stop();
 	}

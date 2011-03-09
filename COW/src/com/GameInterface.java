@@ -50,9 +50,9 @@ public interface GameInterface {
 	 * Executes an AI phase.
 	 * 
 	 * @param aiId the AI to execute.
-	 * @param phase the phase to play.
+	 * @param call the phase call.
 	 */
-	public void executeAi(short aiId, byte phase);
+	public void executeAi(short aiId, ApiCall call);
 	
 	/**
 	 * Sets a game key frame.

@@ -9,6 +9,7 @@ import java.util.Vector;
 import main.CowException;
 import org.apache.log4j.Logger;
 import com.Ai;
+import com.ApiCall;
 import debug.ProcessReader;
 import security.Watchdog;
 import sim.Simulator;
@@ -120,8 +121,8 @@ public class ProxyAi extends Ai {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void execute(byte phase) {
-		rpcServer.executeAi(phase);
+	public void execute(ApiCall call) {
+		rpcServer.executeAi(call);
 	}
 	
 	/**

@@ -12,6 +12,7 @@ import main.CowException;
 import org.apache.log4j.Logger;
 import com.Ai;
 import com.AiConnector;
+import com.ApiCall;
 
 public class JavaAiConnector extends AiConnector {
 	// -------------------------------------------------------------------------
@@ -107,8 +108,8 @@ public class JavaAiConnector extends AiConnector {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void execute(byte phase) {
-		aiCommunicator.execute(phase);
+	public void execute(ApiCall call) {
+		aiCommunicator.execute(call);
 	}
 	
 	/**

@@ -173,7 +173,8 @@ public class SocketRpcClient implements RpcClient {
 		switch (command) {
 		// Executes an AI
 		case RpcValues.CMD_AI_EXE:
-			simulator.executeAi(in.readByte());
+			ApiCall call = ApiCall.deserialize(in);
+			simulator.executeAi(call);
 			ack();
 			break;
 		
