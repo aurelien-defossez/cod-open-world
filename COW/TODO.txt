@@ -1,0 +1,28 @@
+- Platform
+	Add multidimensional arrays
+
+- Languages
+	Support java (Game engine)
+	Support C/C++
+	Redo Python connectors
+	Support Lua
+
+- Game engine
+	Add parameters files
+
+- Replay
+	Support specific replays
+
+- Match maker
+
+- Generate APIs from XML
+
+- Generate AI and Game engine templates
+
+- GUI
+
+- Security
+	Check socket values
+	Unix Unshare jail
+	Recreate AI process each n turns
+
