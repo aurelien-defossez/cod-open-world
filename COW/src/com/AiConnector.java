@@ -5,7 +5,7 @@
 
 package com;
 
-public abstract class AiConnector {
+public abstract class AiConnector implements AiInterface {
 	// -------------------------------------------------------------------------
 	// Attributes
 	// -------------------------------------------------------------------------
@@ -41,25 +41,4 @@ public abstract class AiConnector {
 	public Variant callGameApi(ApiCall call) {
 		return ai.callGameApi(call);
 	}
-	
-	// -------------------------------------------------------------------------
-	// Abstract methods
-	// -------------------------------------------------------------------------
-	
-	/**
-	 * Tells the AI to initialize itself.
-	 */
-	public abstract void init();
-	
-	/**
-	 * Executes an AI phase.
-	 * 
-	 * @param phase the phase to play.
-	 */
-	public abstract void execute(byte phase);
-	
-	/**
-	 * Tells the AI to stop playing.
-	 */
-	public abstract void stop();
 }

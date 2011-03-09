@@ -19,6 +19,7 @@ public class Api extends JavaApi {
 	private static final short API_CONCAT = 31;
 	private static final short API_SUM = 41;
 	private static final short API_COUNT = 42;
+	private static final short API_ADD_MATRIX = 43;
 	
 	// -------------------------------------------------------------------------
 	// Public methods
@@ -89,14 +90,21 @@ public class Api extends JavaApi {
 	}
 	
 	/**
-	 * Count from 1 to nb included, in a forme of an array.
+	 * Count from 1 to n included, in a form of an array.
 	 * 
-	 * @param nb the right boundary.
+	 * @param n the right boundary.
 	 * @return an array with values from 1 to n included.
 	 */
-	public static int[] count(int nb) {
+	public static int[] count(int n) {
 		ApiCall call = new ApiCall(API_COUNT, 1);
-		call.add(nb);
+		call.add(n);
 		return (int[]) Api.callGameApi(call);
 	}
+	
+	/*public static int[][] addMatrix(int[][] a, int[][] b) {
+		ApiCall call = new ApiCall(API_ADD_MATRIX, 2);
+		int[] __dim__a = {a.length, a[0].length};
+		call.add(a, __dim__a);
+		return (int[][]) Api.callGameApi(call);
+	}*/
 }

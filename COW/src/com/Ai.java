@@ -10,7 +10,7 @@ import main.CowException;
 import data.ConfigLoader;
 import sim.Simulator;
 
-public abstract class Ai {
+public abstract class Ai implements AiInterface {
 	// -------------------------------------------------------------------------
 	// Constants
 	// -------------------------------------------------------------------------
@@ -190,25 +190,4 @@ public abstract class Ai {
 	public final Variant callGameApi(ApiCall call) {
 		return simulator.callGameApi(call, this);
 	}
-	
-	// -------------------------------------------------------------------------
-	// Abstract methods
-	// -------------------------------------------------------------------------
-	
-	/**
-	 * Tells the AI to initialize itself.
-	 */
-	public abstract void init();
-	
-	/**
-	 * Executes an AI phase.
-	 * 
-	 * @param phase the phase to play.
-	 */
-	public abstract void execute(byte phase);
-	
-	/**
-	 * Tells the AI to stop playing.
-	 */
-	public abstract void stop();
 }

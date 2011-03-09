@@ -203,6 +203,28 @@ public class Variant {
 	}
 	
 	/**
+	 * Creates a multidimensional array of integers variant.
+	 * 
+	 * @param value the array of integers.
+	 * @param dimensions the sizes of each dimension.
+	 */
+	public Variant(Object value, int[] dimensions) {
+		//Get type
+		String arrayClass = value.getClass().getSimpleName();
+		arrayClass = arrayClass.substring(0, arrayClass.indexOf('['));
+	
+		//Assign type
+		if(arrayClass.equals("boolean")) {
+			this.type = BOOLEAN_ARRAY;
+		} else if(arrayClass.equals("int")) {
+			this.type = INTEGER_ARRAY;
+		}
+		
+		//Assign value
+		this.value = value;
+	}
+	
+	/**
 	 * Creates an array of integers variant.
 	 * 
 	 * @param value the array of integers.
