@@ -80,10 +80,11 @@ public class RemoteAiLauncher {
 			// Socket
 			if (rpcType.equals(SocketRpcServer.RPC_SOCKET_TYPE)) {
 				// Get RPC parameters
-				int port = Integer.parseInt(args[4]);
+				String address = args[4];
+				int port = Integer.parseInt(args[5]);
 				
 				// Create RPC client
-				rpcClient = new SocketRpcClient(simulator, port);
+				rpcClient = new SocketRpcClient(simulator, address, port);
 			}
 			
 			// Set RPC client

@@ -56,17 +56,19 @@ public class SocketRpcClient implements RpcClient {
 	 * Constructs the Socket RPC client.
 	 * 
 	 * @param simulator the proxy simulator.
+	 * @param address the host address.
 	 * @param port the socket local port.
 	 */
-	public SocketRpcClient(ProxySimulator simulator, int port) {
+	public SocketRpcClient(ProxySimulator simulator, String address, int port) {
 		try {
 			this.simulator = simulator;
 			
 			if (logger.isDebugEnabled())
-				logger.debug("Connecting to framework at port " + port + "...");
+				logger.debug("Connecting to framework at " + address + ":"
+						+ port + "...");
 			
 			// Create socket and connect
-			socket = new Socket("localhost", port);
+			socket = new Socket(address, port);
 			in = new DataInputStream(socket.getInputStream());
 			out = new DataOutputStream(socket.getOutputStream());
 			

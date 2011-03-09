@@ -111,6 +111,7 @@ public class SocketRpcServer implements RpcServer {
 	public Vector<String> getProcessParameters() {
 		Vector<String> parameters = new Vector<String>();
 		parameters.add(RPC_SOCKET_TYPE);
+		parameters.add("localhost");
 		parameters.add(String.valueOf(port));
 		
 		return parameters;
