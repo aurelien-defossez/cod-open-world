@@ -133,7 +133,7 @@ public class ReplaySimulator extends GameSimulator {
 				
 				case View.PRINT_TEXT:
 					ApiCall call = new ApiCall(function, 1);
-					call.add(in.readUTF());
+					call.add(new Variant(in.readUTF()));
 					callViewApi(call);
 				}
 			}

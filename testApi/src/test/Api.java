@@ -5,6 +5,7 @@
 package test;
 
 import com.ApiCall;
+import com.Variant;
 import com.java.JavaApi;
 
 public class Api extends JavaApi {
@@ -34,8 +35,8 @@ public class Api extends JavaApi {
 	 */
 	public static boolean xor(boolean a, boolean b) {
 		ApiCall call = new ApiCall(API_XOR, 2);
-		call.add(a);
-		call.add(b);
+		call.add(new Variant(a));
+		call.add(new Variant(b));
 		return (Boolean) Api.callGameApi(call);
 	}
 	
@@ -47,7 +48,7 @@ public class Api extends JavaApi {
 	 */
 	public static int plusplus(int x) {
 		ApiCall call = new ApiCall(API_PLUS_PLUS, 1);
-		call.add(x);
+		call.add(new Variant(x));
 		return (Integer) Api.callGameApi(call);
 	}
 	
@@ -59,7 +60,7 @@ public class Api extends JavaApi {
 	 */
 	public static double divide10(double x) {
 		ApiCall call = new ApiCall(API_DIVIDE_10, 1);
-		call.add(x);
+		call.add(new Variant(x));
 		return (Double) Api.callGameApi(call);
 	}
 	
@@ -72,8 +73,8 @@ public class Api extends JavaApi {
 	 */
 	public static String concat(String s1, String s2) {
 		ApiCall call = new ApiCall(API_CONCAT, 2);
-		call.add(s1);
-		call.add(s2);
+		call.add(new Variant(s1));
+		call.add(new Variant(s2));
 		return (String) Api.callGameApi(call);
 	}
 	
@@ -85,7 +86,7 @@ public class Api extends JavaApi {
 	 */
 	public static int sum(int[] values) {
 		ApiCall call = new ApiCall(API_SUM, 1);
-		call.add(values);
+		call.add(new Variant(values));
 		return (Integer) Api.callGameApi(call);
 	}
 	
@@ -97,7 +98,7 @@ public class Api extends JavaApi {
 	 */
 	public static int[] count(int n) {
 		ApiCall call = new ApiCall(API_COUNT, 1);
-		call.add(n);
+		call.add(new Variant(n));
 		return (int[]) Api.callGameApi(call);
 	}
 	

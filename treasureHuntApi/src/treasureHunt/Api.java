@@ -2,6 +2,7 @@
 package treasureHunt;
 
 import com.ApiCall;
+import com.Variant;
 import com.java.JavaApi;
 
 public class Api extends JavaApi {
@@ -42,7 +43,7 @@ public class Api extends JavaApi {
 	
 	public static void move(int direction) {
 		ApiCall call = new ApiCall(API_MOVE, 1);
-		call.add(direction);
+		call.add(new Variant(direction));
 		Api.callGameApi(call);
 	}
 	
@@ -53,7 +54,7 @@ public class Api extends JavaApi {
 	
 	public static int test(int parameter) {
 		ApiCall call = new ApiCall(API_TEST, 1);
-		call.add(parameter);
+		call.add(new Variant(parameter));
 		return (Integer) Api.callGameApi(call);
 	}
 }
