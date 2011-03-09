@@ -1,6 +1,6 @@
 /**
  * Local AI - This class represents a local AI, meaning an AI connected directly
- * in the same process.
+ * in the same process as the platform.
  */
 
 package com;

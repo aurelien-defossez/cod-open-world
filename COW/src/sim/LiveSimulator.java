@@ -9,7 +9,8 @@ import main.CowException;
 import org.apache.log4j.Logger;
 import com.Ai;
 import com.ApiCall;
-import com.GameConnector;
+import com.Game;
+import com.LocalGame;
 import com.Variant;
 
 public abstract class LiveSimulator extends GameSimulator {
@@ -29,7 +30,7 @@ public abstract class LiveSimulator extends GameSimulator {
 	/**
 	 * The game engine.
 	 */
-	private GameConnector engine;
+	private Game game;
 	
 	// -------------------------------------------------------------------------
 	// Constructor
@@ -46,7 +47,8 @@ public abstract class LiveSimulator extends GameSimulator {
 			throws CowException {
 		super(scheduler, gameName);
 		
-		this.engine = GameConnector.connectGame(this, gameName);
+		// Load local game
+		this.game = new LocalGame(this, gameName);
 	}
 	
 	// -------------------------------------------------------------------------
@@ -60,7 +62,7 @@ public abstract class LiveSimulator extends GameSimulator {
 	 * @param reason the reason of the removal.
 	 */
 	public void disqualifyAi(Ai ai, String reason) {
-		engine.disqualifyAi(ai, reason);
+		game.disqualifyAi(ai, reason);
 		removeAi(ai);
 		
 		logger.info("AI " + ai.getName() + " disqualified (" + reason + ")");
@@ -71,7 +73,7 @@ public abstract class LiveSimulator extends GameSimulator {
 	 */
 	@Override
 	public void initGame() {
-		engine.initGame(getAis());
+		game.initGame(getAis());
 		
 		super.initGame();
 	}
@@ -99,7 +101,7 @@ public abstract class LiveSimulator extends GameSimulator {
 	public void endGame() {
 		super.endGame();
 		
-		engine.endGame();
+		game.endGame();
 	}
 	
 	/**
@@ -110,7 +112,7 @@ public abstract class LiveSimulator extends GameSimulator {
 		if (logger.isDebugEnabled())
 			logger.debug("Play.");
 		
-		engine.play();
+		game.play();
 	}
 	
 	/**
@@ -121,6 +123,6 @@ public abstract class LiveSimulator extends GameSimulator {
 		if (logger.isTraceEnabled())
 			logger.trace("Call API, function #" + call.getFunctionId() + ".");
 		
-		return engine.callGameApi(call, ai);
+		return game.callGameApi(call, ai);
 	}
 }

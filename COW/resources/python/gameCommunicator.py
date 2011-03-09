@@ -1,5 +1,6 @@
 from com.python import PyGameCommunicator
 from viewApi import ViewApi
+from com import ApiCall
 
 class GameCommunicator(PyGameCommunicator):
 	framework = None
@@ -40,7 +41,7 @@ class GameCommunicator(PyGameCommunicator):
 	
 	#Executes a view API call
 	def callViewApi(self, function, parameters):
-		self.framework.callViewApi(function, parameters)
+		self.framework.callViewApi(ApiCall(function, parameters))
 	
 	#Executes the only AI for the given phase
 	def executeAi(self, aiId, phase):

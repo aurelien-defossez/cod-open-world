@@ -4,92 +4,27 @@
 
 package com;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.Collection;
-import main.CowException;
-import sim.LiveSimulator;
-import com.python.PyGameConnector;
-import data.ConfigLoader;
-
-public abstract class GameConnector {
-	// -------------------------------------------------------------------------
-	// Constants
-	// -------------------------------------------------------------------------
-	
-	/**
-	 * The configuration file name.
-	 */
-	private final static String CONFIG_FILE = "config.ini";
-	
+public abstract class GameConnector implements GameInterface {
 	// -------------------------------------------------------------------------
 	// Attributes
 	// -------------------------------------------------------------------------
 	
 	/**
-	 * The game simulator.
+	 * The game.
 	 */
-	protected LiveSimulator simulator;
-	
-	/**
-	 * The game name.
-	 */
-	private String gameName;
-	
-	// -------------------------------------------------------------------------
-	// Class methods
-	// -------------------------------------------------------------------------
-	
-	/**
-	 * Loads and connects the specified game engine to the simulator.
-	 * 
-	 * @param simulator the game simulator.
-	 * @param gameName the game name.
-	 * @throws CowException if the game cannot be loaded.
-	 */
-	public static GameConnector connectGame(LiveSimulator simulator,
-			String gameName) throws CowException {
-		try {
-			// Load config.ini file
-			ConfigLoader config =
-					new ConfigLoader("games/" + gameName + "/engine/"
-							+ CONFIG_FILE);
-			
-			// Read configuration values
-			String language = config.getValue("language").toLowerCase();
-			
-			// Load game engine according to its language
-			// Python
-			if (language.equals("python")) {
-				return new PyGameConnector(simulator, gameName);
-			}
-			// Not supported language
-			else {
-				throw new CowException("Cannot load game \"" + gameName
-						+ "\": language " + language + " not supported.");
-			}
-		} catch (FileNotFoundException e) {
-			throw new CowException("Cannot load game \"" + gameName
-					+ ": config file missing.");
-		} catch (IOException e) {
-			throw new CowException("Cannot load game \"" + gameName
-					+ ": a problem occurs while reading config file.", e);
-		}
-	}
+	private Game game;
 	
 	// -------------------------------------------------------------------------
 	// Constructor
 	// -------------------------------------------------------------------------
 	
 	/**
-	 * Initializes the game engine.
+	 * Initializes the game connector.
 	 * 
-	 * @param simulator the game simulator.
-	 * @param gameName the game name.
+	 * @param game the game.
 	 */
-	public GameConnector(LiveSimulator simulator, String gameName) {
-		this.simulator = simulator;
-		this.gameName = gameName;
+	public GameConnector(Game game) {
+		this.game = game;
 	}
 	
 	// -------------------------------------------------------------------------
@@ -97,76 +32,42 @@ public abstract class GameConnector {
 	// -------------------------------------------------------------------------
 	
 	/**
-	 * Returns the game name.
-	 * 
-	 * @return the game name.
+	 * {@inheritDoc}
 	 */
-	public String getName() {
-		return gameName;
+	@Override
+	public final void executeAi(short aiId, byte phase) {
+		game.executeAi(aiId, phase);
 	}
 	
 	/**
-	 * Sets a game key frame.
+	 * {@inheritDoc}
 	 */
+	@Override
 	public void setFrame() {
-		simulator.setFrame();
+		game.setFrame();
 	}
 	
 	/**
-	 * Sets a new score to an AI.
-	 * 
-	 * @param aiId the AI id.
-	 * @param score the new score for this AI.
+	 * {@inheritDoc}
 	 */
+	@Override
 	public void setScore(short aiId, long score) {
-		simulator.setScore(aiId, score);
+		game.setScore(aiId, score);
 	}
 	
 	/**
-	 * Increments the score of an AI.
-	 * 
-	 * @param aiId the AI id.
-	 * @param increment the value to add to the score of this AI.
+	 * {@inheritDoc}
 	 */
+	@Override
 	public void incrementScore(short aiId, long increment) {
-		simulator.incrementScore(aiId, increment);
+		game.incrementScore(aiId, increment);
 	}
 	
-	// -------------------------------------------------------------------------
-	// Abstract methods
-	// -------------------------------------------------------------------------
-	
 	/**
-	 * Initializes the game engine in order to start the game.
-	 * 
-	 * @param ais the AIs.
+	 * {@inheritDoc}
 	 */
-	public abstract void initGame(Collection<Ai> ais);
-	
-	/**
-	 * Disqualifies an AI.
-	 * 
-	 * @param ai the AI.
-	 * @param reason the reason of the disqualification.
-	 */
-	public abstract void disqualifyAi(Ai ai, String reason);
-	
-	/**
-	 * Ends the game.
-	 */
-	public abstract void endGame();
-	
-	/**
-	 * Plays the game.
-	 */
-	public abstract void play();
-	
-	/**
-	 * Makes a game API call.
-	 * 
-	 * @param call the game API call.
-	 * @param ai the AI making the call.
-	 * @return the call result.
-	 */
-	public abstract Variant callGameApi(ApiCall call, Ai ai);
+	@Override
+	public void callViewApi(ApiCall call) {
+		game.callViewApi(call);
+	}
 }

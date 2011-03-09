@@ -1,5 +1,5 @@
 /**
- * AI - This class represents an AI.
+ * Game - This class represents a game.
  */
 
 package com;
@@ -8,9 +8,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import main.CowException;
 import data.ConfigLoader;
-import sim.Simulator;
+import sim.LiveSimulator;
 
-public abstract class Ai implements AiInterface {
+public abstract class Game implements GameInterface {
 	// -------------------------------------------------------------------------
 	// Constants
 	// -------------------------------------------------------------------------
@@ -27,61 +27,38 @@ public abstract class Ai implements AiInterface {
 	/**
 	 * The game simulator.
 	 */
-	private Simulator simulator;
+	private LiveSimulator simulator;
 	
 	/**
-	 * The AI id.
-	 */
-	private short id;
-	
-	/**
-	 * The AI name.
-	 */
-	private String name;
-	
-	/**
-	 * The AI player name.
-	 */
-	private String playerName;
-	
-	/**
-	 * The AI implementation language.
+	 * The game implementation language.
 	 */
 	private Language language;
 	
 	/**
-	 * The AI score.
+	 * The game name.
 	 */
-	private long score;
+	private String name;
 	
 	// -------------------------------------------------------------------------
 	// Constructor
 	// -------------------------------------------------------------------------
 	
 	/**
-	 * Initializes the AI.
+	 * Initializes the game.
 	 * 
 	 * @param simulator the game simulator.
 	 * @param gameName the game name.
-	 * @param aiId the AI id.
-	 * @param aiName the AI name.
-	 * @throws CowException if the AI cannot be loaded.
+	 * @throws CowException if the game cannot be loaded.
 	 */
-	public Ai(Simulator simulator, String gameName, short aiId, String aiName)
-			throws CowException {
+	public Game(LiveSimulator simulator, String gameName) throws CowException {
 		this.simulator = simulator;
-		this.id = aiId;
-		this.name = aiName;
-		this.score = 0;
+		this.name = gameName;
 		
 		try {
 			// Load config.ini file
 			ConfigLoader config =
-					new ConfigLoader("games/" + gameName + "/ais/" + aiName
-							+ "/" + CONFIG_FILE);
-			
-			// Read creator name
-			this.playerName = config.getValue("creator");
+					new ConfigLoader("games/" + gameName + "/engine/"
+							+ CONFIG_FILE);
 			
 			// Read language
 			String languageString = config.getValue("language").toLowerCase();
@@ -96,18 +73,18 @@ public abstract class Ai implements AiInterface {
 			}
 			// Not supported language
 			else {
-				throw new CowException("Cannot load AI \"" + aiName
+				throw new CowException("Cannot load game \"" + gameName
 						+ ": language " + languageString + " not supported.");
 			}
 		}
 		// Configuration file not found
 		catch (FileNotFoundException e) {
-			throw new CowException("Cannot load AI \"" + aiName
+			throw new CowException("Cannot load game \"" + gameName
 					+ ": config file missing.");
 		}
 		// Configuration file not complete
 		catch (IOException e) {
-			throw new CowException("Cannot load AI \"" + aiName
+			throw new CowException("Cannot load game \"" + gameName
 					+ ": a problem occurs while reading config file.", e);
 		}
 	}
@@ -117,30 +94,12 @@ public abstract class Ai implements AiInterface {
 	// -------------------------------------------------------------------------
 	
 	/**
-	 * Returns the AI id.
+	 * Returns the game name.
 	 * 
-	 * @return the AI id.
-	 */
-	public final short getId() {
-		return id;
-	}
-	
-	/**
-	 * Returns the AI name.
-	 * 
-	 * @return the AI name.
+	 * @return the game name.
 	 */
 	public final String getName() {
 		return name;
-	}
-	
-	/**
-	 * Returns the player name.
-	 * 
-	 * @return the player name.
-	 */
-	public final String getPlayerName() {
-		return playerName;
 	}
 	
 	/**
@@ -153,27 +112,42 @@ public abstract class Ai implements AiInterface {
 	}
 	
 	/**
-	 * Returns the AI score.
-	 * 
-	 * @return the AI score.
+	 * {@inheritDoc}
 	 */
-	public final long getScore() {
-		return score;
-	}
-	
-	/**
-	 * Sets the AI score.
-	 * 
-	 * @param score the new score.
-	 */
-	public final void setScore(long score) {
-		this.score = score;
+	@Override
+	public final void executeAi(short aiId, byte phase) {
+		simulator.executeAi(aiId, phase);
 	}
 	
 	/**
 	 * {@inheritDoc}
 	 */
-	public final Variant callGameApi(ApiCall call) {
-		return simulator.callGameApi(call, this);
+	@Override
+	public void setFrame() {
+		simulator.setFrame();
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void setScore(short aiId, long score) {
+		simulator.setScore(aiId, score);
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void incrementScore(short aiId, long increment) {
+		simulator.incrementScore(aiId, increment);
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void callViewApi(ApiCall call) {
+		simulator.callViewApi(call);
 	}
 }

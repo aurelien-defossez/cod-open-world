@@ -6,9 +6,9 @@ import org.python.core.PyInteger;
 import org.python.core.PyObject;
 import org.python.core.PyString;
 import org.python.util.PythonInterpreter;
-import sim.LiveSimulator;
 import com.Ai;
 import com.ApiCall;
+import com.Game;
 import com.GameConnector;
 import com.Variant;
 
@@ -23,14 +23,14 @@ public class PyGameConnector extends GameConnector {
 	// Constructor
 	// -------------------------------------------------------------------------
 	
-	public PyGameConnector(LiveSimulator simulator, String gameName) {
-		super(simulator, gameName);
+	public PyGameConnector(Game game) {
+		super(game);
 		
 		// Create and initialize Python interpreter
 		PythonInterpreter interpreter = new PythonInterpreter();
 		
 		// Initialize Python
-		PyInitializer.initialize(gameName);
+		PyInitializer.initialize(game.getName());
 		
 		// Load game connector
 		interpreter.execfile("resources/python/gameCommunicator.py");
@@ -41,17 +41,18 @@ public class PyGameConnector extends GameConnector {
 						.__tojava__(PyGameCommunicator.class);
 		
 		// Load API
-		interpreter.execfile("games/" + gameName + "/engine/api.py");
+		interpreter.execfile("games/" + game.getName() + "/engine/api.py");
 		PyObject gameApiClass = interpreter.get("Api");
 		PyObject apiPy = gameApiClass.__call__();
 		
 		// Load API call demultiplexer
-		interpreter.execfile("games/" + gameName + "/engine/apiCallDemux.py");
+		interpreter.execfile("games/" + game.getName()
+				+ "/engine/apiCallDemux.py");
 		PyObject ApiDemuxClass = interpreter.get("ApiCallDemux");
 		PyObject apiDemuxPy = ApiDemuxClass.__call__();
 		
 		// Load game
-		interpreter.execfile("games/" + gameName + "/engine/game.py");
+		interpreter.execfile("games/" + game.getName() + "/engine/game.py");
 		PyObject gameClass = interpreter.get("Game");
 		PyObject gamePy = gameClass.__call__();
 		
@@ -101,13 +102,5 @@ public class PyGameConnector extends GameConnector {
 		
 		return gameCommunicator.callGameApi(call.getFunctionId(), ai.getId(),
 				pyParameters);
-	}
-	
-	public void callViewApi(short function, Variant[] parameters) {
-		simulator.callViewApi(new ApiCall(function, parameters));
-	}
-	
-	public void executeAi(short aiId, byte phase) {
-		simulator.executeAi(aiId, phase);
 	}
 }

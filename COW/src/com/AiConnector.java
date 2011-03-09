@@ -33,10 +33,7 @@ public abstract class AiConnector implements AiInterface {
 	// -------------------------------------------------------------------------
 	
 	/**
-	 * Makes a game API call.
-	 * 
-	 * @param call the game API call.
-	 * @return the call return value.
+	 * {@inheritDoc}
 	 */
 	public Variant callGameApi(ApiCall call) {
 		return ai.callGameApi(call);
