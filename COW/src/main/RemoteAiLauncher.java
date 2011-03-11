@@ -6,7 +6,7 @@ package main;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
-import com.LocalAi;
+import com.ai.LocalAi;
 import com.remote.ProxySimulator;
 import com.remote.RpcClient;
 import com.remote.SocketRpcClient;

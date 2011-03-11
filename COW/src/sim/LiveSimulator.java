@@ -7,11 +7,11 @@ package sim;
 
 import main.CowException;
 import org.apache.log4j.Logger;
-import com.Ai;
 import com.ApiCall;
-import com.Game;
-import com.LocalGame;
 import com.Variant;
+import com.ai.Ai;
+import com.game.Game;
+import com.game.LocalGame;
 
 public abstract class LiveSimulator extends GameSimulator {
 	// -------------------------------------------------------------------------

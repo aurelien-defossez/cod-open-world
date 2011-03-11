@@ -14,9 +14,9 @@ import org.apache.log4j.Logger;
 import sim.GameSimulator;
 import sim.Scheduler;
 import view.View;
-import com.Ai;
 import com.ApiCall;
 import com.Variant;
+import com.ai.Ai;
 
 public class ReplaySimulator extends GameSimulator {
 	// -------------------------------------------------------------------------

@@ -13,10 +13,10 @@ import java.util.Collection;
 import main.CowException;
 import org.apache.log4j.Logger;
 import view.View;
-import com.Ai;
 import com.ApiCall;
 import com.GameListener;
 import com.Variant;
+import com.ai.Ai;
 
 public class ReplayWriter implements GameListener {
 	// -------------------------------------------------------------------------

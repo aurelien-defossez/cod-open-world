@@ -11,7 +11,7 @@ import java.util.Collection;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import main.CowException;
-import com.Ai;
+import com.ai.Ai;
 import sim.Scheduler;
 import ui.Ui;
 import view.KeyboardController;

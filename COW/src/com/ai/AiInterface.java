@@ -3,7 +3,10 @@
  * connector should implement.
  */
 
-package com;
+package com.ai;
+
+import com.ApiCall;
+import com.Variant;
 
 public interface AiInterface {
 	// -------------------------------------------------------------------------

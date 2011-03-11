@@ -4,8 +4,8 @@
 
 package sim.replay;
 
-import com.Ai;
 import com.ApiCall;
+import com.ai.Ai;
 
 public class ReplayAi extends Ai {
 	// -------------------------------------------------------------------------

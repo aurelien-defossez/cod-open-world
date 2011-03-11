@@ -9,9 +9,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
-import com.Ai;
 import com.ApiCall;
 import com.GameListener;
+import com.ai.Ai;
 
 public abstract class GameSimulator implements Simulator {
 	// -------------------------------------------------------------------------

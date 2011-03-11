@@ -3,7 +3,10 @@
  * language to the simulator.
  */
 
-package com;
+package com.ai;
+
+import com.ApiCall;
+import com.Variant;
 
 public abstract class AiConnector implements AiInterface {
 	// -------------------------------------------------------------------------

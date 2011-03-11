@@ -28,7 +28,7 @@ public class AiCommunicator extends JavaAiCommunicator {
 	/**
 	 * The AI interface instance, to communicate with the AI.
 	 */
-	private AiInterface aiInstance;
+	private TestAi aiInstance;
 	
 	// -------------------------------------------------------------------------
 	// Public methods
@@ -45,7 +45,7 @@ public class AiCommunicator extends JavaAiCommunicator {
 	public void
 			initCommunicator(JavaAiConnector aiConnector, Object aiInstance) {
 		super.initCommunicator(aiConnector);
-		this.aiInstance = (AiInterface) aiInstance;
+		this.aiInstance = (TestAi) aiInstance;
 	}
 	
 	/**

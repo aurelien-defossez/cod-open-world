@@ -1,11 +1,11 @@
 /**
- * AI Interface - This class is the auto-generated Java AI interface for the
- * game "test".
+ * Test AI - This class is the auto-generated Java AI interface for the game
+ * "test".
  */
 
 package test;
 
-public interface AiInterface {
+public interface TestAi {
 	// -------------------------------------------------------------------------
 	// Abstract methods
 	// -------------------------------------------------------------------------
@@ -14,6 +14,11 @@ public interface AiInterface {
 	 * Initializes the AI before the game starts.
 	 */
 	public void init();
+	
+	/**
+	 * Stops the AI, thus deleting every object allocated during game time.
+	 */
+	public void stop();
 	
 	/**
 	 * Executes the test boolean phase.
@@ -39,9 +44,4 @@ public interface AiInterface {
 	 * Executes the test array phase.
 	 */
 	public void testArray();
-	
-	/**
-	 * Stops the AI.
-	 */
-	public void stop();
 }

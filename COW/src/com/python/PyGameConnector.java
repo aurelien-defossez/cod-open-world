@@ -6,11 +6,11 @@ import org.python.core.PyInteger;
 import org.python.core.PyObject;
 import org.python.core.PyString;
 import org.python.util.PythonInterpreter;
-import com.Ai;
 import com.ApiCall;
-import com.Game;
-import com.GameConnector;
 import com.Variant;
+import com.ai.Ai;
+import com.game.Game;
+import com.game.GameConnector;
 
 public class PyGameConnector extends GameConnector {
 	// -------------------------------------------------------------------------

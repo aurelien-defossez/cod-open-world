@@ -8,9 +8,9 @@ import java.awt.Component;
 import java.util.Collection;
 import main.CowException;
 import org.apache.log4j.Logger;
-import com.Ai;
 import com.ApiCall;
 import com.GameListener;
+import com.ai.Ai;
 
 public abstract class View implements GameListener, KeyboardListener {
 	// -------------------------------------------------------------------------

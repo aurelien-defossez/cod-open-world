@@ -5,7 +5,7 @@ import java.awt.Component;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.Collection;
-import com.Ai;
+import com.ai.Ai;
 import com.jme.renderer.ColorRGBA;
 import com.jme.system.DisplaySystem;
 import com.jme.system.lwjgl.LWJGLSystemProvider;

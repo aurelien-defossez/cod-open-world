@@ -55,8 +55,7 @@ public abstract class JavaAiCommunicator {
 	 * Sets the AI instance.
 	 * 
 	 * @param connector the Java AI connector.
-	 * @param aiInstance the AI instance (its type is the specific game
-	 *            AiInterface, seen as an object from this point of view).
+	 * @param aiInstance the AI instance of the {GameName}Ai class.
 	 */
 	public abstract void initCommunicator(JavaAiConnector connector,
 			Object aiInstance);

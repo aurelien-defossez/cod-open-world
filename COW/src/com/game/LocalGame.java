@@ -3,11 +3,14 @@
  * directly in the same process as the platform.
  */
 
-package com;
+package com.game;
 
 import java.util.Collection;
 import main.CowException;
 import sim.LiveSimulator;
+import com.ApiCall;
+import com.Variant;
+import com.ai.Ai;
 import com.python.PyGameConnector;
 
 public class LocalGame extends Game {

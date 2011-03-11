@@ -6,9 +6,9 @@
 
 package sim;
 
-import com.Ai;
 import com.ApiCall;
 import com.Variant;
+import com.ai.Ai;
 
 public interface Simulator {
 	// -------------------------------------------------------------------------

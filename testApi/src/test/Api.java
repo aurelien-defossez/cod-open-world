@@ -20,7 +20,8 @@ public class Api extends JavaApi {
 	private static final short API_CONCAT = 31;
 	private static final short API_SUM = 41;
 	private static final short API_COUNT = 42;
-	private static final short API_ADD_MATRIX = 43;
+	
+	// private static final short API_ADD_MATRIX = 43;
 	
 	// -------------------------------------------------------------------------
 	// Public methods
@@ -102,10 +103,7 @@ public class Api extends JavaApi {
 		return (int[]) Api.callGameApi(call);
 	}
 	
-	/*public static int[][] addMatrix(int[][] a, int[][] b) {
-		ApiCall call = new ApiCall(API_ADD_MATRIX, 2);
-		int[] __dim__a = {a.length, a[0].length};
-		call.add(a, __dim__a);
-		return (int[][]) Api.callGameApi(call);
-	}*/
+	/* public static int[][] addMatrix(int[][] a, int[][] b) { ApiCall call =
+	 * new ApiCall(API_ADD_MATRIX, 2); int[] __dim__a = {a.length, a[0].length};
+	 * call.add(a, __dim__a); return (int[][]) Api.callGameApi(call); } */
 }

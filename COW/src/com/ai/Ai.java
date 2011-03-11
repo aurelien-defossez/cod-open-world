@@ -1,16 +1,19 @@
 /**
- * Game - This class represents a game.
+ * AI - This class represents an AI.
  */
 
-package com;
+package com.ai;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import com.ApiCall;
+import com.Language;
+import com.Variant;
 import main.CowException;
 import data.ConfigLoader;
-import sim.LiveSimulator;
+import sim.Simulator;
 
-public abstract class Game implements GameInterface {
+public abstract class Ai implements AiInterface {
 	// -------------------------------------------------------------------------
 	// Constants
 	// -------------------------------------------------------------------------
@@ -27,38 +30,61 @@ public abstract class Game implements GameInterface {
 	/**
 	 * The game simulator.
 	 */
-	private LiveSimulator simulator;
+	private Simulator simulator;
 	
 	/**
-	 * The game implementation language.
+	 * The AI id.
+	 */
+	private short id;
+	
+	/**
+	 * The AI name.
+	 */
+	private String name;
+	
+	/**
+	 * The AI player name.
+	 */
+	private String playerName;
+	
+	/**
+	 * The AI implementation language.
 	 */
 	private Language language;
 	
 	/**
-	 * The game name.
+	 * The AI score.
 	 */
-	private String name;
+	private long score;
 	
 	// -------------------------------------------------------------------------
 	// Constructor
 	// -------------------------------------------------------------------------
 	
 	/**
-	 * Initializes the game.
+	 * Initializes the AI.
 	 * 
 	 * @param simulator the game simulator.
 	 * @param gameName the game name.
-	 * @throws CowException if the game cannot be loaded.
+	 * @param aiId the AI id.
+	 * @param aiName the AI name.
+	 * @throws CowException if the AI cannot be loaded.
 	 */
-	public Game(LiveSimulator simulator, String gameName) throws CowException {
+	public Ai(Simulator simulator, String gameName, short aiId, String aiName)
+			throws CowException {
 		this.simulator = simulator;
-		this.name = gameName;
+		this.id = aiId;
+		this.name = aiName;
+		this.score = 0;
 		
 		try {
 			// Load config.ini file
 			ConfigLoader config =
-					new ConfigLoader("games/" + gameName + "/engine/"
-							+ CONFIG_FILE);
+					new ConfigLoader("games/" + gameName + "/ais/" + aiName
+							+ "/" + CONFIG_FILE);
+			
+			// Read creator name
+			this.playerName = config.getValue("creator");
 			
 			// Read language
 			String languageString = config.getValue("language").toLowerCase();
@@ -73,18 +99,18 @@ public abstract class Game implements GameInterface {
 			}
 			// Not supported language
 			else {
-				throw new CowException("Cannot load game \"" + gameName
+				throw new CowException("Cannot load AI \"" + aiName
 						+ ": language " + languageString + " not supported.");
 			}
 		}
 		// Configuration file not found
 		catch (FileNotFoundException e) {
-			throw new CowException("Cannot load game \"" + gameName
+			throw new CowException("Cannot load AI \"" + aiName
 					+ ": config file missing.");
 		}
 		// Configuration file not complete
 		catch (IOException e) {
-			throw new CowException("Cannot load game \"" + gameName
+			throw new CowException("Cannot load AI \"" + aiName
 					+ ": a problem occurs while reading config file.", e);
 		}
 	}
@@ -94,12 +120,30 @@ public abstract class Game implements GameInterface {
 	// -------------------------------------------------------------------------
 	
 	/**
-	 * Returns the game name.
+	 * Returns the AI id.
 	 * 
-	 * @return the game name.
+	 * @return the AI id.
+	 */
+	public final short getId() {
+		return id;
+	}
+	
+	/**
+	 * Returns the AI name.
+	 * 
+	 * @return the AI name.
 	 */
 	public final String getName() {
 		return name;
+	}
+	
+	/**
+	 * Returns the player name.
+	 * 
+	 * @return the player name.
+	 */
+	public final String getPlayerName() {
+		return playerName;
 	}
 	
 	/**
@@ -112,42 +156,27 @@ public abstract class Game implements GameInterface {
 	}
 	
 	/**
-	 * {@inheritDoc}
+	 * Returns the AI score.
+	 * 
+	 * @return the AI score.
 	 */
-	@Override
-	public final void executeAi(short aiId, ApiCall call) {
-		simulator.executeAi(aiId, call);
+	public final long getScore() {
+		return score;
+	}
+	
+	/**
+	 * Sets the AI score.
+	 * 
+	 * @param score the new score.
+	 */
+	public final void setScore(long score) {
+		this.score = score;
 	}
 	
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
-	public void setFrame() {
-		simulator.setFrame();
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void setScore(short aiId, long score) {
-		simulator.setScore(aiId, score);
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void incrementScore(short aiId, long increment) {
-		simulator.incrementScore(aiId, increment);
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void callViewApi(ApiCall call) {
-		simulator.callViewApi(call);
+	public final Variant callGameApi(ApiCall call) {
+		return simulator.callGameApi(call, this);
 	}
 }

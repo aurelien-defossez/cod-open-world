@@ -6,6 +6,7 @@
 package com;
 
 import java.util.Collection;
+import com.ai.Ai;
 
 public interface GameListener {
 	// -------------------------------------------------------------------------

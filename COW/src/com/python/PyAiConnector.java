@@ -9,9 +9,9 @@ import org.apache.log4j.Logger;
 import org.python.core.PyInteger;
 import org.python.core.PyObject;
 import org.python.util.PythonInterpreter;
-import com.Ai;
-import com.AiConnector;
 import com.ApiCall;
+import com.ai.Ai;
+import com.ai.AiConnector;
 
 public class PyAiConnector extends AiConnector {
 	// -------------------------------------------------------------------------

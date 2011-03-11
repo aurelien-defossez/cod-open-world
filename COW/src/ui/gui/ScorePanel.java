@@ -5,7 +5,7 @@ import java.awt.BorderLayout;
 import java.util.Collection;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
-import com.Ai;
+import com.ai.Ai;
 
 public class ScorePanel extends JPanel {
 	// -------------------------------------------------------------------------

@@ -2,7 +2,9 @@
  * Game Engine - This class connects a game engine to the simulator.
  */
 
-package com;
+package com.game;
+
+import com.ApiCall;
 
 public abstract class GameConnector implements GameInterface {
 	// -------------------------------------------------------------------------

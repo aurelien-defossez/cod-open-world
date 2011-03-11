@@ -1,11 +1,11 @@
 /**
- * AI Interface - This class is the auto-generated Java AI interface for the
+ * Treasure Hunt AI - This class is the auto-generated Java AI interface for the
  * game "test".
  */
 
 package treasureHunt;
 
-public interface AiInterface {
+public interface TreasureHuntAi {
 	// -------------------------------------------------------------------------
 	// Abstract methods
 	// -------------------------------------------------------------------------
@@ -16,6 +16,11 @@ public interface AiInterface {
 	public void init();
 	
 	/**
+	 * Stops the AI, thus deleting every object allocated during game time.
+	 */
+	public void stop();
+	
+	/**
 	 * Re initializes the AI after a treasure is found.
 	 */
 	public void reInit();
@@ -24,9 +29,4 @@ public interface AiInterface {
 	 * Plays.
 	 */
 	public void play();
-	
-	/**
-	 * Stops the AI.
-	 */
-	public void stop();
 }

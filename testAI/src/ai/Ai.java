@@ -6,10 +6,10 @@
 
 package ai;
 
-import test.AiInterface;
 import test.Api;
+import test.TestAi;
 
-public class Ai implements AiInterface {
+public class Ai implements TestAi {
 	/**
 	 * Initializes the AI before the game starts.
 	 */

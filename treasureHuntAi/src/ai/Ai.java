@@ -1,10 +1,10 @@
 
 package ai;
 
-import treasureHunt.AiInterface;
 import treasureHunt.Api;
+import treasureHunt.TreasureHuntAi;
 
-public class Ai implements AiInterface {
+public class Ai implements TreasureHuntAi {
 	private int w;
 	private int h;
 	private double map[][];
@@ -28,6 +28,11 @@ public class Ai implements AiInterface {
 	}
 	
 	@Override
+	public void stop() {
+		// Do nothing
+	}
+	
+	@Override
 	public void reInit() {
 		initMap();
 	}
@@ -47,11 +52,6 @@ public class Ai implements AiInterface {
 				findY();
 			}
 		}
-	}
-	
-	@Override
-	public void stop() {
-		// Do nothing
 	}
 	
 	private void initMap() {

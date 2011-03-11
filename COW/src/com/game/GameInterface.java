@@ -3,9 +3,12 @@
  * connector should implement.
  */
 
-package com;
+package com.game;
 
 import java.util.Collection;
+import com.ApiCall;
+import com.Variant;
+import com.ai.Ai;
 
 public interface GameInterface {
 	// -------------------------------------------------------------------------

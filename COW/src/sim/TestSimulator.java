@@ -5,7 +5,7 @@
 
 package sim;
 
-import com.LocalAi;
+import com.ai.LocalAi;
 import main.CowException;
 
 public class TestSimulator extends LiveSimulator {

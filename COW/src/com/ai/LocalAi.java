@@ -3,9 +3,10 @@
  * in the same process as the platform.
  */
 
-package com;
+package com.ai;
 
 import main.CowException;
+import com.ApiCall;
 import com.java.JavaAiConnector;
 import com.python.PyAiConnector;
 import sim.Simulator;

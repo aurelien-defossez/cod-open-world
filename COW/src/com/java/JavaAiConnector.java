@@ -10,9 +10,9 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import main.CowException;
 import org.apache.log4j.Logger;
-import com.Ai;
-import com.AiConnector;
 import com.ApiCall;
+import com.ai.Ai;
+import com.ai.AiConnector;
 
 public class JavaAiConnector extends AiConnector {
 	// -------------------------------------------------------------------------

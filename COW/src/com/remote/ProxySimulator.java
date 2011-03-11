@@ -5,9 +5,9 @@
 
 package com.remote;
 
-import com.Ai;
 import com.ApiCall;
 import com.Variant;
+import com.ai.Ai;
 import sim.Simulator;
 
 public class ProxySimulator implements Simulator {
