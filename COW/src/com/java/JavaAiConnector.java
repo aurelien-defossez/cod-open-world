@@ -108,8 +108,8 @@ public class JavaAiConnector extends AiConnector {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void execute(ApiCall call) {
-		aiCommunicator.execute(call);
+	public void performAiFunction(ApiCall call) {
+		aiCommunicator.performAiFunction(call);
 	}
 	
 	/**

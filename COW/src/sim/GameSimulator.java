@@ -99,7 +99,7 @@ public abstract class GameSimulator implements Simulator {
 	 */
 	public final void callViewApi(ApiCall call) {
 		for (GameListener listener : listeners) {
-			listener.callViewApi(call);
+			listener.callViewFunction(call);
 		}
 	}
 	

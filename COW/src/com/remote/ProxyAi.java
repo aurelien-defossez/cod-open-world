@@ -121,8 +121,8 @@ public class ProxyAi extends Ai {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void execute(ApiCall call) {
-		rpcServer.executeAi(call);
+	public void performAiFunction(ApiCall call) {
+		rpcServer.performAiFunction(call);
 	}
 	
 	/**

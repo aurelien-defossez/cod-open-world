@@ -14,11 +14,11 @@ class aiCommunicator(PyAiCommunicator):
 	def init(self):
 		self.ai.init()
 	
-	def execute(self, phase):
+	def performAiFunction(self, phase):
 		self.ai.execute(phase)
 	
 	def stop(self):
 		self.ai.stop()
 	
-	def callGameApi(self, call):
-		return self.connector.callGameApi(call).getValue()
+	def callGameFunction(self, call):
+		return self.connector.callGameFunction(call).getValue()

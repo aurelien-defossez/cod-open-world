@@ -16,11 +16,11 @@ public interface Simulator {
 	// -------------------------------------------------------------------------
 	
 	/**
-	 * Makes a game API call.
+	 * Calls a game API function.
 	 * 
 	 * @param call the game API call.
 	 * @param ai the AI making the call.
 	 * @return the call result.
 	 */
-	public Variant callGameApi(ApiCall call, Ai ai);
+	public Variant callGameFunction(ApiCall call, Ai ai);
 }

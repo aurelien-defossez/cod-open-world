@@ -62,8 +62,8 @@ public class ProxySimulator implements Simulator {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Variant callGameApi(ApiCall call, Ai ai) {
-		return rpcClient.callGameApi(call);
+	public Variant callGameFunction(ApiCall call, Ai ai) {
+		return rpcClient.callGameFunction(call);
 	}
 	
 	/**
@@ -74,12 +74,12 @@ public class ProxySimulator implements Simulator {
 	}
 	
 	/**
-	 * Executes the AI.
+	 * Calls an AI API function.
 	 * 
-	 * @param call the phase call.
+	 * @param call the function call.
 	 */
-	public void executeAi(ApiCall call) {
-		ai.execute(call);
+	public void callAiFunction(ApiCall call) {
+		ai.performAiFunction(call);
 	}
 	
 	/**

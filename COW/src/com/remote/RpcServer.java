@@ -36,11 +36,11 @@ public interface RpcServer {
 	public abstract void initGame();
 	
 	/**
-	 * Executes an AI.
+	 * Calls an AI API function.
 	 * 
-	 * @param call the phase call.
+	 * @param call the AI API call.
 	 */
-	public abstract void executeAi(ApiCall call);
+	public abstract void performAiFunction(ApiCall call);
 	
 	/**
 	 * Tells the AI to stop.

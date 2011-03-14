@@ -67,8 +67,8 @@ public class LocalAi extends Ai {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void execute(ApiCall call) {
-		connector.execute(call);
+	public void performAiFunction(ApiCall call) {
+		connector.performAiFunction(call);
 	}
 	
 	/**

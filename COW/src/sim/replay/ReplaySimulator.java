@@ -150,7 +150,7 @@ public class ReplaySimulator extends GameSimulator {
 	 * @param ai the AI making the call.
 	 * @return the return value of this call.
 	 */
-	public Variant callGameApi(ApiCall call, Ai ai) {
+	public Variant callGameFunction(ApiCall call, Ai ai) {
 		// Do nothing
 		return null;
 	}

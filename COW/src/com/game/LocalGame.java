@@ -69,8 +69,8 @@ public class LocalGame extends Game {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Variant callGameApi(ApiCall call, Ai ai) {
-		return connector.callGameApi(call, ai);
+	public Variant performGameFunction(ApiCall call, Ai ai) {
+		return connector.performGameFunction(call, ai);
 	}
 	
 	/**

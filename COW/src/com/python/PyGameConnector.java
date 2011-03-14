@@ -93,14 +93,14 @@ public class PyGameConnector extends GameConnector {
 	}
 	
 	@Override
-	public Variant callGameApi(ApiCall call, Ai ai) {
+	public Variant performGameFunction(ApiCall call, Ai ai) {
 		int nbParameters = call.getParameters().length;
 		Object[] pyParameters = new Object[nbParameters];
 		for (int i = 0; i < nbParameters; i++) {
 			pyParameters[i] = call.getParameter(i).getValue();
 		}
 		
-		return gameCommunicator.callGameApi(call.getFunctionId(), ai.getId(),
-				pyParameters);
+		return gameCommunicator.performGameFunction(call.getFunctionId(),
+				ai.getId(), pyParameters);
 	}
 }

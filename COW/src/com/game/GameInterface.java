@@ -28,13 +28,13 @@ public interface GameInterface {
 	public abstract void play();
 	
 	/**
-	 * Makes a game API call.
+	 * Performs a game API function call.
 	 * 
 	 * @param call the game API call.
 	 * @param ai the AI making the call.
 	 * @return the call result.
 	 */
-	public abstract Variant callGameApi(ApiCall call, Ai ai);
+	public abstract Variant performGameFunction(ApiCall call, Ai ai);
 	
 	/**
 	 * Disqualifies an AI.
@@ -48,14 +48,6 @@ public interface GameInterface {
 	 * Ends the game.
 	 */
 	public abstract void endGame();
-	
-	/**
-	 * Executes an AI phase.
-	 * 
-	 * @param aiId the AI to execute.
-	 * @param call the phase call.
-	 */
-	public void executeAi(short aiId, ApiCall call);
 	
 	/**
 	 * Sets a game key frame.
@@ -76,12 +68,20 @@ public interface GameInterface {
 	 * @param aiId the AI id.
 	 * @param increment the value to add to the score of this AI.
 	 */
-	public void incrementScore(short aiId, long increment);
+	public abstract void incrementScore(short aiId, long increment);
 	
 	/**
-	 * Makes a view API call.
+	 * Calls an AI API function.
+	 * 
+	 * @param aiId the AI to execute.
+	 * @param call the AI API call.
+	 */
+	public abstract void callAiFunction(short aiId, ApiCall call);
+	
+	/**
+	 * Calls a view API function.
 	 * 
 	 * @param call the view API call.
 	 */
-	public abstract void callViewApi(ApiCall call);
+	public abstract void callViewFunction(ApiCall call);
 }

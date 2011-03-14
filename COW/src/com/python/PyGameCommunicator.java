@@ -22,8 +22,8 @@ public interface PyGameCommunicator {
 	
 	public void play();
 	
-	public Variant
-			callGameApi(short function, short aiId, Object[] pyParameters);
+	public Variant performGameFunction(short function, short aiId,
+			Object[] pyParameters);
 	
 	public void removeAi(PyInteger pyInteger, PyString pyString);
 }

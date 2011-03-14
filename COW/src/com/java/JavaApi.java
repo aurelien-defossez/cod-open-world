@@ -36,12 +36,12 @@ public abstract class JavaApi {
 	// -------------------------------------------------------------------------
 	
 	/**
-	 * Makes a game API call.
+	 * Calls the game API function.
 	 * 
 	 * @param call the game API call.
 	 * @return the call return value object.
 	 */
-	protected static final Object callGameApi(ApiCall call) {
-		return communicator.callGameApi(call).getValue();
+	protected static final Object callGameFunction(ApiCall call) {
+		return communicator.callGameFunction(call).getValue();
 	}
 }

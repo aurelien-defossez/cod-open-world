@@ -79,19 +79,19 @@ public abstract class LiveSimulator extends GameSimulator {
 	}
 	
 	/**
-	 * Executes an AI phase.
+	 * Calls an AI API function.
 	 * 
 	 * @param aiId the AI id.
-	 * @param call the phase call.
+	 * @param call the AI API call.
 	 */
-	public void executeAi(short aiId, ApiCall call) {
+	public void callAiFunction(short aiId, ApiCall call) {
 		if (logger.isDebugEnabled())
 			logger.debug("Execute AI #" + aiId + ", phase #"
 					+ call.getFunctionId() + ".");
 		
 		Ai ai = getAi(aiId);
 		if (ai != null) {
-			ai.execute(call);
+			ai.performAiFunction(call);
 		}
 	}
 	
@@ -120,10 +120,10 @@ public abstract class LiveSimulator extends GameSimulator {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Variant callGameApi(ApiCall call, Ai ai) {
+	public Variant callGameFunction(ApiCall call, Ai ai) {
 		if (logger.isTraceEnabled())
 			logger.trace("Call API, function #" + call.getFunctionId() + ".");
 		
-		return game.callGameApi(call, ai);
+		return game.performGameFunction(call, ai);
 	}
 }

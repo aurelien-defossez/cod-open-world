@@ -33,28 +33,28 @@ public class Api extends JavaApi {
 	
 	public static int[] getMapSize() {
 		ApiCall call = new ApiCall(API_GET_MAP_SIZE, 0);
-		return (int[]) Api.callGameApi(call);
+		return (int[]) Api.callGameFunction(call);
 	}
 	
 	public static int[] getPosition() {
 		ApiCall call = new ApiCall(API_GET_POSITION, 0);
-		return (int[]) Api.callGameApi(call);
+		return (int[]) Api.callGameFunction(call);
 	}
 	
 	public static void move(int direction) {
 		ApiCall call = new ApiCall(API_MOVE, 1);
 		call.add(new Variant(direction));
-		Api.callGameApi(call);
+		Api.callGameFunction(call);
 	}
 	
 	public static double peek() {
 		ApiCall call = new ApiCall(API_PEEK, 0);
-		return (Double) Api.callGameApi(call);
+		return (Double) Api.callGameFunction(call);
 	}
 	
 	public static int test(int parameter) {
 		ApiCall call = new ApiCall(API_TEST, 1);
 		call.add(new Variant(parameter));
-		return (Integer) Api.callGameApi(call);
+		return (Integer) Api.callGameFunction(call);
 	}
 }

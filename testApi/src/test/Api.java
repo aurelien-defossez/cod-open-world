@@ -38,7 +38,7 @@ public class Api extends JavaApi {
 		ApiCall call = new ApiCall(API_XOR, 2);
 		call.add(new Variant(a));
 		call.add(new Variant(b));
-		return (Boolean) Api.callGameApi(call);
+		return (Boolean) Api.callGameFunction(call);
 	}
 	
 	/**
@@ -50,7 +50,7 @@ public class Api extends JavaApi {
 	public static int plusplus(int x) {
 		ApiCall call = new ApiCall(API_PLUS_PLUS, 1);
 		call.add(new Variant(x));
-		return (Integer) Api.callGameApi(call);
+		return (Integer) Api.callGameFunction(call);
 	}
 	
 	/**
@@ -62,7 +62,7 @@ public class Api extends JavaApi {
 	public static double divide10(double x) {
 		ApiCall call = new ApiCall(API_DIVIDE_10, 1);
 		call.add(new Variant(x));
-		return (Double) Api.callGameApi(call);
+		return (Double) Api.callGameFunction(call);
 	}
 	
 	/**
@@ -76,7 +76,7 @@ public class Api extends JavaApi {
 		ApiCall call = new ApiCall(API_CONCAT, 2);
 		call.add(new Variant(s1));
 		call.add(new Variant(s2));
-		return (String) Api.callGameApi(call);
+		return (String) Api.callGameFunction(call);
 	}
 	
 	/**
@@ -88,7 +88,7 @@ public class Api extends JavaApi {
 	public static int sum(int[] values) {
 		ApiCall call = new ApiCall(API_SUM, 1);
 		call.add(new Variant(values));
-		return (Integer) Api.callGameApi(call);
+		return (Integer) Api.callGameFunction(call);
 	}
 	
 	/**
@@ -100,7 +100,7 @@ public class Api extends JavaApi {
 	public static int[] count(int n) {
 		ApiCall call = new ApiCall(API_COUNT, 1);
 		call.add(new Variant(n));
-		return (int[]) Api.callGameApi(call);
+		return (int[]) Api.callGameFunction(call);
 	}
 	
 	/* public static int[][] addMatrix(int[][] a, int[][] b) { ApiCall call =

@@ -83,7 +83,7 @@ public abstract class View implements GameListener, KeyboardListener {
 	}
 	
 	@Override
-	public final void callViewApi(ApiCall call) {
+	public final void callViewFunction(ApiCall call) {
 		try {
 			switch (call.getFunctionId()) {
 			case PRINT_TEXT:

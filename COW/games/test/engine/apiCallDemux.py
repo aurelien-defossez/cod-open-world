@@ -29,7 +29,7 @@ class ApiCallDemux(object):
 	def init(self, api):
 		self.api = api
 	
-	def callGameApi(self, function, aiId, parameters):
+	def performGameFunction(self, function, aiId, parameters):
 		#Xor
 		if function == self.API_XOR:
 			return Boolean(self.api.xor(aiId, parameters[0], parameters[1]))

@@ -40,7 +40,7 @@ public abstract class Ui implements GameListener {
 	 * implement those.
 	 */
 	@Override
-	public void callViewApi(ApiCall call) {
+	public void callViewFunction(ApiCall call) {
 		// Do nothing
 	}
 	

@@ -38,13 +38,13 @@ public abstract class JavaAiCommunicator {
 	// -------------------------------------------------------------------------
 	
 	/**
-	 * Makes the API call.
+	 * Calls a game API function.
 	 * 
 	 * @param call the game API call.
 	 * @return the call return value.
 	 */
-	public final Variant callGameApi(ApiCall call) {
-		return connector.callGameApi(call);
+	public final Variant callGameFunction(ApiCall call) {
+		return connector.callGameFunction(call);
 	}
 	
 	// -------------------------------------------------------------------------
@@ -66,11 +66,11 @@ public abstract class JavaAiCommunicator {
 	public abstract void init();
 	
 	/**
-	 * Executes the AI for the specific phase.
+	 * Performs the AI function.
 	 * 
 	 * @param call the phase call.
 	 */
-	public abstract void execute(ApiCall call);
+	public abstract void performAiFunction(ApiCall call);
 	
 	/**
 	 * Tells the AI to stop its execution.

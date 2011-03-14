@@ -176,7 +176,7 @@ public abstract class Ai implements AiInterface {
 	/**
 	 * {@inheritDoc}
 	 */
-	public final Variant callGameApi(ApiCall call) {
-		return simulator.callGameApi(call, this);
+	public final Variant callGameFunction(ApiCall call) {
+		return simulator.callGameFunction(call, this);
 	}
 }

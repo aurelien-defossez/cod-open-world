@@ -28,7 +28,7 @@ class ApiCallDemux(object):
 	def init(self, api):
 		self.api = api
 	
-	def callGameApi(self, function, aiId, parameters):
+	def performGameFunction(self, function, aiId, parameters):
 		#Get map size
 		if function == self.API_GET_MAP_SIZE:
 			return array(self.api.getMapSize(aiId), Integer)

@@ -37,8 +37,8 @@ public abstract class GameConnector implements GameInterface {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final void executeAi(short aiId, ApiCall call) {
-		game.executeAi(aiId, call);
+	public final void callAiFunction(short aiId, ApiCall call) {
+		game.callAiFunction(aiId, call);
 	}
 	
 	/**
@@ -69,7 +69,7 @@ public abstract class GameConnector implements GameInterface {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void callViewApi(ApiCall call) {
-		game.callViewApi(call);
+	public void callViewFunction(ApiCall call) {
+		game.callViewFunction(call);
 	}
 }

@@ -31,7 +31,7 @@ public interface GameListener {
 	 * 
 	 * @param call the view API call.
 	 */
-	public void callViewApi(ApiCall call);
+	public void callViewFunction(ApiCall call);
 	
 	/**
 	 * Signals that the scores have been updated.

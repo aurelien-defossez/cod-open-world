@@ -52,14 +52,14 @@ public class AiCommunicator extends JavaAiCommunicator {
 	public void init() {
 		aiInstance.init();
 	}
-	
+
 	/**
-	 * Executes the AI for the specific phase.
+	 * Calls the right AI function.
 	 * 
 	 * @param call the phase call.
 	 */
 	@Override
-	public void execute(ApiCall call) {
+	public void performAiFunction(ApiCall call) {
 		switch (call.getFunctionId()) {
 		case PHASE_REINIT:
 			aiInstance.reInit();

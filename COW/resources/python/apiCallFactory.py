@@ -49,9 +49,9 @@ class ApiCallFactory(object):
 class GameApiCallFactory(ApiCallFactory):
 	
 	def call(self, function):
-		return self.connector.callGameApi(function, self.parameters)
+		return self.connector.callGameFunction(function, self.parameters)
 
 class ViewApiCallFactory(ApiCallFactory):
 	
 	def call(self, function):
-		return self.connector.callViewApi(function, self.parameters)
+		return self.connector.callViewFunction(function, self.parameters)

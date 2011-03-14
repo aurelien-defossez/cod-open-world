@@ -37,12 +37,12 @@ class Game(object):
 	def play(self):
 		for numTurn in range(1000):
 			for aiId in self.ais:
-				self.conn.executeAi(aiId, PHASE_PLAY)
+				self.conn.callAiFunction(aiId, PHASE_PLAY)
 				nb = self.map.treasuresFound(aiId)
 				if nb > 0:
 					self.conn.incrementScore(aiId, nb)
 					for aiId in self.ais:
-						self.conn.executeAi(aiId, PHASE_REINIT)
+						self.conn.callAiFunction(aiId, PHASE_REINIT)
 			
 			self.conn.setFrame()
 			

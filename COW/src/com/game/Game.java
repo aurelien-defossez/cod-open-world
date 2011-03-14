@@ -117,8 +117,8 @@ public abstract class Game implements GameInterface {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final void executeAi(short aiId, ApiCall call) {
-		simulator.executeAi(aiId, call);
+	public final void callAiFunction(short aiId, ApiCall call) {
+		simulator.callAiFunction(aiId, call);
 	}
 	
 	/**
@@ -149,7 +149,7 @@ public abstract class Game implements GameInterface {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void callViewApi(ApiCall call) {
+	public void callViewFunction(ApiCall call) {
 		simulator.callViewApi(call);
 	}
 }

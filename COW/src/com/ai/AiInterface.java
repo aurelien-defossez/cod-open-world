@@ -19,11 +19,11 @@ public interface AiInterface {
 	public void init();
 	
 	/**
-	 * Executes an AI phase.
+	 * Performs an AI API function.
 	 * 
-	 * @param call the phase call.
+	 * @param call the AI API call.
 	 */
-	public void execute(ApiCall call);
+	public void performAiFunction(ApiCall call);
 	
 	/**
 	 * Tells the AI to stop playing.
@@ -31,10 +31,10 @@ public interface AiInterface {
 	public void stop();
 	
 	/**
-	 * Makes a game API call.
+	 * Calls a game API function.
 	 * 
 	 * @param call the game API call.
 	 * @return the call return value.
 	 */
-	public Variant callGameApi(ApiCall call);
+	public Variant callGameFunction(ApiCall call);
 }

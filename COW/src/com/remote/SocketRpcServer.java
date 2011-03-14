@@ -167,7 +167,7 @@ public class SocketRpcServer implements RpcServer {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void executeAi(ApiCall call) {
+	public void performAiFunction(ApiCall call) {
 		try {
 			// Send execute AI command
 			out.writeByte(RpcValues.CMD_AI_EXE);
@@ -253,7 +253,7 @@ public class SocketRpcServer implements RpcServer {
 				}
 				
 				// Send API call
-				Variant returnVariant = ai.callGameApi(call);
+				Variant returnVariant = ai.callGameFunction(call);
 				
 				if (logger.isTraceEnabled())
 					logger.trace("API call return=" + returnVariant.getValue());

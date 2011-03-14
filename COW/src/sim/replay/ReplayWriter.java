@@ -159,7 +159,7 @@ public class ReplayWriter implements GameListener {
 	 * 
 	 * @param call the view API call.
 	 */
-	public void callViewApi(ApiCall call) {
+	public void callViewFunction(ApiCall call) {
 		if (opened) {
 			try {
 				// Write function id

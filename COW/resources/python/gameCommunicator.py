@@ -32,20 +32,20 @@ class GameCommunicator(PyGameCommunicator):
 		self.game.play()
 	
 	#Executes an game API call
-	def callGameApi(self, function, aiId, parameters):
-		returnValue = self.apiDemux.callGameApi(function, aiId, parameters)
+	def performGameFunction(self, function, aiId, parameters):
+		returnValue = self.apiDemux.performGameFunction(function, aiId, parameters)
 		if returnValue == None:
 			return Variant()
 		else:
 			return Variant(returnValue)
 	
 	#Executes a view API call
-	def callViewApi(self, function, parameters):
-		self.framework.callViewApi(ApiCall(function, parameters))
+	def callViewFunction(self, function, parameters):
+		self.framework.callViewFunction(ApiCall(function, parameters))
 	
 	#Executes the only AI for the given phase
-	def executeAi(self, aiId, phase):
-		self.framework.executeAi(aiId, ApiCall(phase, 0))
+	def callAiFunction(self, aiId, phase):
+		self.framework.callAiFunction(aiId, ApiCall(phase, 0))
 	
 	def setFrame(self):
 		self.framework.setFrame()

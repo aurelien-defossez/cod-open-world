@@ -39,7 +39,7 @@ public class ReplayAi extends Ai {
 	 * Does nothing.
 	 */
 	@Override
-	public void execute(ApiCall call) {
+	public void performAiFunction(ApiCall call) {
 		// Do nothing
 	}
 	

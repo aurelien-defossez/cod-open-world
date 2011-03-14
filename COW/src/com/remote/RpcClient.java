@@ -14,12 +14,12 @@ public interface RpcClient {
 	// -------------------------------------------------------------------------
 	
 	/**
-	 * Makes a game API call.
+	 * Calls a game API function.
 	 * 
 	 * @param call the game API call.
 	 * @return the call result.
 	 */
-	public Variant callGameApi(ApiCall call);
+	public Variant callGameFunction(ApiCall call);
 	
 	/**
 	 * Synchronizes the RPC client and starts listening.

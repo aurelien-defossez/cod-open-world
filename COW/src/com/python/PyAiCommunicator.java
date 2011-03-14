@@ -27,11 +27,11 @@ public interface PyAiCommunicator {
 	public void init();
 	
 	/**
-	 * Executes the AI.
+	 * Performs an AI API function.
 	 * 
-	 * @param phase the phase to execute.
+	 * @param phase the AI API call.
 	 */
-	public void execute(PyInteger phase);
+	public void performAiFunction(PyInteger phase);
 	
 	/**
 	 * Tells the AI to stop.

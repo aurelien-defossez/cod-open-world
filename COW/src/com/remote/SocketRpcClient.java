@@ -91,7 +91,7 @@ public class SocketRpcClient implements RpcClient {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Variant callGameApi(ApiCall call) {
+	public Variant callGameFunction(ApiCall call) {
 		// Read number of parameters
 		int nbParameters = call.getParameters().length;
 		
@@ -174,7 +174,7 @@ public class SocketRpcClient implements RpcClient {
 		// Executes an AI
 		case RpcValues.CMD_AI_EXE:
 			ApiCall call = ApiCall.deserialize(in);
-			simulator.executeAi(call);
+			simulator.callAiFunction(call);
 			ack();
 			break;
 		

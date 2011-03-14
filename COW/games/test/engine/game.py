@@ -13,8 +13,8 @@ class Game(object):
 		self.gameOver = False
 	
 	#Executes the only AI for the given phase
-	def executeAi(self, phase):
-		self.communicator.executeAi(self.aiId, phase)
+	def callAiFunction(self, phase):
+		self.communicator.callAiFunction(self.aiId, phase)
 	
 	#Sets a key frame
 	def setFrame(self):
@@ -36,22 +36,22 @@ class Game(object):
 	#Plays the game
 	def play(self):
 		#Game API tests
-		self.executeAi(PHASE_TEST_BOOL)
+		self.callAiFunction(PHASE_TEST_BOOL)
 		self.setFrame()
-		self.executeAi(PHASE_TEST_INT)
+		self.callAiFunction(PHASE_TEST_INT)
 		self.setFrame()
-		self.executeAi(PHASE_TEST_DOUBLE)
+		self.callAiFunction(PHASE_TEST_DOUBLE)
 		self.setFrame()
-		self.executeAi(PHASE_TEST_STRING)
+		self.callAiFunction(PHASE_TEST_STRING)
 		self.setFrame()
-		self.executeAi(PHASE_TEST_ARRAY)
+		self.callAiFunction(PHASE_TEST_ARRAY)
 		self.setFrame()
-		self.executeAi(PHASE_TEST_VIEW)
+		self.callAiFunction(PHASE_TEST_VIEW)
 		self.setFrame()
 		
 		#Turn test
 		for i in range(100):
-			self.executeAi(PHASE_TEST_TURN)
+			self.callAiFunction(PHASE_TEST_TURN)
 			self.printText("Turn "+str(i + 1))
 			self.setScore(i)
 			self.setFrame()
