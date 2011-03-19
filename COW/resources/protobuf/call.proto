@@ -1,0 +1,38 @@
+option java_package = "com.pbuf";
+
+message Function {
+	required int32 function_id = 1;
+	repeated Variant parameters = 2;
+}
+
+message Variant {
+	enum VariantType {
+		VOID = 1;
+		BOOL = 2;
+		INT = 3;
+		DOUBLE = 4;
+		STRING = 5;
+		BOOL_MATRIX = 6;
+		INT_MATRIX = 7;
+		DOUBLE_MATRIX = 8;
+		STRING_MATRIX = 9;
+	};
+	
+	// The variant type
+	required VariantType type = 1;
+	
+	// The simple variant type values
+	optional bool bool_value = 2;
+	optional int32 int_value = 3;
+	optional double double_value = 4;
+	optional string string_value = 5;
+	
+	// The cardinalities for a matrix
+	repeated int32 cardinalities = 6;
+	
+	// The complex variant type values (matrices)
+	repeated bytes bool_matrix = 7;
+	repeated int32 int_matrix = 8;
+	repeated double double_matrix = 9;
+	repeated string string_matrix = 10;
+}
