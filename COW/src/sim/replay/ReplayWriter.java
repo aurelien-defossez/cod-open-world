@@ -168,23 +168,23 @@ public class ReplayWriter implements GameListener {
 				// Write parameters
 				for (Variant parameter : call.getParameters()) {
 					switch (parameter.getType()) {
-					case Variant.BOOLEAN:
+					case BOOL:
 						out.writeBoolean((Boolean) parameter.getValue());
 						break;
 					
-					case Variant.INTEGER:
+					case INT:
 						out.writeInt((Integer) parameter.getValue());
 						break;
 					
-					case Variant.DOUBLE:
+					case DOUBLE:
 						out.writeDouble((Double) parameter.getValue());
 						break;
 					
-					case Variant.STRING:
+					case STRING:
 						out.writeUTF((String) parameter.getValue());
 						break;
 					
-					case Variant.BOOLEAN_ARRAY:
+					case BOOL_MATRIX:
 						boolean[] booleanArray =
 								(boolean[]) parameter.getValue();
 						out.writeInt(booleanArray.length);
@@ -194,7 +194,7 @@ public class ReplayWriter implements GameListener {
 						}
 						break;
 					
-					case Variant.INTEGER_ARRAY:
+					case INT_MATRIX:
 						int[] intArray = (int[]) parameter.getValue();
 						out.writeInt(intArray.length);
 						
@@ -203,7 +203,7 @@ public class ReplayWriter implements GameListener {
 						}
 						break;
 					
-					case Variant.DOUBLE_ARRAY:
+					case DOUBLE_MATRIX:
 						double[] doubleArray = (double[]) parameter.getValue();
 						out.writeInt(doubleArray.length);
 						
@@ -212,7 +212,7 @@ public class ReplayWriter implements GameListener {
 						}
 						break;
 					
-					case Variant.STRING_ARRAY:
+					case STRING_MATRIX:
 						String[] stringArray = (String[]) parameter.getValue();
 						out.writeInt(stringArray.length);
 						

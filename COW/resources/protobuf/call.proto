@@ -1,11 +1,11 @@
 option java_package = "com.pbuf";
 
-message Function {
+message FunctionMessage {
 	required int32 function_id = 1;
-	repeated Variant parameters = 2;
+	repeated VariantMessage parameters = 2;
 }
 
-message Variant {
+message VariantMessage {
 	enum VariantType {
 		VOID = 1;
 		BOOL = 2;

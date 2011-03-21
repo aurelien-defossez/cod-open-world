@@ -29,6 +29,7 @@ public abstract class AiConnector implements AiInterface {
 	 */
 	public AiConnector(Ai ai) {
 		this.ai = ai;
+		System.out.println("Con: Created (#"+ai.getId()+")");
 	}
 	
 	// -------------------------------------------------------------------------
@@ -39,6 +40,11 @@ public abstract class AiConnector implements AiInterface {
 	 * {@inheritDoc}
 	 */
 	public Variant callGameFunction(ApiCall call) {
+		System.out.println("Con: callGameFunction (#"+ai.getId()+")");
 		return ai.callGameFunction(call);
+	}
+	
+	public int getId(){
+		return ai.getId();
 	}
 }

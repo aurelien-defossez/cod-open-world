@@ -16,7 +16,7 @@ public abstract class JavaApi {
 	/**
 	 * The Java AI communicator.
 	 */
-	private static JavaAiCommunicator communicator;
+	private JavaAiCommunicator communicator;
 	
 	// -------------------------------------------------------------------------
 	// Public methods
@@ -28,7 +28,7 @@ public abstract class JavaApi {
 	 * @param communicator the java AI communicator.
 	 */
 	public void setCommunicator(JavaAiCommunicator communicator) {
-		JavaApi.communicator = communicator;
+		this.communicator = communicator;
 	}
 	
 	// -------------------------------------------------------------------------
@@ -41,7 +41,7 @@ public abstract class JavaApi {
 	 * @param call the game API call.
 	 * @return the call return value object.
 	 */
-	protected static final Object callGameFunction(ApiCall call) {
+	protected final Object callGameFunction(ApiCall call) {
 		return communicator.callGameFunction(call).getValue();
 	}
 }

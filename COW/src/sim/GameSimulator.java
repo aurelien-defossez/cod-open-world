@@ -75,7 +75,9 @@ public abstract class GameSimulator implements Simulator {
 		}
 		
 		for (Ai ai : getAis()) {
+			System.out.println("Sim: Start Init #"+ai.getId());
 			ai.init();
+			System.out.println("Sim: End Init #"+ai.getId());
 		}
 	}
 	

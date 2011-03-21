@@ -15,6 +15,8 @@ import main.CowException;
 import org.apache.log4j.Logger;
 import com.ApiCall;
 import com.Variant;
+import com.pbuf.ProtobufUtils;
+import com.pbuf.Call.FunctionMessage;
 import security.Watchdog;
 
 public class SocketRpcServer implements RpcServer {
@@ -171,7 +173,7 @@ public class SocketRpcServer implements RpcServer {
 		try {
 			// Send execute AI command
 			out.writeByte(RpcValues.CMD_AI_EXE);
-			call.serialize(out);
+			ProtobufUtils.writeTo(call.toFunctionMessage(), out);
 			out.flush();
 			
 			// Read AI stream
@@ -232,7 +234,7 @@ public class SocketRpcServer implements RpcServer {
 		
 		do {
 			// Read command
-			command = in.readByte();
+			command = (byte) in.read();
 			
 			if (logger.isDebugEnabled())
 				logger.debug("Command read: "
@@ -240,7 +242,9 @@ public class SocketRpcServer implements RpcServer {
 			
 			switch (command) {
 			case RpcValues.CMD_GAME_CALL_API:
-				ApiCall call = ApiCall.deserialize(in);
+				ApiCall call =
+						new ApiCall(FunctionMessage.parseFrom(ProtobufUtils
+								.readFrom(in)));
 				
 				if (logger.isTraceEnabled()) {
 					logger.trace("API call: function=" + call.getFunctionId()
@@ -259,7 +263,7 @@ public class SocketRpcServer implements RpcServer {
 					logger.trace("API call return=" + returnVariant.getValue());
 				
 				// Send return value
-				returnVariant.serialize(out);
+				ProtobufUtils.writeTo(returnVariant.toVariantMessage(), out);
 				out.flush();
 				break;
 			

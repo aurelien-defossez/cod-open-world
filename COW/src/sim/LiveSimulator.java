@@ -122,7 +122,8 @@ public abstract class LiveSimulator extends GameSimulator {
 	@Override
 	public Variant callGameFunction(ApiCall call, Ai ai) {
 		if (logger.isTraceEnabled())
-			logger.trace("Call API, function #" + call.getFunctionId() + ".");
+			logger.trace("AI " + ai.getId() + ": Call API, function #"
+					+ call.getFunctionId() + ".");
 		
 		return game.performGameFunction(call, ai);
 	}

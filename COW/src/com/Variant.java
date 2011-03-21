@@ -9,58 +9,11 @@ package com;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import com.pbuf.Call.VariantMessage;
+import com.pbuf.Call.VariantMessage.VariantType;
 import main.CowException;
 
 public class Variant {
-	// -------------------------------------------------------------------------
-	// Constant
-	// -------------------------------------------------------------------------
-	
-	/**
-	 * Void type.
-	 */
-	public static final byte VOID = 0x01;
-	
-	/**
-	 * Boolean type.
-	 */
-	public static final byte BOOLEAN = 0x02;
-	
-	/**
-	 * Integer type.
-	 */
-	public static final byte INTEGER = 0x03;
-	
-	/**
-	 * Double type.
-	 */
-	public static final byte DOUBLE = 0x04;
-	
-	/**
-	 * String type.
-	 */
-	public static final byte STRING = 0x05;
-	
-	/**
-	 * Boolean array type.
-	 */
-	public static final byte BOOLEAN_ARRAY = 0x06;
-	
-	/**
-	 * Integer array type.
-	 */
-	public static final byte INTEGER_ARRAY = 0x07;
-	
-	/**
-	 * Double array type.
-	 */
-	public static final byte DOUBLE_ARRAY = 0x08;
-	
-	/**
-	 * String array type.
-	 */
-	public static final byte STRING_ARRAY = 0x09;
-	
 	// -------------------------------------------------------------------------
 	// Attributes
 	// -------------------------------------------------------------------------
@@ -68,19 +21,19 @@ public class Variant {
 	/**
 	 * The variant type (one of the constant listed above).
 	 */
-	protected byte type;
+	protected VariantType type;
 	
 	/**
 	 * The variant value, as an object, being (depending on its type):<br/>
 	 * - VOID: a null pointer;<br/>
-	 * - BOOLEAN: a Boolean object;<br/>
-	 * - INTEGER: an Integer object;<br/>
+	 * - BOOL: a Boolean object;<br/>
+	 * - INT: an Integer object;<br/>
 	 * - DOUBLE: a Double object;<br/>
 	 * - STRING: a String object;<br/>
-	 * - BOOLEAN_ARRAY: an array of primitive booleans;<br/>
-	 * - INTEGER_ARRAY: an array of primitive ints;<br/>
-	 * - DOUBLE_ARRAY: an array of primitive doubles;<br/>
-	 * - STRING_ARRAY: an array of String objects.
+	 * - BOOL_MATRIX: an array of primitive booleans;<br/>
+	 * - INT_MATRIX: an array of primitive ints;<br/>
+	 * - DOUBLE_MATRIX: an array of primitive doubles;<br/>
+	 * - STRING_MATRIX: an array of String objects.
 	 */
 	protected Object value;
 	
@@ -89,10 +42,50 @@ public class Variant {
 	// -------------------------------------------------------------------------
 	
 	/**
+	 * Creates a variant from the protobuf variant message.
+	 * 
+	 * @param variantMessage the variant message.
+	 */
+	public Variant(VariantMessage variantMessage) {
+		this.type = variantMessage.getType();
+		
+		switch (type) {
+		case VOID:
+			this.value = null;
+			break;
+		
+		case BOOL:
+			this.value = new Boolean(variantMessage.getBoolValue());
+			break;
+		
+		case INT:
+			this.value = new Integer(variantMessage.getIntValue());
+			break;
+		
+		case DOUBLE:
+			this.value = new Double(variantMessage.getDoubleValue());
+			break;
+		
+		case INT_MATRIX:
+			int intMatrixSize = variantMessage.getIntMatrixCount();
+			int[] intMatrix = new int[intMatrixSize];
+			for (int i = 0; i < intMatrixSize; i++) {
+				intMatrix[i] = variantMessage.getIntMatrix(i);
+			}
+			this.value = intMatrix;
+			break;
+		
+		default:
+			throw new CowException("Unknown variant type ("
+					+ variantMessage.getType() + ")");
+		}
+	}
+	
+	/**
 	 * Creates a void variant.
 	 */
 	public Variant() {
-		this.type = VOID;
+		this.type = VariantType.VOID;
 		this.value = null;
 	}
 	
@@ -102,7 +95,7 @@ public class Variant {
 	 * @param value the boolean value.
 	 */
 	public Variant(boolean value) {
-		this.type = BOOLEAN;
+		this.type = VariantType.BOOL;
 		this.value = new Boolean(value);
 	}
 	
@@ -112,7 +105,7 @@ public class Variant {
 	 * @param value the boolean value.
 	 */
 	public Variant(Boolean value) {
-		this.type = BOOLEAN;
+		this.type = VariantType.BOOL;
 		this.value = value;
 	}
 	
@@ -122,7 +115,7 @@ public class Variant {
 	 * @param value the integer value.
 	 */
 	public Variant(int value) {
-		this.type = INTEGER;
+		this.type = VariantType.INT;
 		this.value = new Integer(value);
 	}
 	
@@ -132,7 +125,7 @@ public class Variant {
 	 * @param value the integer value.
 	 */
 	public Variant(Integer value) {
-		this.type = INTEGER;
+		this.type = VariantType.INT;
 		this.value = value;
 	}
 	
@@ -142,7 +135,7 @@ public class Variant {
 	 * @param value the double value.
 	 */
 	public Variant(double value) {
-		this.type = DOUBLE;
+		this.type = VariantType.DOUBLE;
 		this.value = new Double(value);
 	}
 	
@@ -152,7 +145,7 @@ public class Variant {
 	 * @param value the double value.
 	 */
 	public Variant(Double value) {
-		this.type = DOUBLE;
+		this.type = VariantType.DOUBLE;
 		this.value = value;
 	}
 	
@@ -162,7 +155,7 @@ public class Variant {
 	 * @param value the string value.
 	 */
 	public Variant(String value) {
-		this.type = STRING;
+		this.type = VariantType.STRING;
 		this.value = value;
 	}
 	
@@ -172,7 +165,7 @@ public class Variant {
 	 * @param value the array of booleans.
 	 */
 	public Variant(boolean[] value) {
-		this.type = BOOLEAN_ARRAY;
+		this.type = VariantType.BOOL_MATRIX;
 		this.value = value;
 	}
 	
@@ -188,7 +181,7 @@ public class Variant {
 			tempArray[i] = value[i].booleanValue();
 		}
 		
-		this.type = BOOLEAN_ARRAY;
+		this.type = VariantType.BOOL_MATRIX;
 		this.value = tempArray;
 	}
 	
@@ -198,7 +191,7 @@ public class Variant {
 	 * @param value the array of integers.
 	 */
 	public Variant(int[] value) {
-		this.type = INTEGER_ARRAY;
+		this.type = VariantType.INT_MATRIX;
 		this.value = value;
 	}
 	
@@ -215,9 +208,9 @@ public class Variant {
 		
 		// Assign type
 		if (arrayClass.equals("boolean")) {
-			this.type = BOOLEAN_ARRAY;
+			this.type = VariantType.BOOL_MATRIX;
 		} else if (arrayClass.equals("int")) {
-			this.type = INTEGER_ARRAY;
+			this.type = VariantType.INT_MATRIX;
 		}
 		
 		// Assign value
@@ -236,7 +229,7 @@ public class Variant {
 			tempArray[i] = value[i].intValue();
 		}
 		
-		this.type = INTEGER_ARRAY;
+		this.type = VariantType.INT_MATRIX;
 		this.value = tempArray;
 	}
 	
@@ -261,7 +254,7 @@ public class Variant {
 			tempArray[i] = value[i].doubleValue();
 		}
 		
-		this.type = DOUBLE_ARRAY;
+		this.type = VariantType.DOUBLE_MATRIX;
 		this.value = tempArray;
 	}
 	
@@ -271,7 +264,7 @@ public class Variant {
 	 * @param value the array of strings.
 	 */
 	public Variant(String[] value) {
-		this.type = STRING_ARRAY;
+		this.type = VariantType.STRING_MATRIX;
 		this.value = value;
 	}
 	
@@ -284,7 +277,7 @@ public class Variant {
 	 * 
 	 * @return the variant type, as one of the constants listed above.
 	 */
-	public byte getType() {
+	public VariantType getType() {
 		return type;
 	}
 	
@@ -293,52 +286,100 @@ public class Variant {
 	 * 
 	 * @return the variant value, as an object, being (depending on its type):<br/>
 	 *         - VOID: a null pointer;<br/>
-	 *         - BOOLEAN: a Boolean object;<br/>
-	 *         - INTEGER: an Integer object;<br/>
+	 *         - BOOL: a Boolean object;<br/>
+	 *         - INT: an Integer object;<br/>
 	 *         - DOUBLE: a Double object;<br/>
 	 *         - STRING: a String object;<br/>
-	 *         - BOOLEAN_ARRAY: an array of primitive booleans;<br/>
-	 *         - INTEGER_ARRAY: an array of primitive ints;<br/>
-	 *         - DOUBLE_ARRAY: an array of primitive doubles;<br/>
-	 *         - STRING_ARRAY: an array of String objects.
+	 *         - BOOL_MATRIX: an array of primitive booleans;<br/>
+	 *         - INT_MATRIX: an array of primitive ints;<br/>
+	 *         - DOUBLE_MATRIX: an array of primitive doubles;<br/>
+	 *         - STRING_MATRIX: an array of String objects.
 	 */
 	public Object getValue() {
 		return value;
 	}
 	
 	/**
-	 * Serializes the variant in a data output stream.
+	 * Converts the variant into a protobuf variant message (optimized for
+	 * transfer).
 	 * 
-	 * @param out the data output stream.
-	 * @throws IOException if an error occurs while writing the variant.
+	 * @return the protobuf variant message.
 	 */
-	public void serialize(DataOutputStream out) throws IOException {
-		// Write variant type
-		out.writeByte(type);
+	public VariantMessage toVariantMessage() {
+		// Create Variant PB builder
+		VariantMessage.Builder messageBuilder = VariantMessage.newBuilder();
 		
-		// Write variant value depending on its type
+		// Set variant type
+		messageBuilder.setType(type);
+		
 		switch (type) {
-		case Variant.VOID:
+		case VOID:
 			// Write nothing
 			break;
 		
-		case Variant.BOOLEAN:
+		case BOOL:
+			messageBuilder.setBoolValue((Boolean) value);
+			break;
+		
+		case INT:
+			messageBuilder.setIntValue((Integer) value);
+			break;
+		
+		case DOUBLE:
+			messageBuilder.setDoubleValue((Double) value);
+			break;
+		
+		case STRING:
+			messageBuilder.setStringValue((String) value);
+			break;
+		
+		case INT_MATRIX:
+			messageBuilder.addCardinalities(((int[]) value).length);
+			for (int arrayValue : (int[]) value) {
+				messageBuilder.addIntMatrix(arrayValue);
+			}
+			break;
+		}
+		
+		return messageBuilder.build();
+	}
+	
+	/**
+	 * Serializes the variant in a data output stream.
+	 * 
+	 * @deprecated Prefer to use protocol buffer messages through
+	 *             {@link #toFunctionMessage()}.
+	 * @param out the data output stream.
+	 * @throws IOException if an error occurs while writing the variant.
+	 */
+	@Deprecated
+	public void serialize(DataOutputStream out) throws IOException {
+		// Write variant type
+		out.writeByte(type.getNumber());
+		
+		// Write variant value depending on its type
+		switch (type) {
+		case VOID:
+			// Write nothing
+			break;
+		
+		case BOOL:
 			out.writeBoolean((Boolean) value);
 			break;
 		
-		case Variant.INTEGER:
+		case INT:
 			out.writeInt((Integer) value);
 			break;
 		
-		case Variant.DOUBLE:
+		case DOUBLE:
 			out.writeDouble((Double) value);
 			break;
 		
-		case Variant.STRING:
+		case STRING:
 			out.writeUTF((String) value);
 			break;
 		
-		case Variant.BOOLEAN_ARRAY:
+		case BOOL_MATRIX:
 			boolean[] booleanArray = (boolean[]) value;
 			out.writeInt(booleanArray.length);
 			for (boolean arrayValue : booleanArray) {
@@ -346,7 +387,7 @@ public class Variant {
 			}
 			break;
 		
-		case Variant.INTEGER_ARRAY:
+		case INT_MATRIX:
 			int[] integerArray = (int[]) value;
 			out.writeInt(integerArray.length);
 			for (int arrayValue : integerArray) {
@@ -354,7 +395,7 @@ public class Variant {
 			}
 			break;
 		
-		case Variant.DOUBLE_ARRAY:
+		case DOUBLE_MATRIX:
 			double[] doubleArray = (double[]) value;
 			out.writeInt(doubleArray.length);
 			for (double arrayValue : doubleArray) {
@@ -362,7 +403,7 @@ public class Variant {
 			}
 			break;
 		
-		case Variant.STRING_ARRAY:
+		case STRING_MATRIX:
 			String[] stringArray = (String[]) value;
 			out.writeInt(stringArray.length);
 			for (String arrayValue : stringArray) {
@@ -379,30 +420,37 @@ public class Variant {
 	/**
 	 * Deserializes the variant from a data input stream.
 	 * 
+	 * @deprecated Prefer to use protocol buffer messages through
+	 *             {@link #Variant(VariantMessage)}.
 	 * @param in the data input stream.
 	 * @return the variant.
 	 * @throws IOException if an error occurs while reading the stream.
 	 * @throws CowException if the variant read is not valid.
 	 */
+	@Deprecated
 	public static Variant deserialize(DataInputStream in) throws IOException,
 			CowException {
 		// Read variant type
-		byte type = in.readByte();
+		VariantType type = VariantType.valueOf(in.readByte());
 		
 		// Read variant value depending on its type
 		switch (type) {
-		case Variant.VOID:
+		case VOID:
 			return new Variant();
-		case Variant.BOOLEAN:
+			
+		case BOOL:
 			return new Variant(in.readBoolean());
-		case Variant.INTEGER:
+			
+		case INT:
 			return new Variant(in.readInt());
-		case Variant.DOUBLE:
+			
+		case DOUBLE:
 			return new Variant(in.readDouble());
-		case Variant.STRING:
+			
+		case STRING:
 			return new Variant(in.readUTF());
 			
-		case Variant.BOOLEAN_ARRAY:
+		case BOOL_MATRIX:
 			int booleanArraySize = in.readInt();
 			boolean[] booleanArray = new boolean[booleanArraySize];
 			for (int i = 0; i < booleanArraySize; i++) {
@@ -410,7 +458,7 @@ public class Variant {
 			}
 			return new Variant(booleanArray);
 			
-		case Variant.INTEGER_ARRAY:
+		case INT_MATRIX:
 			int integerArraySize = in.readInt();
 			int[] integerArray = new int[integerArraySize];
 			for (int i = 0; i < integerArraySize; i++) {
@@ -418,7 +466,7 @@ public class Variant {
 			}
 			return new Variant(integerArray);
 			
-		case Variant.DOUBLE_ARRAY:
+		case DOUBLE_MATRIX:
 			int doubleArraySize = in.readInt();
 			double[] doubleArray = new double[doubleArraySize];
 			for (int i = 0; i < doubleArraySize; i++) {
@@ -426,7 +474,7 @@ public class Variant {
 			}
 			return new Variant(doubleArray);
 			
-		case Variant.STRING_ARRAY:
+		case STRING_MATRIX:
 			int stringArraySize = in.readInt();
 			String[] stringArray = new String[stringArraySize];
 			for (int i = 0; i < stringArraySize; i++) {
@@ -438,4 +486,5 @@ public class Variant {
 			throw new CowException("Unknown variant type (" + type + ")");
 		}
 	}
+	
 }

@@ -13,6 +13,9 @@ import java.net.UnknownHostException;
 import org.apache.log4j.Logger;
 import com.ApiCall;
 import com.Variant;
+import com.pbuf.Call.FunctionMessage;
+import com.pbuf.ProtobufUtils;
+import com.pbuf.Call.VariantMessage;
 
 public class SocketRpcClient implements RpcClient {
 	// -------------------------------------------------------------------------
@@ -102,14 +105,14 @@ public class SocketRpcClient implements RpcClient {
 			// Write call API command
 			out.writeByte(RpcValues.CMD_GAME_CALL_API);
 			
-			// Serialize call
-			call.serialize(out);
-			
-			// Flush data
+			// Serialize and sendcall
+			ProtobufUtils.writeTo(call.toFunctionMessage(), out);
 			out.flush();
 			
 			// Read return value
-			Variant returnVariant = Variant.deserialize(in);
+			Variant returnVariant =
+					new Variant(VariantMessage.parseFrom(ProtobufUtils
+							.readFrom(in)));
 			
 			if (logger.isTraceEnabled())
 				logger.trace("API call return=" + returnVariant.getValue());
@@ -132,9 +135,9 @@ public class SocketRpcClient implements RpcClient {
 			// Send Ack
 			ack();
 			
-			// Play while not ordered otherwise
-			while (waitForCommand())
-				;
+			while (waitForCommand()) {
+				// Play while not ordered otherwise
+			}
 		} catch (IOException e) {
 			logger.fatal(e.getMessage(), e);
 		}
@@ -165,7 +168,7 @@ public class SocketRpcClient implements RpcClient {
 			logger.trace("Wait for command...");
 		
 		// Read command type
-		byte command = in.readByte();
+		byte command = (byte) in.read();
 		
 		if (logger.isTraceEnabled())
 			logger.trace("Command: " + RpcValues.getConstantName(command));
@@ -173,7 +176,9 @@ public class SocketRpcClient implements RpcClient {
 		switch (command) {
 		// Executes an AI
 		case RpcValues.CMD_AI_EXE:
-			ApiCall call = ApiCall.deserialize(in);
+			ApiCall call =
+					new ApiCall(FunctionMessage.parseFrom(ProtobufUtils
+							.readFrom(in)));
 			simulator.callAiFunction(call);
 			ack();
 			break;

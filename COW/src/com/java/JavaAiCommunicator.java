@@ -30,6 +30,7 @@ public abstract class JavaAiCommunicator {
 	 * @param connector the Java AI connector to communicate with the simulator.
 	 */
 	protected final void initCommunicator(JavaAiConnector connector) {
+		System.out.println("JavaCom: Create #"+connector.getId());
 		this.connector = connector;
 	}
 	
@@ -44,6 +45,7 @@ public abstract class JavaAiCommunicator {
 	 * @return the call return value.
 	 */
 	public final Variant callGameFunction(ApiCall call) {
+		System.out.println("JavaCom: callGameFunction #"+connector.getId());
 		return connector.callGameFunction(call);
 	}
 	
@@ -76,4 +78,8 @@ public abstract class JavaAiCommunicator {
 	 * Tells the AI to stop its execution.
 	 */
 	public abstract void stop();
+
+	public int getId() {
+		return connector.getId();
+	}
 }
