@@ -3,6 +3,7 @@ package treasureHunt;
 
 import com.ApiCall;
 import com.Variant;
+import com.java.JavaAiCommunicator;
 import com.java.JavaApi;
 
 public class Api extends JavaApi {
@@ -19,7 +20,6 @@ public class Api extends JavaApi {
 	private static final short API_GET_POSITION = 2;
 	private static final short API_MOVE = 3;
 	private static final short API_PEEK = 4;
-	private static final short API_TEST = 5;
 	
 	// Game specific constants
 	public static final int LEFT = 0;
@@ -28,33 +28,85 @@ public class Api extends JavaApi {
 	public static final int DOWN = 3;
 	
 	// -------------------------------------------------------------------------
+	// Attributes
+	// -------------------------------------------------------------------------
+	
+	/**
+	 * The Java AI communicator.
+	 */
+	private static JavaAiCommunicator communicator;
+	
+	// -------------------------------------------------------------------------
+	// Public methods
+	// -------------------------------------------------------------------------
+	
+	/**
+	 * Sets the java AI communicator.
+	 * 
+	 * @param communicator the java AI communicator.
+	 */
+	public void setCommunicator(JavaAiCommunicator communicator) {
+		Api.communicator = communicator;
+	}
+	
+	// -------------------------------------------------------------------------
+	// Private methods
+	// -------------------------------------------------------------------------
+	
+	/**
+	 * Calls the game API function.
+	 * 
+	 * @param call the game API call.
+	 * @return the call return value object.
+	 */
+	private static final Object callGameFunction(ApiCall call) {
+		return communicator.callGameFunction(call).getValue();
+	}
+	
+	// -------------------------------------------------------------------------
 	// Class methods
 	// -------------------------------------------------------------------------
 	
+	/**
+	 * Returns the map size.
+	 * 
+	 * @return the map size, as an array of two integers {width, height}.
+	 */
 	public static int[] getMapSize() {
 		ApiCall call = new ApiCall(API_GET_MAP_SIZE, 0);
 		return (int[]) Api.callGameFunction(call);
 	}
 	
+	/**
+	 * Returns the player position.
+	 * 
+	 * @return the player position as an array of two integers {x, y}.
+	 */
 	public static int[] getPosition() {
 		ApiCall call = new ApiCall(API_GET_POSITION, 0);
 		return (int[]) Api.callGameFunction(call);
 	}
 	
+	/**
+	 * Tells the creature to move in one direction
+	 * 
+	 * @param direction the direction in {LEFT | RIGHT | UP | DOWN}.
+	 */
 	public static void move(int direction) {
 		ApiCall call = new ApiCall(API_MOVE, 1);
 		call.add(new Variant(direction));
 		Api.callGameFunction(call);
 	}
 	
+	/**
+	 * Peeks the ground to evaluate the distance between self and the nearest
+	 * treasure.
+	 * 
+	 * @return the distance, in square size, between self and the nearest
+	 *         treasure.
+	 */
 	public static double peek() {
 		ApiCall call = new ApiCall(API_PEEK, 0);
 		return (Double) Api.callGameFunction(call);
-	}
-	
-	public static int test(int parameter) {
-		ApiCall call = new ApiCall(API_TEST, 1);
-		call.add(new Variant(parameter));
-		return (Integer) Api.callGameFunction(call);
 	}
 }

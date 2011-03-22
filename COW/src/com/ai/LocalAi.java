@@ -60,9 +60,7 @@ public class LocalAi extends Ai {
 	 */
 	@Override
 	public void init() {
-		System.out.println("AI: Start Init #"+getId());
 		connector.init();
-		System.out.println("AI: End Init AI #"+getId());
 	}
 	
 	/**

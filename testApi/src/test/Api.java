@@ -6,6 +6,7 @@ package test;
 
 import com.ApiCall;
 import com.Variant;
+import com.java.JavaAiCommunicator;
 import com.java.JavaApi;
 
 public class Api extends JavaApi {
@@ -22,6 +23,42 @@ public class Api extends JavaApi {
 	private static final short API_COUNT = 42;
 	
 	// private static final short API_ADD_MATRIX = 43;
+	
+	// -------------------------------------------------------------------------
+	// Attributes
+	// -------------------------------------------------------------------------
+	
+	/**
+	 * The Java AI communicator.
+	 */
+	private static JavaAiCommunicator communicator;
+	
+	// -------------------------------------------------------------------------
+	// Public methods
+	// -------------------------------------------------------------------------
+	
+	/**
+	 * Sets the java AI communicator.
+	 * 
+	 * @param communicator the java AI communicator.
+	 */
+	public void setCommunicator(JavaAiCommunicator communicator) {
+		Api.communicator = communicator;
+	}
+	
+	// -------------------------------------------------------------------------
+	// Private methods
+	// -------------------------------------------------------------------------
+	
+	/**
+	 * Calls the game API function.
+	 * 
+	 * @param call the game API call.
+	 * @return the call return value object.
+	 */
+	private static final Object callGameFunction(ApiCall call) {
+		return communicator.callGameFunction(call).getValue();
+	}
 	
 	// -------------------------------------------------------------------------
 	// Public methods

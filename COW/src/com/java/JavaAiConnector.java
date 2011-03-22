@@ -77,10 +77,8 @@ public class JavaAiConnector extends AiConnector {
 				logger.debug("AI loaded.");
 			
 			// Bind AI and API
-			System.out.println("JavaCon: Create #"+getId());
 			aiCommunicator.initCommunicator(this, aiInstance);
 			api.setCommunicator(aiCommunicator);
-			System.out.println("Com="+aiCommunicator);
 			
 			logger.info("Java AI (" + ai.getName() + ") connected.");
 		} catch (MalformedURLException e) {
@@ -103,9 +101,7 @@ public class JavaAiConnector extends AiConnector {
 	 */
 	@Override
 	public void init() {
-		System.out.println("JavaCon: Start Init #"+getId());
 		aiCommunicator.init();
-		System.out.println("JavaCon: End Init #"+getId());
 	}
 	
 	/**
