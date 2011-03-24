@@ -1,6 +1,7 @@
 - Platform
 	Add multidimensional arrays
 	Add test game
+	Remove protobuf & add CompressedData{In|Out}putStream
 
 - Languages
 	Support java (Game engine)
@@ -26,4 +27,3 @@
 	Check socket values
 	Unix Unshare jail
 	Recreate AI process each n turns
-
