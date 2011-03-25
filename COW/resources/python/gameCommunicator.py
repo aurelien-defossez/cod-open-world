@@ -1,4 +1,4 @@
-from com.python import PyGameCommunicator
+from lang.python import PyGameCommunicator
 from viewApi import ViewApi
 from com import ApiCall
 

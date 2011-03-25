@@ -6,14 +6,19 @@
 
 package com;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
-import com.pbuf.Call.VariantMessage;
-import com.pbuf.Call.VariantMessage.VariantType;
+import com.remote.CompressedDataInputStream;
+import com.remote.CompressedDataOutputStream;
 import main.CowException;
 
 public class Variant {
+	public enum VariantType {
+		VOID, BOOL, INT, DOUBLE, STRING, BOOL_MATRIX1, BOOL_MATRIX2,
+		BOOL_MATRIX3, INT_MATRIX1, INT_MATRIX2, INT_MATRIX3, DOUBLE_MATRIX1,
+		DOUBLE_MATRIX2, DOUBLE_MATRIX3, STRING_MATRIX1, STRING_MATRIX2,
+		STRING_MATRIX3
+	}
+	
 	// -------------------------------------------------------------------------
 	// Attributes
 	// -------------------------------------------------------------------------
@@ -40,46 +45,6 @@ public class Variant {
 	// -------------------------------------------------------------------------
 	// Constructors
 	// -------------------------------------------------------------------------
-	
-	/**
-	 * Creates a variant from the protobuf variant message.
-	 * 
-	 * @param variantMessage the variant message.
-	 */
-	public Variant(VariantMessage variantMessage) {
-		this.type = variantMessage.getType();
-		
-		switch (type) {
-		case VOID:
-			this.value = null;
-			break;
-		
-		case BOOL:
-			this.value = new Boolean(variantMessage.getBoolValue());
-			break;
-		
-		case INT:
-			this.value = new Integer(variantMessage.getIntValue());
-			break;
-		
-		case DOUBLE:
-			this.value = new Double(variantMessage.getDoubleValue());
-			break;
-		
-		case INT_MATRIX:
-			int intMatrixSize = variantMessage.getIntMatrixCount();
-			int[] intMatrix = new int[intMatrixSize];
-			for (int i = 0; i < intMatrixSize; i++) {
-				intMatrix[i] = variantMessage.getIntMatrix(i);
-			}
-			this.value = intMatrix;
-			break;
-		
-		default:
-			throw new CowException("Unknown variant type ("
-					+ variantMessage.getType() + ")");
-		}
-	}
 	
 	/**
 	 * Creates a void variant.
@@ -165,7 +130,7 @@ public class Variant {
 	 * @param value the array of booleans.
 	 */
 	public Variant(boolean[] value) {
-		this.type = VariantType.BOOL_MATRIX;
+		this.type = VariantType.BOOL_MATRIX1;
 		this.value = value;
 	}
 	
@@ -181,7 +146,7 @@ public class Variant {
 			tempArray[i] = value[i].booleanValue();
 		}
 		
-		this.type = VariantType.BOOL_MATRIX;
+		this.type = VariantType.BOOL_MATRIX1;
 		this.value = tempArray;
 	}
 	
@@ -191,29 +156,7 @@ public class Variant {
 	 * @param value the array of integers.
 	 */
 	public Variant(int[] value) {
-		this.type = VariantType.INT_MATRIX;
-		this.value = value;
-	}
-	
-	/**
-	 * Creates a multidimensional array of integers variant.
-	 * 
-	 * @param value the array of integers.
-	 * @param dimensions the sizes of each dimension.
-	 */
-	public Variant(Object value, int[] dimensions) {
-		// Get type
-		String arrayClass = value.getClass().getSimpleName();
-		arrayClass = arrayClass.substring(0, arrayClass.indexOf('['));
-		
-		// Assign type
-		if (arrayClass.equals("boolean")) {
-			this.type = VariantType.BOOL_MATRIX;
-		} else if (arrayClass.equals("int")) {
-			this.type = VariantType.INT_MATRIX;
-		}
-		
-		// Assign value
+		this.type = VariantType.INT_MATRIX1;
 		this.value = value;
 	}
 	
@@ -229,7 +172,7 @@ public class Variant {
 			tempArray[i] = value[i].intValue();
 		}
 		
-		this.type = VariantType.INT_MATRIX;
+		this.type = VariantType.INT_MATRIX1;
 		this.value = tempArray;
 	}
 	
@@ -254,7 +197,7 @@ public class Variant {
 			tempArray[i] = value[i].doubleValue();
 		}
 		
-		this.type = VariantType.DOUBLE_MATRIX;
+		this.type = VariantType.DOUBLE_MATRIX1;
 		this.value = tempArray;
 	}
 	
@@ -264,7 +207,7 @@ public class Variant {
 	 * @param value the array of strings.
 	 */
 	public Variant(String[] value) {
-		this.type = VariantType.STRING_MATRIX;
+		this.type = VariantType.STRING_MATRIX1;
 		this.value = value;
 	}
 	
@@ -300,62 +243,14 @@ public class Variant {
 	}
 	
 	/**
-	 * Converts the variant into a protobuf variant message (optimized for
-	 * transfer).
-	 * 
-	 * @return the protobuf variant message.
-	 */
-	public VariantMessage toVariantMessage() {
-		// Create Variant PB builder
-		VariantMessage.Builder messageBuilder = VariantMessage.newBuilder();
-		
-		// Set variant type
-		messageBuilder.setType(type);
-		
-		switch (type) {
-		case VOID:
-			// Write nothing
-			break;
-		
-		case BOOL:
-			messageBuilder.setBoolValue((Boolean) value);
-			break;
-		
-		case INT:
-			messageBuilder.setIntValue((Integer) value);
-			break;
-		
-		case DOUBLE:
-			messageBuilder.setDoubleValue((Double) value);
-			break;
-		
-		case STRING:
-			messageBuilder.setStringValue((String) value);
-			break;
-		
-		case INT_MATRIX:
-			messageBuilder.addCardinalities(((int[]) value).length);
-			for (int arrayValue : (int[]) value) {
-				messageBuilder.addIntMatrix(arrayValue);
-			}
-			break;
-		}
-		
-		return messageBuilder.build();
-	}
-	
-	/**
 	 * Serializes the variant in a data output stream.
 	 * 
-	 * @deprecated Prefer to use protocol buffer messages through
-	 *             {@link #toFunctionMessage()}.
 	 * @param out the data output stream.
 	 * @throws IOException if an error occurs while writing the variant.
 	 */
-	@Deprecated
-	public void serialize(DataOutputStream out) throws IOException {
+	public void serialize(CompressedDataOutputStream out) throws IOException {
 		// Write variant type
-		out.writeByte(type.getNumber());
+		out.writeByte((byte) type.ordinal());
 		
 		// Write variant value depending on its type
 		switch (type) {
@@ -379,7 +274,7 @@ public class Variant {
 			out.writeUTF((String) value);
 			break;
 		
-		case BOOL_MATRIX:
+		case BOOL_MATRIX1:
 			boolean[] booleanArray = (boolean[]) value;
 			out.writeInt(booleanArray.length);
 			for (boolean arrayValue : booleanArray) {
@@ -387,7 +282,7 @@ public class Variant {
 			}
 			break;
 		
-		case INT_MATRIX:
+		case INT_MATRIX1:
 			int[] integerArray = (int[]) value;
 			out.writeInt(integerArray.length);
 			for (int arrayValue : integerArray) {
@@ -395,7 +290,7 @@ public class Variant {
 			}
 			break;
 		
-		case DOUBLE_MATRIX:
+		case DOUBLE_MATRIX1:
 			double[] doubleArray = (double[]) value;
 			out.writeInt(doubleArray.length);
 			for (double arrayValue : doubleArray) {
@@ -403,7 +298,7 @@ public class Variant {
 			}
 			break;
 		
-		case STRING_MATRIX:
+		case STRING_MATRIX1:
 			String[] stringArray = (String[]) value;
 			out.writeInt(stringArray.length);
 			for (String arrayValue : stringArray) {
@@ -420,18 +315,15 @@ public class Variant {
 	/**
 	 * Deserializes the variant from a data input stream.
 	 * 
-	 * @deprecated Prefer to use protocol buffer messages through
-	 *             {@link #Variant(VariantMessage)}.
 	 * @param in the data input stream.
 	 * @return the variant.
 	 * @throws IOException if an error occurs while reading the stream.
 	 * @throws CowException if the variant read is not valid.
 	 */
-	@Deprecated
-	public static Variant deserialize(DataInputStream in) throws IOException,
-			CowException {
+	public static Variant deserialize(CompressedDataInputStream in)
+			throws IOException, CowException {
 		// Read variant type
-		VariantType type = VariantType.valueOf(in.readByte());
+		VariantType type = VariantType.values()[in.readByte()];
 		
 		// Read variant value depending on its type
 		switch (type) {
@@ -450,7 +342,7 @@ public class Variant {
 		case STRING:
 			return new Variant(in.readUTF());
 			
-		case BOOL_MATRIX:
+		case BOOL_MATRIX1:
 			int booleanArraySize = in.readInt();
 			boolean[] booleanArray = new boolean[booleanArraySize];
 			for (int i = 0; i < booleanArraySize; i++) {
@@ -458,7 +350,7 @@ public class Variant {
 			}
 			return new Variant(booleanArray);
 			
-		case INT_MATRIX:
+		case INT_MATRIX1:
 			int integerArraySize = in.readInt();
 			int[] integerArray = new int[integerArraySize];
 			for (int i = 0; i < integerArraySize; i++) {
@@ -466,7 +358,7 @@ public class Variant {
 			}
 			return new Variant(integerArray);
 			
-		case DOUBLE_MATRIX:
+		case DOUBLE_MATRIX1:
 			int doubleArraySize = in.readInt();
 			double[] doubleArray = new double[doubleArraySize];
 			for (int i = 0; i < doubleArraySize; i++) {
@@ -474,7 +366,7 @@ public class Variant {
 			}
 			return new Variant(doubleArray);
 			
-		case STRING_MATRIX:
+		case STRING_MATRIX1:
 			int stringArraySize = in.readInt();
 			String[] stringArray = new String[stringArraySize];
 			for (int i = 0; i < stringArraySize; i++) {
@@ -486,5 +378,4 @@ public class Variant {
 			throw new CowException("Unknown variant type (" + type + ")");
 		}
 	}
-	
 }

@@ -5,12 +5,11 @@
 
 package com;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import main.CowException;
 import org.apache.log4j.Logger;
-import com.pbuf.Call.FunctionMessage;
+import com.remote.CompressedDataInputStream;
+import com.remote.CompressedDataOutputStream;
 
 public class ApiCall {
 	// -------------------------------------------------------------------------
@@ -69,23 +68,6 @@ public class ApiCall {
 		this.ctParameters = parameters.length;
 	}
 	
-	/**
-	 * Creates an API call from the protobuf function message.
-	 * 
-	 * @param functionMessage the function message.
-	 */
-	public ApiCall(FunctionMessage functionMessage) {
-		this.functionId = (short) functionMessage.getFunctionId();
-		int nbParameters = functionMessage.getParametersCount();
-		this.parameters = new Variant[nbParameters];
-		this.ctParameters = 0;
-		
-		// Deserialize parameters
-		for (int i = 0; i < nbParameters; i++) {
-			add(new Variant(functionMessage.getParameters(i)));
-		}
-	}
-	
 	// -------------------------------------------------------------------------
 	// Public methods
 	// -------------------------------------------------------------------------
@@ -129,40 +111,13 @@ public class ApiCall {
 	}
 	
 	/**
-	 * Converts the API call object to a protobuf function message (optimized
-	 * for transfer).
-	 * 
-	 * @return the protobuf function message.
-	 */
-	public FunctionMessage toFunctionMessage() {
-		if (logger.isTraceEnabled())
-			logger.trace("Create protobuf function message.");
-		
-		// Create Function PB builder
-		FunctionMessage.Builder messageBuilder = FunctionMessage.newBuilder();
-		
-		// Set ID
-		messageBuilder.setFunctionId(functionId);
-		
-		// Set parameters
-		for (Variant parameter : parameters) {
-			messageBuilder.addParameters(parameter.toVariantMessage());
-		}
-		
-		return messageBuilder.build();
-	}
-	
-	/**
 	 * Serializes the call into a data output stream, without protobuf
 	 * optimization.
 	 * 
-	 * @deprecated Prefer to use protocol buffer messages through
-	 *             {@link #toFunctionMessage()}.
 	 * @param out the data output stream.
 	 * @throws IOException if an error occurs while writing data.
 	 */
-	@Deprecated
-	public void serialize(DataOutputStream out) throws IOException {
+	public void serialize(CompressedDataOutputStream out) throws IOException {
 		// Write function code
 		out.writeShort(functionId);
 		
@@ -185,15 +140,12 @@ public class ApiCall {
 	/**
 	 * Deserializes a call from a data input stream.
 	 * 
-	 * @deprecated Prefer to use protocol buffer messages through
-	 *             {@link #ApiCall(FunctionMessage)}.
 	 * @param in the data input stream.
 	 * @return the API call.
 	 * @throws IOException if an error occurs while reading data.
 	 */
-	@Deprecated
-	public static ApiCall deserialize(DataInputStream in) throws IOException,
-			CowException {
+	public static ApiCall deserialize(CompressedDataInputStream in)
+			throws IOException, CowException {
 		// Read function id and number of parameters
 		short functionId = in.readShort();
 		byte nbParameters = in.readByte();

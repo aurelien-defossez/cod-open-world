@@ -5,8 +5,6 @@
 
 package com.remote;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -15,8 +13,6 @@ import main.CowException;
 import org.apache.log4j.Logger;
 import com.ApiCall;
 import com.Variant;
-import com.pbuf.ProtobufUtils;
-import com.pbuf.Call.FunctionMessage;
 import security.Watchdog;
 
 public class SocketRpcServer implements RpcServer {
@@ -70,12 +66,12 @@ public class SocketRpcServer implements RpcServer {
 	/**
 	 * The socket reader.
 	 */
-	private DataInputStream in;
+	private CompressedDataInputStream in;
 	
 	/**
 	 * The socket writer.
 	 */
-	private DataOutputStream out;
+	private CompressedDataOutputStream out;
 	
 	/**
 	 * The local port.
@@ -132,8 +128,8 @@ public class SocketRpcServer implements RpcServer {
 		// Connect with the AI process
 		// TODO: Add timeout
 		socket = serverSocket.accept();
-		in = new DataInputStream(socket.getInputStream());
-		out = new DataOutputStream(socket.getOutputStream());
+		in = new CompressedDataInputStream(socket.getInputStream());
+		out = new CompressedDataOutputStream(socket.getOutputStream());
 		
 		// Close server socket
 		serverSocket.close();
@@ -173,7 +169,7 @@ public class SocketRpcServer implements RpcServer {
 		try {
 			// Send execute AI command
 			out.writeByte(RpcValues.CMD_AI_EXE);
-			ProtobufUtils.writeTo(call.toFunctionMessage(), out);
+			call.serialize(out);
 			out.flush();
 			
 			// Read AI stream
@@ -242,9 +238,7 @@ public class SocketRpcServer implements RpcServer {
 			
 			switch (command) {
 			case RpcValues.CMD_GAME_CALL_API:
-				ApiCall call =
-						new ApiCall(FunctionMessage.parseFrom(ProtobufUtils
-								.readFrom(in)));
+				ApiCall call = ApiCall.deserialize(in);
 				
 				if (logger.isTraceEnabled()) {
 					logger.trace("API call: function=" + call.getFunctionId()
@@ -263,7 +257,7 @@ public class SocketRpcServer implements RpcServer {
 					logger.trace("API call return=" + returnVariant.getValue());
 				
 				// Send return value
-				ProtobufUtils.writeTo(returnVariant.toVariantMessage(), out);
+				returnVariant.serialize(out);
 				out.flush();
 				break;
 			

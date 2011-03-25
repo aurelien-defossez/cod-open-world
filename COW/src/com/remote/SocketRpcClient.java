@@ -5,17 +5,12 @@
 
 package com.remote;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import org.apache.log4j.Logger;
 import com.ApiCall;
 import com.Variant;
-import com.pbuf.Call.FunctionMessage;
-import com.pbuf.ProtobufUtils;
-import com.pbuf.Call.VariantMessage;
 
 public class SocketRpcClient implements RpcClient {
 	// -------------------------------------------------------------------------
@@ -44,12 +39,12 @@ public class SocketRpcClient implements RpcClient {
 	/**
 	 * The socket reader.
 	 */
-	private DataInputStream in;
+	private CompressedDataInputStream in;
 	
 	/**
 	 * The socket writer.
 	 */
-	private DataOutputStream out;
+	private CompressedDataOutputStream out;
 	
 	// -------------------------------------------------------------------------
 	// Constructor
@@ -72,8 +67,8 @@ public class SocketRpcClient implements RpcClient {
 			
 			// Create socket and connect
 			socket = new Socket(address, port);
-			in = new DataInputStream(socket.getInputStream());
-			out = new DataOutputStream(socket.getOutputStream());
+			in = new CompressedDataInputStream(socket.getInputStream());
+			out = new CompressedDataOutputStream(socket.getOutputStream());
 			
 			if (logger.isDebugEnabled())
 				logger.debug("Remote AI connected to port " + port);
@@ -106,13 +101,11 @@ public class SocketRpcClient implements RpcClient {
 			out.writeByte(RpcValues.CMD_GAME_CALL_API);
 			
 			// Serialize and sendcall
-			ProtobufUtils.writeTo(call.toFunctionMessage(), out);
+			call.serialize(out);
 			out.flush();
 			
 			// Read return value
-			Variant returnVariant =
-					new Variant(VariantMessage.parseFrom(ProtobufUtils
-							.readFrom(in)));
+			Variant returnVariant = Variant.deserialize(in);
 			
 			if (logger.isTraceEnabled())
 				logger.trace("API call return=" + returnVariant.getValue());
@@ -176,9 +169,7 @@ public class SocketRpcClient implements RpcClient {
 		switch (command) {
 		// Executes an AI
 		case RpcValues.CMD_AI_EXE:
-			ApiCall call =
-					new ApiCall(FunctionMessage.parseFrom(ProtobufUtils
-							.readFrom(in)));
+			ApiCall call = ApiCall.deserialize(in);
 			simulator.callAiFunction(call);
 			ack();
 			break;

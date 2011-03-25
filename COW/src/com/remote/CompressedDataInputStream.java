@@ -15,36 +15,36 @@ public class CompressedDataInputStream extends DataInputStream {
 		int size = readUnsignedVarint();
 		int[] matrix = new int[size];
 		
-		for(int i = 0; i < size; i++) {
+		for (int i = 0; i < size; i++) {
 			matrix[i] = readVarint();
 		}
 		
 		return matrix;
 	}
-
+	
 	public int[][] readIntMatrix2() throws IOException {
 		int size1 = readUnsignedVarint();
 		int size2 = readUnsignedVarint();
 		int[][] matrix = new int[size1][size2];
-
-		for(int i = 0; i < size1; i++) {
-			for(int j = 0; j < size2; j++) {
+		
+		for (int i = 0; i < size1; i++) {
+			for (int j = 0; j < size2; j++) {
 				matrix[i][j] = readVarint();
 			}
 		}
 		
 		return matrix;
 	}
-
+	
 	public int[][][] readIntMatrix3() throws IOException {
 		int size1 = readUnsignedVarint();
 		int size2 = readUnsignedVarint();
 		int size3 = readUnsignedVarint();
 		int[][][] matrix = new int[size1][size2][size3];
-
-		for(int i = 0; i < size1; i++) {
-			for(int j = 0; j < size2; j++) {
-				for(int k = 0; k < size3; k++) {
+		
+		for (int i = 0; i < size1; i++) {
+			for (int j = 0; j < size2; j++) {
+				for (int k = 0; k < size3; k++) {
 					matrix[i][j][k] = readVarint();
 				}
 			}

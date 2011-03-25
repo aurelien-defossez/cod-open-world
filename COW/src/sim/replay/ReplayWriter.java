@@ -184,7 +184,7 @@ public class ReplayWriter implements GameListener {
 						out.writeUTF((String) parameter.getValue());
 						break;
 					
-					case BOOL_MATRIX:
+					case BOOL_MATRIX1:
 						boolean[] booleanArray =
 								(boolean[]) parameter.getValue();
 						out.writeInt(booleanArray.length);
@@ -194,7 +194,7 @@ public class ReplayWriter implements GameListener {
 						}
 						break;
 					
-					case INT_MATRIX:
+					case INT_MATRIX1:
 						int[] intArray = (int[]) parameter.getValue();
 						out.writeInt(intArray.length);
 						
@@ -203,7 +203,7 @@ public class ReplayWriter implements GameListener {
 						}
 						break;
 					
-					case DOUBLE_MATRIX:
+					case DOUBLE_MATRIX1:
 						double[] doubleArray = (double[]) parameter.getValue();
 						out.writeInt(doubleArray.length);
 						
@@ -212,7 +212,7 @@ public class ReplayWriter implements GameListener {
 						}
 						break;
 					
-					case STRING_MATRIX:
+					case STRING_MATRIX1:
 						String[] stringArray = (String[]) parameter.getValue();
 						out.writeInt(stringArray.length);
 						

@@ -1,4 +1,4 @@
-from com.python import PyAiCommunicator
+from lang.python import PyAiCommunicator
 from apiCallFactory import GameApiCallFactory
 
 class aiCommunicator(PyAiCommunicator):
