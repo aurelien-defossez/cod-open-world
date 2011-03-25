@@ -5,10 +5,10 @@
 
 package com.ai;
 
+import lang.java.JavaAiConnector;
+import lang.python.PyAiConnector;
 import main.CowException;
 import com.ApiCall;
-import com.java.JavaAiConnector;
-import com.python.PyAiConnector;
 import sim.Simulator;
 
 public class LocalAi extends Ai {

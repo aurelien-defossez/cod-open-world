@@ -6,12 +6,12 @@
 package com.game;
 
 import java.util.Collection;
+import lang.python.PyGameConnector;
 import main.CowException;
 import sim.LiveSimulator;
 import com.ApiCall;
 import com.Variant;
 import com.ai.Ai;
-import com.python.PyGameConnector;
 
 public class LocalGame extends Game {
 	// -------------------------------------------------------------------------

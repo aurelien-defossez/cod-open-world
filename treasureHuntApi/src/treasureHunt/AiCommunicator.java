@@ -6,8 +6,8 @@
 package treasureHunt;
 
 import com.ApiCall;
-import com.java.JavaAiCommunicator;
-import com.java.JavaAiConnector;
+import lang.java.JavaAiCommunicator;
+import lang.java.JavaAiConnector;
 
 public class AiCommunicator extends JavaAiCommunicator {
 	// -------------------------------------------------------------------------

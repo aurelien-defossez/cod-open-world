@@ -3,8 +3,8 @@ package treasureHunt;
 
 import com.ApiCall;
 import com.Variant;
-import com.java.JavaAiCommunicator;
-import com.java.JavaApi;
+import lang.java.JavaAiCommunicator;
+import lang.java.JavaApi;
 
 public class Api extends JavaApi {
 	// -------------------------------------------------------------------------
