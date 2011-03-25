@@ -12,6 +12,13 @@ import com.remote.CompressedDataOutputStream;
 import main.CowException;
 
 public class Variant {
+	// -------------------------------------------------------------------------
+	// Enumeration
+	// -------------------------------------------------------------------------
+	
+	/**
+	 * This enumeration represents the type of the variant.
+	 */
 	public enum VariantType {
 		VOID, BOOL, INT, DOUBLE, STRING, BOOL_MATRIX1, BOOL_MATRIX2,
 		BOOL_MATRIX3, INT_MATRIX1, INT_MATRIX2, INT_MATRIX3, DOUBLE_MATRIX1,
@@ -35,10 +42,10 @@ public class Variant {
 	 * - INT: an Integer object;<br/>
 	 * - DOUBLE: a Double object;<br/>
 	 * - STRING: a String object;<br/>
-	 * - BOOL_MATRIX: an array of primitive booleans;<br/>
-	 * - INT_MATRIX: an array of primitive ints;<br/>
-	 * - DOUBLE_MATRIX: an array of primitive doubles;<br/>
-	 * - STRING_MATRIX: an array of String objects.
+	 * - BOOL_MATRIX{n=1|2|3}: a nD matrix of primitive booleans;<br/>
+	 * - INT_MATRIX{n=1|2|3}: a nD matrix of primitive ints;<br/>
+	 * - DOUBLE_MATRIX{n=1|2|3}: a nD matrix of primitive doubles;<br/>
+	 * - STRING_MATRIX{n=1|2|3}: a nD matrix of String objects.
 	 */
 	protected Object value;
 	
@@ -125,7 +132,7 @@ public class Variant {
 	}
 	
 	/**
-	 * Creates an array of booleans variant.
+	 * Creates a 1D matrix of booleans variant.
 	 * 
 	 * @param value the array of booleans.
 	 */
@@ -135,23 +142,27 @@ public class Variant {
 	}
 	
 	/**
-	 * Creates an array of booleans variant.
+	 * Creates a 2D matrix of booleans variant.
 	 * 
 	 * @param value the array of booleans.
 	 */
-	public Variant(Boolean[] value) {
-		int length = value.length;
-		boolean[] tempArray = new boolean[length];
-		for (int i = 0; i < length; i++) {
-			tempArray[i] = value[i].booleanValue();
-		}
-		
-		this.type = VariantType.BOOL_MATRIX1;
-		this.value = tempArray;
+	public Variant(boolean[][] value) {
+		this.type = VariantType.BOOL_MATRIX2;
+		this.value = value;
 	}
 	
 	/**
-	 * Creates an array of integers variant.
+	 * Creates a 3D matrix of booleans variant.
+	 * 
+	 * @param value the array of booleans.
+	 */
+	public Variant(boolean[][][] value) {
+		this.type = VariantType.BOOL_MATRIX3;
+		this.value = value;
+	}
+	
+	/**
+	 * Creates a 1D matrix of integers variant.
 	 * 
 	 * @param value the array of integers.
 	 */
@@ -161,53 +172,82 @@ public class Variant {
 	}
 	
 	/**
-	 * Creates an array of integers variant.
+	 * Creates a 2D matrix of integers variant.
 	 * 
 	 * @param value the array of integers.
 	 */
-	public Variant(Integer[] value) {
-		int length = value.length;
-		int[] tempArray = new int[length];
-		for (int i = 0; i < length; i++) {
-			tempArray[i] = value[i].intValue();
-		}
-		
-		this.type = VariantType.INT_MATRIX1;
-		this.value = tempArray;
-	}
-	
-	/**
-	 * Creates an array of doubles variant.
-	 * 
-	 * @param value the array of doubles.
-	 */
-	public Variant(double[] value) {
+	public Variant(int[][] value) {
+		this.type = VariantType.INT_MATRIX2;
 		this.value = value;
 	}
 	
 	/**
-	 * Creates an array of doubles variant.
+	 * Creates a 3D matrix of integers variant.
 	 * 
-	 * @param value the array of doubles.
+	 * @param value the array of integers.
 	 */
-	public Variant(Double[] value) {
-		int length = value.length;
-		double[] tempArray = new double[length];
-		for (int i = 0; i < length; i++) {
-			tempArray[i] = value[i].doubleValue();
-		}
-		
-		this.type = VariantType.DOUBLE_MATRIX1;
-		this.value = tempArray;
+	public Variant(int[][][] value) {
+		this.type = VariantType.INT_MATRIX3;
+		this.value = value;
 	}
 	
 	/**
-	 * Creates an array of strings variant.
+	 * Creates a 1D matrix of doubles variant.
+	 * 
+	 * @param value the array of doubles.
+	 */
+	public Variant(double[] value) {
+		this.type = VariantType.DOUBLE_MATRIX1;
+		this.value = value;
+	}
+	
+	/**
+	 * Creates a 2D matrix of doubles variant.
+	 * 
+	 * @param value the array of doubles.
+	 */
+	public Variant(double[][] value) {
+		this.type = VariantType.DOUBLE_MATRIX2;
+		this.value = value;
+	}
+	
+	/**
+	 * Creates a 3D matrix of doubles variant.
+	 * 
+	 * @param value the array of doubles.
+	 */
+	public Variant(double[][][] value) {
+		this.type = VariantType.DOUBLE_MATRIX3;
+		this.value = value;
+	}
+	
+	/**
+	 * Creates a 1D matrix of strings variant.
 	 * 
 	 * @param value the array of strings.
 	 */
 	public Variant(String[] value) {
 		this.type = VariantType.STRING_MATRIX1;
+		this.value = value;
+	}
+	
+	/**
+	 * Creates a 2D matrix of strings variant.
+	 * 
+	 * @param value the array of strings.
+	 */
+	public Variant(String[][] value) {
+		this.type = VariantType.STRING_MATRIX2;
+		this.value = value;
+	}
+	
+	/**
+	 * Creates a 3D matrix of strings variant.
+	 * 
+	 * @param value the array of strings.
+	 */
+	public Variant(String[][][] value) {
+		this.type = VariantType.STRING_MATRIX3;
 		this.value = value;
 	}
 	
@@ -233,10 +273,10 @@ public class Variant {
 	 *         - INT: an Integer object;<br/>
 	 *         - DOUBLE: a Double object;<br/>
 	 *         - STRING: a String object;<br/>
-	 *         - BOOL_MATRIX: an array of primitive booleans;<br/>
-	 *         - INT_MATRIX: an array of primitive ints;<br/>
-	 *         - DOUBLE_MATRIX: an array of primitive doubles;<br/>
-	 *         - STRING_MATRIX: an array of String objects.
+	 *         - BOOL_MATRIX{n=1|2|3}: a nD matrix of primitive booleans;<br/>
+	 *         - INT_MATRIX{n=1|2|3}: a nD matrix of primitive ints;<br/>
+	 *         - DOUBLE_MATRIX{n=1|2|3}: a nD matrix of primitive doubles;<br/>
+	 *         - STRING_MATRIX{n=1|2|3}: a nD matrix of String objects.
 	 */
 	public Object getValue() {
 		return value;
@@ -275,35 +315,51 @@ public class Variant {
 			break;
 		
 		case BOOL_MATRIX1:
-			boolean[] booleanArray = (boolean[]) value;
-			out.writeInt(booleanArray.length);
-			for (boolean arrayValue : booleanArray) {
-				out.writeBoolean(arrayValue);
-			}
+			out.writeBooleanMatrix((boolean[]) value);
+			break;
+		
+		case BOOL_MATRIX2:
+			out.writeBooleanMatrix((boolean[][]) value);
+			break;
+		
+		case BOOL_MATRIX3:
+			out.writeBooleanMatrix((boolean[][][]) value);
 			break;
 		
 		case INT_MATRIX1:
-			int[] integerArray = (int[]) value;
-			out.writeInt(integerArray.length);
-			for (int arrayValue : integerArray) {
-				out.writeInt(arrayValue);
-			}
+			out.writeIntMatrix((int[]) value);
+			break;
+		
+		case INT_MATRIX2:
+			out.writeIntMatrix((int[][]) value);
+			break;
+		
+		case INT_MATRIX3:
+			out.writeIntMatrix((int[][][]) value);
 			break;
 		
 		case DOUBLE_MATRIX1:
-			double[] doubleArray = (double[]) value;
-			out.writeInt(doubleArray.length);
-			for (double arrayValue : doubleArray) {
-				out.writeDouble(arrayValue);
-			}
+			out.writeDoubleMatrix((double[]) value);
+			break;
+		
+		case DOUBLE_MATRIX2:
+			out.writeDoubleMatrix((double[][]) value);
+			break;
+		
+		case DOUBLE_MATRIX3:
+			out.writeDoubleMatrix((double[][][]) value);
 			break;
 		
 		case STRING_MATRIX1:
-			String[] stringArray = (String[]) value;
-			out.writeInt(stringArray.length);
-			for (String arrayValue : stringArray) {
-				out.writeUTF(arrayValue);
-			}
+			out.writeStringMatrix((String[]) value);
+			break;
+		
+		case STRING_MATRIX2:
+			out.writeStringMatrix((String[][]) value);
+			break;
+		
+		case STRING_MATRIX3:
+			out.writeStringMatrix((String[][][]) value);
 			break;
 		}
 	}
@@ -343,36 +399,40 @@ public class Variant {
 			return new Variant(in.readUTF());
 			
 		case BOOL_MATRIX1:
-			int booleanArraySize = in.readInt();
-			boolean[] booleanArray = new boolean[booleanArraySize];
-			for (int i = 0; i < booleanArraySize; i++) {
-				booleanArray[i] = in.readBoolean();
-			}
-			return new Variant(booleanArray);
+			return new Variant(in.readBooleanMatrix1());
+			
+		case BOOL_MATRIX2:
+			return new Variant(in.readBooleanMatrix2());
+			
+		case BOOL_MATRIX3:
+			return new Variant(in.readBooleanMatrix3());
 			
 		case INT_MATRIX1:
-			int integerArraySize = in.readInt();
-			int[] integerArray = new int[integerArraySize];
-			for (int i = 0; i < integerArraySize; i++) {
-				integerArray[i] = in.readInt();
-			}
-			return new Variant(integerArray);
+			return new Variant(in.readIntMatrix1());
+			
+		case INT_MATRIX2:
+			return new Variant(in.readIntMatrix2());
+			
+		case INT_MATRIX3:
+			return new Variant(in.readIntMatrix3());
 			
 		case DOUBLE_MATRIX1:
-			int doubleArraySize = in.readInt();
-			double[] doubleArray = new double[doubleArraySize];
-			for (int i = 0; i < doubleArraySize; i++) {
-				doubleArray[i] = in.readDouble();
-			}
-			return new Variant(doubleArray);
+			return new Variant(in.readDoubleMatrix1());
+			
+		case DOUBLE_MATRIX2:
+			return new Variant(in.readDoubleMatrix2());
+			
+		case DOUBLE_MATRIX3:
+			return new Variant(in.readDoubleMatrix3());
 			
 		case STRING_MATRIX1:
-			int stringArraySize = in.readInt();
-			String[] stringArray = new String[stringArraySize];
-			for (int i = 0; i < stringArraySize; i++) {
-				stringArray[i] = in.readUTF();
-			}
-			return new Variant(stringArray);
+			return new Variant(in.readStringMatrix1());
+			
+		case STRING_MATRIX2:
+			return new Variant(in.readStringMatrix2());
+			
+		case STRING_MATRIX3:
+			return new Variant(in.readStringMatrix3());
 			
 		default:
 			throw new CowException("Unknown variant type (" + type + ")");

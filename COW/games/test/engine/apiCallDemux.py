@@ -52,7 +52,7 @@ class ApiCallDemux(object):
 		
 		#Count
 		elif function == self.API_COUNT:
-			return array(self.api.count(aiId, parameters[0]), Integer)
+			return array(self.api.count(aiId, parameters[0]), 'i')
 		
 		#Print
 		elif function == self.API_PRINT_TEXT:
