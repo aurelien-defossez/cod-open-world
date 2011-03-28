@@ -6,6 +6,7 @@
 package com.game;
 
 import java.util.Collection;
+import lang.java.JavaGameConnector;
 import lang.python.PyGameConnector;
 import main.CowException;
 import sim.LiveSimulator;
@@ -38,9 +39,14 @@ public class LocalGame extends Game {
 		super(simulator, gameName);
 		
 		switch (getLanguage()) {
-		// Load Python AI
+		// Load Python game
 		case Python:
 			connector = new PyGameConnector(this);
+			break;
+		
+		// Load Java game
+		case Java:
+			connector = new JavaGameConnector(this);
 			break;
 		}
 	}

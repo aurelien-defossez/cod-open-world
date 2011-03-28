@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<project default="makeJar">
+	<target name="makeJar" description="Make jar in API directory">
+		<jar destfile="../COW/games/unitTesting/api/java/api.jar"
+    		basedir="bin"
+    		includes="**/*.class"
+    		update="true" />
+	</target>
+</project>

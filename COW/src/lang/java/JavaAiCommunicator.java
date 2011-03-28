@@ -9,8 +9,9 @@ package lang.java;
 
 import com.ApiCall;
 import com.Variant;
+import com.ai.AiInterface;
 
-public abstract class JavaAiCommunicator {
+public abstract class JavaAiCommunicator implements AiInterface {
 	// -------------------------------------------------------------------------
 	// Attributes
 	// -------------------------------------------------------------------------
@@ -38,10 +39,7 @@ public abstract class JavaAiCommunicator {
 	// -------------------------------------------------------------------------
 	
 	/**
-	 * Calls a game API function.
-	 * 
-	 * @param call the game API call.
-	 * @return the call return value.
+	 * {@inheritDoc}
 	 */
 	public final Variant callGameFunction(ApiCall call) {
 		return connector.callGameFunction(call);
@@ -59,25 +57,4 @@ public abstract class JavaAiCommunicator {
 	 */
 	public abstract void initCommunicator(JavaAiConnector connector,
 			Object aiInstance);
-	
-	/**
-	 * Tells the AI to initialize.
-	 */
-	public abstract void init();
-	
-	/**
-	 * Performs the AI function.
-	 * 
-	 * @param call the phase call.
-	 */
-	public abstract void performAiFunction(ApiCall call);
-	
-	/**
-	 * Tells the AI to stop its execution.
-	 */
-	public abstract void stop();
-	
-	public int getId() {
-		return connector.getId();
-	}
 }

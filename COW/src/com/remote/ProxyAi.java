@@ -49,6 +49,7 @@ public class ProxyAi extends Ai {
 	 * @param gameName the game name.
 	 * @param aiId the AI id.
 	 * @param aiName the AI name.
+	 * @param watchdog the security watchdog.
 	 * @throws CowException if the AI cannot be loaded.
 	 */
 	public ProxyAi(Simulator simulator, String gameName, short aiId,

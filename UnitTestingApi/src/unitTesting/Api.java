@@ -1,8 +1,6 @@
-
-package treasureHunt;
+package unitTesting;
 
 import com.ApiCall;
-import com.Variant;
 import lang.java.JavaAiCommunicator;
 import lang.java.JavaApi;
 
@@ -12,10 +10,8 @@ public class Api extends JavaApi {
 	// -------------------------------------------------------------------------
 	
 	// API functions
-	private static final short API_GET_MAP_SIZE = 1;
-	private static final short API_GET_POSITION = 2;
-	private static final short API_MOVE = 3;
-	private static final short API_PEEK = 4;
+	private static final short API_TEST_NO_PARAMETERS = 1;
+	private static final short API_TEST_NO_PARAMETERS_RETURNS_INT = 2;
 	
 	// Game specific constants
 	public static final int LEFT = 0;
@@ -64,45 +60,18 @@ public class Api extends JavaApi {
 	// -------------------------------------------------------------------------
 	
 	/**
-	 * Returns the map size.
-	 * 
-	 * @return the map size, as an array of two integers {width, height}.
+	 * No parameters test. Should just work.
 	 */
-	public static int[] getMapSize() {
-		ApiCall call = new ApiCall(API_GET_MAP_SIZE, 0);
-		return (int[]) Api.callGameFunction(call);
+	public static void testNoParameters() {
+		ApiCall call = new ApiCall(API_TEST_NO_PARAMETERS, 0);
+		callGameFunction(call);
 	}
 	
 	/**
-	 * Returns the player position.
-	 * 
-	 * @return the player position as an array of two integers {x, y}.
+	 * No parameters test, should return 42.
 	 */
-	public static int[] getPosition() {
-		ApiCall call = new ApiCall(API_GET_POSITION, 0);
-		return (int[]) Api.callGameFunction(call);
-	}
-	
-	/**
-	 * Tells the creature to move in one direction
-	 * 
-	 * @param direction the direction in {LEFT | RIGHT | UP | DOWN}.
-	 */
-	public static void move(int direction) {
-		ApiCall call = new ApiCall(API_MOVE, 1);
-		call.add(new Variant(direction));
-		Api.callGameFunction(call);
-	}
-	
-	/**
-	 * Peeks the ground to evaluate the distance between self and the nearest
-	 * treasure.
-	 * 
-	 * @return the distance, in square size, between self and the nearest
-	 *         treasure.
-	 */
-	public static double peek() {
-		ApiCall call = new ApiCall(API_PEEK, 0);
-		return (Double) Api.callGameFunction(call);
+	public static int testNoParametersReturnsInt() {
+		ApiCall call = new ApiCall(API_TEST_NO_PARAMETERS_RETURNS_INT, 0);
+		return (Integer) callGameFunction(call);
 	}
 }

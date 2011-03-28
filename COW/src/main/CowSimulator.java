@@ -192,7 +192,6 @@ public class CowSimulator {
 					// Define view
 					if (strViewType.equals("none")) {
 						viewType = ViewType.None;
-						throw new CowException("Not implemented yet");
 					} else if (strViewType.equals("console")) {
 						viewType = ViewType.Console;
 						throw new CowException("Not implemented yet");
@@ -298,7 +297,7 @@ public class CowSimulator {
 		}
 		// Cow exception
 		catch (CowException e) {
-			logger.fatal(e.getMessage());
+			logger.fatal(e.getMessage(), e);
 		}
 		// Unexpected exception
 		catch (Exception e) {
