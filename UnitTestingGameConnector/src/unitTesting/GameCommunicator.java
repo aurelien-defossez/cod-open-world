@@ -1,3 +1,7 @@
+/**
+ * Game Communicator - This auto-generated class repreents a communicator so the
+ * game can communicate with the platform.
+ */
 
 package unitTesting;
 
@@ -7,12 +11,26 @@ import lang.java.JavaGameCommunicator;
 import lang.java.JavaGameConnector;
 
 public class GameCommunicator extends JavaGameCommunicator {
+	// -------------------------------------------------------------------------
+	// Constants
+	// -------------------------------------------------------------------------
 	
 	// API functions
 	private static final short API_TEST_NO_PARAMETERS = 1;
 	private static final short API_TEST_NO_PARAMETERS_RETURNS_INT = 2;
 	
+	// -------------------------------------------------------------------------
+	// Attributes
+	// -------------------------------------------------------------------------
+	
+	/**
+	 * The game instance.
+	 */
 	private UnitTestingEngine gameInstance;
+	
+	// -------------------------------------------------------------------------
+	// Public methods
+	// -------------------------------------------------------------------------
 	
 	/**
 	 * {@inheritDoc}

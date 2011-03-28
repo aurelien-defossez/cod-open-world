@@ -1,8 +1,9 @@
-package unitTesting;
 /**
  * AI Communicator - This class is the auto-generated Java AI communicator to
  * communicate between the AI and the simulator.
  */
+
+package unitTesting;
 
 import com.ApiCall;
 import lang.java.JavaAiCommunicator;

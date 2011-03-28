@@ -42,7 +42,7 @@ public abstract class JavaGameCommunicator {
 	public final void setFrame() {
 		connector.setFrame();
 	}
-
+	
 	/**
 	 * Sets a new score to an AI.
 	 * 
@@ -52,7 +52,7 @@ public abstract class JavaGameCommunicator {
 	public final void setScore(short aiId, long score) {
 		connector.setScore(aiId, score);
 	}
-
+	
 	/**
 	 * Increments the score of an AI.
 	 * 
@@ -62,7 +62,7 @@ public abstract class JavaGameCommunicator {
 	public final void incrementScore(short aiId, long increment) {
 		connector.incrementScore(aiId, increment);
 	}
-
+	
 	/**
 	 * Calls an AI API function.
 	 * 
@@ -72,7 +72,7 @@ public abstract class JavaGameCommunicator {
 	public final void callAiFunction(short aiId, ApiCall call) {
 		connector.callAiFunction(aiId, call);
 	}
-
+	
 	/**
 	 * Calls a view API function.
 	 * 
@@ -113,7 +113,7 @@ public abstract class JavaGameCommunicator {
 	 * Plays the game.
 	 */
 	public abstract void play();
-
+	
 	/**
 	 * Disqualifies an AI.
 	 * 

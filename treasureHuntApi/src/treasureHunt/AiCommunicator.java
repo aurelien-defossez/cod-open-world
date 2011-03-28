@@ -52,7 +52,7 @@ public class AiCommunicator extends JavaAiCommunicator {
 	public void init() {
 		aiInstance.init();
 	}
-
+	
 	/**
 	 * Calls the right AI function.
 	 * 

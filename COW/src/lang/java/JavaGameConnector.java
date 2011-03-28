@@ -1,3 +1,6 @@
+/**
+ * Java Game Connector - This class connects a java game to the platform.
+ */
 
 package lang.java;
 

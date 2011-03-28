@@ -1,8 +1,9 @@
-package unitTesting;
 /**
  * Unit testing AI - This class is the auto-generated Java AI interface for the
  * game "Unit Testing".
  */
+
+package unitTesting;
 
 public interface UnitTestingAi {
 	// -------------------------------------------------------------------------

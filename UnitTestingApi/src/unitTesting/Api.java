@@ -1,3 +1,8 @@
+/**
+ * API - This class is the auto-generated Java API to receive API calls from the
+ * AI.
+ */
+
 package unitTesting;
 
 import com.ApiCall;
