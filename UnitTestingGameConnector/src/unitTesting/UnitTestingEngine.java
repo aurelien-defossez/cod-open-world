@@ -41,15 +41,29 @@ public interface UnitTestingEngine {
 	 */
 	public void stop();
 	
-	/**
-	 * Unit test with no parameters returning nothing.
-	 */
-	public void testNoParameters();
+	public void testVoid();
+
+	public boolean testBoolNot(boolean x);
+	public boolean testBoolAnd(boolean x, boolean y);
 	
-	/**
-	 * Unit test with not parameters returning an integer.
-	 * 
-	 * @return 42.
-	 */
-	public int testNoParametersReturnsInt();
+	public int testIntNeg(int x);
+	public int testIntAdd(int x, int y);
+	
+	public double testDoubleNeg(double x);
+	public double testDoubleAdd(double x, double y);
+	
+	public String testStringRevert(String x);
+	public String testStringConcat(String x, String y);
+	
+	public int testBoolMatrixCount(boolean[] x);
+	public boolean[][] testBoolMatrixXor(boolean[][] x, boolean[][] y);
+	
+	public int testIntMatrixSum(int[] x);
+	public int[][][] testIntMatrixAdd(int[][][] x, int[][][] y);
+	
+	public double testDoubleMatrixAverage(double[] x);
+	public double[][] testDoubleMatrixMult(double[][] x, double[][] y);
+	
+	public int testStringMatrixFind(String[] x, String y);
+	public String[] testStringMatrixConcat(String[][] x);
 }

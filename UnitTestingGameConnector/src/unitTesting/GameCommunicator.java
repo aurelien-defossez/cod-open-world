@@ -16,8 +16,23 @@ public class GameCommunicator extends JavaGameCommunicator {
 	// -------------------------------------------------------------------------
 	
 	// API functions
-	private static final short API_TEST_NO_PARAMETERS = 1;
-	private static final short API_TEST_NO_PARAMETERS_RETURNS_INT = 2;
+	private static final short API_TEST_VOID = 0;
+	private static final short API_TEST_BOOL_NOT = 1;
+	private static final short API_TEST_BOOL_AND = 2;
+	private static final short API_TEST_INT_NEG = 3;
+	private static final short API_TEST_INT_ADD = 4;
+	private static final short API_TEST_DOUBLE_NEG = 5;
+	private static final short API_TEST_DOUBLE_ADD = 6;
+	private static final short API_TEST_STRING_REVERT = 7;
+	private static final short API_TEST_STRING_CONCAT = 8;
+	private static final short API_TEST_BOOL_MATRIX_COUNT = 9;
+	private static final short API_TEST_BOOL_MATRIX_XOR = 10;
+	private static final short API_TEST_INT_MATRIX_SUM = 11;
+	private static final short API_TEST_INT_MATRIX_ADD = 12;
+	private static final short API_TEST_DOUBLE_MATRIX_AVERAGE = 13;
+	private static final short API_TEST_DOUBLE_MATRIX_MULT = 14;
+	private static final short API_TEST_STRING_MATRIX_FIND = 15;
+	private static final short API_TEST_STRING_MATRIX_CONCAT = 16;
 	
 	// -------------------------------------------------------------------------
 	// Attributes
@@ -80,13 +95,85 @@ public class GameCommunicator extends JavaGameCommunicator {
 	@Override
 	public Variant performGameFunction(ApiCall call, short aiId) {
 		switch (call.getFunctionId()) {
-		case API_TEST_NO_PARAMETERS:
-			gameInstance.testNoParameters();
+		case API_TEST_VOID:
+			gameInstance.testVoid();
 			return new Variant();
 			
-		case API_TEST_NO_PARAMETERS_RETURNS_INT:
-			return new Variant(gameInstance.testNoParametersReturnsInt());
+		case API_TEST_BOOL_NOT:
+			return new Variant(gameInstance.testBoolNot((Boolean) call
+					.getParameter(0).getValue()));
 			
+		case API_TEST_BOOL_AND:
+			return new Variant(gameInstance.testBoolAnd((Boolean) call
+					.getParameter(0).getValue(), (Boolean) call.getParameter(1)
+					.getValue()));
+			
+		case API_TEST_INT_NEG:
+			return new Variant(gameInstance.testIntNeg((Integer) call
+					.getParameter(0).getValue()));
+			
+		case API_TEST_INT_ADD:
+			return new Variant(gameInstance.testIntAdd((Integer) call
+					.getParameter(0).getValue(), (Integer) call.getParameter(1)
+					.getValue()));
+			
+		case API_TEST_DOUBLE_NEG:
+			return new Variant(gameInstance.testDoubleNeg((Double) call
+					.getParameter(0).getValue()));
+			
+		case API_TEST_DOUBLE_ADD:
+			return new Variant(gameInstance.testDoubleAdd((Double) call
+					.getParameter(0).getValue(), (Double) call.getParameter(1)
+					.getValue()));
+			
+		case API_TEST_STRING_REVERT:
+			return new Variant(gameInstance.testStringRevert((String) call
+					.getParameter(0).getValue()));
+			
+		case API_TEST_STRING_CONCAT:
+			return new Variant(gameInstance.testStringConcat((String) call
+					.getParameter(0).getValue(), (String) call.getParameter(1)
+					.getValue()));
+			
+		case API_TEST_BOOL_MATRIX_COUNT:
+			return new Variant(
+					gameInstance.testBoolMatrixCount((boolean[]) call
+							.getParameter(0).getValue()));
+			
+		case API_TEST_BOOL_MATRIX_XOR:
+			return new Variant(gameInstance.testBoolMatrixXor(
+					(boolean[][]) call.getParameter(0).getValue(),
+					(boolean[][]) call.getParameter(1).getValue()));
+			
+		case API_TEST_INT_MATRIX_SUM:
+			return new Variant(gameInstance.testIntMatrixSum((int[]) call
+					.getParameter(0).getValue()));
+			
+		case API_TEST_INT_MATRIX_ADD:
+			return new Variant(gameInstance.testIntMatrixAdd((int[][][]) call
+					.getParameter(0).getValue(),
+					(int[][][]) call.getParameter(1).getValue()));
+			
+		case API_TEST_DOUBLE_MATRIX_AVERAGE:
+			return new Variant(
+					gameInstance.testDoubleMatrixAverage((double[]) call
+							.getParameter(0).getValue()));
+			
+		case API_TEST_DOUBLE_MATRIX_MULT:
+			return new Variant(gameInstance.testDoubleMatrixMult(
+					(double[][]) call.getParameter(0).getValue(),
+					(double[][]) call.getParameter(1).getValue()));
+			
+		case API_TEST_STRING_MATRIX_FIND:
+			return new Variant(gameInstance.testStringMatrixFind(
+					(String[]) call.getParameter(0).getValue(), (String) call
+							.getParameter(1).getValue()));
+			
+		case API_TEST_STRING_MATRIX_CONCAT:
+			return new Variant(
+					gameInstance.testStringMatrixConcat((String[][]) call
+							.getParameter(0).getValue()));
+		
 		default:
 			return null;
 		}

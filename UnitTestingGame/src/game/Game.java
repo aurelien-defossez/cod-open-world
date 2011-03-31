@@ -17,7 +17,7 @@ public class Game implements UnitTestingEngine {
 	/**
 	 * The number of tests in this unit.
 	 */
-	private static final int nbTests = 2;
+	private static final int nbTests = 7;
 	
 	// -------------------------------------------------------------------------
 	// Attributes
@@ -99,20 +99,148 @@ public class Game implements UnitTestingEngine {
 		stopUnitTesting();
 	}
 	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void testNoParameters() {
-		// Do nothing
+	public void testVoid() {
+		
 	}
 	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public int testNoParametersReturnsInt() {
-		return 42;
+	public boolean testBoolNot(boolean x) {
+		return !x;
+	}
+	
+	public boolean testBoolAnd(boolean x, boolean y) {
+		return x & y;
+	}
+	
+	public int testIntNeg(int x) {
+		return -x;
+	}
+	
+	public int testIntAdd(int x, int y) {
+		return x + y;
+	}
+	
+	public double testDoubleNeg(double x) {
+		return -x;
+	}
+	
+	public double testDoubleAdd(double x, double y) {
+		return x + y;
+	}
+	
+	public String testStringRevert(String x) {
+		StringBuffer sb = new StringBuffer(x.length());
+		
+		for (int i = 0; i < x.length(); i++) {
+			sb.append(x.charAt(i));
+		}
+		
+		return sb.toString();
+	}
+	
+	public String testStringConcat(String x, String y) {
+		return x.concat(y);
+	}
+	
+	public int testBoolMatrixCount(boolean[] x) {
+		int count = 0;
+		
+		for (boolean b : x) {
+			if (b) {
+				count++;
+			}
+		}
+		
+		return count;
+	}
+	
+	public boolean[][] testBoolMatrixXor(boolean[][] x, boolean[][] y) {
+		boolean[][] result = new boolean[x.length][x[0].length];
+		
+		for (int i = 0; i < result.length; i++) {
+			for (int j = 0; j < result[0].length; j++) {
+				result[i][j] = x[i][j] ^ y[i][j];
+			}
+		}
+		
+		return result;
+	}
+	
+	public int testIntMatrixSum(int[] x) {
+		int sum = 0;
+		
+		for (int value : x) {
+			sum += value;
+		}
+		
+		return sum;
+	}
+	
+	public int[][][] testIntMatrixAdd(int[][][] x, int[][][] y) {
+		int[][][] result = new int[x.length][x[0].length][x[0][0].length];
+		
+		for (int i = 0; i < result.length; i++) {
+			for (int j = 0; j < result[0].length; j++) {
+				for (int k = 0; k < result[0][0].length; k++) {
+					result[i][j][k] = x[i][j][k] + y[i][j][k];
+				}
+			}
+		}
+		
+		return result;
+	}
+	
+	public double testDoubleMatrixAverage(double[] x) {
+		double sum = 0;
+		
+		for(double value : x) {
+			sum += value;
+		}
+		
+		return sum / x.length;
+	}
+	
+	public double[][] testDoubleMatrixMult(double[][] x, double[][] y) {
+		double[][] result = new double[x.length][y[0].length];
+		
+		for (int i = 0; i < result.length; i++) {
+			for (int j = 0; j < result[0].length; j++) {
+				result[i][j] = 0;
+				
+				for (int k = 0; k < y.length; k++) {
+					result[i][j] += x[i][k] * y[j][j];
+				}
+			}
+		}
+		
+		return result;
+	}
+	
+	public int testStringMatrixFind(String[] x, String y) {
+		int count = 0;
+		
+		for(String s : x) {
+			if(s.contains(y)) {
+				count++;
+			}
+		}
+		
+		return count;
+	}
+	
+	public String[] testStringMatrixConcat(String[][] x) {
+		String[] result = new String[x.length];
+		
+		for (int i = 0; i < x.length; i++) {
+			StringBuffer sb = new StringBuffer();
+			
+			for (int j = 0; j < x[0].length; j++) {
+				sb.append(x[i][j]);
+			}
+			
+			result[i] = sb.toString();
+		}
+		
+		return result;
 	}
 	
 	// -------------------------------------------------------------------------
