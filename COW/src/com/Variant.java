@@ -377,7 +377,7 @@ public class Variant {
 	 * @throws CowException if the variant read is not valid.
 	 */
 	public static Variant deserialize(CompressedDataInputStream in)
-			throws IOException, CowException {
+		throws IOException, CowException {
 		// Read variant type
 		VariantType type = VariantType.values()[in.readByte()];
 		

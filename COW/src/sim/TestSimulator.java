@@ -21,7 +21,7 @@ public class TestSimulator extends LiveSimulator {
 	 * @throws CowException if the game cannot be loaded.
 	 */
 	public TestSimulator(Scheduler scheduler, String gameName)
-			throws CowException {
+		throws CowException {
 		super(scheduler, gameName);
 	}
 	

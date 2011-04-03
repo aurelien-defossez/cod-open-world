@@ -130,7 +130,7 @@ public class CowSimulator {
 							logger.trace("Set game: " + gameName);
 					} else {
 						throw new CowException(
-								"The game can't be specified twice");
+							"The game can't be specified twice");
 					}
 					break;
 				
@@ -157,7 +157,7 @@ public class CowSimulator {
 					
 					// Check unlimited speed
 					if (speed.equals(UNLIMITED_NAME)
-							|| speed.equals(UNLIMITED_LETTER)) {
+						|| speed.equals(UNLIMITED_LETTER)) {
 						gameSpeed = UNLIMITED_SPEED;
 					}
 					// Get number speed
@@ -165,11 +165,11 @@ public class CowSimulator {
 						try {
 							gameSpeed = Double.parseDouble(speed);
 							gameSpeed =
-									Math.max(MIN_SPEED,
-											Math.min(gameSpeed, MAX_SPEED));
+								Math.max(MIN_SPEED,
+									Math.min(gameSpeed, MAX_SPEED));
 						} catch (NumberFormatException e) {
 							throw new CowException("Speed must be an float "
-									+ "or \"" + UNLIMITED_NAME + "\".");
+								+ "or \"" + UNLIMITED_NAME + "\".");
 						}
 					}
 					
@@ -204,7 +204,7 @@ public class CowSimulator {
 						throw new CowException("Not implemented yet");
 					} else {
 						throw new CowException("View type '" + strViewType
-								+ "' invalid.");
+							+ "' invalid.");
 					}
 					
 					if (logger.isTraceEnabled())
@@ -231,8 +231,7 @@ public class CowSimulator {
 					// Open file
 					String line;
 					BufferedReader reader =
-							new BufferedReader(new FileReader(new File(
-									HELP_FILE)));
+						new BufferedReader(new FileReader(new File(HELP_FILE)));
 					
 					// Print file
 					while ((line = reader.readLine()) != null) {
@@ -246,7 +245,7 @@ public class CowSimulator {
 				// IO Exception
 				catch (IOException e) {
 					logger.fatal("An IO error occurred while reading the "
-							+ "help file (" + e.getMessage() + ").");
+						+ "help file (" + e.getMessage() + ").");
 				}
 			}
 			// Launch game
@@ -261,7 +260,7 @@ public class CowSimulator {
 				
 				// Set game
 				LiveSimulator simulator =
-						scheduler.loadGame(gameName, testMode);
+					scheduler.loadGame(gameName, testMode);
 				
 				// Add AIs
 				for (short i = 0; i < ais.size(); i++) {
@@ -271,7 +270,7 @@ public class CowSimulator {
 				// Add replay writers
 				for (String replay : replays) {
 					simulator
-							.addGameListener(new ReplayWriter(gameName, replay));
+						.addGameListener(new ReplayWriter(gameName, replay));
 				}
 				
 				// Create GUI

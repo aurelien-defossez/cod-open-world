@@ -53,7 +53,7 @@ public class ProxyAi extends Ai {
 	 * @throws CowException if the AI cannot be loaded.
 	 */
 	public ProxyAi(Simulator simulator, String gameName, short aiId,
-			String aiName, Watchdog watchdog) {
+		String aiName, Watchdog watchdog) {
 		super(simulator, gameName, aiId, aiName);
 		
 		ProcessBuilder builder;
@@ -102,7 +102,7 @@ public class ProxyAi extends Ai {
 			
 		} catch (IOException e) {
 			throw new CowException("A problem occurred while proxying AI "
-					+ "(" + aiName + "): " + e.getMessage());
+				+ "(" + aiName + "): " + e.getMessage());
 		}
 	}
 	

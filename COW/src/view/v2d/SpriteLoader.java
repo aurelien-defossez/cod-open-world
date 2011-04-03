@@ -29,7 +29,7 @@ public class SpriteLoader {
 		// Create class loader
 		try {
 			File spriteDir =
-					new File("games/" + gameName + "/entities/sprites/");
+				new File("games/" + gameName + "/entities/sprites/");
 			URL[] urls = { spriteDir.toURI().toURL() };
 			spriteLoader = new URLClassLoader(urls);
 		} catch (MalformedURLException e) {
@@ -45,8 +45,8 @@ public class SpriteLoader {
 	public Texture loadSprite(String name) {
 		URL textureUrl = spriteLoader.getResource(name);
 		return TextureManager.loadTexture(textureUrl,
-				Texture.MinificationFilter.BilinearNearestMipMap,
-				Texture.MagnificationFilter.Bilinear);
+			Texture.MinificationFilter.BilinearNearestMipMap,
+			Texture.MagnificationFilter.Bilinear);
 	}
 	
 	public RenderState getTransparencyState() {
@@ -55,9 +55,9 @@ public class SpriteLoader {
 			transparencyState = renderer.getRenderer().createBlendState();
 			transparencyState.setBlendEnabled(true);
 			transparencyState
-					.setSourceFunctionAlpha(BlendState.SourceFunction.SourceAlpha);
+				.setSourceFunctionAlpha(BlendState.SourceFunction.SourceAlpha);
 			transparencyState
-					.setDestinationFunctionAlpha(BlendState.DestinationFunction.OneMinusSourceAlpha);
+				.setDestinationFunctionAlpha(BlendState.DestinationFunction.OneMinusSourceAlpha);
 			transparencyState.setBlendEquation(BlendState.BlendEquation.Add);
 			transparencyState.setTestEnabled(false);
 			transparencyState.setEnabled(true);

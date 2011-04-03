@@ -44,7 +44,7 @@ public abstract class LiveSimulator extends GameSimulator {
 	 * @throws CowException if the game cannot be loaded.
 	 */
 	public LiveSimulator(Scheduler scheduler, String gameName)
-			throws CowException {
+		throws CowException {
 		super(scheduler, gameName);
 		
 		// Load local game
@@ -87,7 +87,7 @@ public abstract class LiveSimulator extends GameSimulator {
 	public void callAiFunction(short aiId, ApiCall call) {
 		if (logger.isDebugEnabled())
 			logger.debug("Execute AI #" + aiId + ", phase #"
-					+ call.getFunctionId() + ".");
+				+ call.getFunctionId() + ".");
 		
 		Ai ai = getAi(aiId);
 		if (ai != null) {
@@ -123,7 +123,7 @@ public abstract class LiveSimulator extends GameSimulator {
 	public Variant callGameFunction(ApiCall call, Ai ai) {
 		if (logger.isTraceEnabled())
 			logger.trace("AI " + ai.getId() + ": Call API, function #"
-					+ call.getFunctionId() + ".");
+				+ call.getFunctionId() + ".");
 		
 		return game.performGameFunction(call, ai);
 	}

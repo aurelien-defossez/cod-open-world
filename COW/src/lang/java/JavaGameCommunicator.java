@@ -93,7 +93,7 @@ public abstract class JavaGameCommunicator {
 	 * @param gameInstance the game instance of the {GameName}Engine class.
 	 */
 	public abstract void initCommunicator(JavaGameConnector connector,
-			Object gameInstance);
+		Object gameInstance);
 	
 	/**
 	 * Tells the game to initialize.

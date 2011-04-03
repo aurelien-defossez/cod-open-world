@@ -92,17 +92,17 @@ public abstract class View implements GameListener, KeyboardListener {
 			
 			case DISPLAY_GRID:
 				displayGrid((Double) call.getParameter(0).getValue(),
-						(Double) call.getParameter(1).getValue(), (Double) call
-								.getParameter(2).getValue(), (Double) call
-								.getParameter(3).getValue(), (Double) call
-								.getParameter(4).getValue(), (Double) call
-								.getParameter(5).getValue(), (Integer) call
-								.getParameter(6).getValue());
+					(Double) call.getParameter(1).getValue(), (Double) call
+						.getParameter(2).getValue(), (Double) call
+						.getParameter(3).getValue(), (Double) call
+						.getParameter(4).getValue(), (Double) call
+						.getParameter(5).getValue(), (Integer) call
+						.getParameter(6).getValue());
 				break;
 			
 			case CREATE_ENTITY:
 				createEntity((Integer) call.getParameter(0).getValue(),
-						(Integer) call.getParameter(1).getValue());
+					(Integer) call.getParameter(1).getValue());
 				break;
 			
 			case DELETE_ENTITY:
@@ -111,13 +111,13 @@ public abstract class View implements GameListener, KeyboardListener {
 			
 			case MOVE_ENTITY:
 				moveEntity((Integer) call.getParameter(0).getValue(),
-						(Double) call.getParameter(1).getValue(), (Double) call
-								.getParameter(2).getValue());
+					(Double) call.getParameter(1).getValue(), (Double) call
+						.getParameter(2).getValue());
 				break;
 			
 			case ROTATE_ENTITY:
 				rotateEntity((Integer) call.getParameter(0).getValue(),
-						(Double) call.getParameter(1).getValue());
+					(Double) call.getParameter(1).getValue());
 				break;
 			}
 		} catch (CowException e) {
@@ -133,7 +133,7 @@ public abstract class View implements GameListener, KeyboardListener {
 	}
 	
 	protected void displayGrid(double x0, double y0, double x1, double y1,
-			double xSpacing, double ySpacing, int color) {
+		double xSpacing, double ySpacing, int color) {
 	}
 	
 	protected void createEntity(int definitionId, int id) {

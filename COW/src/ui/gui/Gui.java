@@ -100,13 +100,13 @@ public class Gui extends Ui {
 		
 		case V2D:
 			view =
-					new View2D(scheduler.getSimulator().getGameName(),
-							keyboardController, mouseController);
+				new View2D(scheduler.getSimulator().getGameName(),
+					keyboardController, mouseController);
 			break;
 		
 		default:
 			throw new CowException("View type " + viewType
-					+ " not supported by the GUI.");
+				+ " not supported by the GUI.");
 		}
 		
 		// Create view panel

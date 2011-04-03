@@ -63,7 +63,7 @@ public class SocketRpcClient implements RpcClient {
 			
 			if (logger.isDebugEnabled())
 				logger.debug("Connecting to framework at " + address + ":"
-						+ port + "...");
+					+ port + "...");
 			
 			// Create socket and connect
 			socket = new Socket(address, port);
@@ -94,7 +94,7 @@ public class SocketRpcClient implements RpcClient {
 		int nbParameters = call.getParameters().length;
 		
 		logger.trace("API call: function=" + call.getFunctionId() + ", "
-				+ "nbParameters=" + nbParameters);
+			+ "nbParameters=" + nbParameters);
 		
 		try {
 			// Write call API command

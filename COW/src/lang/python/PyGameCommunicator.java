@@ -12,7 +12,7 @@ public interface PyGameCommunicator {
 	// -------------------------------------------------------------------------
 	
 	public void init(PyGameConnector framework, PyObject game, PyObject api,
-			PyObject apiDemux);
+		PyObject apiDemux);
 	
 	public void initGame();
 	
@@ -23,7 +23,7 @@ public interface PyGameCommunicator {
 	public void play();
 	
 	public Variant performGameFunction(short function, short aiId,
-			Object[] pyParameters);
+		Object[] pyParameters);
 	
 	public void removeAi(PyInteger pyInteger, PyString pyString);
 }

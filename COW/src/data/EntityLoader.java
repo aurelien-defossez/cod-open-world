@@ -36,7 +36,7 @@ public class EntityLoader extends ConfigLoader {
 	 * @throws IOException if the attribute doesn't exist.
 	 */
 	public entityCenter getEntityCenterValue(String name,
-			entityCenter defaultValue) throws IOException {
+		entityCenter defaultValue) throws IOException {
 		String value = getValue(name).toLowerCase();
 		
 		if (value.equals("bottom-left")) {

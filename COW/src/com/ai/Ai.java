@@ -71,7 +71,7 @@ public abstract class Ai implements AiInterface {
 	 * @throws CowException if the AI cannot be loaded.
 	 */
 	public Ai(Simulator simulator, String gameName, short aiId, String aiName)
-			throws CowException {
+		throws CowException {
 		this.simulator = simulator;
 		this.id = aiId;
 		this.name = aiName;
@@ -80,8 +80,8 @@ public abstract class Ai implements AiInterface {
 		try {
 			// Load config.ini file
 			ConfigLoader config =
-					new ConfigLoader("games/" + gameName + "/ais/" + aiName
-							+ "/" + CONFIG_FILE);
+				new ConfigLoader("games/" + gameName + "/ais/" + aiName + "/"
+					+ CONFIG_FILE);
 			
 			// Read creator name
 			this.playerName = config.getValue("creator");
@@ -100,18 +100,18 @@ public abstract class Ai implements AiInterface {
 			// Not supported language
 			else {
 				throw new CowException("Cannot load AI \"" + aiName
-						+ ": language " + languageString + " not supported.");
+					+ ": language " + languageString + " not supported.");
 			}
 		}
 		// Configuration file not found
 		catch (FileNotFoundException e) {
 			throw new CowException("Cannot load AI \"" + aiName
-					+ ": config file missing.");
+				+ ": config file missing.");
 		}
 		// Configuration file not complete
 		catch (IOException e) {
 			throw new CowException("Cannot load AI \"" + aiName
-					+ ": a problem occurs while reading config file.", e);
+				+ ": a problem occurs while reading config file.", e);
 		}
 	}
 	

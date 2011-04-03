@@ -51,32 +51,33 @@ public class JavaGameConnector extends GameConnector {
 		
 		try {
 			if (logger.isDebugEnabled())
-				logger.debug("Connecting Java game (" + game.getName() + ")...");
+				logger
+					.debug("Connecting Java game (" + game.getName() + ")...");
 			
 			// Create class loader
 			File gameJar =
-					new File("games/" + game.getName() + "/engine/engine.jar");
+				new File("games/" + game.getName() + "/engine/engine.jar");
 			File gameConnectorJar =
-					new File("games/" + game.getName()
-							+ "/engine/gameConnector.jar");
+				new File("games/" + game.getName()
+					+ "/engine/gameConnector.jar");
 			URL[] urls =
-					{ gameJar.toURI().toURL(), gameConnectorJar.toURI().toURL() };
+				{ gameJar.toURI().toURL(), gameConnectorJar.toURI().toURL() };
 			URLClassLoader classLoader = new URLClassLoader(urls);
 			
 			// Load communicator and commander
 			gameCommunicator =
-					(JavaGameCommunicator) classLoader.loadClass(
-							game.getName() + ".GameCommunicator").newInstance();
+				(JavaGameCommunicator) classLoader.loadClass(
+					game.getName() + ".GameCommunicator").newInstance();
 			JavaGameCommander commander =
-					(JavaGameCommander) classLoader.loadClass(
-							game.getName() + ".GameCommander").newInstance();
+				(JavaGameCommander) classLoader.loadClass(
+					game.getName() + ".GameCommander").newInstance();
 			
 			if (logger.isDebugEnabled())
 				logger.debug("Game communicator and commander loaded.");
 			
 			// Load AI
 			Object gameInstance =
-					classLoader.loadClass("game.Game").newInstance();
+				classLoader.loadClass("game.Game").newInstance();
 			
 			if (logger.isDebugEnabled())
 				logger.debug("Game loaded.");
@@ -88,16 +89,16 @@ public class JavaGameConnector extends GameConnector {
 			logger.info("Java game (" + game.getName() + ") connected.");
 		} catch (MalformedURLException e) {
 			throw new CowException("Cannot load game (" + game.getName() + ")",
-					e);
+				e);
 		} catch (InstantiationException e) {
 			throw new CowException("Cannot load game (" + game.getName() + ")",
-					e);
+				e);
 		} catch (IllegalAccessException e) {
 			throw new CowException("Cannot load game (" + game.getName() + ")",
-					e);
+				e);
 		} catch (ClassNotFoundException e) {
 			throw new CowException("Cannot load game (" + game.getName() + ")",
-					e);
+				e);
 		}
 	}
 	
@@ -114,7 +115,7 @@ public class JavaGameConnector extends GameConnector {
 		
 		for (Ai ai : ais) {
 			gameCommunicator
-					.addAi(ai.getId(), ai.getName(), ai.getPlayerName());
+				.addAi(ai.getId(), ai.getName(), ai.getPlayerName());
 		}
 	}
 	

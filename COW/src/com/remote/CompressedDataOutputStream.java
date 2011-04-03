@@ -78,8 +78,10 @@ public class CompressedDataOutputStream extends DataOutputStream {
 		initializeVarboolWriting();
 		
 		// Write matrix size
-		writeUnsignedVarint(matrix.length);
-		writeUnsignedVarint(matrix[0].length);
+		int n1 = matrix.length;
+		int n2 = (n1 > 0) ? matrix[0].length : 0;
+		writeUnsignedVarint(n1);
+		writeUnsignedVarint(n2);
 		
 		// Write values
 		for (boolean[] submatrix : matrix) {
@@ -104,9 +106,12 @@ public class CompressedDataOutputStream extends DataOutputStream {
 		initializeVarboolWriting();
 		
 		// Write matrix size
-		writeUnsignedVarint(matrix.length);
-		writeUnsignedVarint(matrix[0].length);
-		writeUnsignedVarint(matrix[0][0].length);
+		int n1 = matrix.length;
+		int n2 = (n1 > 0) ? matrix[0].length : 0;
+		int n3 = (n2 > 0) ? matrix[0][0].length : 0;
+		writeUnsignedVarint(n1);
+		writeUnsignedVarint(n2);
+		writeUnsignedVarint(n3);
 		
 		// Write values
 		for (boolean[][] submatrix : matrix) {
@@ -147,8 +152,10 @@ public class CompressedDataOutputStream extends DataOutputStream {
 	 */
 	public void writeIntMatrix(int[][] matrix) throws IOException {
 		// Write matrix size
-		writeUnsignedVarint(matrix.length);
-		writeUnsignedVarint(matrix[0].length);
+		int n1 = matrix.length;
+		int n2 = (n1 > 0) ? matrix[0].length : 0;
+		writeUnsignedVarint(n1);
+		writeUnsignedVarint(n2);
 		
 		// Write values
 		for (int[] submatrix : matrix) {
@@ -167,9 +174,12 @@ public class CompressedDataOutputStream extends DataOutputStream {
 	 */
 	public void writeIntMatrix(int[][][] matrix) throws IOException {
 		// Write matrix size
-		writeUnsignedVarint(matrix.length);
-		writeUnsignedVarint(matrix[0].length);
-		writeUnsignedVarint(matrix[0][0].length);
+		int n1 = matrix.length;
+		int n2 = (n1 > 0) ? matrix[0].length : 0;
+		int n3 = (n2 > 0) ? matrix[0][0].length : 0;
+		writeUnsignedVarint(n1);
+		writeUnsignedVarint(n2);
+		writeUnsignedVarint(n3);
 		
 		// Write values
 		for (int[][] submatrix : matrix) {
@@ -205,8 +215,10 @@ public class CompressedDataOutputStream extends DataOutputStream {
 	 */
 	public void writeDoubleMatrix(double[][] matrix) throws IOException {
 		// Write matrix size
-		writeUnsignedVarint(matrix.length);
-		writeUnsignedVarint(matrix[0].length);
+		int n1 = matrix.length;
+		int n2 = (n1 > 0) ? matrix[0].length : 0;
+		writeUnsignedVarint(n1);
+		writeUnsignedVarint(n2);
 		
 		// Write values
 		for (double[] submatrix : matrix) {
@@ -224,9 +236,12 @@ public class CompressedDataOutputStream extends DataOutputStream {
 	 */
 	public void writeDoubleMatrix(double[][][] matrix) throws IOException {
 		// Write matrix size
-		writeUnsignedVarint(matrix.length);
-		writeUnsignedVarint(matrix[0].length);
-		writeUnsignedVarint(matrix[0][0].length);
+		int n1 = matrix.length;
+		int n2 = (n1 > 0) ? matrix[0].length : 0;
+		int n3 = (n2 > 0) ? matrix[0][0].length : 0;
+		writeUnsignedVarint(n1);
+		writeUnsignedVarint(n2);
+		writeUnsignedVarint(n3);
 		
 		// Write values
 		for (double[][] submatrix : matrix) {
@@ -262,8 +277,10 @@ public class CompressedDataOutputStream extends DataOutputStream {
 	 */
 	public void writeStringMatrix(String[][] matrix) throws IOException {
 		// Write matrix size
-		writeUnsignedVarint(matrix.length);
-		writeUnsignedVarint(matrix[0].length);
+		int n1 = matrix.length;
+		int n2 = (n1 > 0) ? matrix[0].length : 0;
+		writeUnsignedVarint(n1);
+		writeUnsignedVarint(n2);
 		
 		// Write values
 		for (String[] submatrix : matrix) {
@@ -281,9 +298,12 @@ public class CompressedDataOutputStream extends DataOutputStream {
 	 */
 	public void writeStringMatrix(String[][][] matrix) throws IOException {
 		// Write matrix size
-		writeUnsignedVarint(matrix.length);
-		writeUnsignedVarint(matrix[0].length);
-		writeUnsignedVarint(matrix[0][0].length);
+		int n1 = matrix.length;
+		int n2 = (n1 > 0) ? matrix[0].length : 0;
+		int n3 = (n2 > 0) ? matrix[0][0].length : 0;
+		writeUnsignedVarint(n1);
+		writeUnsignedVarint(n2);
+		writeUnsignedVarint(n3);
 		
 		// Write values
 		for (String[][] submatrix : matrix) {

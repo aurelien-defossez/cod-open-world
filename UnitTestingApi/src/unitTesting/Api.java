@@ -78,7 +78,7 @@ public class Api extends JavaApi {
 		ApiCall call = new ApiCall(API_TEST_VOID, 0);
 		callGameFunction(call);
 	}
-
+	
 	public static boolean testBoolNot(boolean x) {
 		ApiCall call = new ApiCall(API_TEST_BOOL_NOT, 1);
 		call.add(new Variant(x));
@@ -177,9 +177,10 @@ public class Api extends JavaApi {
 		return (Integer) callGameFunction(call);
 	}
 	
-	public static String[] testStringMatrixConcat(String[][] x) {
-		ApiCall call = new ApiCall(API_TEST_STRING_MATRIX_CONCAT, 1);
+	public static String[] testStringMatrixConcat(String[][] x, String delim) {
+		ApiCall call = new ApiCall(API_TEST_STRING_MATRIX_CONCAT, 2);
 		call.add(new Variant(x));
+		call.add(new Variant(delim));
 		return (String[]) callGameFunction(call);
 	}
 }

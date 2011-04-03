@@ -145,7 +145,7 @@ public class ApiCall {
 	 * @throws IOException if an error occurs while reading data.
 	 */
 	public static ApiCall deserialize(CompressedDataInputStream in)
-			throws IOException, CowException {
+		throws IOException, CowException {
 		// Read function id and number of parameters
 		short functionId = in.readShort();
 		byte nbParameters = in.readByte();

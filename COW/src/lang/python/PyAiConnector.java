@@ -60,8 +60,7 @@ public class PyAiConnector extends AiConnector {
 		PyObject aiConnectorClass = interpreter.get("aiCommunicator");
 		PyObject aiConnectorPy = aiConnectorClass.__call__();
 		aiCommunicator =
-				(PyAiCommunicator) aiConnectorPy
-						.__tojava__(PyAiCommunicator.class);
+			(PyAiCommunicator) aiConnectorPy.__tojava__(PyAiCommunicator.class);
 		
 		// Load API
 		interpreter.execfile("games/" + gameName + "/api/python/api.py");
@@ -70,7 +69,7 @@ public class PyAiConnector extends AiConnector {
 		
 		// Load AI
 		interpreter.execfile("games/" + gameName + "/ais/" + ai.getName()
-				+ "/ai.py");
+			+ "/ai.py");
 		PyObject aiClass = interpreter.get("Ai");
 		PyObject aiPy = aiClass.__call__();
 		if (logger.isDebugEnabled())

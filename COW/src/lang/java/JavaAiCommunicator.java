@@ -56,5 +56,5 @@ public abstract class JavaAiCommunicator implements AiInterface {
 	 * @param aiInstance the AI instance of the {GameName}Ai class.
 	 */
 	public abstract void initCommunicator(JavaAiConnector connector,
-			Object aiInstance);
+		Object aiInstance);
 }

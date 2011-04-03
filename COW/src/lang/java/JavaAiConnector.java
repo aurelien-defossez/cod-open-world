@@ -53,19 +53,19 @@ public class JavaAiConnector extends AiConnector {
 			
 			// Create class loader
 			File aiJar =
-					new File("games/" + gameName + "/ais/" + ai.getName()
-							+ "/ai.jar");
+				new File("games/" + gameName + "/ais/" + ai.getName()
+					+ "/ai.jar");
 			File apiJar = new File("games/" + gameName + "/api/java/api.jar");
 			URL[] urls = { apiJar.toURI().toURL(), aiJar.toURI().toURL() };
 			URLClassLoader classLoader = new URLClassLoader(urls);
 			
 			// Load API and communicator
 			JavaApi api =
-					(JavaApi) classLoader.loadClass(gameName + ".Api")
-							.newInstance();
+				(JavaApi) classLoader.loadClass(gameName + ".Api")
+					.newInstance();
 			aiCommunicator =
-					(JavaAiCommunicator) classLoader.loadClass(
-							gameName + ".AiCommunicator").newInstance();
+				(JavaAiCommunicator) classLoader.loadClass(
+					gameName + ".AiCommunicator").newInstance();
 			
 			if (logger.isDebugEnabled())
 				logger.debug("Game API and communicator loaded.");

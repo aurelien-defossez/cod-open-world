@@ -17,7 +17,7 @@ public class Game implements UnitTestingEngine {
 	/**
 	 * The number of tests in this unit.
 	 */
-	private static final int nbTests = 7;
+	private static final int nbTests = 17;
 	
 	// -------------------------------------------------------------------------
 	// Attributes
@@ -128,13 +128,7 @@ public class Game implements UnitTestingEngine {
 	}
 	
 	public String testStringRevert(String x) {
-		StringBuffer sb = new StringBuffer(x.length());
-		
-		for (int i = 0; i < x.length(); i++) {
-			sb.append(x.charAt(i));
-		}
-		
-		return sb.toString();
+		return new StringBuffer(x).reverse().toString();
 	}
 	
 	public String testStringConcat(String x, String y) {
@@ -154,10 +148,12 @@ public class Game implements UnitTestingEngine {
 	}
 	
 	public boolean[][] testBoolMatrixXor(boolean[][] x, boolean[][] y) {
-		boolean[][] result = new boolean[x.length][x[0].length];
+		int n1 = x.length;
+		int n2 = (n1 > 0) ? x[0].length : 0;
+		boolean[][] result = new boolean[n1][n2];
 		
-		for (int i = 0; i < result.length; i++) {
-			for (int j = 0; j < result[0].length; j++) {
+		for (int i = 0; i < n1; i++) {
+			for (int j = 0; j < n2; j++) {
 				result[i][j] = x[i][j] ^ y[i][j];
 			}
 		}
@@ -176,11 +172,14 @@ public class Game implements UnitTestingEngine {
 	}
 	
 	public int[][][] testIntMatrixAdd(int[][][] x, int[][][] y) {
-		int[][][] result = new int[x.length][x[0].length][x[0][0].length];
+		int n1 = x.length;
+		int n2 = (n1 > 0) ? x[0].length : 0;
+		int n3 = (n2 > 0) ? x[0][0].length : 0;
+		int[][][] result = new int[n1][n2][n3];
 		
-		for (int i = 0; i < result.length; i++) {
-			for (int j = 0; j < result[0].length; j++) {
-				for (int k = 0; k < result[0][0].length; k++) {
+		for (int i = 0; i < n1; i++) {
+			for (int j = 0; j < n2; j++) {
+				for (int k = 0; k < n3; k++) {
 					result[i][j][k] = x[i][j][k] + y[i][j][k];
 				}
 			}
@@ -192,22 +191,24 @@ public class Game implements UnitTestingEngine {
 	public double testDoubleMatrixAverage(double[] x) {
 		double sum = 0;
 		
-		for(double value : x) {
+		for (double value : x) {
 			sum += value;
 		}
 		
-		return sum / x.length;
+		return (x.length > 0) ? sum / x.length : 0;
 	}
 	
 	public double[][] testDoubleMatrixMult(double[][] x, double[][] y) {
-		double[][] result = new double[x.length][y[0].length];
+		int n1 = x.length;
+		int n2 = (y.length > 0) ? y[0].length : 0;
+		double[][] result = new double[n1][n2];
 		
-		for (int i = 0; i < result.length; i++) {
-			for (int j = 0; j < result[0].length; j++) {
+		for (int i = 0; i < n1; i++) {
+			for (int j = 0; j < n2; j++) {
 				result[i][j] = 0;
 				
 				for (int k = 0; k < y.length; k++) {
-					result[i][j] += x[i][k] * y[j][j];
+					result[i][j] += x[i][k] * y[k][j];
 				}
 			}
 		}
@@ -218,8 +219,8 @@ public class Game implements UnitTestingEngine {
 	public int testStringMatrixFind(String[] x, String y) {
 		int count = 0;
 		
-		for(String s : x) {
-			if(s.contains(y)) {
+		for (String s : x) {
+			if (s.contains(y)) {
 				count++;
 			}
 		}
@@ -227,14 +228,19 @@ public class Game implements UnitTestingEngine {
 		return count;
 	}
 	
-	public String[] testStringMatrixConcat(String[][] x) {
-		String[] result = new String[x.length];
+	public String[] testStringMatrixConcat(String[][] x, String delim) {
+		int n1 = x.length;
+		int n2 = (n1 > 0) ? x[0].length : 0;
+		String[] result = new String[n1];
 		
-		for (int i = 0; i < x.length; i++) {
+		for (int i = 0; i < n1; i++) {
 			StringBuffer sb = new StringBuffer();
 			
-			for (int j = 0; j < x[0].length; j++) {
+			for (int j = 0; j < n2; j++) {
 				sb.append(x[i][j]);
+				if(j < n2 - 1) {
+					sb.append(delim);
+				}
 			}
 			
 			result[i] = sb.toString();

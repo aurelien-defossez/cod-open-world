@@ -93,7 +93,7 @@ public class Scheduler extends Thread {
 	 * @throws CowException if the game cannot be loaded.
 	 */
 	public LiveSimulator loadGame(String gameName, boolean testMode)
-			throws CowException {
+		throws CowException {
 		if (logger.isTraceEnabled())
 			logger.trace("Loading game (" + gameName + ")...");
 		
@@ -120,7 +120,7 @@ public class Scheduler extends Thread {
 	 * @throws IOException if an error occurs while loading the replay.
 	 */
 	public ReplaySimulator loadReplay(String gameName, String replayName)
-			throws FileNotFoundException, IOException {
+		throws FileNotFoundException, IOException {
 		if (logger.isTraceEnabled())
 			logger.trace("Loading replay (" + replayName + ")...");
 		
@@ -235,7 +235,7 @@ public class Scheduler extends Thread {
 			try {
 				// Wait for event
 				if (state == GameState.PAUSED
-						|| state == GameState.WAITING_STEP) {
+					|| state == GameState.WAITING_STEP) {
 					synchronized (this) {
 						wait();
 					}

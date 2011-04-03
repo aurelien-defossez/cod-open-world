@@ -72,7 +72,7 @@ public class ReplayWriter implements GameListener {
 			out.writeUTF(gameName);
 		} catch (FileNotFoundException e) {
 			throw new CowException("Cannot create replay file (\"" + replayName
-					+ "\").", e);
+				+ "\").", e);
 		} catch (IOException e) {
 			throw new CowException("Cannot create replay writer.", e);
 		}
@@ -186,7 +186,7 @@ public class ReplayWriter implements GameListener {
 					
 					case BOOL_MATRIX1:
 						boolean[] booleanArray =
-								(boolean[]) parameter.getValue();
+							(boolean[]) parameter.getValue();
 						out.writeInt(booleanArray.length);
 						
 						for (boolean value : booleanArray) {

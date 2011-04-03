@@ -153,7 +153,6 @@ public abstract class GameSimulator implements Simulator {
 	/**
 	 * Adds an AI.
 	 * 
-	 * @param aiId the AI id.
 	 * @param ai the AI.
 	 */
 	protected final void addAi(Ai ai) {

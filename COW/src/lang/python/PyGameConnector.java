@@ -37,8 +37,8 @@ public class PyGameConnector extends GameConnector {
 		PyObject gameCommunicatorClass = interpreter.get("GameCommunicator");
 		PyObject gameConnectorPy = gameCommunicatorClass.__call__();
 		gameCommunicator =
-				(PyGameCommunicator) gameConnectorPy
-						.__tojava__(PyGameCommunicator.class);
+			(PyGameCommunicator) gameConnectorPy
+				.__tojava__(PyGameCommunicator.class);
 		
 		// Load API
 		interpreter.execfile("games/" + game.getName() + "/engine/api.py");
@@ -47,7 +47,7 @@ public class PyGameConnector extends GameConnector {
 		
 		// Load API call demultiplexer
 		interpreter.execfile("games/" + game.getName()
-				+ "/engine/apiCallDemux.py");
+			+ "/engine/apiCallDemux.py");
 		PyObject ApiDemuxClass = interpreter.get("ApiCallDemux");
 		PyObject apiDemuxPy = ApiDemuxClass.__call__();
 		
@@ -70,8 +70,7 @@ public class PyGameConnector extends GameConnector {
 		
 		for (Ai ai : ais) {
 			gameCommunicator.addAi(new PyInteger(ai.getId()),
-					new PyString(ai.getPlayerName()),
-					new PyString(ai.getName()));
+				new PyString(ai.getPlayerName()), new PyString(ai.getName()));
 		}
 	}
 	
@@ -79,7 +78,7 @@ public class PyGameConnector extends GameConnector {
 	public void disqualifyAi(Ai ai, String reason) {
 		System.out.println("Remove Python AI.");
 		gameCommunicator.removeAi(new PyInteger(ai.getId()), new PyString(
-				reason));
+			reason));
 	}
 	
 	@Override
@@ -101,6 +100,6 @@ public class PyGameConnector extends GameConnector {
 		}
 		
 		return gameCommunicator.performGameFunction(call.getFunctionId(),
-				ai.getId(), pyParameters);
+			ai.getId(), pyParameters);
 	}
 }

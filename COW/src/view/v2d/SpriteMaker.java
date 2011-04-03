@@ -40,8 +40,8 @@ public class SpriteMaker {
 	// -------------------------------------------------------------------------
 	
 	public SpriteMaker(SpriteLoader spriteLoader, SceneRenderer renderer,
-			String name, String spritePath, float width, float height,
-			int depth, entityCenter center) {
+		String name, String spritePath, float width, float height, int depth,
+		entityCenter center) {
 		this.name = name;
 		this.width = width;
 		this.height = height;
@@ -49,8 +49,7 @@ public class SpriteMaker {
 		
 		if (logger.isDebugEnabled())
 			logger.debug("Load entity(" + name + ", " + spritePath + ", "
-					+ width + ", " + height + ", " + depth + ", " + center
-					+ ")");
+				+ width + ", " + height + ", " + depth + ", " + center + ")");
 		
 		// Load texture
 		Texture texture = spriteLoader.loadSprite(spritePath);
@@ -109,7 +108,7 @@ public class SpriteMaker {
 	public Entity createEntity(int id) {
 		// Create sprite
 		Quad sprite =
-				new Quad("Entity #" + id + " (" + name + ")", width, height);
+			new Quad("Entity #" + id + " (" + name + ")", width, height);
 		
 		// Set Z order
 		sprite.setZOrder(depth);

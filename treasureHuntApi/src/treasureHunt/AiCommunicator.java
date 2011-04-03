@@ -40,7 +40,7 @@ public class AiCommunicator extends JavaAiCommunicator {
 	 */
 	@Override
 	public void
-			initCommunicator(JavaAiConnector aiConnector, Object aiInstance) {
+		initCommunicator(JavaAiConnector aiConnector, Object aiInstance) {
 		super.initCommunicator(aiConnector);
 		this.aiInstance = (TreasureHuntAi) aiInstance;
 	}

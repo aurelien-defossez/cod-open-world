@@ -43,8 +43,7 @@ public class ProcessReader extends Thread {
 		super(name);
 		
 		processStdOut =
-				new BufferedReader(new InputStreamReader(
-						process.getInputStream()));
+			new BufferedReader(new InputStreamReader(process.getInputStream()));
 	}
 	
 	// -------------------------------------------------------------------------

@@ -41,8 +41,8 @@ public class SceneGraph {
 		
 		try {
 			this.entitiesLoader =
-					new ConfigLoader("games/" + gameName + "/entities/"
-							+ CONFIG_FILE);
+				new ConfigLoader("games/" + gameName + "/entities/"
+					+ CONFIG_FILE);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -69,10 +69,10 @@ public class SceneGraph {
 			try {
 				// Load entity configuration file
 				String entityName =
-						entitiesLoader.getValue(String.valueOf(definitionId));
+					entitiesLoader.getValue(String.valueOf(definitionId));
 				EntityLoader entityLoader =
-						new EntityLoader("games/" + gameName + "/entities/"
-								+ entityName + ".ini");
+					new EntityLoader("games/" + gameName + "/entities/"
+						+ entityName + ".ini");
 				
 				// Get entity type
 				String type = entityLoader.getValue("type").toLowerCase();
@@ -80,15 +80,13 @@ public class SceneGraph {
 				// Sprite
 				if (type.equals("sprite")) {
 					spriteMaker =
-							new SpriteMaker(spriteLoader, renderer, entityName,
-									entityLoader.getValue("sprite"),
-									(float) entityLoader.getDoubleValue(
-											"width", 0),
-									(float) entityLoader.getDoubleValue(
-											"height", 0),
-									entityLoader.getIntValue("depth"),
-									entityLoader.getEntityCenterValue("center",
-											entityCenter.CENTER));
+						new SpriteMaker(spriteLoader, renderer, entityName,
+							entityLoader.getValue("sprite"),
+							(float) entityLoader.getDoubleValue("width", 0),
+							(float) entityLoader.getDoubleValue("height", 0),
+							entityLoader.getIntValue("depth"),
+							entityLoader.getEntityCenterValue("center",
+								entityCenter.CENTER));
 					makers.put(definitionId, spriteMaker);
 				}
 				// Unknown type

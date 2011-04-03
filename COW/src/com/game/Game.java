@@ -59,8 +59,7 @@ public abstract class Game implements GameInterface {
 		try {
 			// Load config.ini file
 			ConfigLoader config =
-					new ConfigLoader("games/" + gameName + "/engine/"
-							+ CONFIG_FILE);
+				new ConfigLoader("games/" + gameName + "/engine/" + CONFIG_FILE);
 			
 			// Read language
 			String languageString = config.getValue("language").toLowerCase();
@@ -76,18 +75,18 @@ public abstract class Game implements GameInterface {
 			// Not supported language
 			else {
 				throw new CowException("Cannot load game \"" + gameName
-						+ ": language " + languageString + " not supported.");
+					+ ": language " + languageString + " not supported.");
 			}
 		}
 		// Configuration file not found
 		catch (FileNotFoundException e) {
 			throw new CowException("Cannot load game \"" + gameName
-					+ ": config file missing.");
+				+ ": config file missing.");
 		}
 		// Configuration file not complete
 		catch (IOException e) {
 			throw new CowException("Cannot load game \"" + gameName
-					+ ": a problem occurs while reading config file.", e);
+				+ ": a problem occurs while reading config file.", e);
 		}
 	}
 	

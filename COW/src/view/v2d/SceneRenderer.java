@@ -44,7 +44,7 @@ public class SceneRenderer extends SimpleCanvasImpl implements ButtonListener {
 	// -------------------------------------------------------------------------
 	
 	public SceneRenderer(KeyboardController keyboardController,
-			MouseController mouseController) {
+		MouseController mouseController) {
 		super(1, 1);
 		
 		this.keyboardController = keyboardController;
@@ -114,7 +114,7 @@ public class SceneRenderer extends SimpleCanvasImpl implements ButtonListener {
 			Point currentMousePosition = mouseController.getAbsolutePosition();
 			cameraPosition.set(beforeDragCameraPosition);
 			moveView(currentMousePosition.x - beforeDragMousePosition.x,
-					beforeDragMousePosition.y - currentMousePosition.y);
+				beforeDragMousePosition.y - currentMousePosition.y);
 		}
 	}
 	
@@ -127,7 +127,7 @@ public class SceneRenderer extends SimpleCanvasImpl implements ButtonListener {
 	}
 	
 	public void displayGrid(float x0, float y0, float x1, float y1,
-			float xSpacing, float ySpacing, ColorRGBA color) {
+		float xSpacing, float ySpacing, ColorRGBA color) {
 		ArrayList<Vector3f> lines = new ArrayList<Vector3f>();
 		
 		// Vertical lines
@@ -144,8 +144,8 @@ public class SceneRenderer extends SimpleCanvasImpl implements ButtonListener {
 		
 		// Draw lines
 		Geometry grid =
-				new Line("regularLine", lines.toArray(new Vector3f[] {}), null,
-						null, null);
+			new Line("regularLine", lines.toArray(new Vector3f[] {}), null,
+				null, null);
 		grid.setDefaultColor(color);
 		grid.setZOrder(5);
 		grid.updateRenderState();
@@ -213,20 +213,20 @@ public class SceneRenderer extends SimpleCanvasImpl implements ButtonListener {
 		// Zoom on the cursor
 		if (mousePosition != null) {
 			centre =
-					new Vector3f(mousePosition.x, renderer.getHeight()
-							- mousePosition.y, 0);
+				new Vector3f(mousePosition.x, renderer.getHeight()
+					- mousePosition.y, 0);
 		}
 		// Zoom on the centre of the scene
 		else {
 			centre =
-					new Vector3f(renderer.getWidth() / 2,
-							renderer.getHeight() / 2, 0);
+				new Vector3f(renderer.getWidth() / 2, renderer.getHeight() / 2,
+					0);
 		}
 		
 		// Move camera accordingly
 		cameraPosition.set(
-				(float) (dz * cameraPosition.x + centre.x * (1 - dz)),
-				(float) (dz * cameraPosition.y + centre.y * (1 - dz)), 0);
+			(float) (dz * cameraPosition.x + centre.x * (1 - dz)), (float) (dz
+				* cameraPosition.y + centre.y * (1 - dz)), 0);
 		
 		// Move and scale root node
 		rootNode.setLocalScale((float) cameraScale);

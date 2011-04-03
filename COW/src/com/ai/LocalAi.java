@@ -35,7 +35,7 @@ public class LocalAi extends Ai {
 	 * @throws CowException if the AI cannot be loaded.
 	 */
 	public LocalAi(Simulator simulator, String gameName, short aiId,
-			String aiName) {
+		String aiName) {
 		super(simulator, gameName, aiId, aiName);
 		
 		switch (getLanguage()) {

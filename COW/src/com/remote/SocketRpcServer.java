@@ -234,7 +234,7 @@ public class SocketRpcServer implements RpcServer {
 			
 			if (logger.isDebugEnabled())
 				logger.debug("Command read: "
-						+ RpcValues.getConstantName(command));
+					+ RpcValues.getConstantName(command));
 			
 			switch (command) {
 			case RpcValues.CMD_GAME_CALL_API:
@@ -242,11 +242,10 @@ public class SocketRpcServer implements RpcServer {
 				
 				if (logger.isTraceEnabled()) {
 					logger.trace("API call: function=" + call.getFunctionId()
-							+ ", " + "nbParameters="
-							+ call.getParameters().length);
+						+ ", " + "nbParameters=" + call.getParameters().length);
 					for (Variant parameter : call.getParameters()) {
 						logger.trace("API call parameter="
-								+ parameter.getValue());
+							+ parameter.getValue());
 					}
 				}
 				

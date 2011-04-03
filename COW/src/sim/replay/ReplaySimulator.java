@@ -50,7 +50,7 @@ public class ReplaySimulator extends GameSimulator {
 	 * @throws IOException if an error occurs while loading the replay.
 	 */
 	public ReplaySimulator(Scheduler scheduler, String gameName,
-			String replayName) throws FileNotFoundException, IOException {
+		String replayName) throws FileNotFoundException, IOException {
 		super(scheduler, gameName);
 		
 		// Open file

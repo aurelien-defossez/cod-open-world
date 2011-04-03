@@ -36,16 +36,16 @@ public class View2D extends View {
 	// -------------------------------------------------------------------------
 	
 	public View2D(String gameName, KeyboardController keyBoardController,
-			MouseController mouseController) {
+		MouseController mouseController) {
 		super(keyBoardController);
 		this.gameName = gameName;
 		
 		// Create display
 		DisplaySystem display =
-				DisplaySystem
-						.getDisplaySystem(LWJGLSystemProvider.LWJGL_SYSTEM_IDENTIFIER);
+			DisplaySystem
+				.getDisplaySystem(LWJGLSystemProvider.LWJGL_SYSTEM_IDENTIFIER);
 		display.registerCanvasConstructor("AWT",
-				LWJGLAWTCanvasConstructor.class);
+			LWJGLAWTCanvasConstructor.class);
 		
 		// Create canvas (automatic resolution adjustment)
 		canvas = (LWJGLCanvas) display.createCanvas(1, 1);
@@ -107,9 +107,9 @@ public class View2D extends View {
 	}
 	
 	protected void displayGrid(double x0, double y0, double x1, double y1,
-			double xSpacing, double ySpacing, int color) {
+		double xSpacing, double ySpacing, int color) {
 		renderer.displayGrid((float) x0, (float) y0, (float) x1, (float) y1,
-				(float) xSpacing, (float) ySpacing, ColorRGBA.darkGray);
+			(float) xSpacing, (float) ySpacing, ColorRGBA.darkGray);
 	}
 	
 	protected void createEntity(int definitionId, int id) {
