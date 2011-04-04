@@ -67,13 +67,6 @@ public class ProxySimulator implements Simulator {
 	}
 	
 	/**
-	 * Initializes the AIs.
-	 */
-	public void initGame() {
-		ai.init();
-	}
-	
-	/**
 	 * Calls an AI API function.
 	 * 
 	 * @param call the function call.

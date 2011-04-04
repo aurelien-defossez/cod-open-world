@@ -114,14 +114,6 @@ public class ProxyAi extends Ai {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void init() {
-		rpcServer.initGame();
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
 	public void performAiFunction(ApiCall call) {
 		rpcServer.performAiFunction(call);
 	}

@@ -14,11 +14,6 @@ public interface AiInterface {
 	// -------------------------------------------------------------------------
 	
 	/**
-	 * Tells the AI to initialize itself.
-	 */
-	public void init();
-	
-	/**
 	 * Performs an AI API function.
 	 * 
 	 * @param call the AI API call.

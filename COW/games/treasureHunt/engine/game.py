@@ -35,6 +35,9 @@ class Game(object):
 	
 	#Plays the game
 	def play(self):
+		for aiId in self.ais:
+			self.conn.callAiFunction(aiId, PHASE_INIT)
+		
 		for numTurn in range(1000):
 			for aiId in self.ais:
 				self.conn.callAiFunction(aiId, PHASE_PLAY)

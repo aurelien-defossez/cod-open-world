@@ -31,14 +31,6 @@ public class ReplayAi extends Ai {
 	 * Does nothing.
 	 */
 	@Override
-	public void init() {
-		// Do nothing
-	}
-	
-	/**
-	 * Does nothing.
-	 */
-	@Override
 	public void performAiFunction(ApiCall call) {
 		// Do nothing
 	}

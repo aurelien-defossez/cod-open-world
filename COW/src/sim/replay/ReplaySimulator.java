@@ -126,7 +126,7 @@ public class ReplaySimulator extends GameSimulator {
 				
 				case View.UPDATE_SCORE:
 					for (Ai ai : getAis()) {
-						ai.setScore(in.readLong());
+						ai.setScore(in.readInt());
 					}
 					updateScore();
 					break;

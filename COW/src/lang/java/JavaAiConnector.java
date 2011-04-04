@@ -100,14 +100,6 @@ public class JavaAiConnector extends AiConnector {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void init() {
-		aiCommunicator.init();
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
 	public void performAiFunction(ApiCall call) {
 		aiCommunicator.performAiFunction(call);
 	}

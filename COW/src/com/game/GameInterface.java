@@ -60,7 +60,7 @@ public interface GameInterface {
 	 * @param aiId the AI id.
 	 * @param score the new score for this AI.
 	 */
-	public void setScore(short aiId, long score);
+	public void setScore(short aiId, int score);
 	
 	/**
 	 * Increments the score of an AI.
@@ -68,7 +68,7 @@ public interface GameInterface {
 	 * @param aiId the AI id.
 	 * @param increment the value to add to the score of this AI.
 	 */
-	public abstract void incrementScore(short aiId, long increment);
+	public abstract void incrementScore(short aiId, int increment);
 	
 	/**
 	 * Calls an AI API function.

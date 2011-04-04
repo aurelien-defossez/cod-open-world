@@ -45,14 +45,6 @@ public class AiCommunicator extends JavaAiCommunicator {
 	}
 	
 	/**
-	 * Tells the AI to initialize.
-	 */
-	@Override
-	public void init() {
-		aiInstance.init();
-	}
-	
-	/**
 	 * Calls the right AI function.
 	 * 
 	 * @param call the phase call.

@@ -53,7 +53,7 @@ public abstract class GameConnector implements GameInterface {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void setScore(short aiId, long score) {
+	public void setScore(short aiId, int score) {
 		game.setScore(aiId, score);
 	}
 	
@@ -61,7 +61,7 @@ public abstract class GameConnector implements GameInterface {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void incrementScore(short aiId, long increment) {
+	public void incrementScore(short aiId, int increment) {
 		game.incrementScore(aiId, increment);
 	}
 	

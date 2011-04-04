@@ -11,11 +11,6 @@ public interface UnitTestingAi {
 	// -------------------------------------------------------------------------
 	
 	/**
-	 * Initializes the AI before the game starts.
-	 */
-	public void init();
-	
-	/**
 	 * Stops the AI, thus deleting every object allocated during game time.
 	 */
 	public void stop();

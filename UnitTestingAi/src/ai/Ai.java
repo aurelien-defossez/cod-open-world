@@ -18,14 +18,6 @@ public class Ai implements UnitTestingAi {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void init() {
-		// Do nothing
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
 	public void performTest(int testNb) {
 		try {
 			System.out.println("AI: perform test #" + testNb);

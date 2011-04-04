@@ -55,7 +55,7 @@ public abstract class Ai implements AiInterface {
 	/**
 	 * The AI score.
 	 */
-	private long score;
+	private int score;
 	
 	// -------------------------------------------------------------------------
 	// Constructor
@@ -160,7 +160,7 @@ public abstract class Ai implements AiInterface {
 	 * 
 	 * @return the AI score.
 	 */
-	public final long getScore() {
+	public final int getScore() {
 		return score;
 	}
 	
@@ -169,7 +169,7 @@ public abstract class Ai implements AiInterface {
 	 * 
 	 * @param score the new score.
 	 */
-	public final void setScore(long score) {
+	public final void setScore(int score) {
 		this.score = score;
 	}
 	

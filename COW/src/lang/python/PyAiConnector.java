@@ -89,14 +89,6 @@ public class PyAiConnector extends AiConnector {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void init() {
-		aiCommunicator.init();
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
 	public void performAiFunction(ApiCall call) {
 		// TODO: pass parameters
 		aiCommunicator.performAiFunction(new PyInteger(call.getFunctionId()));

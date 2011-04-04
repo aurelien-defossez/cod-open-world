@@ -67,15 +67,11 @@ public abstract class GameSimulator implements Simulator {
 	}
 	
 	/**
-	 * Initializes the game listeners and AIs.
+	 * Initializes the game listeners.
 	 */
 	public void initGame() {
 		for (GameListener listener : listeners) {
 			listener.initGame(getAis());
-		}
-		
-		for (Ai ai : getAis()) {
-			ai.init();
 		}
 	}
 	
@@ -109,7 +105,7 @@ public abstract class GameSimulator implements Simulator {
 	 * @param aiId the AI id.
 	 * @param score the new score.
 	 */
-	public void setScore(short aiId, long score) {
+	public void setScore(short aiId, int score) {
 		getAi(aiId).setScore(score);
 		updateScore();
 	}
@@ -120,7 +116,7 @@ public abstract class GameSimulator implements Simulator {
 	 * @param aiId the AI id.
 	 * @param increment the value to add to the current score.
 	 */
-	public void incrementScore(short aiId, long increment) {
+	public void incrementScore(short aiId, int increment) {
 		Ai ai = getAi(aiId);
 		ai.setScore(ai.getScore() + increment);
 		updateScore();

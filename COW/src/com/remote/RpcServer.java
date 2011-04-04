@@ -31,11 +31,6 @@ public interface RpcServer {
 	public abstract void connectAiProcess(Process aiProcess) throws IOException;
 	
 	/**
-	 * Initializes the game.
-	 */
-	public abstract void initGame();
-	
-	/**
 	 * Calls an AI API function.
 	 * 
 	 * @param call the AI API call.

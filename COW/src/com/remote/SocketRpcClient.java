@@ -174,12 +174,6 @@ public class SocketRpcClient implements RpcClient {
 			ack();
 			break;
 		
-		// Initializes the game
-		case RpcValues.CMD_AI_INIT:
-			simulator.initGame();
-			ack();
-			break;
-		
 		// Stops the game
 		case RpcValues.CMD_AI_STOP:
 			simulator.stopAi();

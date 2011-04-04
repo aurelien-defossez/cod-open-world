@@ -15,6 +15,7 @@ public class AiCommunicator extends JavaAiCommunicator {
 	// -------------------------------------------------------------------------
 	
 	// Phases
+	private static final byte PHASE_INIT = 2;
 	private static final byte PHASE_REINIT = 0;
 	private static final byte PHASE_PLAY = 1;
 	
@@ -46,14 +47,6 @@ public class AiCommunicator extends JavaAiCommunicator {
 	}
 	
 	/**
-	 * Tells the AI to initialize.
-	 */
-	@Override
-	public void init() {
-		aiInstance.init();
-	}
-	
-	/**
 	 * Calls the right AI function.
 	 * 
 	 * @param call the phase call.
@@ -61,6 +54,10 @@ public class AiCommunicator extends JavaAiCommunicator {
 	@Override
 	public void performAiFunction(ApiCall call) {
 		switch (call.getFunctionId()) {
+		case PHASE_INIT:
+			aiInstance.init();
+			break;
+		
 		case PHASE_REINIT:
 			aiInstance.reInit();
 			break;

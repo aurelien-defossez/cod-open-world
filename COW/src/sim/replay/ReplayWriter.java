@@ -128,7 +128,7 @@ public class ReplayWriter implements GameListener {
 				out.writeShort(View.UPDATE_SCORE);
 				
 				for (Ai ai : ais) {
-					out.writeLong(ai.getScore());
+					out.writeInt(ai.getScore());
 				}
 			} catch (IOException e) {
 				logger.error(e.getMessage(), e);

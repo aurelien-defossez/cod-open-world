@@ -148,23 +148,6 @@ public class SocketRpcServer implements RpcServer {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void initGame() {
-		try {
-			// Send initialize AI command
-			out.writeByte(RpcValues.CMD_AI_INIT);
-			out.flush();
-			
-			// Read AI stream
-			waitForCommand();
-		} catch (IOException e) {
-			logger.error(e.getMessage(), e);
-		}
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
 	public void performAiFunction(ApiCall call) {
 		try {
 			// Send execute AI command

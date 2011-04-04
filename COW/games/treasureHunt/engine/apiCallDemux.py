@@ -6,6 +6,7 @@ from jarray import array
 from com import Variant
 
 #Phases
+PHASE_INIT = 2
 PHASE_REINIT = 0
 PHASE_PLAY = 1
 

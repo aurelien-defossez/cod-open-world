@@ -49,7 +49,7 @@ public abstract class JavaGameCommunicator {
 	 * @param aiId the AI id.
 	 * @param score the new score for this AI.
 	 */
-	public final void setScore(short aiId, long score) {
+	public final void setScore(short aiId, int score) {
 		connector.setScore(aiId, score);
 	}
 	
@@ -59,7 +59,7 @@ public abstract class JavaGameCommunicator {
 	 * @param aiId the AI id.
 	 * @param increment the value to add to the score of this AI.
 	 */
-	public final void incrementScore(short aiId, long increment) {
+	public final void incrementScore(short aiId, int increment) {
 		connector.incrementScore(aiId, increment);
 	}
 	
