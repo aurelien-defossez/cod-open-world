@@ -238,7 +238,7 @@ public class Game implements UnitTestingEngine {
 			
 			for (int j = 0; j < n2; j++) {
 				sb.append(x[i][j]);
-				if(j < n2 - 1) {
+				if (j < n2 - 1) {
 					sb.append(delim);
 				}
 			}

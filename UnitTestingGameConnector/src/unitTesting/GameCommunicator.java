@@ -170,9 +170,8 @@ public class GameCommunicator extends JavaGameCommunicator {
 					.getParameter(1).getValue()));
 			
 		case API_TEST_STRING_MATRIX_CONCAT:
-			return new Variant(
-				gameInstance.testStringMatrixConcat((String[][]) call
-					.getParameter(0).getValue(), (String) call
+			return new Variant(gameInstance.testStringMatrixConcat(
+				(String[][]) call.getParameter(0).getValue(), (String) call
 					.getParameter(1).getValue()));
 			
 		default:

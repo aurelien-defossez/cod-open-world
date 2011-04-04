@@ -74,6 +74,13 @@ public class Api extends JavaApi {
 	// Class methods
 	// -------------------------------------------------------------------------
 	
+	public static String decode(int code) {
+		switch (code) {
+		default:
+			return "Unknown code (" + code + ")";
+		}
+	}
+	
 	public static void testVoid() {
 		ApiCall call = new ApiCall(API_TEST_VOID, 0);
 		callGameFunction(call);

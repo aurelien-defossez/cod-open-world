@@ -92,7 +92,7 @@ public class ControlPanel extends JPanel implements KeyboardListener {
 	}
 	
 	public synchronized void nextStep() {
-		scheduler.nextStep();
+		scheduler.nextFrame();
 	}
 	
 	public synchronized void stopGame() {

@@ -12,7 +12,7 @@ public class Ai implements TreasureHuntAi {
 	private int y;
 	private int lastMove;
 	private boolean coordFound;
-
+	
 	@Override
 	public void init() {
 		int[] size = Api.getMapSize();

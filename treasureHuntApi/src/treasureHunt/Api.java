@@ -68,6 +68,27 @@ public class Api extends JavaApi {
 	// -------------------------------------------------------------------------
 	
 	/**
+	 * Decodes the constant code.
+	 * 
+	 * @param code the code to decode.
+	 * @return the code name.
+	 */
+	public static String decode(int code) {
+		switch (code) {
+		case LEFT:
+			return "LEFT";
+		case RIGHT:
+			return "RIGHT";
+		case UP:
+			return "UP";
+		case DOWN:
+			return "DOWN";
+		default:
+			return "Unknown code (" + code + ")";
+		}
+	}
+	
+	/**
 	 * Returns the map size.
 	 * 
 	 * @return the map size, as an array of two integers {width, height}.

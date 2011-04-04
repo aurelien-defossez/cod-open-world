@@ -27,11 +27,11 @@ public class Scheduler extends Thread {
 	
 	/**
 	 * The game state enumeration. CREATED: Scheduler created, game not started;
-	 * PLAYING: Game playing continuously; PAUSED: Game paused; WAITING_STEP:
-	 * Game in step by step mode; STOPPED: Game ended.
+	 * PLAYING: Game playing continuously; PAUSED: Game paused; WAITING_FRAME:
+	 * Game in frame by frame mode; STOPPED: Game ended.
 	 */
 	private enum GameState {
-		CREATED, PLAYING, PAUSED, WAITING_STEP, STOPPED
+		CREATED, PLAYING, PAUSED, WAITING_FRAME, STOPPED
 	};
 	
 	// -------------------------------------------------------------------------
@@ -150,7 +150,7 @@ public class Scheduler extends Thread {
 			start();
 		}
 		// Resume game
-		else if (state == GameState.PAUSED || state == GameState.WAITING_STEP) {
+		else if (state == GameState.PAUSED || state == GameState.WAITING_FRAME) {
 			// Change state
 			state = GameState.PLAYING;
 			
@@ -181,17 +181,17 @@ public class Scheduler extends Thread {
 	}
 	
 	/**
-	 * Plays one step of the game (state set to WAITING_STEP). Starts the game
+	 * Plays one frame of the game (state set to WAITING_FRAME). Starts the game
 	 * if not already done.
 	 */
-	public void nextStep() {
+	public void nextFrame() {
 		if (logger.isDebugEnabled())
-			logger.debug("Next step");
+			logger.debug("Next frame");
 		
 		// Start game
 		if (state == GameState.CREATED) {
 			// Change state
-			state = GameState.WAITING_STEP;
+			state = GameState.WAITING_FRAME;
 			
 			// Start scheduling thread
 			start();
@@ -199,7 +199,7 @@ public class Scheduler extends Thread {
 		// Play one step
 		else if (state != GameState.STOPPED) {
 			// Change state
-			state = GameState.WAITING_STEP;
+			state = GameState.WAITING_FRAME;
 			
 			// Wake scheduling thread up
 			wakeUp();
@@ -235,7 +235,7 @@ public class Scheduler extends Thread {
 			try {
 				// Wait for event
 				if (state == GameState.PAUSED
-					|| state == GameState.WAITING_STEP) {
+					|| state == GameState.WAITING_FRAME) {
 					synchronized (this) {
 						wait();
 					}

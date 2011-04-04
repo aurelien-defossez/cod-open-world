@@ -93,7 +93,7 @@ public class WatchdogTimer extends Thread {
 				// TimeOut
 				if (timeOutCounter >= maxTimeOut) {
 					watchdog.disqualifyCurrentAi();
-					pauseTimer();
+					stopTimer();
 				}
 			}
 			
@@ -120,10 +120,9 @@ public class WatchdogTimer extends Thread {
 	}
 	
 	/**
-	 * Resumes the timer, resetting the time counter.
+	 * Resumes the timer, continuing when it paused.
 	 */
 	public void resumeTimer() {
-		timeOutCounter = 0;
 		paused = false;
 		
 		if (logger.isTraceEnabled())
@@ -131,9 +130,30 @@ public class WatchdogTimer extends Thread {
 	}
 	
 	/**
-	 * Stops the counter definitely.
+	 * Resets the timer.
+	 */
+	public void reset() {
+		timeOutCounter = 0;
+		
+		if (logger.isTraceEnabled())
+			logger.trace("Watchdog resetted");
+	}
+	
+	/**
+	 * Stops the timer.
 	 */
 	public void stopTimer() {
+		paused = true;
+		reset();
+		
+		if (logger.isTraceEnabled())
+			logger.trace("Watchdog stopped");
+	}
+	
+	/**
+	 * Stops the timer definitely.
+	 */
+	public void stopTimerThread() {
 		active = false;
 		
 		if (logger.isTraceEnabled())

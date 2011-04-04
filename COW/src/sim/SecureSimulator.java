@@ -52,6 +52,16 @@ public class SecureSimulator extends LiveSimulator {
 	 * {@inheritDoc}
 	 */
 	@Override
+	public void setFrame() {
+		watchdog.pause();
+		super.setFrame();
+		watchdog.resume();
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public void endGame() {
 		super.endGame();
 		

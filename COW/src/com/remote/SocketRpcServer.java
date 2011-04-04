@@ -251,6 +251,6 @@ public class SocketRpcServer implements RpcServer {
 		} while (command != RpcValues.ACK);
 		
 		// Pause WatchDog
-		watchdog.pause();
+		watchdog.stop();
 	}
 }

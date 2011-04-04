@@ -68,6 +68,13 @@ public class Watchdog {
 	}
 	
 	/**
+	 * Resumes the timer when it was when paused.
+	 */
+	public void resume() {
+		timer.resumeTimer();
+	}
+	
+	/**
 	 * Stops the timer.
 	 */
 	public void stop() {
@@ -80,5 +87,12 @@ public class Watchdog {
 	public void disqualifyCurrentAi() {
 		simulator.disqualifyAi(runningAi, "timeout");
 		runningAi.stop();
+	}
+	
+	/**
+	 * Ends the watchdog.
+	 */
+	public void endWatchdog() {
+		timer.stopTimerThread();
 	}
 }
