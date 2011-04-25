@@ -28,11 +28,12 @@ public class SecureSimulator extends LiveSimulator {
 	 * 
 	 * @param scheduler the game scheduler.
 	 * @param gameName the game name.
+	 * @param parameters the game parameters.
 	 * @throws CowException if the game cannot be loaded.
 	 */
-	public SecureSimulator(Scheduler scheduler, String gameName)
+	public SecureSimulator(Scheduler scheduler, String gameName, String[] parameters)
 		throws CowException {
-		super(scheduler, gameName);
+		super(scheduler, gameName, parameters);
 		watchdog = new Watchdog(this);
 	}
 	

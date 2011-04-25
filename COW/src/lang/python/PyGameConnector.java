@@ -65,9 +65,15 @@ public class PyGameConnector extends GameConnector {
 	// -------------------------------------------------------------------------
 	
 	@Override
-	public void initGame(Collection<Ai> ais) {
-		gameCommunicator.initGame();
+	public void initGame(Collection<Ai> ais, String[] parameters) {
+		// Set game parameters
+		PyString[] pyParameters = new PyString[parameters.length];
+		for(int i = 0; i < parameters.length; i++) {
+			pyParameters[i] = new PyString(parameters[i]);
+		}
+		gameCommunicator.initGame(pyParameters);
 		
+		// Add AIs to the game
 		for (Ai ai : ais) {
 			gameCommunicator.addAi(new PyInteger(ai.getId()),
 				new PyString(ai.getPlayerName()), new PyString(ai.getName()));

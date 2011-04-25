@@ -14,7 +14,7 @@ public interface PyGameCommunicator {
 	public void init(PyGameConnector framework, PyObject game, PyObject api,
 		PyObject apiDemux);
 	
-	public void initGame();
+	public void initGame(PyString[] parameters);
 	
 	public void addAi(PyInteger aiId, PyString playerName, PyString aiName);
 	

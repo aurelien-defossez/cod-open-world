@@ -19,8 +19,9 @@ public interface GameInterface {
 	 * Tells the game to initialize itself in order to start the game.
 	 * 
 	 * @param ais the AIs.
+	 * @param parameters the game parameters.
 	 */
-	public abstract void initGame(Collection<Ai> ais);
+	public abstract void initGame(Collection<Ai> ais, String[] parameters);
 	
 	/**
 	 * Plays the game.

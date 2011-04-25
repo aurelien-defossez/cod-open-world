@@ -16,7 +16,7 @@
 			<arguments>
 				<dictionary>
 					<key>LaunchConfigHandle</key>
-					<value>&lt;project&gt;/.externalToolBuilders/Jar Maker (Treasure Hunt AI).launch</value>
+					<value>&lt;project&gt;/.externalToolBuilders/Treasure Hunt AI builder.launch</value>
 				</dictionary>
 			</arguments>
 		</buildCommand>

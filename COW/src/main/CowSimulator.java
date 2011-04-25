@@ -95,9 +95,10 @@ public class CowSimulator {
 		PropertyConfigurator.configure("log4j-config.txt");
 		
 		// Parameters
-		char arg = ' ';
+		String option = "";
 		Vector<String> ais = new Vector<String>();
 		Vector<String> replays = new Vector<String>();
+		String[] parameters = new String[0];
 		String gameName = null;
 		double gameSpeed = DEFAULT_SPEED;
 		ViewType viewType = ViewType.None;
@@ -108,21 +109,19 @@ public class CowSimulator {
 		// Parse arguments
 		try {
 			for (int i = 0; i < args.length;) {
-				arg = args[i++].charAt(1);
+				option = args[i++].toLowerCase();
 				
-				switch (arg) {
-				
-				// -a: Add an AI
-				case 'a':
+				// -a, --ai: Add an AI
+				if (option.equals("-a") || option.equals("--ai")) {
 					String aiName = args[i++];
 					ais.add(aiName);
 					
 					if (logger.isTraceEnabled())
 						logger.trace("Add AI: " + aiName);
-					break;
-				
-				// -g: Determine game
-				case 'g':
+				}
+
+				// -g, --game: Determine game
+				else if (option.equals("-g") || option.equals("--game")) {
 					if (gameName == null) {
 						gameName = args[i++];
 						
@@ -132,27 +131,27 @@ public class CowSimulator {
 						throw new CowException(
 							"The game can't be specified twice");
 					}
-					break;
-				
-				// -h: Display help
-				case 'h':
+				}
+
+				// -h, --help: Display help
+				else if (option.equals("-h") || option.equals("--help")) {
 					if (logger.isTraceEnabled())
 						logger.trace("Display help");
 					
 					testMode = true;
-					break;
-				
-				// -r: Save replay
-				case 'r':
+				}
+
+				// -r, --replay: Save replay
+				else if (option.equals("-r") || option.equals("--replay")) {
 					String replayName = args[i++];
 					replays.add(replayName);
 					
 					if (logger.isTraceEnabled())
 						logger.trace("Save replay: " + replayName);
-					break;
-				
-				// -s: Set speed
-				case 's':
+				}
+
+				// -s, --speed: Set speed
+				else if (option.equals("-s") || option.equals("--speed")) {
 					String speed = args[i++].toLowerCase();
 					
 					// Check unlimited speed
@@ -160,13 +159,13 @@ public class CowSimulator {
 						|| speed.equals(UNLIMITED_LETTER)) {
 						gameSpeed = UNLIMITED_SPEED;
 					}
-					// Get number speed
+					// Get integer speed
 					else {
 						try {
 							gameSpeed = Double.parseDouble(speed);
 							gameSpeed =
-								Math.max(MIN_SPEED,
-									Math.min(gameSpeed, MAX_SPEED));
+								Math.max(MIN_SPEED, Math.min(gameSpeed,
+									MAX_SPEED));
 						} catch (NumberFormatException e) {
 							throw new CowException("Speed must be an float "
 								+ "or \"" + UNLIMITED_NAME + "\".");
@@ -175,18 +174,18 @@ public class CowSimulator {
 					
 					if (logger.isTraceEnabled())
 						logger.trace("Set speed: " + gameSpeed);
-					break;
-				
-				// -t: Test mode
-				case 't':
+				}
+
+				// -t, --test: Test mode
+				else if (option.equals("-t") || option.equals("--test")) {
 					if (logger.isTraceEnabled())
 						logger.trace("Test mode");
 					
 					testMode = true;
-					break;
-				
-				// -v: Set view
-				case 'v':
+				}
+
+				// -v, --view: Set view
+				else if (option.equals("-v") || option.equals("--view")) {
 					String strViewType = args[i++].toLowerCase();
 					
 					// Define view
@@ -209,19 +208,28 @@ public class CowSimulator {
 					
 					if (logger.isTraceEnabled())
 						logger.trace("Set view: " + viewType);
-					break;
-				
-				// -x: Auto-start
-				case 'x':
+				}
+
+				// -x, --auto: Auto-start
+				else if (option.equals("-x") || option.equals("--auto")) {
 					autoStart = true;
 					
 					if (logger.isTraceEnabled())
 						logger.trace("Auto-start enabled");
-					break;
-				
+				}
+
+				// -z, --parameters: Set game parameters
+				else if (option.equals("-z") || option.equals("--parameters")) {
+					parameters = new String[args.length - i];
+					
+					for (int j = 0; j < parameters.length; j++) {
+						parameters[j] = args[i++];
+					}
+				}
+
 				// Unknown option
-				default:
-					throw new CowException("Unknown option: " + arg + ".");
+				else {
+					throw new CowException("Unknown option: " + option + ".");
 				}
 			}
 			
@@ -260,7 +268,7 @@ public class CowSimulator {
 				
 				// Set game
 				LiveSimulator simulator =
-					scheduler.loadGame(gameName, testMode);
+					scheduler.loadGame(gameName, parameters, testMode);
 				
 				// Add AIs
 				for (short i = 0; i < ais.size(); i++) {
@@ -292,7 +300,7 @@ public class CowSimulator {
 		}
 		// Not enough arguments
 		catch (IndexOutOfBoundsException e) {
-			logger.fatal("Argument expected after -" + arg);
+			logger.fatal("Argument expected after " + option);
 		}
 		// Cow exception
 		catch (CowException e) {

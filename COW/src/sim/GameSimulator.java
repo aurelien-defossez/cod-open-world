@@ -38,6 +38,11 @@ public abstract class GameSimulator implements Simulator {
 	 */
 	private Map<Short, Ai> ais;
 	
+	/**
+	 * The game parameters.
+	 */
+	private String[] parameters;
+	
 	// -------------------------------------------------------------------------
 	// Constructor
 	// -------------------------------------------------------------------------
@@ -47,12 +52,14 @@ public abstract class GameSimulator implements Simulator {
 	 * 
 	 * @param scheduler the game scheduler.
 	 * @param gameName the game name.
+	 * @param parameters the game parameters.
 	 */
-	public GameSimulator(Scheduler scheduler, String gameName) {
+	public GameSimulator(Scheduler scheduler, String gameName, String[] parameters) {
 		this.scheduler = scheduler;
 		this.gameName = gameName;
 		this.listeners = new Vector<GameListener>();
 		this.ais = new HashMap<Short, Ai>();
+		this.parameters = parameters;
 	}
 	
 	// -------------------------------------------------------------------------
@@ -140,6 +147,15 @@ public abstract class GameSimulator implements Simulator {
 	 */
 	public final String getGameName() {
 		return gameName;
+	}
+	
+	/**
+	 * Returns the game parameters.
+	 * 
+	 * @return the game parameters.
+	 */
+	public final String[] getParameters() {
+		return parameters;
 	}
 	
 	// -------------------------------------------------------------------------

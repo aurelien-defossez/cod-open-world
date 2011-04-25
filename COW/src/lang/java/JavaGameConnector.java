@@ -110,8 +110,10 @@ public class JavaGameConnector extends GameConnector {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void initGame(Collection<Ai> ais) {
+	public void initGame(Collection<Ai> ais, String[] parameters) {
 		gameCommunicator.init();
+		
+		// TODO: set parameters
 		
 		for (Ai ai : ais) {
 			gameCommunicator

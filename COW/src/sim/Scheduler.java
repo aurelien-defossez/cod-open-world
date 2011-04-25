@@ -88,20 +88,22 @@ public class Scheduler extends Thread {
 	 * Loads the game specified by the given name.
 	 * 
 	 * @param gameName the game name.
+	 * @param parameters the game parameters.
 	 * @param testMode tells whether the game is in test mode or secure mode.
 	 * @return the game live simulator.
 	 * @throws CowException if the game cannot be loaded.
 	 */
-	public LiveSimulator loadGame(String gameName, boolean testMode)
+	public LiveSimulator loadGame(String gameName, String[] parameters,
+			boolean testMode)
 		throws CowException {
 		if (logger.isTraceEnabled())
 			logger.trace("Loading game (" + gameName + ")...");
 		
 		// Create game simulator
 		if (testMode) {
-			this.simulator = new TestSimulator(this, gameName);
+			this.simulator = new TestSimulator(this, gameName, parameters);
 		} else {
-			this.simulator = new SecureSimulator(this, gameName);
+			this.simulator = new SecureSimulator(this, gameName, parameters);
 		}
 		
 		if (logger.isDebugEnabled())

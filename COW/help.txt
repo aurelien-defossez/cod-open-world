@@ -7,6 +7,7 @@ SYNOPSIS
 
 	java cow.jar -g <gameName> [-a <aiName>]* [-r <replayName>]* [-s <speed>]
 				[-v <viewType>] [-t] [-x] [-h]
+				[-z <gameParameter>*] 
 
 
 DESCRIPTION
@@ -14,37 +15,37 @@ DESCRIPTION
 	Launches a Cow instance playing a game with the specified AIs.
 	Possible arguments are listed below:
 
--a <aiName>
+-a, --ai <aiName>
 	Adds an ai, named <aiName>. Several AIs can be added by using this option.
 	Each AI will be given an unique ID according to its position in the
 	arguments list, starting with ID 1, with an increment of 1.
 	A game can be played without any AI specified.
 
--g <gameName>
+-g, --game <gameName>
 	Specifies the game <gameName> to be played. It must be specified.
 
--h
+-h, --help
 	Displays the help, ignoring every other option if any.
 
--p <replayFile>	(not implemented yet)
+-p, --play <replayFile>	(not implemented yet)
 	Plays the replay from the given file named <replayPath>.
 
--r <replayFile>
+-r, --replay <replayFile>
 	Saves the future game into a replay file named <replayFile>.
 	Several replays can be saved by using this option multiple times.
 
--s <speed>
+-s, --speed <speed>
 	Defines the initial speed of the game as <speed>, in keyframes per seconds,
 	between 1 and 100 fps included (default is 5fps).
 	If <speed> is set to "unlimited" or "u", the game will go as fast as it
 	can go. If the speed is defined more than once, only the last definition
 	will prevail.
 
--t
+-t, --test
 	Starts the framework in test mode, making everything run into the same
 	process, thus accelerating the game speed.
 
--v <viewType>
+-v, --view <viewType>
 	Tells which view is going to be used to display the game.
 	If the view is defined more than once, only the last definition will
 	prevail.
@@ -56,5 +57,10 @@ DESCRIPTION
 	3d: 3D GUI.
 	Default is none.
 
--x
+-x, --auto
 	If set, starts automatically the game when the view is ready.
+
+-z, --parameters <gameParameter>*
+	specified multiple parameters to be read by the game. This option should
+	be the last one because every other parameter after this option will be
+	a game parameter and won't be used by the platform.

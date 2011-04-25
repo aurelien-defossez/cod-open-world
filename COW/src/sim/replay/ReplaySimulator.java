@@ -51,7 +51,7 @@ public class ReplaySimulator extends GameSimulator {
 	 */
 	public ReplaySimulator(Scheduler scheduler, String gameName,
 		String replayName) throws FileNotFoundException, IOException {
-		super(scheduler, gameName);
+		super(scheduler, gameName, new String[0]);
 		
 		// Open file
 		File fd = new File("games/" + gameName + "/replays/" + replayName);

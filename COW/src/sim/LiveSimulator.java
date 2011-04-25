@@ -41,11 +41,12 @@ public abstract class LiveSimulator extends GameSimulator {
 	 * 
 	 * @param scheduler the game scheduler.
 	 * @param gameName the game name.
+	 * @param parameters the game parameters.
 	 * @throws CowException if the game cannot be loaded.
 	 */
-	public LiveSimulator(Scheduler scheduler, String gameName)
+	public LiveSimulator(Scheduler scheduler, String gameName, String[] parameters)
 		throws CowException {
-		super(scheduler, gameName);
+		super(scheduler, gameName, parameters);
 		
 		// Load local game
 		this.game = new LocalGame(this, gameName);
@@ -73,7 +74,7 @@ public abstract class LiveSimulator extends GameSimulator {
 	 */
 	@Override
 	public void initGame() {
-		game.initGame(getAis());
+		game.initGame(getAis(), getParameters());
 		
 		super.initGame();
 	}

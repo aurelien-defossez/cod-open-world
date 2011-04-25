@@ -33,6 +33,7 @@ public class LocalGame extends Game {
 	 * 
 	 * @param simulator the game simulator.
 	 * @param gameName the game name.
+	 * @param parameters the game parameters.
 	 * @throws CowException if the game cannot be loaded.
 	 */
 	public LocalGame(LiveSimulator simulator, String gameName) {
@@ -46,6 +47,7 @@ public class LocalGame extends Game {
 		
 		// Load Java game
 		case Java:
+			// TODO: add parameters in Java
 			connector = new JavaGameConnector(this);
 			break;
 		}
@@ -59,8 +61,8 @@ public class LocalGame extends Game {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void initGame(Collection<Ai> ais) {
-		connector.initGame(ais);
+	public void initGame(Collection<Ai> ais, String[] parameters) {
+		connector.initGame(ais, parameters);
 	}
 	
 	/**
