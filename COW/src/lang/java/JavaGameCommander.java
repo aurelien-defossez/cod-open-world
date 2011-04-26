@@ -30,6 +30,10 @@ public abstract class JavaGameCommander {
 		gameCommunicator = communicator;
 	}
 	
+	public static void setFrame() {
+		gameCommunicator.setFrame();
+	}
+	
 	// -------------------------------------------------------------------------
 	// Protected methods
 	// -------------------------------------------------------------------------

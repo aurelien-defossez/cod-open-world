@@ -111,9 +111,7 @@ public class JavaGameConnector extends GameConnector {
 	 */
 	@Override
 	public void initGame(Collection<Ai> ais, String[] parameters) {
-		gameCommunicator.init();
-		
-		// TODO: set parameters
+		gameCommunicator.init(parameters);
 		
 		for (Ai ai : ais) {
 			gameCommunicator

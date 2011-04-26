@@ -61,8 +61,8 @@ public class GameCommunicator extends JavaGameCommunicator {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void init() {
-		gameInstance.init();
+	public void init(String[] parameters) {
+		gameInstance.init(parameters);
 	}
 	
 	/**

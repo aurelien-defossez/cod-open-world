@@ -43,6 +43,11 @@ public class Game implements UnitTestingEngine {
 	 */
 	private int testNb;
 	
+	/**
+	 * True, the game puts a frame between each test battery.
+	 */
+	private boolean setFrames;
+	
 	// -------------------------------------------------------------------------
 	// Public methods
 	// -------------------------------------------------------------------------
@@ -51,10 +56,11 @@ public class Game implements UnitTestingEngine {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void init() {
+	public void init(String[] parameters) {
 		aiNames = new HashMap<Short, String>();
 		playerNames = new HashMap<Short, String>();
 		runningTests = true;
+		setFrames = (parameters.length > 0 && parameters[0].toLowerCase().equals("true"));
 	}
 	
 	/**
@@ -76,7 +82,10 @@ public class Game implements UnitTestingEngine {
 			
 			while (runningTests) {
 				runNextTest(aiId);
-				// GameCommander.setFrame();
+				
+				if(setFrames) {
+					GameCommander.setFrame();
+				}
 			}
 		}
 	}
@@ -100,7 +109,7 @@ public class Game implements UnitTestingEngine {
 	}
 	
 	public void testVoid() {
-		
+		return;
 	}
 	
 	public boolean testBoolNot(boolean x) {

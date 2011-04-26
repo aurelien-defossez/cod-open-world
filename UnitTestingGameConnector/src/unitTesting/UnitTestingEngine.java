@@ -11,8 +11,10 @@ public interface UnitTestingEngine {
 	
 	/**
 	 * Tells the game to initialize.
+	 * 
+	 * @param parameters the game parameters.
 	 */
-	public void init();
+	public void init(String[] parameters);
 	
 	/**
 	 * Adds an AI to the game.
