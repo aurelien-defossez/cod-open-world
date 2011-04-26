@@ -5,7 +5,6 @@
 
 package sim.replay;
 
-import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -17,6 +16,7 @@ import view.View;
 import com.ApiCall;
 import com.Variant;
 import com.ai.Ai;
+import com.remote.CompressedDataInputStream;
 
 public class ReplaySimulator extends GameSimulator {
 	// -------------------------------------------------------------------------
@@ -35,7 +35,7 @@ public class ReplaySimulator extends GameSimulator {
 	/**
 	 * The replay file data reader.
 	 */
-	private DataInputStream in;
+	private CompressedDataInputStream in;
 	
 	// -------------------------------------------------------------------------
 	// Constructor
@@ -55,15 +55,15 @@ public class ReplaySimulator extends GameSimulator {
 		
 		// Open file
 		File fd = new File("games/" + gameName + "/replays/" + replayName);
-		in = new DataInputStream(new FileInputStream(fd));
+		in = new CompressedDataInputStream(new FileInputStream(fd));
 		
 		// Read game name
 		in.readUTF();
 		
 		// Load AIs
-		short nbAis = in.readShort();
+		int nbAis = in.readUnsignedVarint();
 		for (int i = 0; i < nbAis; i++) {
-			short aiId = in.readShort();
+			short aiId = (short)in.readUnsignedVarint();
 			in.readUTF(); // Read player name
 			String aiName = in.readUTF();
 			
@@ -117,7 +117,7 @@ public class ReplaySimulator extends GameSimulator {
 	public void play() {
 		try {
 			while (in.available() > 0) {
-				short function = in.readShort();
+				int function = in.readUnsignedVarint();
 				
 				switch (function) {
 				case View.SET_FRAME:
@@ -126,13 +126,13 @@ public class ReplaySimulator extends GameSimulator {
 				
 				case View.UPDATE_SCORE:
 					for (Ai ai : getAis()) {
-						ai.setScore(in.readInt());
+						ai.setScore(in.readVarint());
 					}
 					updateScore();
 					break;
 				
 				case View.PRINT_TEXT:
-					ApiCall call = new ApiCall(function, 1);
+					ApiCall call = new ApiCall((short)function, 1);
 					call.add(new Variant(in.readUTF()));
 					callViewApi(call);
 				}

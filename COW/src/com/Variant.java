@@ -289,79 +289,7 @@ public class Variant {
 	 * @throws IOException if an error occurs while writing the variant.
 	 */
 	public void serialize(CompressedDataOutputStream out) throws IOException {
-		// Write variant type
-		out.writeByte((byte) type.ordinal());
-		
-		// Write variant value depending on its type
-		switch (type) {
-		case VOID:
-			// Write nothing
-			break;
-		
-		case BOOL:
-			out.writeBoolean((Boolean) value);
-			break;
-		
-		case INT:
-			out.writeInt((Integer) value);
-			break;
-		
-		case DOUBLE:
-			out.writeDouble((Double) value);
-			break;
-		
-		case STRING:
-			out.writeUTF((String) value);
-			break;
-		
-		case BOOL_MATRIX1:
-			out.writeBooleanMatrix((boolean[]) value);
-			break;
-		
-		case BOOL_MATRIX2:
-			out.writeBooleanMatrix((boolean[][]) value);
-			break;
-		
-		case BOOL_MATRIX3:
-			out.writeBooleanMatrix((boolean[][][]) value);
-			break;
-		
-		case INT_MATRIX1:
-			out.writeIntMatrix((int[]) value);
-			break;
-		
-		case INT_MATRIX2:
-			out.writeIntMatrix((int[][]) value);
-			break;
-		
-		case INT_MATRIX3:
-			out.writeIntMatrix((int[][][]) value);
-			break;
-		
-		case DOUBLE_MATRIX1:
-			out.writeDoubleMatrix((double[]) value);
-			break;
-		
-		case DOUBLE_MATRIX2:
-			out.writeDoubleMatrix((double[][]) value);
-			break;
-		
-		case DOUBLE_MATRIX3:
-			out.writeDoubleMatrix((double[][][]) value);
-			break;
-		
-		case STRING_MATRIX1:
-			out.writeStringMatrix((String[]) value);
-			break;
-		
-		case STRING_MATRIX2:
-			out.writeStringMatrix((String[][]) value);
-			break;
-		
-		case STRING_MATRIX3:
-			out.writeStringMatrix((String[][][]) value);
-			break;
-		}
+		out.writeVariant(this);
 	}
 	
 	// -------------------------------------------------------------------------
@@ -378,64 +306,6 @@ public class Variant {
 	 */
 	public static Variant deserialize(CompressedDataInputStream in)
 		throws IOException, CowException {
-		// Read variant type
-		VariantType type = VariantType.values()[in.readByte()];
-		
-		// Read variant value depending on its type
-		switch (type) {
-		case VOID:
-			return new Variant();
-			
-		case BOOL:
-			return new Variant(in.readBoolean());
-			
-		case INT:
-			return new Variant(in.readInt());
-			
-		case DOUBLE:
-			return new Variant(in.readDouble());
-			
-		case STRING:
-			return new Variant(in.readUTF());
-			
-		case BOOL_MATRIX1:
-			return new Variant(in.readBooleanMatrix1());
-			
-		case BOOL_MATRIX2:
-			return new Variant(in.readBooleanMatrix2());
-			
-		case BOOL_MATRIX3:
-			return new Variant(in.readBooleanMatrix3());
-			
-		case INT_MATRIX1:
-			return new Variant(in.readIntMatrix1());
-			
-		case INT_MATRIX2:
-			return new Variant(in.readIntMatrix2());
-			
-		case INT_MATRIX3:
-			return new Variant(in.readIntMatrix3());
-			
-		case DOUBLE_MATRIX1:
-			return new Variant(in.readDoubleMatrix1());
-			
-		case DOUBLE_MATRIX2:
-			return new Variant(in.readDoubleMatrix2());
-			
-		case DOUBLE_MATRIX3:
-			return new Variant(in.readDoubleMatrix3());
-			
-		case STRING_MATRIX1:
-			return new Variant(in.readStringMatrix1());
-			
-		case STRING_MATRIX2:
-			return new Variant(in.readStringMatrix2());
-			
-		case STRING_MATRIX3:
-			return new Variant(in.readStringMatrix3());
-			
-		default:
-			throw new CowException("Unknown variant type (" + type + ")");
-		}
+		return in.readVariant();
 	}
 }

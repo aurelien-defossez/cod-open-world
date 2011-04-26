@@ -10,6 +10,7 @@ package com.remote;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import com.Variant;
 
 public class CompressedDataOutputStream extends DataOutputStream {
 	// -------------------------------------------------------------------------
@@ -348,6 +349,98 @@ public class CompressedDataOutputStream extends DataOutputStream {
 				writeByte((value & 0x7F) | 0x80);
 				value >>>= 7;
 			}
+		}
+	}
+	
+	/**
+	 * Writes the variant, preceded by its type.
+	 * 
+	 * @param variant the variant to write.
+	 * @throws IOException if an error occurs while writing into the stream.
+	 */
+	public void writeVariant(Variant variant) throws IOException {
+		// Write type
+		writeByte((byte) variant.getType().ordinal());
+		
+		// Write value
+		writeVariantValue(variant);
+	}
+	
+	/**
+	 * Writes the variant value, without its type.
+	 * 
+	 * @param variant the variant to write.
+	 * @throws IOException if an error occurs while writing into the stream.
+	 */
+	public void writeVariantValue(Variant variant) throws IOException {
+		switch (variant.getType()) {
+		case VOID:
+			// Write nothing
+			break;
+		
+		case BOOL:
+			writeBoolean((Boolean) variant.getValue());
+			break;
+		
+		case INT:
+			writeVarint((Integer) variant.getValue());
+			break;
+		
+		case DOUBLE:
+			writeDouble((Double) variant.getValue());
+			break;
+		
+		case STRING:
+			writeUTF((String) variant.getValue());
+			break;
+		
+		case BOOL_MATRIX1:
+			writeBooleanMatrix((boolean[]) variant.getValue());
+			break;
+		
+		case BOOL_MATRIX2:
+			writeBooleanMatrix((boolean[][]) variant.getValue());
+			break;
+		
+		case BOOL_MATRIX3:
+			writeBooleanMatrix((boolean[][][]) variant.getValue());
+			break;
+		
+		case INT_MATRIX1:
+			writeIntMatrix((int[]) variant.getValue());
+			break;
+		
+		case INT_MATRIX2:
+			writeIntMatrix((int[][]) variant.getValue());
+			break;
+		
+		case INT_MATRIX3:
+			writeIntMatrix((int[][][]) variant.getValue());
+			break;
+		
+		case DOUBLE_MATRIX1:
+			writeDoubleMatrix((double[]) variant.getValue());
+			break;
+		
+		case DOUBLE_MATRIX2:
+			writeDoubleMatrix((double[][]) variant.getValue());
+			break;
+		
+		case DOUBLE_MATRIX3:
+			writeDoubleMatrix((double[][][]) variant.getValue());
+			break;
+		
+		case STRING_MATRIX1:
+			writeStringMatrix((String[]) variant.getValue());
+			break;
+		
+		case STRING_MATRIX2:
+			writeStringMatrix((String[][]) variant.getValue());
+			break;
+		
+		case STRING_MATRIX3:
+			writeStringMatrix((String[][][]) variant.getValue());
+			break;
 		}
 	}
 	

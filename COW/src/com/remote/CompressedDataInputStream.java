@@ -10,6 +10,9 @@ package com.remote;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import main.CowException;
+import com.Variant;
+import com.Variant.VariantType;
 
 public class CompressedDataInputStream extends DataInputStream {
 	// -------------------------------------------------------------------------
@@ -351,6 +354,87 @@ public class CompressedDataInputStream extends DataInputStream {
 	 */
 	public int readVarint() throws IOException {
 		return decodeZigZag(readUnsignedVarint());
+	}
+	
+	/**
+	 * Reads the variant from the stream.
+	 * 
+	 * @return the variant read.
+	 * @throws IOException if an error occurs while reading from the stream.
+	 * @throws CowException if the type read is not valid.
+	 */
+	public Variant readVariant() throws IOException {
+		// Read variant type
+		VariantType type = VariantType.values()[readByte()];
+		
+		// Read variant value depending on its type
+		return readVariantValue(type);
+	}
+
+	/**
+	 * Reads the variant value from the stream.
+	 * 
+	 * @param type the variant type.
+	 * @return the variant read.
+	 * @throws IOException if an error occurs while reading from the stream.
+	 * @throws CowException if the type read is not valid.
+	 */
+	public Variant readVariantValue(VariantType type) throws IOException {
+		switch (type) {
+		case VOID:
+			return new Variant();
+			
+		case BOOL:
+			return new Variant(readBoolean());
+			
+		case INT:
+			return new Variant(readVarint());
+			
+		case DOUBLE:
+			return new Variant(readDouble());
+			
+		case STRING:
+			return new Variant(readUTF());
+			
+		case BOOL_MATRIX1:
+			return new Variant(readBooleanMatrix1());
+			
+		case BOOL_MATRIX2:
+			return new Variant(readBooleanMatrix2());
+			
+		case BOOL_MATRIX3:
+			return new Variant(readBooleanMatrix3());
+			
+		case INT_MATRIX1:
+			return new Variant(readIntMatrix1());
+			
+		case INT_MATRIX2:
+			return new Variant(readIntMatrix2());
+			
+		case INT_MATRIX3:
+			return new Variant(readIntMatrix3());
+			
+		case DOUBLE_MATRIX1:
+			return new Variant(readDoubleMatrix1());
+			
+		case DOUBLE_MATRIX2:
+			return new Variant(readDoubleMatrix2());
+			
+		case DOUBLE_MATRIX3:
+			return new Variant(readDoubleMatrix3());
+			
+		case STRING_MATRIX1:
+			return new Variant(readStringMatrix1());
+			
+		case STRING_MATRIX2:
+			return new Variant(readStringMatrix2());
+			
+		case STRING_MATRIX3:
+			return new Variant(readStringMatrix3());
+			
+		default:
+			throw new CowException("Unknown variant type (" + type + ")");
+		}
 	}
 	
 	// -------------------------------------------------------------------------
