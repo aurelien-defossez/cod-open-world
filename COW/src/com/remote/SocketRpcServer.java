@@ -44,11 +44,6 @@ public class SocketRpcServer implements RpcServer {
 	private ProxyAi ai;
 	
 	/**
-	 * The AI process.
-	 */
-	private Process aiProcess;
-	
-	/**
 	 * The security watchdog.
 	 */
 	private Watchdog watchdog;
@@ -77,6 +72,11 @@ public class SocketRpcServer implements RpcServer {
 	 * The local port.
 	 */
 	private int port;
+	
+	/**
+	 * True if the RPC server is stopping.
+	 */
+	private boolean stopping;
 	
 	// -------------------------------------------------------------------------
 	// Constructor
@@ -119,9 +119,7 @@ public class SocketRpcServer implements RpcServer {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void connectAiProcess(Process aiProcess) throws IOException {
-		this.aiProcess = aiProcess;
-		
+	public void connect() throws IOException {
 		if (logger.isDebugEnabled())
 			logger.debug("Waiting for socket connection...");
 		
@@ -158,7 +156,9 @@ public class SocketRpcServer implements RpcServer {
 			// Read AI stream
 			waitForCommand();
 		} catch (IOException e) {
-			logger.error(e.getMessage(), e);
+			if(!stopping) {
+				logger.error(e.getMessage(), e);
+			}
 		}
 	}
 	
@@ -176,19 +176,28 @@ public class SocketRpcServer implements RpcServer {
 			waitForCommand();
 			
 			// Close socket
+			close();
+		} catch (IOException e) {
+			if(!stopping) {
+				logger.error(e.getMessage(), e);
+			}
+		}
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void close() {
+		stopping = true;
+		
+		try {
+			// Close socket
 			in.close();
 			out.close();
 			socket.close();
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		
-		try {
-			// Wait for AI termination
-			aiProcess.waitFor();
-		} catch (InterruptedException e) {
-			logger.error(e.getMessage(), e);
+			// Do nothing
 		}
 	}
 	

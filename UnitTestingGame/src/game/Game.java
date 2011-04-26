@@ -60,7 +60,9 @@ public class Game implements UnitTestingEngine {
 		aiNames = new HashMap<Short, String>();
 		playerNames = new HashMap<Short, String>();
 		runningTests = true;
-		setFrames = (parameters.length > 0 && parameters[0].toLowerCase().equals("true"));
+		setFrames =
+			(parameters.length > 0 && parameters[0].toLowerCase()
+				.equals("true"));
 	}
 	
 	/**
@@ -83,7 +85,7 @@ public class Game implements UnitTestingEngine {
 			while (runningTests) {
 				runNextTest(aiId);
 				
-				if(setFrames) {
+				if (setFrames) {
 					GameCommander.setFrame();
 				}
 			}

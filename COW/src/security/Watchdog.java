@@ -86,7 +86,7 @@ public class Watchdog {
 	 */
 	public void disqualifyCurrentAi() {
 		simulator.disqualifyAi(runningAi, "timeout");
-		runningAi.stop();
+		runningAi.kill();
 	}
 	
 	/**

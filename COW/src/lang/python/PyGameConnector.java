@@ -68,15 +68,15 @@ public class PyGameConnector extends GameConnector {
 	public void initGame(Collection<Ai> ais, String[] parameters) {
 		// Set game parameters
 		PyString[] pyParameters = new PyString[parameters.length];
-		for(int i = 0; i < parameters.length; i++) {
+		for (int i = 0; i < parameters.length; i++) {
 			pyParameters[i] = new PyString(parameters[i]);
 		}
 		gameCommunicator.initGame(pyParameters);
 		
 		// Add AIs to the game
 		for (Ai ai : ais) {
-			gameCommunicator.addAi(new PyInteger(ai.getId()),
-				new PyString(ai.getPlayerName()), new PyString(ai.getName()));
+			gameCommunicator.addAi(new PyInteger(ai.getId()), new PyString(ai
+				.getPlayerName()), new PyString(ai.getName()));
 		}
 	}
 	
@@ -105,7 +105,7 @@ public class PyGameConnector extends GameConnector {
 			pyParameters[i] = call.getParameter(i).getValue();
 		}
 		
-		return gameCommunicator.performGameFunction(call.getFunctionId(),
-			ai.getId(), pyParameters);
+		return gameCommunicator.performGameFunction(call.getFunctionId(), ai
+			.getId(), pyParameters);
 	}
 }

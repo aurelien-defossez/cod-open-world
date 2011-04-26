@@ -52,8 +52,7 @@ public abstract class Game implements GameInterface {
 	 * @param gameName the game name.
 	 * @throws CowException if the game cannot be loaded.
 	 */
-	public Game(LiveSimulator simulator, String gameName)
-		throws CowException {
+	public Game(LiveSimulator simulator, String gameName) throws CowException {
 		this.simulator = simulator;
 		this.name = gameName;
 		

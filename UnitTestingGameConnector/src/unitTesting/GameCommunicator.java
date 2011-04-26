@@ -136,9 +136,9 @@ public class GameCommunicator extends JavaGameCommunicator {
 				.getValue()));
 			
 		case API_TEST_BOOL_MATRIX_COUNT:
-			return new Variant(
-				gameInstance.testBoolMatrixCount((boolean[]) call.getParameter(
-					0).getValue()));
+			return new Variant(gameInstance
+				.testBoolMatrixCount((boolean[]) call.getParameter(0)
+					.getValue()));
 			
 		case API_TEST_BOOL_MATRIX_XOR:
 			return new Variant(gameInstance.testBoolMatrixXor(
@@ -155,9 +155,9 @@ public class GameCommunicator extends JavaGameCommunicator {
 				.getValue()));
 			
 		case API_TEST_DOUBLE_MATRIX_AVERAGE:
-			return new Variant(
-				gameInstance.testDoubleMatrixAverage((double[]) call
-					.getParameter(0).getValue()));
+			return new Variant(gameInstance
+				.testDoubleMatrixAverage((double[]) call.getParameter(0)
+					.getValue()));
 			
 		case API_TEST_DOUBLE_MATRIX_MULT:
 			return new Variant(gameInstance.testDoubleMatrixMult(

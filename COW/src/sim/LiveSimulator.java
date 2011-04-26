@@ -44,8 +44,8 @@ public abstract class LiveSimulator extends GameSimulator {
 	 * @param parameters the game parameters.
 	 * @throws CowException if the game cannot be loaded.
 	 */
-	public LiveSimulator(Scheduler scheduler, String gameName, String[] parameters)
-		throws CowException {
+	public LiveSimulator(Scheduler scheduler, String gameName,
+		String[] parameters) throws CowException {
 		super(scheduler, gameName, parameters);
 		
 		// Load local game

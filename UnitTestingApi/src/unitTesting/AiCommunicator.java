@@ -38,8 +38,7 @@ public class AiCommunicator extends JavaAiCommunicator {
 	 * @param aiInstance the AI instance for this game.
 	 */
 	@Override
-	public void
-		initCommunicator(JavaAiConnector aiConnector, Object aiInstance) {
+	public void initCommunicator(JavaAiConnector aiConnector, Object aiInstance) {
 		super.initCommunicator(aiConnector);
 		this.aiInstance = (UnitTestingAi) aiInstance;
 	}

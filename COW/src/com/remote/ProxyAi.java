@@ -98,7 +98,7 @@ public class ProxyAi extends Ai {
 				logger.debug("Connect RPC server...");
 			
 			// Connect RPC server to AI process
-			rpcServer.connectAiProcess(aiProcess);
+			rpcServer.connect();
 			
 		} catch (IOException e) {
 			throw new CowException("A problem occurred while proxying AI "
@@ -123,7 +123,21 @@ public class ProxyAi extends Ai {
 	 */
 	@Override
 	public void stop() {
-		aiProcess.destroy();
 		rpcServer.stopAi();
+		
+		try {
+			aiProcess.waitFor();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Kills the remote process.
+	 */
+	public void kill() {
+		rpcServer.close();
+		aiProcess.destroy();
 	}
 }

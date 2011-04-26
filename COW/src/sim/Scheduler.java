@@ -94,8 +94,7 @@ public class Scheduler extends Thread {
 	 * @throws CowException if the game cannot be loaded.
 	 */
 	public LiveSimulator loadGame(String gameName, String[] parameters,
-			boolean testMode)
-		throws CowException {
+		boolean testMode) throws CowException {
 		if (logger.isTraceEnabled())
 			logger.trace("Loading game (" + gameName + ")...");
 		

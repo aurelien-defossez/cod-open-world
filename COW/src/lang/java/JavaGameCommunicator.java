@@ -97,6 +97,7 @@ public abstract class JavaGameCommunicator {
 	
 	/**
 	 * Tells the game to initialize.
+	 * 
 	 * @param parameters the game parameters.
 	 */
 	public abstract void init(String[] parameters);

@@ -54,7 +54,8 @@ public abstract class GameSimulator implements Simulator {
 	 * @param gameName the game name.
 	 * @param parameters the game parameters.
 	 */
-	public GameSimulator(Scheduler scheduler, String gameName, String[] parameters) {
+	public GameSimulator(Scheduler scheduler, String gameName,
+		String[] parameters) {
 		this.scheduler = scheduler;
 		this.gameName = gameName;
 		this.listeners = new Vector<GameListener>();
