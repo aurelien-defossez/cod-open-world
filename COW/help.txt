@@ -35,7 +35,7 @@ DESCRIPTION
 	Several replays can be saved by using this option multiple times.
 
 -s, --speed <speed>
-	Defines the initial speed of the game as <speed>, in keyframes per seconds,
+	Defines the initial speed of the game as <speed>, in frames per seconds,
 	between 1 and 100 fps included (default is 5fps).
 	If <speed> is set to "unlimited" or "u", the game will go as fast as it
 	can go. If the speed is defined more than once, only the last definition

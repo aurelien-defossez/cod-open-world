@@ -37,4 +37,12 @@ public class TestSimulator extends LiveSimulator {
 	public void addAi(short aiId, String aiName) {
 		addAi(new LocalAi(this, getGameName(), aiId, aiName));
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void setTimeout(int timeout) {
+		// Do nothing
+	}
 }

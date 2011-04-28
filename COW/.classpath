@@ -28,5 +28,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="resources/libraries/jython2.5.2rc3/jython.jar"/>
+	<classpathentry kind="lib" path="D:/Work/COW/COW/resources/libraries/JNA 3.2.7/jna.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

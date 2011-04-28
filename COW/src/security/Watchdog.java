@@ -6,9 +6,11 @@
 package security;
 
 import sim.LiveSimulator;
+import com.Lang;
 import com.remote.ProxyAi;
 
 public class Watchdog {
+	
 	// -------------------------------------------------------------------------
 	// Attributes
 	// -------------------------------------------------------------------------
@@ -40,7 +42,7 @@ public class Watchdog {
 	public Watchdog(LiveSimulator simulator) {
 		this.simulator = simulator;
 		this.runningAi = null;
-		this.timer = new WatchdogTimer(this, 100, 2000);
+		this.timer = new WatchdogTimer(this);
 		
 		// Start timer
 		timer.start();
@@ -51,13 +53,22 @@ public class Watchdog {
 	// -------------------------------------------------------------------------
 	
 	/**
+	 * Defines the maximum time before which an AI is disqualified.
+	 * 
+	 * @param timeout the maximum time in milliseconds.
+	 */
+	public void setTimeout(int timeout) {
+		timer.setTimeout(timeout);
+	}
+	
+	/**
 	 * Starts the timer for the given AI.
 	 * 
 	 * @param ai the running AI.
 	 */
 	public void start(ProxyAi ai) {
 		runningAi = ai;
-		timer.resumeTimer();
+		timer.startTimer(Lang.getLanguageSpeedHandicap(ai.getLanguage()));
 	}
 	
 	/**

@@ -161,11 +161,6 @@ public class ReplayWriter implements GameListener {
 				// Write function id
 				out.writeUnsignedVarint(call.getFunctionId());
 				
-				if(call.getFunctionId() == View.DISPLAY_GRID) {
-					Variant[] p = call.getParameters();
-					System.out.println("WRITE displayGrid("+p[0]+", "+p[1]+", "+p[2]+", "+p[3]+", "+p[4]+", "+p[5]+", "+p[6]+")");
-				}
-				
 				// Write parameters
 				for (Variant parameter : call.getParameters()) {
 					out.writeVariantValue(parameter);

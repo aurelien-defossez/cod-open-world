@@ -37,6 +37,15 @@ public abstract class JavaGameCommunicator {
 	// -------------------------------------------------------------------------
 	
 	/**
+	 * Defines the AI timeout.
+	 * 
+	 * @param timeout the maximum execution time in milliseconds.
+	 */
+	public final void setTimeout(int timeout) {
+		connector.setTimeout(timeout);
+	}
+	
+	/**
 	 * Sets a game key frame.
 	 */
 	public final void setFrame() {

@@ -61,7 +61,7 @@ public class ReplaySimulator extends GameSimulator {
 		// Load AIs
 		int nbAis = in.readUnsignedVarint();
 		for (int i = 0; i < nbAis; i++) {
-			short aiId = (short)in.readUnsignedVarint();
+			short aiId = (short) in.readUnsignedVarint();
 			in.readUTF(); // Read player name
 			String aiName = in.readUTF();
 			
@@ -131,13 +131,13 @@ public class ReplaySimulator extends GameSimulator {
 					break;
 				
 				case View.PRINT_TEXT:
-					call = new ApiCall((short)function, 1);
+					call = new ApiCall((short) function, 1);
 					call.add(new Variant(in.readUTF()));
 					callViewApi(call);
 					break;
-					
+				
 				case View.DISPLAY_GRID:
-					call = new ApiCall((short)function, 7);
+					call = new ApiCall((short) function, 7);
 					call.add(in.readVariantValue(VariantType.DOUBLE));
 					call.add(in.readVariantValue(VariantType.DOUBLE));
 					call.add(in.readVariantValue(VariantType.DOUBLE));
@@ -149,20 +149,20 @@ public class ReplaySimulator extends GameSimulator {
 					break;
 				
 				case View.CREATE_ENTITY:
-					call = new ApiCall((short)function, 2);
+					call = new ApiCall((short) function, 2);
 					call.add(in.readVariantValue(VariantType.INT));
 					call.add(in.readVariantValue(VariantType.INT));
 					callViewApi(call);
 					break;
-					
+				
 				case View.DELETE_ENTITY:
-					call = new ApiCall((short)function, 1);
+					call = new ApiCall((short) function, 1);
 					call.add(in.readVariantValue(VariantType.INT));
 					callViewApi(call);
 					break;
 				
 				case View.MOVE_ENTITY:
-					call = new ApiCall((short)function, 3);
+					call = new ApiCall((short) function, 3);
 					call.add(in.readVariantValue(VariantType.INT));
 					call.add(in.readVariantValue(VariantType.DOUBLE));
 					call.add(in.readVariantValue(VariantType.DOUBLE));
@@ -170,7 +170,7 @@ public class ReplaySimulator extends GameSimulator {
 					break;
 				
 				case View.ROTATE_ENTITY:
-					call = new ApiCall((short)function, 2);
+					call = new ApiCall((short) function, 2);
 					call.add(in.readVariantValue(VariantType.INT));
 					call.add(in.readVariantValue(VariantType.DOUBLE));
 					callViewApi(call);

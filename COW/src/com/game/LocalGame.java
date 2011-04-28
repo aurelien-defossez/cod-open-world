@@ -47,7 +47,6 @@ public class LocalGame extends Game {
 		
 		// Load Java game
 		case Java:
-			// TODO: add parameters in Java
 			connector = new JavaGameConnector(this);
 			break;
 		}

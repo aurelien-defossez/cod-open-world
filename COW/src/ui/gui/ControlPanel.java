@@ -57,8 +57,8 @@ public class ControlPanel extends JPanel implements KeyboardListener {
 		timeSlider =
 			new JSlider((int) Math.floor(PRECISION
 				* Math.log(CowSimulator.MIN_SPEED)), (int) Math.ceil(PRECISION
-				* Math.log(CowSimulator.UNLIMITED_SPEED)), (int) Math
-				.round(PRECISION * Math.log(scheduler.getSpeed())));
+				* Math.log(CowSimulator.UNLIMITED_SPEED)),
+				(int) Math.round(PRECISION * Math.log(scheduler.getSpeed())));
 		timeSlider.addChangeListener(new TimeController(timeSlider, scheduler));
 		
 		// Create control panel

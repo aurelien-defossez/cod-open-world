@@ -173,8 +173,8 @@ public class CowSimulator {
 						try {
 							gameSpeed = Double.parseDouble(speed);
 							gameSpeed =
-								Math.max(MIN_SPEED, Math.min(gameSpeed,
-									MAX_SPEED));
+								Math.max(MIN_SPEED,
+									Math.min(gameSpeed, MAX_SPEED));
 						} catch (NumberFormatException e) {
 							throw new CowException("Speed must be an float "
 								+ "or \"" + UNLIMITED_NAME + "\".");
@@ -277,12 +277,11 @@ public class CowSimulator {
 				GameSimulator simulator;
 				
 				// Set game
-				if(loadReplayName == null) {
+				if (loadReplayName == null) {
 					simulator =
 						scheduler.loadGame(gameName, parameters, testMode);
 				} else {
-					simulator =
-						scheduler.loadReplay(gameName, loadReplayName);
+					simulator = scheduler.loadReplay(gameName, loadReplayName);
 				}
 				
 				// Add AIs

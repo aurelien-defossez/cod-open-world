@@ -53,6 +53,14 @@ public class SecureSimulator extends LiveSimulator {
 	 * {@inheritDoc}
 	 */
 	@Override
+	public void setTimeout(int timeout) {
+		watchdog.setTimeout(timeout);
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public void setFrame() {
 		watchdog.pause();
 		super.setFrame();

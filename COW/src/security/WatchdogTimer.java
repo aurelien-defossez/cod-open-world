@@ -8,6 +8,34 @@ package security;
 import org.apache.log4j.Logger;
 
 public class WatchdogTimer extends Thread {
+	
+	// -------------------------------------------------------------------------
+	// Constants
+	// -------------------------------------------------------------------------
+	
+	/**
+	 * The maximal time in milliseconds before disqualifying an AI.
+	 */
+	private static final int TIMEOUT_DEFAULT = 2000;
+	
+	/**
+	 * The minimal check period, in milliseconds.
+	 */
+	private static final int MIN_CHECK_PERIOD = 20;
+	
+	/**
+	 * The maximal check period, in milliseconds.
+	 */
+	private static final int MAX_CHECK_PERIOD = 1000;
+	
+	/**
+	 * The number of checks per execution. Example: If the timeout is set to
+	 * 1000ms and the number of checks to 10, then the period between each
+	 * checks would be 100ms, thus the maximal error would be 100ms and the
+	 * maximum execution time would be in [1000 ; 1100] milliseconds.
+	 */
+	private static final int CHECKS_PER_EXECUTION = 10;
+	
 	// -------------------------------------------------------------------------
 	// Class attributes
 	// -------------------------------------------------------------------------
@@ -42,14 +70,19 @@ public class WatchdogTimer extends Thread {
 	private long refreshTime;
 	
 	/**
-	 * The maximum time allowed to an AI execution.
+	 * The maximum base time allowed to an AI execution.
 	 */
-	private long maxTimeOut;
+	private long baseTimeout;
+	
+	/**
+	 * The maximum time allowed to an AI execution, depending on its language.
+	 */
+	private long languageDependentTimeout;
 	
 	/**
 	 * The current time used by an AI execution.
 	 */
-	private long timeOutCounter;
+	private long timeoutCounter;
 	
 	// -------------------------------------------------------------------------
 	// Constructor
@@ -63,15 +96,14 @@ public class WatchdogTimer extends Thread {
 	 * @param maxTimeOut the maximum time allowed for each AI execution, in
 	 *            milliseconds.
 	 */
-	public WatchdogTimer(Watchdog watchdog, long refreshTime, long maxTimeOut) {
+	public WatchdogTimer(Watchdog watchdog) {
 		super("Watchdog");
 		
 		this.watchdog = watchdog;
 		this.active = true;
 		this.paused = true;
-		this.refreshTime = refreshTime;
-		this.maxTimeOut = maxTimeOut;
-		this.timeOutCounter = 0;
+		this.timeoutCounter = 0;
+		setTimeout(TIMEOUT_DEFAULT);
 	}
 	
 	// -------------------------------------------------------------------------
@@ -88,10 +120,10 @@ public class WatchdogTimer extends Thread {
 		
 		while (active) {
 			if (!paused) {
-				timeOutCounter += refreshTime;
+				timeoutCounter += refreshTime;
 				
 				// TimeOut
-				if (timeOutCounter >= maxTimeOut) {
+				if (timeoutCounter >= languageDependentTimeout) {
 					watchdog.disqualifyCurrentAi();
 					stopTimer();
 				}
@@ -107,6 +139,37 @@ public class WatchdogTimer extends Thread {
 		
 		if (logger.isTraceEnabled())
 			logger.trace("Thread ended");
+	}
+	
+	/**
+	 * Defines the maximum time before which an AI is disqualified.
+	 * 
+	 * @param timeout the maximum time in milliseconds.
+	 */
+	public void setTimeout(int timeout) {
+		baseTimeout = timeout;
+	}
+	
+	/**
+	 * Starts the timer.
+	 * 
+	 * @param aiSpeedHandicap the speed handicap the AI bonuses depending on its
+	 *            implementation language.
+	 */
+	public void startTimer(double aiSpeedHandicap) {
+		languageDependentTimeout = (int) (baseTimeout * aiSpeedHandicap);
+		
+		refreshTime =
+			Math.min(
+				MAX_CHECK_PERIOD,
+				Math.max(MIN_CHECK_PERIOD, languageDependentTimeout
+					/ CHECKS_PER_EXECUTION));
+		
+		paused = false;
+		
+		if (logger.isTraceEnabled())
+			logger.trace("Watchdog started (timeout="
+				+ languageDependentTimeout + ")");
 	}
 	
 	/**
@@ -130,21 +193,11 @@ public class WatchdogTimer extends Thread {
 	}
 	
 	/**
-	 * Resets the timer.
-	 */
-	public void reset() {
-		timeOutCounter = 0;
-		
-		if (logger.isTraceEnabled())
-			logger.trace("Watchdog resetted");
-	}
-	
-	/**
 	 * Stops the timer.
 	 */
 	public void stopTimer() {
 		paused = true;
-		reset();
+		timeoutCounter = 0;
 		
 		if (logger.isTraceEnabled())
 			logger.trace("Watchdog stopped");

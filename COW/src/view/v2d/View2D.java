@@ -108,8 +108,6 @@ public class View2D extends View {
 	
 	protected void displayGrid(double x0, double y0, double x1, double y1,
 		double xSpacing, double ySpacing, int color) {
-		System.out.println("RENDER displayGrid("+x0+", "+y0+", "+x1+", "+y1+", "+xSpacing+", "+ySpacing+", "+color+")");
-		
 		renderer.displayGrid((float) x0, (float) y0, (float) x1, (float) y1,
 			(float) xSpacing, (float) ySpacing, ColorRGBA.darkGray);
 	}
@@ -123,12 +121,10 @@ public class View2D extends View {
 	}
 	
 	protected void moveEntity(int id, double dx, double dy) {
-		// TODO: Interpolation
 		scene.getEntity(id).move(dx, dy, false);
 	}
 	
 	protected void rotateEntity(int id, double angle) {
-		// TODO: Interpolation
 		scene.getEntity(id).rotate((float) angle, false);
 	}
 }

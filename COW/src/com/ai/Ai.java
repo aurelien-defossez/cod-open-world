@@ -7,7 +7,7 @@ package com.ai;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import com.ApiCall;
-import com.Language;
+import com.Lang.Language;
 import com.Variant;
 import main.CowException;
 import data.ConfigLoader;

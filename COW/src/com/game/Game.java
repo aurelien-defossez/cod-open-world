@@ -7,7 +7,7 @@ package com.game;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import com.ApiCall;
-import com.Language;
+import com.Lang.Language;
 import main.CowException;
 import data.ConfigLoader;
 import sim.LiveSimulator;
@@ -118,6 +118,14 @@ public abstract class Game implements GameInterface {
 	@Override
 	public final void callAiFunction(short aiId, ApiCall call) {
 		simulator.callAiFunction(aiId, call);
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void setTimeout(int timeout) {
+		simulator.setTimeout(timeout);
 	}
 	
 	/**

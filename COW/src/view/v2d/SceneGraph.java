@@ -84,9 +84,9 @@ public class SceneGraph {
 							entityLoader.getValue("sprite"),
 							(float) entityLoader.getDoubleValue("width", 0),
 							(float) entityLoader.getDoubleValue("height", 0),
-							entityLoader.getIntValue("depth"), entityLoader
-								.getEntityCenterValue("center",
-									entityCenter.CENTER));
+							entityLoader.getIntValue("depth"),
+							entityLoader.getEntityCenterValue("center",
+								entityCenter.CENTER));
 					makers.put(definitionId, spriteMaker);
 				}
 				// Unknown type

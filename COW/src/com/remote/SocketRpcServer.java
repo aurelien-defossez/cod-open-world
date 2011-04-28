@@ -156,7 +156,7 @@ public class SocketRpcServer implements RpcServer {
 			// Read AI stream
 			waitForCommand();
 		} catch (IOException e) {
-			if(!stopping) {
+			if (!stopping) {
 				logger.error(e.getMessage(), e);
 			}
 		}
@@ -178,7 +178,7 @@ public class SocketRpcServer implements RpcServer {
 			// Close socket
 			close();
 		} catch (IOException e) {
-			if(!stopping) {
+			if (!stopping) {
 				logger.error(e.getMessage(), e);
 			}
 		}

@@ -128,4 +128,15 @@ public abstract class LiveSimulator extends GameSimulator {
 		
 		return game.performGameFunction(call, ai);
 	}
+	
+	// -------------------------------------------------------------------------
+	// Abstract methods
+	// -------------------------------------------------------------------------
+	
+	/**
+	 * Defines the AI timeout.
+	 * 
+	 * @param timeout the maximum execution time in milliseconds.
+	 */
+	public abstract void setTimeout(int timeout);
 }

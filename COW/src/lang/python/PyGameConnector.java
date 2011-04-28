@@ -75,8 +75,8 @@ public class PyGameConnector extends GameConnector {
 		
 		// Add AIs to the game
 		for (Ai ai : ais) {
-			gameCommunicator.addAi(new PyInteger(ai.getId()), new PyString(ai
-				.getPlayerName()), new PyString(ai.getName()));
+			gameCommunicator.addAi(new PyInteger(ai.getId()),
+				new PyString(ai.getPlayerName()), new PyString(ai.getName()));
 		}
 	}
 	
@@ -105,7 +105,7 @@ public class PyGameConnector extends GameConnector {
 			pyParameters[i] = call.getParameter(i).getValue();
 		}
 		
-		return gameCommunicator.performGameFunction(call.getFunctionId(), ai
-			.getId(), pyParameters);
+		return gameCommunicator.performGameFunction(call.getFunctionId(),
+			ai.getId(), pyParameters);
 	}
 }

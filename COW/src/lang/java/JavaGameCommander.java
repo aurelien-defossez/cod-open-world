@@ -26,12 +26,24 @@ public abstract class JavaGameCommander {
 	 * 
 	 * @param communicator the game communicator.
 	 */
-	public void setCommunicator(JavaGameCommunicator communicator) {
+	public final void setCommunicator(JavaGameCommunicator communicator) {
 		gameCommunicator = communicator;
 	}
 	
-	public static void setFrame() {
+	public final static void setTimeout(int timeout) {
+		gameCommunicator.setTimeout(timeout);
+	}
+	
+	public final static void setFrame() {
 		gameCommunicator.setFrame();
+	}
+	
+	public final static void setScore(short aiId, int score) {
+		gameCommunicator.setScore(aiId, score);
+	}
+	
+	public final static void incrementScore(short aiId, int increment) {
+		gameCommunicator.incrementScore(aiId, increment);
 	}
 	
 	// -------------------------------------------------------------------------
@@ -44,7 +56,7 @@ public abstract class JavaGameCommander {
 	 * @param aiId the AI to execute.
 	 * @param call the AI API call.
 	 */
-	protected static void callAiFunction(short aiId, ApiCall call) {
+	protected final static void callAiFunction(short aiId, ApiCall call) {
 		gameCommunicator.callAiFunction(aiId, call);
 	}
 }

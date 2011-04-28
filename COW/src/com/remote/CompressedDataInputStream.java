@@ -370,7 +370,7 @@ public class CompressedDataInputStream extends DataInputStream {
 		// Read variant value depending on its type
 		return readVariantValue(type);
 	}
-
+	
 	/**
 	 * Reads the variant value from the stream.
 	 * 

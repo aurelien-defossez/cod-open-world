@@ -45,6 +45,14 @@ public abstract class GameConnector implements GameInterface {
 	 * {@inheritDoc}
 	 */
 	@Override
+	public void setTimeout(int timeout) {
+		game.setTimeout(timeout);
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public void setFrame() {
 		game.setFrame();
 	}

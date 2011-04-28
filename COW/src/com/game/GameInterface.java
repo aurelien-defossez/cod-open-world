@@ -51,6 +51,13 @@ public interface GameInterface {
 	public abstract void endGame();
 	
 	/**
+	 * Defines the AI timeout.
+	 * 
+	 * @param timeout the maximum execution time of an AI in milliseconds.
+	 */
+	public void setTimeout(int timeout);
+	
+	/**
 	 * Sets a game key frame.
 	 */
 	public void setFrame();
