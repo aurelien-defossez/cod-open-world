@@ -15,6 +15,7 @@ import sim.Scheduler;
 import view.View;
 import com.ApiCall;
 import com.Variant;
+import com.Variant.VariantType;
 import com.ai.Ai;
 import com.remote.CompressedDataInputStream;
 
@@ -56,9 +57,6 @@ public class ReplaySimulator extends GameSimulator {
 		// Open file
 		File fd = new File("games/" + gameName + "/replays/" + replayName);
 		in = new CompressedDataInputStream(new FileInputStream(fd));
-		
-		// Read game name
-		in.readUTF();
 		
 		// Load AIs
 		int nbAis = in.readUnsignedVarint();
@@ -118,6 +116,7 @@ public class ReplaySimulator extends GameSimulator {
 		try {
 			while (in.available() > 0) {
 				int function = in.readUnsignedVarint();
+				ApiCall call;
 				
 				switch (function) {
 				case View.SET_FRAME:
@@ -132,9 +131,50 @@ public class ReplaySimulator extends GameSimulator {
 					break;
 				
 				case View.PRINT_TEXT:
-					ApiCall call = new ApiCall((short)function, 1);
+					call = new ApiCall((short)function, 1);
 					call.add(new Variant(in.readUTF()));
 					callViewApi(call);
+					break;
+					
+				case View.DISPLAY_GRID:
+					call = new ApiCall((short)function, 7);
+					call.add(in.readVariantValue(VariantType.DOUBLE));
+					call.add(in.readVariantValue(VariantType.DOUBLE));
+					call.add(in.readVariantValue(VariantType.DOUBLE));
+					call.add(in.readVariantValue(VariantType.DOUBLE));
+					call.add(in.readVariantValue(VariantType.DOUBLE));
+					call.add(in.readVariantValue(VariantType.DOUBLE));
+					call.add(in.readVariantValue(VariantType.INT));
+					callViewApi(call);
+					break;
+				
+				case View.CREATE_ENTITY:
+					call = new ApiCall((short)function, 2);
+					call.add(in.readVariantValue(VariantType.INT));
+					call.add(in.readVariantValue(VariantType.INT));
+					callViewApi(call);
+					break;
+					
+				case View.DELETE_ENTITY:
+					call = new ApiCall((short)function, 1);
+					call.add(in.readVariantValue(VariantType.INT));
+					callViewApi(call);
+					break;
+				
+				case View.MOVE_ENTITY:
+					call = new ApiCall((short)function, 3);
+					call.add(in.readVariantValue(VariantType.INT));
+					call.add(in.readVariantValue(VariantType.DOUBLE));
+					call.add(in.readVariantValue(VariantType.DOUBLE));
+					callViewApi(call);
+					break;
+				
+				case View.ROTATE_ENTITY:
+					call = new ApiCall((short)function, 2);
+					call.add(in.readVariantValue(VariantType.INT));
+					call.add(in.readVariantValue(VariantType.DOUBLE));
+					callViewApi(call);
+					break;
 				}
 			}
 		} catch (IOException e) {

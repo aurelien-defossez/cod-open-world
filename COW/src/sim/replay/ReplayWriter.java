@@ -67,14 +67,9 @@ public class ReplayWriter implements GameListener {
 			// Open data writer
 			out = new CompressedDataOutputStream(new FileOutputStream(fd));
 			opened = true;
-			
-			// Write game name
-			out.writeUTF(gameName);
 		} catch (FileNotFoundException e) {
 			throw new CowException("Cannot create replay file (\"" + replayName
 				+ "\").", e);
-		} catch (IOException e) {
-			throw new CowException("Cannot create replay writer.", e);
 		}
 	}
 	
@@ -82,17 +77,16 @@ public class ReplayWriter implements GameListener {
 	// Public methods
 	// -------------------------------------------------------------------------
 	
-	@Override
 	/**
 	 * Initializes the replay file, by writing the AI information.
 	 * 
 	 * @param ais the AIs.
 	 */
+	@Override
 	public void initGame(Collection<Ai> ais) {
 		this.ais = ais;
 		
 		if (opened) {
-			// Insert game name
 			try {
 				// Write AIs information
 				out.writeUnsignedVarint(ais.size());
@@ -106,21 +100,23 @@ public class ReplayWriter implements GameListener {
 				logger.error(e.getMessage(), e);
 				stopWriting();
 			}
+		} else {
+			throw new CowException("File not opened yet");
 		}
 	}
 	
-	@Override
 	/**
 	 * Stops the replay writer from writing.
 	 */
+	@Override
 	public void endGame() {
 		stopWriting();
 	}
 	
-	@Override
 	/**
 	 * Writes the scores in the file.
 	 */
+	@Override
 	public void updateScore() {
 		if (opened) {
 			try {
@@ -137,10 +133,10 @@ public class ReplayWriter implements GameListener {
 		}
 	}
 	
-	@Override
 	/**
 	 * Writes the frame in the file.
 	 */
+	@Override
 	public void setFrame() {
 		if (opened) {
 			try {
@@ -153,17 +149,22 @@ public class ReplayWriter implements GameListener {
 		}
 	}
 	
-	@Override
 	/**
 	 * Serializes the view API call in the file.
 	 * 
 	 * @param call the view API call.
 	 */
+	@Override
 	public void callViewFunction(ApiCall call) {
 		if (opened) {
 			try {
 				// Write function id
 				out.writeUnsignedVarint(call.getFunctionId());
+				
+				if(call.getFunctionId() == View.DISPLAY_GRID) {
+					Variant[] p = call.getParameters();
+					System.out.println("WRITE displayGrid("+p[0]+", "+p[1]+", "+p[2]+", "+p[3]+", "+p[4]+", "+p[5]+", "+p[6]+")");
+				}
 				
 				// Write parameters
 				for (Variant parameter : call.getParameters()) {

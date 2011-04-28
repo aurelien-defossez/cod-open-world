@@ -292,6 +292,14 @@ public class Variant {
 		out.writeVariant(this);
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String toString() {
+		return type.name() + "(" + getValue() + ")";
+	}
+	
 	// -------------------------------------------------------------------------
 	// Class methods
 	// -------------------------------------------------------------------------

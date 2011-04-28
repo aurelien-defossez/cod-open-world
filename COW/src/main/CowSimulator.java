@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.Vector;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
-import sim.LiveSimulator;
+import sim.GameSimulator;
 import sim.Scheduler;
 import sim.replay.ReplayWriter;
 import ui.gui.Gui;
@@ -100,6 +100,7 @@ public class CowSimulator {
 		Vector<String> replays = new Vector<String>();
 		String[] parameters = new String[0];
 		String gameName = null;
+		String loadReplayName = null;
 		double gameSpeed = DEFAULT_SPEED;
 		ViewType viewType = ViewType.None;
 		boolean displayHelp = false;
@@ -141,8 +142,16 @@ public class CowSimulator {
 					testMode = true;
 				}
 
-				// -r, --replay: Save replay
-				else if (option.equals("-r") || option.equals("--replay")) {
+				// p, --load: Load and play a replay
+				else if (option.equals("-p") || option.equals("--load")) {
+					loadReplayName = args[i++];
+					
+					if (logger.isTraceEnabled())
+						logger.trace("Load replay: " + loadReplayName);
+				}
+
+				// -r, --save: Save replay
+				else if (option.equals("-r") || option.equals("--save")) {
 					String replayName = args[i++];
 					replays.add(replayName);
 					
@@ -265,10 +274,16 @@ public class CowSimulator {
 				
 				// Create scheduler
 				Scheduler scheduler = new Scheduler(gameSpeed);
+				GameSimulator simulator;
 				
 				// Set game
-				LiveSimulator simulator =
-					scheduler.loadGame(gameName, parameters, testMode);
+				if(loadReplayName == null) {
+					simulator =
+						scheduler.loadGame(gameName, parameters, testMode);
+				} else {
+					simulator =
+						scheduler.loadReplay(gameName, loadReplayName);
+				}
 				
 				// Add AIs
 				for (short i = 0; i < ais.size(); i++) {

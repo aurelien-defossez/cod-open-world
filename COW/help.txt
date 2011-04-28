@@ -6,7 +6,7 @@ NAME
 SYNOPSIS
 
 	java cow.jar -g <gameName> [-a <aiName>]* [-r <replayName>]* [-s <speed>]
-				[-v <viewType>] [-t] [-x] [-h]
+				[-p <replayName>] [-v <viewType>] [-t] [-x] [-h]
 				[-z <gameParameter>*] 
 
 
@@ -27,10 +27,10 @@ DESCRIPTION
 -h, --help
 	Displays the help, ignoring every other option if any.
 
--p, --play <replayFile>	(not implemented yet)
+-p, --load <replayFile>
 	Plays the replay from the given file named <replayPath>.
 
--r, --replay <replayFile>
+-r, --save <replayFile>
 	Saves the future game into a replay file named <replayFile>.
 	Several replays can be saved by using this option multiple times.
 

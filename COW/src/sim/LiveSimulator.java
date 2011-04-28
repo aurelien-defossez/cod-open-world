@@ -74,9 +74,9 @@ public abstract class LiveSimulator extends GameSimulator {
 	 */
 	@Override
 	public void initGame() {
-		game.initGame(getAis(), getParameters());
-		
 		super.initGame();
+		
+		game.initGame(getAis(), getParameters());
 	}
 	
 	/**
