@@ -60,7 +60,6 @@ class Map(object):
 		d = self.distanceToTreasure(self.getHunter(aiId))
 		if d == 0:
 			self.found = True
-			self.view.printText("Found !\n")
 		
 		return d
 	

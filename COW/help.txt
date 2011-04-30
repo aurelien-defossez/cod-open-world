@@ -1,51 +1,50 @@
 NAME
-
 	cow - launches a Cow instance.
 
-
 SYNOPSIS
-
-	java cow.jar -g <gameName> [-a <aiName>]* [-r <replayName>]* [-s <speed>]
-				[-p <replayName>] [-v <viewType>] [-t] [-x] [-h]
-				[-z <gameParameter>*] 
-
+	cow -h
+	cow -g <gameName> [-a aiName ...] [-r replayName ...]
+				[-s speed] [-v viewType] [-t] [-x] [-z gameParameter ...]
+	cow -g gameName -p replayName [-s speed] [-v viewType] [-x] 
 
 DESCRIPTION
-
 	Launches a Cow instance playing a game with the specified AIs.
 	Possible arguments are listed below:
 
--a, --ai <aiName>
-	Adds an ai, named <aiName>. Several AIs can be added by using this option.
-	Each AI will be given an unique ID according to its position in the
-	arguments list, starting with ID 1, with an increment of 1.
+-a, --ai aiName ...
+	Adds one or more AIs, named aiName. This option can be used several times
+	to add more AIs. Each AI will be given an unique ID according to its
+	position in the arguments list, starting with ID 1, with an increment of 1.
 	A game can be played without any AI specified.
 
--g, --game <gameName>
-	Specifies the game <gameName> to be played. It must be specified.
+-g, --game gameName
+	Specifies the game to be played. It must be specified or otherwise the game
+	or replay cannot be played.
 
 -h, --help
-	Displays the help, ignoring every other option if any.
+	Displays this man page, ignoring every other option if any are specified.
 
--p, --load <replayFile>
-	Plays the replay from the given file named <replayPath>.
+-p, --load replayFile
+	Plays the replay from the given file. This replay must be in the
+	gameName/replays directory.
 
--r, --save <replayFile>
-	Saves the future game into a replay file named <replayFile>.
+-r, --save replayFile ...
+	Saves the future game into a replay file named replayFile, stored under
+	the gameName/replays directory.
 	Several replays can be saved by using this option multiple times.
 
--s, --speed <speed>
-	Defines the initial speed of the game as <speed>, in frames per seconds,
-	between 1 and 100 fps included (default is 5fps).
-	If <speed> is set to "unlimited" or "u", the game will go as fast as it
+-s, --speed speed
+	Defines the initial speed of the game as speed, in frames per seconds,
+	between 1 and 1000 fps included (default is 5fps).
+	If speed is set to "unlimited" or "u", the game will go as fast as it
 	can go. If the speed is defined more than once, only the last definition
 	will prevail.
 
 -t, --test
-	Starts the framework in test mode, making everything run into the same
+	Starts the platform in test mode, making everything run into the same
 	process, thus accelerating the game speed.
 
--v, --view <viewType>
+-v, --view viewType
 	Tells which view is going to be used to display the game.
 	If the view is defined more than once, only the last definition will
 	prevail.
@@ -60,7 +59,18 @@ DESCRIPTION
 -x, --auto
 	If set, starts automatically the game when the view is ready.
 
--z, --parameters <gameParameter>*
-	specified multiple parameters to be read by the game. This option should
+-z, --parameters gameParameter ...
+	Specifies multiple parameters to be read by the game. This option should
 	be the last one because every other parameter after this option will be
 	a game parameter and won't be used by the platform.
+
+EXAMPLES
+cow -g TestGame -a MyAI -a OpponentAI
+	Starts the game "TestGame" with two AIs, "MyAI" and "OpponentAI".
+	
+cow -g TestGame -a MyAI -a OpponentAI -s 60 -r "game #1"
+	Starts the game "TestGame" with two AIs, "MyAI" and "OpponentAI", at a
+	speed of 60fps, and saving the game in a replay file named "game #1".
+	
+cow -g TestGame -p "game #1"
+	Replays a game of "TestGame" saved in the file "game #1".

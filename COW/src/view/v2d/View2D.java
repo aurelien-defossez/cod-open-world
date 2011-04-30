@@ -106,10 +106,10 @@ public class View2D extends View {
 		renderer.resizeCanvas(canvas.getWidth(), canvas.getHeight());
 	}
 	
-	protected void displayGrid(double x0, double y0, double x1, double y1,
-		double xSpacing, double ySpacing, int color) {
-		renderer.displayGrid((float) x0, (float) y0, (float) x1, (float) y1,
-			(float) xSpacing, (float) ySpacing, ColorRGBA.darkGray);
+	protected void displayGrid(int x0, int y0, int x1, int y1, int xSpacing,
+		int ySpacing, int color) {
+		renderer.displayGrid(x0, y0, x1, y1, xSpacing, ySpacing,
+			ColorRGBA.darkGray);
 	}
 	
 	protected void createEntity(int definitionId, int id) {
@@ -120,11 +120,11 @@ public class View2D extends View {
 		scene.getEntity(id).delete();
 	}
 	
-	protected void moveEntity(int id, double dx, double dy) {
+	protected void moveEntity(int id, int dx, int dy) {
 		scene.getEntity(id).move(dx, dy, false);
 	}
 	
-	protected void rotateEntity(int id, double angle) {
-		scene.getEntity(id).rotate((float) angle, false);
+	protected void rotateEntity(int id, int angle) {
+		scene.getEntity(id).rotate(angle, false);
 	}
 }

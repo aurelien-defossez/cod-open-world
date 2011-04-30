@@ -126,8 +126,8 @@ public class SceneRenderer extends SimpleCanvasImpl implements ButtonListener {
 		rootNode.attachChild(node);
 	}
 	
-	public void displayGrid(float x0, float y0, float x1, float y1,
-		float xSpacing, float ySpacing, ColorRGBA color) {
+	public void displayGrid(int x0, int y0, int x1, int y1, int xSpacing,
+		int ySpacing, ColorRGBA color) {
 		ArrayList<Vector3f> lines = new ArrayList<Vector3f>();
 		
 		// Vertical lines

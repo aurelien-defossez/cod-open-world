@@ -91,11 +91,11 @@ public abstract class View implements GameListener, KeyboardListener {
 				break;
 			
 			case DISPLAY_GRID:
-				displayGrid((Double) call.getParameter(0).getValue(),
-					(Double) call.getParameter(1).getValue(), (Double) call
-						.getParameter(2).getValue(), (Double) call
-						.getParameter(3).getValue(), (Double) call
-						.getParameter(4).getValue(), (Double) call
+				displayGrid((Integer) call.getParameter(0).getValue(),
+					(Integer) call.getParameter(1).getValue(), (Integer) call
+						.getParameter(2).getValue(), (Integer) call
+						.getParameter(3).getValue(), (Integer) call
+						.getParameter(4).getValue(), (Integer) call
 						.getParameter(5).getValue(), (Integer) call
 						.getParameter(6).getValue());
 				break;
@@ -111,13 +111,13 @@ public abstract class View implements GameListener, KeyboardListener {
 			
 			case MOVE_ENTITY:
 				moveEntity((Integer) call.getParameter(0).getValue(),
-					(Double) call.getParameter(1).getValue(), (Double) call
+					(Integer) call.getParameter(1).getValue(), (Integer) call
 						.getParameter(2).getValue());
 				break;
 			
 			case ROTATE_ENTITY:
 				rotateEntity((Integer) call.getParameter(0).getValue(),
-					(Double) call.getParameter(1).getValue());
+					(Integer) call.getParameter(1).getValue());
 				break;
 			}
 		} catch (CowException e) {
@@ -132,8 +132,8 @@ public abstract class View implements GameListener, KeyboardListener {
 	protected void printText(String text) {
 	}
 	
-	protected void displayGrid(double x0, double y0, double x1, double y1,
-		double xSpacing, double ySpacing, int color) {
+	protected void displayGrid(int x0, int y0, int x1, int y1, int xSpacing,
+		int ySpacing, int color) {
 	}
 	
 	protected void createEntity(int definitionId, int id) {
@@ -142,10 +142,10 @@ public abstract class View implements GameListener, KeyboardListener {
 	protected void deleteEntity(int id) {
 	}
 	
-	protected void moveEntity(int id, double dx, double dy) {
+	protected void moveEntity(int id, int dx, int dy) {
 	}
 	
-	protected void rotateEntity(int id, double angle) {
+	protected void rotateEntity(int id, int angle) {
 	}
 	
 	// -------------------------------------------------------------------------

@@ -14,12 +14,12 @@ class ViewApi(object):
 	
 	def displayGrid(self, x0, y0, x1, y1, xSpacing, ySpacing, color):
 		self.factory.initParameters(7)
-		self.factory.addDouble(x0)
-		self.factory.addDouble(y0)
-		self.factory.addDouble(x1)
-		self.factory.addDouble(y1)
-		self.factory.addDouble(xSpacing)
-		self.factory.addDouble(ySpacing)
+		self.factory.addInt(x0)
+		self.factory.addInt(y0)
+		self.factory.addInt(x1)
+		self.factory.addInt(y1)
+		self.factory.addInt(xSpacing)
+		self.factory.addInt(ySpacing)
 		self.factory.addInt(color)
 		self.factory.call(View.DISPLAY_GRID)
 	
@@ -37,13 +37,13 @@ class ViewApi(object):
 	def moveEntity(self, id, dx, dy):
 		self.factory.initParameters(3)
 		self.factory.addInt(id)
-		self.factory.addDouble(dx)
-		self.factory.addDouble(dy)
+		self.factory.addInt(dx)
+		self.factory.addInt(dy)
 		self.factory.call(View.MOVE_ENTITY)
 	
 	def rotateEntity(self, id, angle):
 		self.factory.initParameters(2)
 		self.factory.addInt(id)
-		self.factory.addDouble(angle)
+		self.factory.addInt(angle)
 		self.factory.call(View.ROTATE_ENTITY)
 		

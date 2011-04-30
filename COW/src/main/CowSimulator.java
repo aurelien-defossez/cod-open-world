@@ -36,7 +36,7 @@ public class CowSimulator {
 	/**
 	 * The maximal speed, in frames per second.
 	 */
-	public static final double MAX_SPEED = 100;
+	public static final double MAX_SPEED = 1000;
 	
 	/**
 	 * The unlimited speed constant.

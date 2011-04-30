@@ -51,7 +51,7 @@ public class Scheduler extends Thread {
 	/**
 	 * The time between two frames, in milliseconds.
 	 */
-	private int timeBetweenFrames;
+	private int period;
 	
 	/**
 	 * The game state.
@@ -243,7 +243,7 @@ public class Scheduler extends Thread {
 				}
 				// Wait between two frames
 				else if (speed < CowSimulator.UNLIMITED_SPEED) {
-					Thread.sleep(timeBetweenFrames);
+					Thread.sleep(period);
 				}
 			} catch (InterruptedException e) {
 				logger.error(e.getMessage(), e);
@@ -264,7 +264,7 @@ public class Scheduler extends Thread {
 	 */
 	public void setSpeed(double speed) {
 		this.speed = speed;
-		this.timeBetweenFrames = (int) (1000 / speed);
+		this.period = (int) (1000 / speed);
 	}
 	
 	/**
