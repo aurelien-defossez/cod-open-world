@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 import sim.GameSimulator;
 import sim.Scheduler;
 import view.View;
+import view.View.ViewType;
 import com.ApiCall;
 import com.Variant;
 import com.Variant.VariantType;
@@ -37,6 +38,11 @@ public class ReplaySimulator extends GameSimulator {
 	 * The replay file data reader.
 	 */
 	private CompressedDataInputStream in;
+	
+	/**
+	 * The replay game.
+	 */
+	private ReplayGame game;
 	
 	// -------------------------------------------------------------------------
 	// Constructor
@@ -68,35 +74,38 @@ public class ReplaySimulator extends GameSimulator {
 			// Add AI
 			addAi(new ReplayAi(this, aiId, aiName));
 		}
+		
+		// Load game
+		game = new ReplayGame(gameName);
 	}
 	
 	// -------------------------------------------------------------------------
 	// Public methods
 	// -------------------------------------------------------------------------
 	
-	@Override
 	/**
 	 * Adds an AI (not implemented, does nothing).
 	 * 
 	 * @param aiId the AI id.
 	 * @param aiName the AI name.
 	 */
+	@Override
 	public void addAi(short aiId, String aiName) {
 		// Do nothing
 	}
 	
-	@Override
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void initGame() {
 		super.initGame();
 	}
 	
-	@Override
 	/**
 	 * Ends the game replay.
 	 */
+	@Override
 	public void endGame() {
 		super.endGame();
 		
@@ -108,10 +117,10 @@ public class ReplaySimulator extends GameSimulator {
 		}
 	}
 	
-	@Override
 	/**
 	 * Plays the replay.
 	 */
+	@Override
 	public void play() {
 		try {
 			while (in.available() > 0) {
@@ -182,7 +191,6 @@ public class ReplaySimulator extends GameSimulator {
 		}
 	}
 	
-	@Override
 	/**
 	 * Makes a game API call (not implemented, returns null).
 	 * 
@@ -190,8 +198,17 @@ public class ReplaySimulator extends GameSimulator {
 	 * @param ai the AI making the call.
 	 * @return the return value of this call.
 	 */
+	@Override
 	public Variant callGameFunction(ApiCall call, Ai ai) {
 		// Do nothing
 		return null;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public ViewType getViewType() {
+		return game.getViewType();
 	}
 }

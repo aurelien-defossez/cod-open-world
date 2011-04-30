@@ -4,8 +4,8 @@ NAME
 SYNOPSIS
 	cow -h
 	cow -g <gameName> [-a aiName ...] [-r replayName ...]
-				[-s speed] [-v viewType] [-t] [-x] [-z gameParameter ...]
-	cow -g gameName -p replayName [-s speed] [-v viewType] [-x] 
+				[-s speed] [-t] [-x] [-z gameParameter ...]
+	cow -g gameName -p replayName [-s speed] [-x] 
 
 DESCRIPTION
 	Launches a Cow instance playing a game with the specified AIs.
@@ -43,18 +43,6 @@ DESCRIPTION
 -t, --test
 	Starts the platform in test mode, making everything run into the same
 	process, thus accelerating the game speed.
-
--v, --view viewType
-	Tells which view is going to be used to display the game.
-	If the view is defined more than once, only the last definition will
-	prevail.
-	<viewType> can be one of the following:
-	none: no GUI, shows only the final result in the console.
-	console: no GUI, shows the text output and the results in the console.
-	text: Text GUI.
-	2d: 2D GUI.
-	3d: 3D GUI.
-	Default is none.
 
 -x, --auto
 	If set, starts automatically the game when the view is ready.

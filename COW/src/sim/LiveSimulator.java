@@ -7,6 +7,7 @@ package sim;
 
 import main.CowException;
 import org.apache.log4j.Logger;
+import view.View.ViewType;
 import com.ApiCall;
 import com.Variant;
 import com.ai.Ai;
@@ -127,6 +128,14 @@ public abstract class LiveSimulator extends GameSimulator {
 				+ call.getFunctionId() + ".");
 		
 		return game.performGameFunction(call, ai);
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public ViewType getViewType() {
+		return game.getViewType();
 	}
 	
 	// -------------------------------------------------------------------------

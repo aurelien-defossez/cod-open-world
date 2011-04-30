@@ -16,7 +16,6 @@ import sim.GameSimulator;
 import sim.Scheduler;
 import sim.replay.ReplayWriter;
 import ui.gui.Gui;
-import view.View.ViewType;
 
 public class CowSimulator {
 	// -------------------------------------------------------------------------
@@ -102,7 +101,6 @@ public class CowSimulator {
 		String gameName = null;
 		String loadReplayName = null;
 		double gameSpeed = DEFAULT_SPEED;
-		ViewType viewType = ViewType.None;
 		boolean displayHelp = false;
 		boolean autoStart = false;
 		boolean testMode = false;
@@ -193,32 +191,6 @@ public class CowSimulator {
 					testMode = true;
 				}
 
-				// -v, --view: Set view
-				else if (option.equals("-v") || option.equals("--view")) {
-					String strViewType = args[i++].toLowerCase();
-					
-					// Define view
-					if (strViewType.equals("none")) {
-						viewType = ViewType.None;
-					} else if (strViewType.equals("console")) {
-						viewType = ViewType.Console;
-						throw new CowException("Not implemented yet");
-					} else if (strViewType.equals("text")) {
-						viewType = ViewType.Text;
-					} else if (strViewType.equals("2d")) {
-						viewType = ViewType.V2D;
-					} else if (strViewType.equals("3d")) {
-						viewType = ViewType.V3D;
-						throw new CowException("Not implemented yet");
-					} else {
-						throw new CowException("View type '" + strViewType
-							+ "' invalid.");
-					}
-					
-					if (logger.isTraceEnabled())
-						logger.trace("Set view: " + viewType);
-				}
-
 				// -x, --auto: Auto-start
 				else if (option.equals("-x") || option.equals("--auto")) {
 					autoStart = true;
@@ -296,7 +268,7 @@ public class CowSimulator {
 				}
 				
 				// Create GUI
-				Gui gui = new Gui(scheduler, viewType);
+				Gui gui = new Gui(scheduler, simulator.getViewType());
 				simulator.addGameListener(gui);
 				simulator.addGameListener(gui.getView());
 				

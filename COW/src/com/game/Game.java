@@ -7,10 +7,13 @@ package com.game;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import com.ApiCall;
+import com.Lang;
 import com.Lang.Language;
 import main.CowException;
 import data.ConfigLoader;
 import sim.LiveSimulator;
+import view.View;
+import view.View.ViewType;
 
 public abstract class Game implements GameInterface {
 	// -------------------------------------------------------------------------
@@ -41,6 +44,11 @@ public abstract class Game implements GameInterface {
 	 */
 	private String name;
 	
+	/**
+	 * The view type.
+	 */
+	private ViewType viewType;
+	
 	// -------------------------------------------------------------------------
 	// Constructor
 	// -------------------------------------------------------------------------
@@ -62,20 +70,22 @@ public abstract class Game implements GameInterface {
 				new ConfigLoader("games/" + gameName + "/engine/" + CONFIG_FILE);
 			
 			// Read language
-			String languageString = config.getValue("language").toLowerCase();
+			language = Lang.getLanguage(config.getValue("language"));
 			
-			// Java
-			if (languageString.equals("java")) {
-				this.language = Language.Java;
-			}
-			// Python
-			else if (languageString.equals("python")) {
-				this.language = Language.Python;
-			}
 			// Not supported language
-			else {
+			if (language == null) {
 				throw new CowException("Cannot load game \"" + gameName
-					+ ": language " + languageString + " not supported.");
+					+ ": language " + config.getValue("language")
+					+ " not supported.");
+			}
+			
+			// Read view type
+			viewType = View.getViewType(config.getValue("view"));
+			
+			// Not supported view
+			if (language == null) {
+				throw new CowException("Cannot load game \"" + gameName
+					+ ": view " + config.getValue("view") + " not supported.");
 			}
 		}
 		// Configuration file not found
@@ -110,6 +120,15 @@ public abstract class Game implements GameInterface {
 	 */
 	public final Language getLanguage() {
 		return language;
+	}
+	
+	/**
+	 * Returns the view type.
+	 * 
+	 * @return the view type.
+	 */
+	public final ViewType getViewType() {
+		return viewType;
 	}
 	
 	/**

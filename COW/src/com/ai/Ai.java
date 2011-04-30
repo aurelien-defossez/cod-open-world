@@ -7,6 +7,7 @@ package com.ai;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import com.ApiCall;
+import com.Lang;
 import com.Lang.Language;
 import com.Variant;
 import main.CowException;
@@ -87,20 +88,13 @@ public abstract class Ai implements AiInterface {
 			this.playerName = config.getValue("creator");
 			
 			// Read language
-			String languageString = config.getValue("language").toLowerCase();
+			language = Lang.getLanguage(config.getValue("language"));
 			
-			// Java
-			if (languageString.equals("java")) {
-				this.language = Language.Java;
-			}
-			// Python
-			else if (languageString.equals("python")) {
-				this.language = Language.Python;
-			}
 			// Not supported language
-			else {
+			if (language == null) {
 				throw new CowException("Cannot load AI \"" + aiName
-					+ ": language " + languageString + " not supported.");
+					+ ": language " + config.getValue("language")
+					+ " not supported.");
 			}
 		}
 		// Configuration file not found

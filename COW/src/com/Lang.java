@@ -5,8 +5,41 @@
 package com;
 
 public abstract class Lang {
+	// -------------------------------------------------------------------------
+	// Enumeration
+	// -------------------------------------------------------------------------
+	
+	/**
+	 * The language enum, with every supported language.
+	 */
 	public enum Language {
 		Cpp, Java, Python
+	}
+	
+	// -------------------------------------------------------------------------
+	// Class methods
+	// -------------------------------------------------------------------------
+	
+	/**
+	 * Returns the language enum value corresponding to the given string.
+	 * 
+	 * @param language the language, as a string.
+	 * @return the language, as an enum value.
+	 */
+	public static Language getLanguage(String language) {
+		language = language.toLowerCase();
+		
+		if (language.equals("cpp")) {
+			return Language.Java;
+		}
+		if (language.equals("java")) {
+			return Language.Java;
+		}
+		if (language.equals("python")) {
+			return Language.Python;
+		}
+		
+		return null;
 	}
 	
 	/**

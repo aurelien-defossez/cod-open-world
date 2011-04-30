@@ -9,6 +9,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
+import view.View.ViewType;
 import com.ApiCall;
 import com.GameListener;
 import com.ai.Ai;
@@ -225,4 +226,11 @@ public abstract class GameSimulator implements Simulator {
 	 * Plays the game.
 	 */
 	public abstract void play();
+	
+	/**
+	 * Returns the game view type.
+	 * 
+	 * @return the view type.
+	 */
+	public abstract ViewType getViewType();
 }

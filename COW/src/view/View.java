@@ -34,7 +34,7 @@ public abstract class View implements GameListener, KeyboardListener {
 	// -------------------------------------------------------------------------
 	
 	public enum ViewType {
-		None, Console, Text, V2D, V3D
+		None, Console, Text, V2D, V3D, Specific
 	};
 	
 	// -------------------------------------------------------------------------
@@ -56,6 +56,24 @@ public abstract class View implements GameListener, KeyboardListener {
 	public View(KeyboardController keyboardController) {
 		this.keyboardController = keyboardController;
 		keyboardController.addListener(this);
+	}
+	
+	// -------------------------------------------------------------------------
+	// Class methods
+	// -------------------------------------------------------------------------
+	
+	public static final ViewType getViewType(String view) {
+		view = view.toLowerCase();
+		
+		if (view.equals("2d")) {
+			return ViewType.V2D;
+		}
+		
+		if (view.equals("text")) {
+			return ViewType.Text;
+		}
+		
+		return null;
 	}
 	
 	// -------------------------------------------------------------------------
