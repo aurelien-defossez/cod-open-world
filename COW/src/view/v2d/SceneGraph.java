@@ -66,10 +66,19 @@ public class SceneGraph {
 		
 		// Create sprite maker
 		if (spriteMaker == null) {
+			String entityName;
+			
+			// Load entity name from its id
 			try {
-				// Load entity configuration file
-				String entityName =
+				entityName =
 					entitiesLoader.getValue(String.valueOf(definitionId));
+			} catch (IOException e) {
+				throw new CowException("Can't load entity #" + definitionId
+					+ ": " + e.getMessage());
+			}
+			
+			// Load entity loader from the entity name
+			try {
 				EntityLoader entityLoader =
 					new EntityLoader("games/" + gameName + "/entities/"
 						+ entityName + ".ini");
@@ -84,18 +93,19 @@ public class SceneGraph {
 							entityLoader.getValue("sprite"),
 							(float) entityLoader.getDoubleValue("width", 0),
 							(float) entityLoader.getDoubleValue("height", 0),
-							entityLoader.getIntValue("depth"),
-							entityLoader.getEntityCenterValue("center",
-								entityCenter.CENTER));
+							entityLoader.getIntValue("depth"), entityLoader
+								.getEntityCenterValue("center",
+									entityCenter.CENTER));
 					makers.put(definitionId, spriteMaker);
 				}
 				// Unknown type
 				else {
-					throw new CowException("Unknown entity type: " + type);
+					throw new CowException("Unknown entity type '" + type
+						+ "' for entity #" + id + " (" + entityName + ")");
 				}
 			} catch (IOException e) {
-				// TODO: Don't manage this object OR create a simple quad
-				throw new CowException(e);
+				throw new CowException("Can't load entity '" + entityName
+					+ "': " + e.getMessage());
 			}
 		}
 		

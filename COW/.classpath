@@ -17,17 +17,16 @@
 	<classpathentry kind="lib" path="resources/libraries/log4j/log4j.jar"/>
 	<classpathentry kind="lib" path="resources/libraries/lwjgl-2.5/jar/AppleJavaExtensions.jar"/>
 	<classpathentry kind="lib" path="resources/libraries/lwjgl-2.5/jar/jinput.jar"/>
-	<classpathentry kind="lib" path="resources/libraries/lwjgl-2.5/jar/lwjgl_test.jar"/>
-	<classpathentry kind="lib" path="resources/libraries/lwjgl-2.5/jar/lwjgl_util.jar"/>
-	<classpathentry kind="lib" path="resources/libraries/lwjgl-2.5/jar/lwjgl-debug.jar"/>
-	<classpathentry kind="lib" path="resources/libraries/lwjgl-2.5/jar/lwjgl.jar"/>
-	<classpathentry kind="lib" path="resources/libraries/lwjgl-2.5/jar/lzma.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
 		<attributes>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="COW/resources/libraries/lwjgl-2.5/native/windows"/>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="COW/resources/libraries/lwjgl-2.7.1/native/linux"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="resources/libraries/jython2.5.2rc3/jython.jar"/>
-	<classpathentry kind="lib" path="D:/Work/COW/COW/resources/libraries/JNA 3.2.7/jna.jar"/>
+	<classpathentry kind="lib" path="resources/libraries/lwjgl-2.7.1/jar/lwjgl_test.jar"/>
+	<classpathentry kind="lib" path="resources/libraries/lwjgl-2.7.1/jar/lwjgl_util.jar"/>
+	<classpathentry kind="lib" path="resources/libraries/lwjgl-2.7.1/jar/lwjgl-debug.jar"/>
+	<classpathentry kind="lib" path="resources/libraries/lwjgl-2.7.1/jar/lwjgl.jar"/>
+	<classpathentry kind="lib" path="resources/libraries/JNA 3.2.7/jna.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

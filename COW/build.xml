@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
+
 <project default="makeJar">
-	<target name="makeJar" depends=""
-		description="Make COW and Remote AI Launcher jars">
+	<target name="makeJar" description="Make COW and Remote AI Launcher jars">
 		
 		<jar destfile="resources/COW.jar"
 			basedir="bin"
@@ -12,32 +12,4 @@
     		includes="**/*.class"
 			manifest="RemoteManifest.mf" />
 	</target>
-	<!--
-	<target name="makePBJar"
-		description="Generate Protocol Buffer jar based on java and cc sources">
-		
-		<exec executable="resources/protobuf/protoc.exe">
-			<arg value="- -java_out=resources/libraries/protobuf-2.4.0a/java/src/main/java" />
-			<arg value="-I./resources/libraries/protobuf-2.4.0a/src" />
-			<arg value="resources/libraries/protobuf-2.4.0a/src/google/protobuf/descriptor.proto" />
-		</exec>
-		
-		<javac srcdir="resources/libraries/protobuf-2.4.0a/java/src/main/java"
-			destdir="resources/libraries/protobuf-2.4.0a/java/bin">
-		</javac>
-		
-		<jar destfile="resources/libraries/protobuf-2.4.0a/protobuf.jar"
-			basedir="resources/libraries/protobuf-2.4.0a/java/bin"
-			includes="**/*.class" />
-	</target>
-	
-	<target name="generatePBFiles"
-		description="Generate java files based on .proto files">
-		
-		<exec executable="resources/protobuf/protoc.exe">
-			<arg value="- -java_out=src" />
-			<arg value="resources/protobuf/call.proto" />
-		</exec>
-	</target>
-	-->
 </project>
