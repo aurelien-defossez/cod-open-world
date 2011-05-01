@@ -15,8 +15,6 @@
 	<classpathentry kind="lib" path="resources/libraries/jME2_0_1-Stable/jme-terrain.jar"/>
 	<classpathentry kind="lib" path="resources/libraries/jME2_0_1-Stable/jme.jar"/>
 	<classpathentry kind="lib" path="resources/libraries/log4j/log4j.jar"/>
-	<classpathentry kind="lib" path="resources/libraries/lwjgl-2.5/jar/AppleJavaExtensions.jar"/>
-	<classpathentry kind="lib" path="resources/libraries/lwjgl-2.5/jar/jinput.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
 		<attributes>
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="COW/resources/libraries/lwjgl-2.7.1/native/linux"/>
