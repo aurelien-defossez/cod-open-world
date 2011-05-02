@@ -6,6 +6,7 @@
 package com.game;
 
 import java.util.Collection;
+import lang.cpp.CppGameConnector;
 import lang.java.JavaGameConnector;
 import lang.python.PyGameConnector;
 import main.CowException;
@@ -49,6 +50,17 @@ public class LocalGame extends Game {
 		case Java:
 			connector = new JavaGameConnector(this);
 			break;
+		
+		// Load C++ game
+		case Cpp:
+			connector = new CppGameConnector(this);
+			break;
+		
+		// Not implemented language
+		default:
+			throw new CowException("Game '" + gameName
+				+ "' could not be loaded: language '" + getLanguage()
+				+ "' not supported.");
 		}
 	}
 	

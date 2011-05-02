@@ -13,20 +13,6 @@ import main.CowException;
 
 public class Variant {
 	// -------------------------------------------------------------------------
-	// Enumeration
-	// -------------------------------------------------------------------------
-	
-	/**
-	 * This enumeration represents the type of the variant.
-	 */
-	public enum VariantType {
-		VOID, BOOL, INT, DOUBLE, STRING, BOOL_MATRIX1, BOOL_MATRIX2,
-		BOOL_MATRIX3, INT_MATRIX1, INT_MATRIX2, INT_MATRIX3, DOUBLE_MATRIX1,
-		DOUBLE_MATRIX2, DOUBLE_MATRIX3, STRING_MATRIX1, STRING_MATRIX2,
-		STRING_MATRIX3
-	}
-	
-	// -------------------------------------------------------------------------
 	// Attributes
 	// -------------------------------------------------------------------------
 	

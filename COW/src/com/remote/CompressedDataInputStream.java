@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import main.CowException;
 import com.Variant;
-import com.Variant.VariantType;
+import com.VariantType;
 
 public class CompressedDataInputStream extends DataInputStream {
 	// -------------------------------------------------------------------------

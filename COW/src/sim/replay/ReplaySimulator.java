@@ -16,7 +16,7 @@ import view.View;
 import view.View.ViewType;
 import com.ApiCall;
 import com.Variant;
-import com.Variant.VariantType;
+import com.VariantType;
 import com.ai.Ai;
 import com.remote.CompressedDataInputStream;
 

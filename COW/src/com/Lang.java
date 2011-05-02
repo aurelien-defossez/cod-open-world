@@ -30,7 +30,7 @@ public abstract class Lang {
 		language = language.toLowerCase();
 		
 		if (language.equals("cpp")) {
-			return Language.Java;
+			return Language.Cpp;
 		}
 		if (language.equals("java")) {
 			return Language.Java;
