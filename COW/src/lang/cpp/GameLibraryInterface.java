@@ -29,7 +29,7 @@ public interface GameLibraryInterface extends Library {
 			
 			for (int i = 0; i < variants.length; i++) {
 				VariantStruct variant = variants[i];
-
+				
 				contiguous[i].type = variant.type;
 				contiguous[i].value = variant.value;
 			}
@@ -48,6 +48,18 @@ public interface GameLibraryInterface extends Library {
 				super(type, value);
 			}
 		}
+		
+		public static class ByReference extends VariantStruct implements
+			Structure.ByReference {
+			
+			public ByReference() {
+				// Do nothing
+			}
+			
+			public ByReference(VariantType type, com.sun.jna.ptr.ByReference value) {
+				super(type, value);
+			}
+		}
 	}
 	
 	public void test(VariantStruct[] variants);
@@ -63,5 +75,5 @@ public interface GameLibraryInterface extends Library {
 	public void disqualifyAi(String aiName, String reason);
 	
 	public void performGameFunction(int functionId, int nbParameters,
-		VariantStruct parameters[]);
+		Pointer parameters[]);
 }

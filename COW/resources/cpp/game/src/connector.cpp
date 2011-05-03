@@ -10,15 +10,16 @@
 	#define EXPORT
 #endif
 
-// Include C++ game communicator
-#include "GameCommunicator.hpp"
-
 // TEMP
 #include <iostream>
 using namespace std;
 // TEMP END
 
-// Create communicator
+// Includes
+#include "GameCommunicator.hpp"
+#include "Variant.hpp"
+
+// Create global communicator
 GameCommunicator communicator = GameCommunicator();
 
 // Open extern C if language is C++
@@ -29,6 +30,7 @@ extern "C" {
 // Include self header file
 #include "connector.hpp"
 
+/*
 EXPORT void test(Variant variant[]) {
 	cout << "[Test]" << endl;
 	int *i = (int*)variant[0].value;
@@ -39,6 +41,7 @@ EXPORT void test(Variant variant[]) {
 	cout << "Variant 0: variant.type=" << (int)variant[0].type << "; variant.value=" << *i << endl;
 	cout << "Variant 1: variant.type=" << (double)variant[1].type << "; variant.value=" << *d << endl;
 }
+*/
 
 EXPORT void init(int nbParameters, char *parameters[]) {
 	communicator.init(nbParameters, parameters);
@@ -58,6 +61,10 @@ EXPORT void endGame() {
 
 EXPORT void disqualifyAi(char *aiName, char *reason) {
 	communicator.disqualifyAi(aiName, reason);
+}
+
+EXPORT void performGameFunction(int functionId, int nbParameters, void *parameters[]) {
+	communicator.performGameFunction(functionId, nbParameters, parameters);
 }
 
 // Close extern C
