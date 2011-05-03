@@ -159,6 +159,17 @@ public abstract class GameSimulator implements Simulator {
 	public final String[] getParameters() {
 		return parameters;
 	}
+
+	/**
+	 * Prints the score in the output stream, one integer for each AI, in the
+	 * order of the initial AI order in the parameter list.
+	 */
+	public final void printScores() {
+		for(Ai ai : ais.values()) {
+			System.out.print(ai.getScore() + " ");
+		}
+		System.out.println();
+	}
 	
 	// -------------------------------------------------------------------------
 	// Protected methods

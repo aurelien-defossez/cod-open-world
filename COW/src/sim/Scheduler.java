@@ -309,6 +309,9 @@ public class Scheduler extends Thread {
 			endGame();
 		}
 		
+		// Trace final scores
+		simulator.printScores();
+		
 		if (logger.isTraceEnabled())
 			logger.trace("Thread ended");
 	}

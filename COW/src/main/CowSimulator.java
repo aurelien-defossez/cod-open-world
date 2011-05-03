@@ -51,7 +51,7 @@ public class CowSimulator {
 	/**
 	 * The unlimited speed small name, to use with the speed option (-s u).
 	 */
-	public static final char UNLIMITED_LETTER = 'u';
+	public static final String UNLIMITED_LETTER = "u";
 	
 	/**
 	 * Help file name.
@@ -90,9 +90,6 @@ public class CowSimulator {
 	 * @param args the arguments.
 	 */
 	public CowSimulator(String[] args) {
-		// Initialize logger
-		PropertyConfigurator.configure("log4j-config.txt");
-		
 		// Parameters
 		String option = "";
 		Vector<String> ais = new Vector<String>();
@@ -104,6 +101,8 @@ public class CowSimulator {
 		boolean displayHelp = false;
 		boolean autoStart = false;
 		boolean testMode = false;
+		boolean useView = true;
+		boolean quiet = false;
 		
 		// Parse arguments
 		try {
@@ -114,18 +113,12 @@ public class CowSimulator {
 				if (option.equals("-a") || option.equals("--ai")) {
 					String aiName = args[i++];
 					ais.add(aiName);
-					
-					if (logger.isTraceEnabled())
-						logger.trace("Add AI: " + aiName);
 				}
 
 				// -g, --game: Determine game
 				else if (option.equals("-g") || option.equals("--game")) {
 					if (gameName == null) {
 						gameName = args[i++];
-						
-						if (logger.isTraceEnabled())
-							logger.trace("Set game: " + gameName);
 					} else {
 						throw new CowException(
 							"The game can't be specified twice");
@@ -134,27 +127,29 @@ public class CowSimulator {
 
 				// -h, --help: Display help
 				else if (option.equals("-h") || option.equals("--help")) {
-					if (logger.isTraceEnabled())
-						logger.trace("Display help");
-					
-					testMode = true;
+					displayHelp = true;
 				}
 
-				// p, --load: Load and play a replay
+				// -n, --noview: Don't show a view and play the game blindly
+				else if (option.equals("-n") || option.equals("--noview")) {
+					useView = false;
+					autoStart = true;
+				}
+
+				// -p, --load: Load and play a replay
 				else if (option.equals("-p") || option.equals("--load")) {
 					loadReplayName = args[i++];
-					
-					if (logger.isTraceEnabled())
-						logger.trace("Load replay: " + loadReplayName);
+				}
+
+				// -q, --quiet: Plays quietly and don't log anything
+				else if (option.equals("-q") || option.equals("--quiet")) {
+					quiet = true;
 				}
 
 				// -r, --save: Save replay
 				else if (option.equals("-r") || option.equals("--save")) {
 					String replayName = args[i++];
 					replays.add(replayName);
-					
-					if (logger.isTraceEnabled())
-						logger.trace("Save replay: " + replayName);
 				}
 
 				// -s, --speed: Set speed
@@ -175,28 +170,20 @@ public class CowSimulator {
 									Math.min(gameSpeed, MAX_SPEED));
 						} catch (NumberFormatException e) {
 							throw new CowException("Speed must be an float "
-								+ "or \"" + UNLIMITED_NAME + "\".");
+								+ ", \"" + UNLIMITED_NAME + "\" " + "or \""
+								+ UNLIMITED_LETTER + "\".");
 						}
 					}
-					
-					if (logger.isTraceEnabled())
-						logger.trace("Set speed: " + gameSpeed);
 				}
 
 				// -t, --test: Test mode
 				else if (option.equals("-t") || option.equals("--test")) {
-					if (logger.isTraceEnabled())
-						logger.trace("Test mode");
-					
 					testMode = true;
 				}
 
 				// -x, --auto: Auto-start
 				else if (option.equals("-x") || option.equals("--auto")) {
 					autoStart = true;
-					
-					if (logger.isTraceEnabled())
-						logger.trace("Auto-start enabled");
 				}
 
 				// -z, --parameters: Set game parameters
@@ -213,32 +200,50 @@ public class CowSimulator {
 					throw new CowException("Unknown option: " + option + ".");
 				}
 			}
-			
-			// Display help
-			if (displayHelp) {
-				try {
-					// Open file
-					String line;
-					BufferedReader reader =
-						new BufferedReader(new FileReader(new File(HELP_FILE)));
-					
-					// Print file
-					while ((line = reader.readLine()) != null) {
-						System.out.println(line);
-					}
-				}
-				// Help file not found
-				catch (FileNotFoundException e) {
-					logger.fatal("Help file not found: can't display help");
-				}
-				// IO Exception
-				catch (IOException e) {
-					logger.fatal("An IO error occurred while reading the "
-						+ "help file (" + e.getMessage() + ").");
+		}
+		// Specific exception
+		catch (CowException e) {
+			System.out.println(e.getMessage());
+			return;
+		}
+		// Not enough arguments
+		catch (IndexOutOfBoundsException e) {
+			System.out.println("Argument expected after " + option);
+		}
+		
+		// Initialize logger
+		if (quiet) {
+			PropertyConfigurator.configure("log4j-quiet-config.txt");
+		} else {
+			PropertyConfigurator.configure("log4j-config.txt");
+		}
+		
+		// Display help
+		if (displayHelp) {
+			try {
+				// Open file
+				String line;
+				BufferedReader reader =
+					new BufferedReader(new FileReader(new File(HELP_FILE)));
+				
+				// Print file
+				while ((line = reader.readLine()) != null) {
+					System.out.println(line);
 				}
 			}
-			// Launch game
-			else {
+			// Help file not found
+			catch (FileNotFoundException e) {
+				logger.fatal("Help file not found: can't display help");
+			}
+			// IO Exception
+			catch (IOException e) {
+				logger.fatal("An IO error occurred while reading the "
+					+ "help file (" + e.getMessage() + ").");
+			}
+		}
+		// Launch game
+		else {
+			try {
 				// Game not specified
 				if (gameName == null) {
 					throw new CowException("The game must be specified.");
@@ -268,33 +273,35 @@ public class CowSimulator {
 				}
 				
 				// Create GUI
-				Gui gui = new Gui(scheduler, simulator.getViewType());
-				simulator.addGameListener(gui);
-				simulator.addGameListener(gui.getView());
+				Gui gui = null;
+				if (useView) {
+					gui = new Gui(scheduler, simulator.getViewType());
+					simulator.addGameListener(gui);
+					simulator.addGameListener(gui.getView());
+				}
 				
 				// Auto start
 				if (autoStart) {
 					// Wait for the view to be ready
-					while (!gui.getView().isReady()) {
-						Thread.sleep(1);
+					if (useView) {
+						while (!gui.getView().isReady()) {
+							Thread.sleep(1);
+						}
 					}
 					
 					// Auto-start
 					scheduler.play();
 				}
 			}
-		}
-		// Not enough arguments
-		catch (IndexOutOfBoundsException e) {
-			logger.fatal("Argument expected after " + option);
-		}
-		// Cow exception
-		catch (CowException e) {
-			logger.fatal(e.getMessage(), e);
-		}
-		// Unexpected exception
-		catch (Exception e) {
-			logger.fatal(e.getMessage(), e);
+			// Cow exception
+			catch (CowException e) {
+				logger.fatal(e.getMessage(), e);
+			}
+			// Unexpected exception
+			catch (Exception e) {
+				logger.fatal(e.getMessage(), e);
+				//TODO: handle not catched exception
+			}
 		}
 	}
 }

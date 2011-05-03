@@ -38,6 +38,11 @@ public class ProxyAi extends Ai {
 	 */
 	private Process aiProcess;
 	
+	/**
+	 * The process reader.
+	 */
+	private ProcessReader processReader;
+	
 	// -------------------------------------------------------------------------
 	// Constructor
 	// -------------------------------------------------------------------------
@@ -92,7 +97,9 @@ public class ProxyAi extends Ai {
 			aiProcess = builder.start();
 			
 			// Start process reader
-			new ProcessReader(aiProcess, aiName + " (" + aiId + ")").start();
+			processReader =
+				new ProcessReader(aiProcess, aiName + " (" + aiId + ")");
+			processReader.start();
 			
 			if (logger.isDebugEnabled())
 				logger.debug("Connect RPC server...");
@@ -124,6 +131,7 @@ public class ProxyAi extends Ai {
 	@Override
 	public void stop() {
 		rpcServer.stopAi();
+		processReader.stopReading();
 		
 		try {
 			aiProcess.waitFor();

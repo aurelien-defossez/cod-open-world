@@ -74,6 +74,6 @@ public class SecureSimulator extends LiveSimulator {
 	public void endGame() {
 		super.endGame();
 		
-		watchdog.stop();
+		watchdog.endWatchdog();
 	}
 }

@@ -24,9 +24,16 @@ DESCRIPTION
 -h, --help
 	Displays this man page, ignoring every other option if any are specified.
 
+-n, --noview
+	Plays the game without a GUI and the game view.
+	Note: this option enables the -x option (starts automatically the game).
+
 -p, --load replayFile
 	Plays the replay from the given file. This replay must be in the
 	gameName/replays directory.
+
+-q, --quiet
+	Plays quielty and don't log anything except match result and errors.
 
 -r, --save replayFile ...
 	Saves the future game into a replay file named replayFile, stored under
