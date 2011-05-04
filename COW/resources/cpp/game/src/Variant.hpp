@@ -1,6 +1,8 @@
 #ifndef __VARIANT_H__
 #define __VARIANT_H__
 
+#include <vector>
+
 #define VARIANT_VOID 0
 #define VARIANT_BOOL 1
 #define VARIANT_INT 2
@@ -19,35 +21,31 @@
 #define VARIANT_STRING_MATRIX2 15
 #define VARIANT_STRING_MATRIX3 16
 
-typedef struct variant {
-	char type;
-	void *value;
+struct intMatrix1 {
+	int length;
+	int values[];
+};
+
+struct intMatrix2 {
+	int length;
+	int length2;
+	int values[];
+};
+
+typedef union variant {
+	bool boolValue;
+	int intValue;
+	double doubleValue;
+	char *stringValue;
+	
+	struct intMatrix1 *intMatrix1;
+	struct intMatrix2 *intMatrix2;
 } Variant;
 
-/*
-class Variant {
-private:
-	char type;
-	void *value;
-	
-public:
-	Variant(char type, void *value) {
-		this->type = type;
-		this->value = value;
-	}
-	
-	Variant(VariantStruct variant) {
-		this->type = variant.type;
-		this->value = variant.value;
-	}
-	
-	char getType() {
-		return type;
-	}
-	
-	void *getValue() {
-		return value;
-	}
-}*/
+typedef std::vector<int> IntMatrix1;
+typedef std::vector<IntMatrix1> IntMatrix2;
+
+IntMatrix1 toIntMatrix1(int values[], int length);
+IntMatrix2 toIntMatrix2(int values[], int length, int length2);
 
 #endif

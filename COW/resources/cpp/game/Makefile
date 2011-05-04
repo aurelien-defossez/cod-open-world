@@ -1,3 +1,3 @@
 all:
-	g++ -shared src/connector.cpp src/GameCommunicator.cpp -o libgame.so
+	g++ -shared src/connector.cpp src/Variant.cpp src/GameCommunicator.cpp -o libgame.so
 

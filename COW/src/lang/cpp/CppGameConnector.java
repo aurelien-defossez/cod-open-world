@@ -2,7 +2,7 @@
 package lang.cpp;
 
 import java.util.Collection;
-import lang.cpp.GameLibraryInterface.VariantStruct;
+import lang.cpp.GameLibraryInterface.VariantUnion;
 import com.ApiCall;
 import com.Variant;
 import com.VariantType;
@@ -10,10 +10,6 @@ import com.ai.Ai;
 import com.game.Game;
 import com.game.GameConnector;
 import com.sun.jna.Native;
-import com.sun.jna.Pointer;
-import com.sun.jna.StringArray;
-import com.sun.jna.ptr.DoubleByReference;
-import com.sun.jna.ptr.IntByReference;
 
 public class CppGameConnector extends GameConnector {
 	
@@ -55,54 +51,65 @@ public class CppGameConnector extends GameConnector {
 		
 		// Test boolean
 		{
-			Pointer[] params = new Pointer[3];
-			params[0] = new IntByReference(0).getPointer();
-			params[1] = new IntByReference(1).getPointer();
-			params[2] = new IntByReference(0).getPointer();
-			gameLib.performGameFunction(VariantType.BOOL.getId(), 3, params);
+			VariantUnion[] params = VariantUnion.createArray(3);
+			params[0].setValue(false);
+			params[1].setValue(true);
+			params[2].setValue(false);
+			gameLib.performGameFunction(VariantType.BOOL.getId(),
+				params.length, params);
 		}
 		
 		// Test int
 		{
-			Pointer[] params = new Pointer[3];
-			params[0] = new IntByReference(0).getPointer();
-			params[1] = new IntByReference(42).getPointer();
-			params[2] = new IntByReference(-42).getPointer();
-			gameLib.performGameFunction(VariantType.INT.getId(), 3, params);
+			VariantUnion[] params = VariantUnion.createArray(3);
+			params[0].setValue(42);
+			params[1].setValue(0);
+			params[2].setValue(-42);
+			gameLib.performGameFunction(VariantType.INT.getId(), params.length,
+				params);
 		}
 		
 		// Test double
 		{
-			Pointer[] params = new Pointer[3];
-			params[0] = new DoubleByReference(0.0).getPointer();
-			params[1] = new DoubleByReference(4.2).getPointer();
-			params[2] = new DoubleByReference(-4.2).getPointer();
-			gameLib.performGameFunction(VariantType.DOUBLE.getId(), 3, params);
+			VariantUnion[] params = VariantUnion.createArray(3);
+			params[0].setValue(0.0);
+			params[1].setValue(4.2);
+			params[2].setValue(0.999999999);
+			gameLib.performGameFunction(VariantType.DOUBLE.getId(),
+				params.length, params);
 		}
 		
 		// Test string
 		{
-			Pointer[] params = new Pointer[3];
-			params[0] = new StringArray(new String[] { "Héllo" });
-			params[1] = new StringArray(new String[] { "Wôrld!" });
-			params[2] = new StringArray(new String[] { "漢字" });
-			gameLib.performGameFunction(VariantType.STRING.getId(), 3, params);
+			VariantUnion[] params = VariantUnion.createArray(3);
+			params[0].setValue("Héllo");
+			params[1].setValue("Wôrld!");
+			params[2].setValue("漢字");
+			gameLib.performGameFunction(VariantType.STRING.getId(),
+				params.length, params);
 		}
 		
-		// Test int[]
+		// Test int matrix 1
 		{
-			Pointer[] params = new Pointer[1];
-			params[0] = new VariantStruct.ByReference().getPointer();
-			
-			/*
-			 * PointerByReference pref = new PointerByReference();
-			 * IntByReference iref = new IntByReference();
-			 * lib.allocate_buffer(pref, iref); Pointer p = pref.getValue();
-			 * byte[] buffer = p.getByteArray(0, iref.getValue());
-			 */
-
-			// gameLib.performGameFunction(VariantType.STRING.getId(), 2,
-			// params);
+			VariantUnion[] params = VariantUnion.createArray(3);
+			params[0].setValue(new int[] { 42, 0, -42 });
+			params[1].setValue(new int[] { 18, 37, -12368 });
+			params[2].setValue(new int[] { 4564, 165, 546, 1385, 0, 0 });
+			gameLib.performGameFunction(VariantType.INT_MATRIX1.getId(),
+				params.length, params);
+		}
+		
+		// Test int matrix 2
+		{
+			VariantUnion[] params = VariantUnion.createArray(4);
+			params[0].setValue(new int[][] { { 42, 0, -42 }, { 42, 0, -42 },
+				{ 42, 0, -42 } });
+			params[1].setValue(new int[][] { { 0 } });
+			params[2].setValue(new int[][] { { 4564 }, { 165 }, { 546 },
+				{ 1385 }, { 0 }, { 0 } });
+			params[3].setValue(new int[][] { { 4564, 165, 546, 1385, 0, 0 } });
+			gameLib.performGameFunction(VariantType.INT_MATRIX2.getId(),
+				params.length, params);
 		}
 	}
 	
@@ -135,17 +142,7 @@ public class CppGameConnector extends GameConnector {
 	 */
 	@Override
 	public Variant performGameFunction(ApiCall call, Ai ai) {
-		Variant[] parameters = call.getParameters();
-		VariantStruct[] cppParameters = new VariantStruct[parameters.length];
-		/*
-		 * for(int i = 0; i < parameters.length; i++) { cppParameters = new
-		 * VariantStruct() }
-		 */
-
-		/*
-		 * gameLib.performGameFunction(call.getFunctionId(), parameters.length,
-		 * cppParameters);
-		 */
+		// TODO
 		return null;
 	}
 }
