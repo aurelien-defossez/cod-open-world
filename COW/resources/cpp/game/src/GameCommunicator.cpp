@@ -3,12 +3,18 @@
 
 using namespace std;
 
+void GameCommunicator::setCommunicator(SpecificCommunicatorInterface *com) {
+	this->com = com;
+}
+
 void GameCommunicator::init(int nbParameters, char *parameters[]) {
 	cout << "Initializing game with " << nbParameters << " parameters." << endl;
 	
 	for(int i = 0; i < nbParameters; i++) {
 		cout << "Parameter #" << i << " = " << parameters[i] << endl;
 	}
+	
+	com->plop();
 }
 
 void GameCommunicator::addAi(short aiId, char *aiName, char *playerName) {
@@ -52,9 +58,7 @@ void GameCommunicator::performGameFunction(int functionId, int nbParameters, Var
 			
 			case VARIANT_INT_MATRIX1:
 			{
-				IntMatrix1 matrix1 = toIntMatrix1(
-					parameters[i].intMatrix1->values,
-					parameters[i].intMatrix1->length);
+				IntMatrix1 matrix1 = toIntMatrix1(parameters[i].intMatrix1);
 				
 				cout << "[";
 				for(int j = 0; j < matrix1.size(); j++) {
@@ -66,10 +70,7 @@ void GameCommunicator::performGameFunction(int functionId, int nbParameters, Var
 			
 			case VARIANT_INT_MATRIX2:
 			{
-				IntMatrix2 matrix2 = toIntMatrix2(
-					parameters[i].intMatrix2->values,
-					parameters[i].intMatrix2->length,
-					parameters[i].intMatrix2->length2);
+				IntMatrix2 matrix2 = toIntMatrix2(parameters[i].intMatrix2);
 				
 				cout << "[";
 				for(int j = 0; j < matrix2.size(); j++) {

@@ -21,6 +21,9 @@
 #define VARIANT_STRING_MATRIX2 15
 #define VARIANT_STRING_MATRIX3 16
 
+typedef std::vector<int> IntMatrix1;
+typedef std::vector<IntMatrix1> IntMatrix2;
+
 struct intMatrix1 {
 	int length;
 	int values[];
@@ -42,10 +45,10 @@ typedef union variant {
 	struct intMatrix2 *intMatrix2;
 } Variant;
 
-typedef std::vector<int> IntMatrix1;
-typedef std::vector<IntMatrix1> IntMatrix2;
-
+IntMatrix1 toIntMatrix1(struct intMatrix1 *matrix);
 IntMatrix1 toIntMatrix1(int values[], int length);
+
+IntMatrix2 toIntMatrix2(struct intMatrix2 *matrix);
 IntMatrix2 toIntMatrix2(int values[], int length, int length2);
 
 #endif

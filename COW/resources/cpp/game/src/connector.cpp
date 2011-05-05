@@ -17,6 +17,10 @@
 // Create global communicator
 GameCommunicator communicator = GameCommunicator();
 
+void setCommunicator(SpecificCommunicatorInterface *com) {
+	communicator.setCommunicator(com);
+}
+
 // Open extern C if language is C++
 #ifdef __cplusplus
 extern "C" {

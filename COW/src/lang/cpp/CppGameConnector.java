@@ -9,7 +9,9 @@ import com.VariantType;
 import com.ai.Ai;
 import com.game.Game;
 import com.game.GameConnector;
+import com.sun.jna.Function;
 import com.sun.jna.Native;
+import com.sun.jna.NativeLibrary;
 
 public class CppGameConnector extends GameConnector {
 	
@@ -17,10 +19,10 @@ public class CppGameConnector extends GameConnector {
 	
 	public CppGameConnector(Game game) {
 		super(game);
-		
-		System.setProperty("jna.library.path", "resources/cpp/game");
+		System.setProperty("jna.library.path", "games/" + game.getName()
+			+ "/engine");
 		gameLib =
-			(GameLibraryInterface) Native.loadLibrary("game",
+			(GameLibraryInterface) Native.loadLibrary("communicator",
 				GameLibraryInterface.class);
 		
 		/*
