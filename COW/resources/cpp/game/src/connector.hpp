@@ -12,7 +12,8 @@ extern "C" {
 	void play();
 	void endGame();
 	void disqualifyAi(char *aiName, char *reason);
-	void performGameFunction(int functionId, int nbParameters, Variant parameters[]);
+	Variant performGameFunction(int functionId, int nbParameters,
+			Variant parameters[]);
 }
 
 #endif

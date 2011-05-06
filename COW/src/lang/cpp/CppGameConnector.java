@@ -2,6 +2,7 @@
 package lang.cpp;
 
 import java.util.Collection;
+import lang.cpp.GameLibraryInterface.VariantStruct;
 import lang.cpp.GameLibraryInterface.VariantUnion;
 import com.ApiCall;
 import com.Variant;
@@ -52,13 +53,13 @@ public class CppGameConnector extends GameConnector {
 		}
 		
 		// Test move
-		{
-			VariantUnion[] params = VariantUnion.createArray(3);
-			params[0].setValue(42);
-			params[1].setValue(126);
-			params[2].setValue(248);
-			gameLib.performGameFunction(1, params.length, params);
-		}
+		ApiCall moveCall = new ApiCall((short) 1, new Variant[] {
+			new Variant(42),
+			new Variant(126),
+			new Variant(-45)
+		});
+		
+		System.out.println("result=" + performGameFunction(moveCall, null));
 		
 		/*
 		 * // Test boolean { VariantUnion[] params =
@@ -132,7 +133,9 @@ public class CppGameConnector extends GameConnector {
 	 */
 	@Override
 	public Variant performGameFunction(ApiCall call, Ai ai) {
-		// TODO
-		return null;
+		// TODO: set AI
+		return new Variant(gameLib.performGameFunction(call.getFunctionId(),
+			call.getParameters().length, VariantStruct.createArray(call
+				.getParameters())));
 	}
 }

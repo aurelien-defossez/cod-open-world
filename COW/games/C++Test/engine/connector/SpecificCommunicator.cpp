@@ -39,112 +39,113 @@ void SpecificCommunicator::disqualifyAi(char *aiName, char *reason){
 	game->disqualifyAi(aiName, reason);
 }
 
-void SpecificCommunicator::performGameFunction(int functionId, int nbParameters,
+Variant SpecificCommunicator::performGameFunction(int functionId, int nbParameters,
 		Variant parameters[]) {
 	switch(functionId) {
 		case __GAME_API_FUNCTION_MOVE__:
-			game->move(
-				parameters[0].intValue,
-				parameters[1].intValue,
-				parameters[2].intValue
-			);
+			return intVariant(game->move(
+				parameters[0].value.intValue,
+				parameters[1].value.intValue,
+				parameters[2].value.intValue
+			));
 			break;
 		
 		case __GAME_API_FUNCTION_ATTACK__:
 			game->attack(
-				parameters[0].intValue,
-				parameters[1].intValue
+				parameters[0].value.intValue,
+				parameters[1].value.intValue
 			);
 			break;
 		
 		case __GAME_API_FUNCTION_USE_EQUIPMENT__:
 			game->useEquipment(
-				parameters[0].intValue,
-				parameters[1].intValue,
-				parameters[2].intValue
+				parameters[0].value.intValue,
+				parameters[1].value.intValue,
+				parameters[2].value.intValue
 			);
 			break;
 		
 		case __GAME_API_FUNCTION_PICK_UP_EQUIPMENT__:
 			game->pickUpEquipment(
-				parameters[0].intValue,
-				parameters[1].intValue
+				parameters[0].value.intValue,
+				parameters[1].value.intValue
 			);
 			break;
 		
 		case __GAME_API_FUNCTION_DROP_EQUIPMENT__:
 			game->dropEquipment(
-				parameters[0].intValue,
-				parameters[1].intValue,
-				parameters[2].intValue,
-				parameters[3].intValue
+				parameters[0].value.intValue,
+				parameters[1].value.intValue,
+				parameters[2].value.intValue,
+				parameters[3].value.intValue
 			);
 			break;
 		
 		case __GAME_API_FUNCTION_PICK_UP_SUGAR__:
 			game->pickUpSugar(
-				parameters[0].intValue,
-				parameters[1].intValue
+				parameters[0].value.intValue,
+				parameters[1].value.intValue
 			);
 			break;
 		
 		case __GAME_API_FUNCTION_DROP_SUGAR__:
 			game->dropSugar(
-				parameters[0].intValue,
-				parameters[1].intValue,
-				parameters[2].intValue,
-				parameters[3].intValue
+				parameters[0].value.intValue,
+				parameters[1].value.intValue,
+				parameters[2].value.intValue,
+				parameters[3].value.intValue
 			);
 			break;
 		
 		case __GAME_API_FUNCTION_OPEN_CHEST__:
 			game->openChest(
-				parameters[0].intValue,
-				parameters[1].intValue
+				parameters[0].value.intValue,
+				parameters[1].value.intValue
 			);
 			break;
 		
 		case __GAME_API_FUNCTION_STOCK_SUGAR__:
 			game->stockSugar(
-				parameters[0].intValue
+				parameters[0].value.intValue
 			);
 			break;
 		
 		case __GAME_API_FUNCTION_SELL_EQUIPMENT__:
 			game->sellEquipment(
-				parameters[0].intValue,
-				parameters[1].intValue
+				parameters[0].value.intValue,
+				parameters[1].value.intValue
 			);
 			break;
 		
 		case __GAME_API_FUNCTION_BUY_EQUIPMENT__:
 			game->buyEquipment(
-				parameters[0].intValue,
-				parameters[1].intValue
+				parameters[0].value.intValue,
+				parameters[1].value.intValue
 			);
 			break;
 		
 		case __GAME_API_FUNCTION_DRINK_JUICE__:
 			game->drinkJuice(
-				parameters[0].intValue
+				parameters[0].value.intValue
 			);
 			break;
 		
 		case __GAME_API_FUNCTION_FRUCTIFY__:
 			game->fructify(
-				parameters[0].intValue,
-				parameters[1].intValue,
-				parameters[2].intValue,
-				parameters[3].intValue
+				parameters[0].value.intValue,
+				parameters[1].value.intValue,
+				parameters[2].value.intValue,
+				parameters[3].value.intValue
 			);
 			break;
 		
 		case __GAME_API_FUNCTION_DRAW_VITAMIN__:
 			game->drawVitamin(
-				parameters[0].intValue
+				parameters[0].value.intValue
 			);
 			break;
 	}
+	return intVariant(-42);
 	
 	/*
 	for(int i = 0; i < nbParameters; i++) {

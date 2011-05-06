@@ -9,6 +9,7 @@ package com;
 import java.io.IOException;
 import com.remote.CompressedDataInputStream;
 import com.remote.CompressedDataOutputStream;
+import lang.cpp.GameLibraryInterface.VariantStruct;
 import main.CowException;
 
 public class Variant {
@@ -235,6 +236,84 @@ public class Variant {
 	public Variant(String[][][] value) {
 		this.type = VariantType.STRING_MATRIX3;
 		this.value = value;
+	}
+	
+	/**
+	 * Creates a variant from a C++ variant structure.
+	 * 
+	 * @param variant The C++ variant structure.
+	 */
+	public Variant(VariantStruct variant) {
+		this.type = VariantType.valueOf(variant.type);
+		
+		switch(type) {
+		case VOID:
+			break;
+		
+		case BOOL:
+			this.value = variant.values.boolValue;
+			break;
+		
+		case INT:
+			this.value = variant.values.intValue;
+			break;
+			
+		case DOUBLE:
+			this.value = variant.values.doubleValue;
+			break;
+			
+		case STRING:
+			this.value = variant.values.stringValue;
+			break;
+			
+		case BOOL_MATRIX1:
+			//this.value = variant.values.;
+			break;
+			
+		case BOOL_MATRIX2:
+			//this.value = variant.values.;
+			break;
+		
+		case BOOL_MATRIX3:
+			//this.value = variant.values.;
+			break;
+		
+		case INT_MATRIX1:
+			this.value = variant.values.intMatrix1.getMatrix();
+			break;
+			
+		case INT_MATRIX2:
+			this.value = variant.values.intMatrix2.getMatrix();
+			break;
+			
+		case INT_MATRIX3:
+			//this.value = variant.values.;
+			break;
+			
+		case DOUBLE_MATRIX1:
+			//this.value = variant.values.;
+			break;
+			
+		case DOUBLE_MATRIX2:
+			//this.value = variant.values.;
+			break;
+			
+		case DOUBLE_MATRIX3:
+			//this.value = variant.values.;
+			break;
+			
+		case STRING_MATRIX1:
+			//this.value = variant.values.;
+			break;
+			
+		case STRING_MATRIX2:
+			//this.value = variant.values.;
+			break;
+			
+		case STRING_MATRIX3:
+			//this.value = variant.values.;
+			break;
+		}
 	}
 	
 	// -------------------------------------------------------------------------

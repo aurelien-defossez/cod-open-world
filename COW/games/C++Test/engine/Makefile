@@ -1,4 +1,6 @@
 all:
+	clear
+	
 	(cd connector && make)
 	
 	g++ -shared src/Game.cpp \

@@ -10,7 +10,7 @@ public:
 	virtual void play() = 0;
 	virtual void endGame() = 0;
 	virtual void disqualifyAi(char *aiName, char *reason) = 0;
-	virtual void performGameFunction(int functionId, int nbParameters,
+	virtual Variant performGameFunction(int functionId, int nbParameters,
 		Variant parameters[]) = 0;
 };
 

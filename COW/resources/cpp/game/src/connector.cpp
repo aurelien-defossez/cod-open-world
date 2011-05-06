@@ -43,8 +43,9 @@ extern "C" {
 		communicator->disqualifyAi(aiName, reason);
 	}
 
-	EXPORT void performGameFunction(int functionId, int nbParameters, Variant parameters[]) {
-		communicator->performGameFunction(functionId, nbParameters, parameters);
+	EXPORT Variant performGameFunction(int functionId, int nbParameters,
+			Variant parameters[]) {
+		return communicator->performGameFunction(functionId, nbParameters, parameters);
 	}
 }
 

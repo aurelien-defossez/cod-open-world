@@ -1,6 +1,7 @@
 
 package lang.cpp;
 
+import com.Variant;
 import com.sun.jna.Library;
 import com.sun.jna.Structure;
 import com.sun.jna.Union;
@@ -15,38 +16,118 @@ public interface GameLibraryInterface extends Library {
 		public IntMatrix1.ByReference intMatrix1;
 		public IntMatrix2.ByReference intMatrix2;
 		
-		public static VariantUnion[] createArray(int nbStructs) {
-			return (VariantUnion[]) (new VariantUnion().toArray(nbStructs));
+		public void setValue(Variant variant) {
+			switch (variant.getType()) {
+			case VOID:
+				setType(int.class);
+				this.intValue = 0;
+				break;
+			
+			case BOOL:
+				setType(boolean.class);
+				this.boolValue = (Boolean) variant.getValue();
+				break;
+			
+			case INT:
+				setType(int.class);
+				this.intValue = (Integer) variant.getValue();
+				break;
+			
+			case DOUBLE:
+				setType(double.class);
+				this.doubleValue = (Double) variant.getValue();
+				break;
+			
+			case STRING:
+				setType(String.class);
+				this.stringValue = (String) variant.getValue();
+				break;
+			
+			case BOOL_MATRIX1:
+				// TODO
+				break;
+			
+			case BOOL_MATRIX2:
+				// TODO
+				break;
+			
+			case BOOL_MATRIX3:
+				// TODO
+				break;
+			
+			case INT_MATRIX1:
+				setType(IntMatrix1.ByReference.class);
+				this.intMatrix1 =
+					new IntMatrix1.ByReference((int[]) variant.getValue());
+				break;
+			
+			case INT_MATRIX2:
+				setType(IntMatrix2.ByReference.class);
+				this.intMatrix2 =
+					new IntMatrix2.ByReference((int[][]) variant.getValue());
+				break;
+			
+			case INT_MATRIX3:
+				// TODO
+				break;
+			
+			case DOUBLE_MATRIX1:
+				// TODO
+				break;
+			
+			case DOUBLE_MATRIX2:
+				// TODO
+				break;
+			
+			case DOUBLE_MATRIX3:
+				// TODO
+				break;
+			
+			case STRING_MATRIX1:
+				// TODO
+				break;
+			
+			case STRING_MATRIX2:
+				// TODO
+				break;
+			
+			case STRING_MATRIX3:
+				// TODO
+				break;
+			}
+		}
+	}
+	
+	public static class VariantStruct extends Structure {
+		public byte type;
+		public VariantUnion values;
+		
+		public VariantStruct() {
+			values = new VariantUnion();
 		}
 		
-		public void setValue(boolean value) {
-			setType(boolean.class);
-			boolValue = value;
+		public void setValue(Variant variant) {
+			type = variant.getType().getId();
+			values.setValue(variant);
 		}
 		
-		public void setValue(int value) {
-			setType(int.class);
-			intValue = value;
+		public static VariantStruct[] createArray(int nbStructs) {
+			return (VariantStruct[]) (new VariantStruct().toArray(nbStructs));
 		}
 		
-		public void setValue(double value) {
-			setType(double.class);
-			doubleValue = value;
+		public static VariantStruct[] createArray(Variant[] variants) {
+			VariantStruct[] array = createArray(variants.length);
+			
+			for (int i = 0; i < array.length; i++) {
+				array[i].setValue(variants[i]);
+			}
+			
+			return array;
 		}
 		
-		public void setValue(String value) {
-			setType(String.class);
-			stringValue = value;
-		}
-		
-		public void setValue(int[] values) {
-			setType(IntMatrix1.ByReference.class);
-			intMatrix1 = new IntMatrix1.ByReference(values);
-		}
-		
-		public void setValue(int[][] values) {
-			setType(IntMatrix2.ByReference.class);
-			intMatrix2 = new IntMatrix2.ByReference(values);
+		public static class ByValue extends VariantStruct implements
+			Structure.ByValue {
+			// Empty class
 		}
 	}
 	
@@ -60,6 +141,10 @@ public interface GameLibraryInterface extends Library {
 			public ByReference(int[] values) {
 				this.length = values.length;
 				this.values = values;
+			}
+			
+			public int[] getMatrix() {
+				return values;
 			}
 		}
 	}
@@ -85,6 +170,18 @@ public interface GameLibraryInterface extends Library {
 				
 				this.values = contiguous;
 			}
+			
+			public int[][] getMatrix() {
+				int[][] matrix = new int[length][length2];
+				
+				for (int i = 0; i < length; i++) {
+					for (int j = 0; j < length2; j++) {
+						matrix[i][j] = values[i * length2 + j];
+					}
+				}
+				
+				return matrix;
+			}
 		}
 	}
 	
@@ -98,6 +195,6 @@ public interface GameLibraryInterface extends Library {
 	
 	public void disqualifyAi(String aiName, String reason);
 	
-	public void performGameFunction(int functionId, int nbParameters,
-		VariantUnion parameters[]);
+	public VariantStruct.ByValue performGameFunction(int functionId,
+		int nbParameters, VariantStruct parameters[]);
 }
