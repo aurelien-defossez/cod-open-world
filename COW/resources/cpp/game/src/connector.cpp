@@ -11,50 +11,40 @@
 #endif
 
 // Includes
+#include "connector.hpp"
+#include "SpecificCommunicatorInterface.hpp"
 #include "Variant.hpp"
-#include "GameCommunicator.hpp"
 
 // Create global communicator
-GameCommunicator communicator = GameCommunicator();
+SpecificCommunicatorInterface *communicator;
 
 void setCommunicator(SpecificCommunicatorInterface *com) {
-	communicator.setCommunicator(com);
+	communicator = com;
 }
 
-// Open extern C if language is C++
-#ifdef __cplusplus
 extern "C" {
-#endif
+	EXPORT void init(int nbParameters, char *parameters[]) {
+		communicator->init(nbParameters, parameters);
+	}
 
-// Include self header file
-#include "connector.hpp"
+	EXPORT void addAi(short aiId, char *aiName, char *playerName) {
+		communicator->addAi(aiId, aiName, playerName);
+	}
 
-EXPORT void init(int nbParameters, char *parameters[]) {
-	communicator.init(nbParameters, parameters);
+	EXPORT void play() {
+		communicator->play();
+	}
+
+	EXPORT void endGame() {
+		communicator->endGame();
+	}
+
+	EXPORT void disqualifyAi(char *aiName, char *reason) {
+		communicator->disqualifyAi(aiName, reason);
+	}
+
+	EXPORT void performGameFunction(int functionId, int nbParameters, Variant parameters[]) {
+		communicator->performGameFunction(functionId, nbParameters, parameters);
+	}
 }
-
-EXPORT void addAi(short aiId, char *aiName, char *playerName) {
-	communicator.addAi(aiId, aiName, playerName);
-}
-
-EXPORT void play() {
-	communicator.play();
-}
-
-EXPORT void endGame() {
-	communicator.endGame();
-}
-
-EXPORT void disqualifyAi(char *aiName, char *reason) {
-	communicator.disqualifyAi(aiName, reason);
-}
-
-EXPORT void performGameFunction(int functionId, int nbParameters, Variant parameters[]) {
-	communicator.performGameFunction(functionId, nbParameters, parameters);
-}
-
-// Close extern C
-#ifdef __cplusplus
-}
-#endif
 

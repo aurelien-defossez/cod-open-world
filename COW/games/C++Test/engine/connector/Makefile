@@ -1,2 +1,12 @@
 all:
-	g++ -shared SpecificCommunicator.cpp -o ../libcommunicator.so -L../../../../resources/cpp/game -I/tmp/lib -lcppConnector -Wl,-rpath .
+	(cd ../../../../resources/cpp/game && make)
+	
+	g++ -c SpecificCommunicator.cpp \
+	-I../../../../resources/cpp/commons/src \
+	-I../../../../resources/cpp/game/src \
+	-L../../../../resources/cpp/game -lcppConnector
+	
+	(cd tmp && ar xv ../../../../../resources/cpp/game/libcppConnector.a)
+
+	ar rcs ../libcommunicator.a *.o tmp/*.o
+	

@@ -1,9 +1,17 @@
 #ifndef __SPECIFIC_COMMUNICATOR_INTERFACE_H__
 #define __SPECIFIC_COMMUNICATOR_INTERFACE_H__
 
+#include "Variant.hpp"
+
 class SpecificCommunicatorInterface {
 public:
-	virtual void plop() = 0;
+	virtual void init(int nbParameters, char *parameters[]) = 0;
+	virtual void addAi(short aiId, char *aiName, char *playerName) = 0;
+	virtual void play() = 0;
+	virtual void endGame() = 0;
+	virtual void disqualifyAi(char *aiName, char *reason) = 0;
+	virtual void performGameFunction(int functionId, int nbParameters,
+		Variant parameters[]) = 0;
 };
 
 #endif

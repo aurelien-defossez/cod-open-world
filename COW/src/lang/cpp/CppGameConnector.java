@@ -22,7 +22,7 @@ public class CppGameConnector extends GameConnector {
 		System.setProperty("jna.library.path", "games/" + game.getName()
 			+ "/engine");
 		gameLib =
-			(GameLibraryInterface) Native.loadLibrary("communicator",
+			(GameLibraryInterface) Native.loadLibrary("game",
 				GameLibraryInterface.class);
 		
 		/*
@@ -51,68 +51,56 @@ public class CppGameConnector extends GameConnector {
 			gameLib.addAi(ai.getId(), ai.getName(), ai.getPlayerName());
 		}
 		
-		// Test boolean
-		{
-			VariantUnion[] params = VariantUnion.createArray(3);
-			params[0].setValue(false);
-			params[1].setValue(true);
-			params[2].setValue(false);
-			gameLib.performGameFunction(VariantType.BOOL.getId(),
-				params.length, params);
-		}
-		
-		// Test int
+		// Test move
 		{
 			VariantUnion[] params = VariantUnion.createArray(3);
 			params[0].setValue(42);
-			params[1].setValue(0);
-			params[2].setValue(-42);
-			gameLib.performGameFunction(VariantType.INT.getId(), params.length,
-				params);
+			params[1].setValue(126);
+			params[2].setValue(248);
+			gameLib.performGameFunction(1, params.length, params);
 		}
 		
-		// Test double
-		{
-			VariantUnion[] params = VariantUnion.createArray(3);
-			params[0].setValue(0.0);
-			params[1].setValue(4.2);
-			params[2].setValue(0.999999999);
-			gameLib.performGameFunction(VariantType.DOUBLE.getId(),
-				params.length, params);
-		}
-		
-		// Test string
-		{
-			VariantUnion[] params = VariantUnion.createArray(3);
-			params[0].setValue("Héllo");
-			params[1].setValue("Wôrld!");
-			params[2].setValue("漢字");
-			gameLib.performGameFunction(VariantType.STRING.getId(),
-				params.length, params);
-		}
-		
-		// Test int matrix 1
-		{
-			VariantUnion[] params = VariantUnion.createArray(3);
-			params[0].setValue(new int[] { 42, 0, -42 });
-			params[1].setValue(new int[] { 18, 37, -12368 });
-			params[2].setValue(new int[] { 4564, 165, 546, 1385, 0, 0 });
-			gameLib.performGameFunction(VariantType.INT_MATRIX1.getId(),
-				params.length, params);
-		}
-		
-		// Test int matrix 2
-		{
-			VariantUnion[] params = VariantUnion.createArray(4);
-			params[0].setValue(new int[][] { { 42, 0, -42 }, { 42, 0, -42 },
-				{ 42, 0, -42 } });
-			params[1].setValue(new int[][] { { 0 } });
-			params[2].setValue(new int[][] { { 4564 }, { 165 }, { 546 },
-				{ 1385 }, { 0 }, { 0 } });
-			params[3].setValue(new int[][] { { 4564, 165, 546, 1385, 0, 0 } });
-			gameLib.performGameFunction(VariantType.INT_MATRIX2.getId(),
-				params.length, params);
-		}
+		/*
+		 * // Test boolean { VariantUnion[] params =
+		 * VariantUnion.createArray(3); params[0].setValue(false);
+		 * params[1].setValue(true); params[2].setValue(false);
+		 * gameLib.performGameFunction(VariantType.BOOL.getId(), params.length,
+		 * params); }
+		 * 
+		 * // Test int { VariantUnion[] params = VariantUnion.createArray(3);
+		 * params[0].setValue(42); params[1].setValue(0);
+		 * params[2].setValue(-42);
+		 * gameLib.performGameFunction(VariantType.INT.getId(), params.length,
+		 * params); }
+		 * 
+		 * // Test double { VariantUnion[] params = VariantUnion.createArray(3);
+		 * params[0].setValue(0.0); params[1].setValue(4.2);
+		 * params[2].setValue(0.999999999);
+		 * gameLib.performGameFunction(VariantType.DOUBLE.getId(),
+		 * params.length, params); }
+		 * 
+		 * // Test string { VariantUnion[] params = VariantUnion.createArray(3);
+		 * params[0].setValue("Héllo"); params[1].setValue("Wôrld!");
+		 * params[2].setValue("漢字");
+		 * gameLib.performGameFunction(VariantType.STRING.getId(),
+		 * params.length, params); }
+		 * 
+		 * // Test int matrix 1 { VariantUnion[] params =
+		 * VariantUnion.createArray(3); params[0].setValue(new int[] { 42, 0,
+		 * -42 }); params[1].setValue(new int[] { 18, 37, -12368 });
+		 * params[2].setValue(new int[] { 4564, 165, 546, 1385, 0, 0 });
+		 * gameLib.performGameFunction(VariantType.INT_MATRIX1.getId(),
+		 * params.length, params); }
+		 * 
+		 * // Test int matrix 2 { VariantUnion[] params =
+		 * VariantUnion.createArray(4); params[0].setValue(new int[][] { { 42,
+		 * 0, -42 }, { 42, 0, -42 }, { 42, 0, -42 } }); params[1].setValue(new
+		 * int[][] { { 0 } }); params[2].setValue(new int[][] { { 4564 }, { 165
+		 * }, { 546 }, { 1385 }, { 0 }, { 0 } }); params[3].setValue(new int[][]
+		 * { { 4564, 165, 546, 1385, 0, 0 } });
+		 * gameLib.performGameFunction(VariantType.INT_MATRIX2.getId(),
+		 * params.length, params); }
+		 */
 	}
 	
 	/**
