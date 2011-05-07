@@ -18,5 +18,5 @@ public interface FruitSaladAi {
 	/**
 	 * Initializes the game.
 	 */
-	public void initGame();
+	public void initGame(int width, int height);
 }

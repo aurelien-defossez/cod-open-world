@@ -10,7 +10,7 @@
 
 class SpecificCommander : public Commander {
 public:
-	void initGame(short aiId);
+	void initGame(short aiId, int width, int height);
 };
 
 #endif
