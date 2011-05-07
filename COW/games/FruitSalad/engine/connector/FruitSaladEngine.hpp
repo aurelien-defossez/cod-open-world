@@ -19,11 +19,6 @@
 #define __GAME_API_FUNCTION_FRUCTIFY__ 13
 #define __GAME_API_FUNCTION_DRAW_VITAMIN__ 14
 
-// AI API function IDs
-#define __AI_API_FUNCTION_INIT_GAME__ 1
-#define __AI_API_FUNCTION_PLAY_TURN__ 2
-#define __AI_API_FUNCTION_CHEST_OPENED__ 3
-
 // User-defined constants
 #define OBJECT_ID 0
 #define OBJECT_X 1

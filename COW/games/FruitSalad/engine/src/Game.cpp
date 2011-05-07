@@ -33,6 +33,7 @@ void Game::addAi(short aiId, char *aiName, char *playerName) {
 
 void Game::play() {
 	cout << "Play..." << endl;
+	commander->initGame(0);
 	commander->setFrame();
 	commander->setTimeout(1000);
 }

@@ -61,11 +61,10 @@ public class JavaAiConnector extends AiConnector {
 			
 			// Load API and communicator
 			JavaApi api =
-				(JavaApi) classLoader.loadClass(gameName + ".Api")
-					.newInstance();
+				(JavaApi) classLoader.loadClass("game.Api").newInstance();
 			aiCommunicator =
 				(JavaAiCommunicator) classLoader.loadClass(
-					gameName + ".AiCommunicator").newInstance();
+					"game.AiCommunicator").newInstance();
 			
 			if (logger.isDebugEnabled())
 				logger.debug("Game API and communicator loaded.");
@@ -111,4 +110,14 @@ public class JavaAiConnector extends AiConnector {
 	public void stop() {
 		aiCommunicator.stop();
 	}
+	
+	// -------------------------------------------------------------------------
+	// Private methods
+	// -------------------------------------------------------------------------
+	
+	private String getPackageName(String gameName) {
+		return Character.toLowerCase(gameName.charAt(0))
+			+ gameName.substring(1);
+	}
+	
 }

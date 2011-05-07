@@ -93,19 +93,19 @@ public abstract class Ai implements AiInterface {
 			// Not supported language
 			if (language == null) {
 				throw new CowException("Cannot load AI \"" + aiName
-					+ ": language " + config.getValue("language")
+					+ "\": language " + config.getValue("language")
 					+ " not supported.");
 			}
 		}
 		// Configuration file not found
 		catch (FileNotFoundException e) {
 			throw new CowException("Cannot load AI \"" + aiName
-				+ ": config file missing.");
+				+ "\": config file missing.");
 		}
 		// Configuration file not complete
 		catch (IOException e) {
 			throw new CowException("Cannot load AI \"" + aiName
-				+ ": a problem occurs while reading config file.", e);
+				+ "\": a problem occurs while reading config file.", e);
 		}
 	}
 	
