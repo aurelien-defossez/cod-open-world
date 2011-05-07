@@ -6,17 +6,9 @@
 
 using namespace std;
 
-/*
-void setGame(FruitSaladEngine *game) {
-	com.setGame(game);
-}*/
-
-SpecificCommunicator::SpecificCommunicator() {
-	setCommunicator(this);
-}
-
-void SpecificCommunicator::setGame(FruitSaladEngine *game) {
+SpecificCommunicator::SpecificCommunicator(FruitSaladEngine *game) {
 	this->game = game;
+	setCommunicator(this);
 }
 
 void SpecificCommunicator::init(int nbParameters, char *parameters[]) {

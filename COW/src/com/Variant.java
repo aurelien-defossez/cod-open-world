@@ -347,6 +347,22 @@ public class Variant {
 		return value;
 	}
 	
+	public Boolean getBoolValue() {
+		return (Boolean) value;
+	}
+	
+	public Integer getIntValue() {
+		return (Integer) value;
+	}
+	
+	public Double getDoubleValue() {
+		return (Double) value;
+	}
+	
+	public String getStringValue() {
+		return (String) value;
+	}
+	
 	/**
 	 * Serializes the variant in a data output stream.
 	 * 

@@ -1,6 +1,7 @@
 #include "Game.hpp"
 #include "FruitSaladEngine.hpp"
 #include "SpecificCommunicator.hpp"
+#include "SpecificCommander.hpp"
 #include <iostream>
 
 using namespace std;
@@ -8,8 +9,13 @@ using namespace std;
 Game game = Game();
 
 Game::Game() {
-	com = new SpecificCommunicator();
-	com->setGame(this);
+	communicator = new SpecificCommunicator(this);
+	commander = new SpecificCommander();
+}
+
+Game::~Game() {
+	delete(commander);
+	delete(communicator);
 }
 
 void Game::init(int nbParameters, char *parameters[]) {
@@ -27,6 +33,8 @@ void Game::addAi(short aiId, char *aiName, char *playerName) {
 
 void Game::play() {
 	cout << "Play..." << endl;
+	commander->setFrame();
+	commander->setTimeout(1000);
 }
 
 void Game::endGame() {

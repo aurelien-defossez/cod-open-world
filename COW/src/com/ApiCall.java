@@ -133,6 +133,29 @@ public class ApiCall {
 		}
 	}
 	
+	/**
+	 * Returns the string presentation of the API call.
+	 * 
+	 * @return the string presentation.
+	 */
+	@Override
+	public String toString() {
+		StringBuffer sb = new StringBuffer();
+		sb.append("ApiCall(function #"+functionId+"(");
+		
+		for (int i = 0; i < parameters.length; i++) {
+			sb.append(parameters[i]);
+			
+			if(i < parameters.length - 1) {
+				sb.append(", ");
+			}
+		}
+		
+		sb.append("))");
+		
+		return sb.toString();
+	}
+	
 	// -------------------------------------------------------------------------
 	// Class methods
 	// -------------------------------------------------------------------------

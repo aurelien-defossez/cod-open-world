@@ -3,14 +3,17 @@
 
 #include "FruitSaladEngine.hpp"
 #include "SpecificCommunicator.hpp"
+#include "SpecificCommander.hpp"
 
 class Game : FruitSaladEngine {
 private:
-	SpecificCommunicator *com;
+	SpecificCommunicator *communicator;
+	SpecificCommander *commander;
 
 public:
 	// Constructor & Destructor
 	Game();
+	~Game();
 	
 	// Commons functions
 	void init(int nbParameters, char *parameters[]);

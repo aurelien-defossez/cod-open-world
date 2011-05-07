@@ -96,14 +96,19 @@ public interface GameLibraryInterface extends Library {
 				break;
 			}
 		}
+		
+		public static class ByValue extends VariantUnion implements
+			Union.ByValue {
+			// Empty class
+		}
 	}
 	
 	public static class VariantStruct extends Structure {
 		public byte type;
-		public VariantUnion values;
+		public VariantUnion.ByValue values;
 		
 		public VariantStruct() {
-			values = new VariantUnion();
+			values = new VariantUnion.ByValue();
 		}
 		
 		public void setValue(Variant variant) {
@@ -127,6 +132,11 @@ public interface GameLibraryInterface extends Library {
 		
 		public static class ByValue extends VariantStruct implements
 			Structure.ByValue {
+			// Empty class
+		}
+		
+		public static class ByReference extends VariantStruct implements
+			Structure.ByReference {
 			// Empty class
 		}
 	}
@@ -184,6 +194,10 @@ public interface GameLibraryInterface extends Library {
 			}
 		}
 	}
+	
+	public void registerCallbacks(PrepareCallCallback prepareCallcallback,
+		AddParameterCallback setParameterCallback,
+		MakeCallCallback makeCallCallback);
 	
 	public void init(int nbParameters, String[] parameters);
 	

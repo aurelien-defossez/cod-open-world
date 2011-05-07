@@ -3,16 +3,12 @@ package lang.cpp;
 
 import java.util.Collection;
 import lang.cpp.GameLibraryInterface.VariantStruct;
-import lang.cpp.GameLibraryInterface.VariantUnion;
 import com.ApiCall;
 import com.Variant;
-import com.VariantType;
 import com.ai.Ai;
 import com.game.Game;
 import com.game.GameConnector;
-import com.sun.jna.Function;
 import com.sun.jna.Native;
-import com.sun.jna.NativeLibrary;
 
 public class CppGameConnector extends GameConnector {
 	
@@ -20,11 +16,18 @@ public class CppGameConnector extends GameConnector {
 	
 	public CppGameConnector(Game game) {
 		super(game);
+		
+		// Set path to game
 		System.setProperty("jna.library.path", "games/" + game.getName()
 			+ "/engine");
+		
+		// Load game
 		gameLib =
 			(GameLibraryInterface) Native.loadLibrary("game",
 				GameLibraryInterface.class);
+		
+		// Create callback handler
+		new GameCallbackHandler(this, gameLib);
 		
 		/*
 		 * VariantStruct.ByValue variant = new

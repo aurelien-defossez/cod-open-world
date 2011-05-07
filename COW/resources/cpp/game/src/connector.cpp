@@ -13,17 +13,34 @@
 // Includes
 #include "connector.hpp"
 #include "SpecificCommunicatorInterface.hpp"
+#include "Commander.hpp"
 #include "Variant.hpp"
 
-// Create global communicator
+// Global variables
 SpecificCommunicatorInterface *communicator;
+Commander *commander;
 
 void setCommunicator(SpecificCommunicatorInterface *com) {
 	communicator = com;
 }
 
+void setCommander(Commander *com) {
+	commander = com;
+}
+
 extern "C" {
+	EXPORT void registerCallbacks(prepareCallCallback prepareCall,
+			addParameterCallback addParameter,
+			makeCallCallback makeCall) {
+		commander->registerCallbacks(prepareCall, addParameter, makeCall);
+	}
+	
 	EXPORT void init(int nbParameters, char *parameters[]) {
+		/*prepareCall(1, 2);
+		addParameter(&intVariant(42));
+		addParameter(&intVariant(0));
+		makeCall();
+		*/
 		communicator->init(nbParameters, parameters);
 	}
 

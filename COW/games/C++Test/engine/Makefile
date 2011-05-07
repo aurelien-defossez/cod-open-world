@@ -1,8 +1,9 @@
 all:
 	clear
 	
-	(cd connector && make)
+	@(cd connector && make)
 	
+	@echo Compiling game...
 	g++ -shared src/Game.cpp \
 	-o libgame.so \
 	-I./connector \

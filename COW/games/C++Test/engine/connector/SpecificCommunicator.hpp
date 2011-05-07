@@ -7,14 +7,12 @@
 
 //void setGame(FruitSaladEngine *game);
 
-class SpecificCommunicator : SpecificCommunicatorInterface {
+class SpecificCommunicator : public SpecificCommunicatorInterface {
 private:
 	FruitSaladEngine *game;
 
 public:
-	SpecificCommunicator();
-	
-	void setGame(FruitSaladEngine *game);
+	SpecificCommunicator(FruitSaladEngine *game);
 	
 	void init(int nbParameters, char *parameters[]);
 	void addAi(short aiId, char *aiName, char *playerName);
