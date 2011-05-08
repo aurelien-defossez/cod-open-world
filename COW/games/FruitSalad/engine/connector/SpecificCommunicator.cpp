@@ -43,99 +43,101 @@ Variant SpecificCommunicator::performGameFunction(int functionId, int nbParamete
 			break;
 		
 		case __GAME_API_FUNCTION_ATTACK__:
-			game->attack(
+			return intVariant(game->attack(
 				parameters[0].value.intValue,
 				parameters[1].value.intValue
-			);
+			));
 			break;
 		
 		case __GAME_API_FUNCTION_USE_EQUIPMENT__:
-			game->useEquipment(
+			return intVariant(game->useEquipment(
 				parameters[0].value.intValue,
 				parameters[1].value.intValue,
 				parameters[2].value.intValue
-			);
+			));
 			break;
 		
 		case __GAME_API_FUNCTION_PICK_UP_EQUIPMENT__:
-			game->pickUpEquipment(
+			return intVariant(game->pickUpEquipment(
 				parameters[0].value.intValue,
 				parameters[1].value.intValue
-			);
+			));
 			break;
 		
 		case __GAME_API_FUNCTION_DROP_EQUIPMENT__:
-			game->dropEquipment(
+			return intVariant(game->dropEquipment(
 				parameters[0].value.intValue,
 				parameters[1].value.intValue,
 				parameters[2].value.intValue,
 				parameters[3].value.intValue
-			);
+			));
 			break;
 		
 		case __GAME_API_FUNCTION_PICK_UP_SUGAR__:
-			game->pickUpSugar(
+			return intVariant(game->pickUpSugar(
 				parameters[0].value.intValue,
 				parameters[1].value.intValue
-			);
+			));
 			break;
 		
 		case __GAME_API_FUNCTION_DROP_SUGAR__:
-			game->dropSugar(
+			return intVariant(game->dropSugar(
 				parameters[0].value.intValue,
 				parameters[1].value.intValue,
 				parameters[2].value.intValue,
 				parameters[3].value.intValue
-			);
+			));
 			break;
 		
 		case __GAME_API_FUNCTION_OPEN_CHEST__:
-			game->openChest(
+			return intVariant(game->openChest(
 				parameters[0].value.intValue,
 				parameters[1].value.intValue
-			);
+			));
 			break;
 		
 		case __GAME_API_FUNCTION_STOCK_SUGAR__:
-			game->stockSugar(
+			return intVariant(game->stockSugar(
 				parameters[0].value.intValue
-			);
+			));
 			break;
 		
 		case __GAME_API_FUNCTION_SELL_EQUIPMENT__:
-			game->sellEquipment(
+			return intVariant(game->sellEquipment(
 				parameters[0].value.intValue,
 				parameters[1].value.intValue
-			);
+			));
 			break;
 		
 		case __GAME_API_FUNCTION_BUY_EQUIPMENT__:
-			game->buyEquipment(
+			return intVariant(game->buyEquipment(
 				parameters[0].value.intValue,
 				parameters[1].value.intValue
-			);
+			));
 			break;
 		
 		case __GAME_API_FUNCTION_DRINK_JUICE__:
-			game->drinkJuice(
+			return intVariant(game->drinkJuice(
 				parameters[0].value.intValue
-			);
+			));
 			break;
 		
 		case __GAME_API_FUNCTION_FRUCTIFY__:
-			game->fructify(
+			return intVariant(game->fructify(
 				parameters[0].value.intValue,
 				parameters[1].value.intValue,
 				parameters[2].value.intValue,
 				parameters[3].value.intValue
-			);
+			));
 			break;
 		
 		case __GAME_API_FUNCTION_DRAW_VITAMIN__:
-			game->drawVitamin(
+			return intVariant(game->drawVitamin(
 				parameters[0].value.intValue
-			);
+			));
 			break;
+		
+		default:
+			return intVariant(-404);
 	}
-	return intVariant(-42);
 }

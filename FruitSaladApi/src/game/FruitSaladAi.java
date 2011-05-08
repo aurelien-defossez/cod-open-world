@@ -15,9 +15,11 @@ public interface FruitSaladAi {
 	 */
 	public void stop();
 	
-	/**
-	 * Initializes the game.
-	 */
 	public void initGame(int[][] architecture, int[][] fruits,
 		int[][] buildings, int limitCherry, int limitKiwi, int limitNut);
+	
+	public void playTurn(int[][] newObjects, int[] deletedObjects,
+		int[][] movedFruits, int[][] modifiedFruits, int[][] modifiedSugarDrops);
+	
+	public void chestOpened(int chestId, int[][] equipments);
 }

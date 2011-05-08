@@ -202,28 +202,6 @@ public interface GameLibraryInterface extends Library {
 			}
 		}
 	}
-	
-	/*
-	 * public static class IntMatrix2 extends Structure { public int length;
-	 * public int length2; public int[] values;
-	 * 
-	 * public static class ByReference extends IntMatrix2 implements
-	 * Structure.ByReference {
-	 * 
-	 * public ByReference(int[][] values) { this.length = values.length;
-	 * this.length2 = values[0].length;
-	 * 
-	 * this.values = new int[length * length2]; for (int i = 0; i < length; i++)
-	 * { for (int j = 0; j < length2; j++) { this.values[i * length2 + j] =
-	 * values[i][j]; } } }
-	 * 
-	 * public int[][] getMatrix() { int[][] matrix = new int[length][length2];
-	 * 
-	 * for (int i = 0; i < length; i++) { for (int j = 0; j < length2; j++) {
-	 * matrix[i][j] = values[i * length2 + j]; } }
-	 * 
-	 * return matrix; } } }
-	 */
 
 	public void registerCallbacks(PrepareCallCallback prepareCallcallback,
 		AddParameterCallback setParameterCallback,

@@ -28,20 +28,6 @@ public class CppGameConnector extends GameConnector {
 		
 		// Create callback handler
 		new GameCallbackHandler(this, gameLib);
-		
-		/*
-		 * VariantStruct.ByValue variant = new
-		 * VariantStruct.ByValue(VariantType.INT, new IntByReference(42));
-		 * gameLib.test(variant);
-		 */
-
-		/*
-		 * VariantStruct[] variants = new VariantStruct[2]; variants[0] = new
-		 * VariantStruct(VariantType.INT, new IntByReference(42)); variants[1] =
-		 * new VariantStruct(VariantType.DOUBLE, new DoubleByReference(4.2));
-		 * 
-		 * gameLib.test(VariantStruct.toContiguous(variants));
-		 */
 	}
 	
 	/**
