@@ -3,7 +3,10 @@
 
 #include "Variant.hpp"
 
+// -------------------------------------------------------------------------
 // Game API functions IDs
+// -------------------------------------------------------------------------
+
 #define __GAME_API_FUNCTION_MOVE__ 1
 #define __GAME_API_FUNCTION_ATTACK__ 2
 #define __GAME_API_FUNCTION_USE_EQUIPMENT__ 3
@@ -19,7 +22,10 @@
 #define __GAME_API_FUNCTION_FRUCTIFY__ 13
 #define __GAME_API_FUNCTION_DRAW_VITAMIN__ 14
 
+// -------------------------------------------------------------------------
 // User-defined constants
+// -------------------------------------------------------------------------
+
 #define OBJECT_ID 0
 #define OBJECT_X 1
 #define OBJECT_Y 2
@@ -82,6 +88,10 @@
 #define SOURCE_FULL -122
 #define HEALTHY -123
 #define NOT_VALID_COLOR -124
+
+// -------------------------------------------------------------------------
+// FruitSaladEngine interface
+// -------------------------------------------------------------------------
 
 class FruitSaladEngine {
 public:

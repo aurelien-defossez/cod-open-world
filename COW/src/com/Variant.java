@@ -279,11 +279,11 @@ public class Variant {
 			break;
 		
 		case INT_MATRIX1:
-			this.value = variant.values.intMatrix1.getMatrix();
+			this.value = variant.getIntMatrix1();
 			break;
 			
 		case INT_MATRIX2:
-			this.value = variant.values.intMatrix2.getMatrix();
+			this.value = variant.getIntMatrix2();
 			break;
 			
 		case INT_MATRIX3:
@@ -361,6 +361,14 @@ public class Variant {
 	
 	public String getStringValue() {
 		return (String) value;
+	}
+
+	public int[] getIntMatrix1Value() {
+		return (int[]) value;
+	}
+	
+	public int[][] getIntMatrix2Value() {
+		return (int[][]) value;
 	}
 	
 	/**

@@ -2,7 +2,9 @@
 package lang.cpp;
 
 import com.Variant;
+import com.VariantType;
 import com.sun.jna.Library;
+import com.sun.jna.Pointer;
 import com.sun.jna.Structure;
 import com.sun.jna.Union;
 
@@ -13,10 +15,11 @@ public interface GameLibraryInterface extends Library {
 		public double doubleValue;
 		public String stringValue;
 		
-		public IntMatrix1.ByReference intMatrix1;
-		public IntMatrix2.ByReference intMatrix2;
+		public IntMatrix.ByReference intMatrix;
+		public Pointer returnIntMatrix;
 		
 		public void setValue(Variant variant) {
+			System.out.println("setValue(" + variant + ")");
 			switch (variant.getType()) {
 			case VOID:
 				setType(int.class);
@@ -56,15 +59,15 @@ public interface GameLibraryInterface extends Library {
 				break;
 			
 			case INT_MATRIX1:
-				setType(IntMatrix1.ByReference.class);
-				this.intMatrix1 =
-					new IntMatrix1.ByReference((int[]) variant.getValue());
+				setType(IntMatrix.ByReference.class);
+				this.intMatrix =
+					new IntMatrix.ByReference((int[]) variant.getValue());
 				break;
 			
 			case INT_MATRIX2:
-				setType(IntMatrix2.ByReference.class);
-				this.intMatrix2 =
-					new IntMatrix2.ByReference((int[][]) variant.getValue());
+				setType(IntMatrix.ByReference.class);
+				this.intMatrix =
+					new IntMatrix.ByReference((int[][]) variant.getValue());
 				break;
 			
 			case INT_MATRIX3:
@@ -105,6 +108,9 @@ public interface GameLibraryInterface extends Library {
 	
 	public static class VariantStruct extends Structure {
 		public byte type;
+		public int length1;
+		public int length2;
+		public int length3;
 		public VariantUnion.ByValue values;
 		
 		public VariantStruct() {
@@ -112,8 +118,36 @@ public interface GameLibraryInterface extends Library {
 		}
 		
 		public void setValue(Variant variant) {
-			type = variant.getType().getId();
+			VariantType vType = variant.getType();
+			type = vType.getId();
 			values.setValue(variant);
+			
+			// TODO: Other matrices
+			if (vType == VariantType.INT_MATRIX1) {
+				length1 = ((int[]) variant.getValue()).length;
+			} else if (vType == VariantType.INT_MATRIX2) {
+				int[][] matrix = (int[][])variant.getValue();
+				length1 = matrix.length;
+				length2 = matrix[0].length;
+			}
+		}
+		
+		public int[] getIntMatrix1() {
+			return values.returnIntMatrix.getIntArray(0, length1);
+		}
+		
+		public int[][] getIntMatrix2() {
+			int[] rawMatrix =
+				values.returnIntMatrix.getIntArray(0, length1 * length2);
+			int[][] matrix = new int[length1][length2];
+			
+			for (int i = 0; i < length1; i++) {
+				for (int j = 0; j < length2; j++) {
+					matrix[i][j] = rawMatrix[i * length2 + j];
+				}
+			}
+			
+			return matrix;
 		}
 		
 		public static VariantStruct[] createArray(int nbStructs) {
@@ -141,16 +175,26 @@ public interface GameLibraryInterface extends Library {
 		}
 	}
 	
-	public static class IntMatrix1 extends Structure {
-		public int length;
+	public static class IntMatrix extends Structure {
 		public int[] values;
 		
-		public static class ByReference extends IntMatrix1 implements
+		public static class ByReference extends IntMatrix implements
 			Structure.ByReference {
 			
 			public ByReference(int[] values) {
-				this.length = values.length;
 				this.values = values;
+			}
+			
+			public ByReference(int[][] values) {
+				int length = values.length;
+				int length2 = values[0].length;
+				
+				this.values = new int[length * length2];
+				for (int i = 0; i < length; i++) {
+					for (int j = 0; j < length2; j++) {
+						this.values[i * length2 + j] = values[i][j];
+					}
+				}
 			}
 			
 			public int[] getMatrix() {
@@ -159,42 +203,28 @@ public interface GameLibraryInterface extends Library {
 		}
 	}
 	
-	public static class IntMatrix2 extends Structure {
-		public int length;
-		public int length2;
-		public int[] values;
-		
-		public static class ByReference extends IntMatrix2 implements
-			Structure.ByReference {
-			
-			public ByReference(int[][] values) {
-				this.length = values.length;
-				this.length2 = values[0].length;
-				
-				int[] contiguous = new int[length * length2];
-				for (int i = 0; i < length; i++) {
-					for (int j = 0; j < length2; j++) {
-						contiguous[i * length2 + j] = values[i][j];
-					}
-				}
-				
-				this.values = contiguous;
-			}
-			
-			public int[][] getMatrix() {
-				int[][] matrix = new int[length][length2];
-				
-				for (int i = 0; i < length; i++) {
-					for (int j = 0; j < length2; j++) {
-						matrix[i][j] = values[i * length2 + j];
-					}
-				}
-				
-				return matrix;
-			}
-		}
-	}
-	
+	/*
+	 * public static class IntMatrix2 extends Structure { public int length;
+	 * public int length2; public int[] values;
+	 * 
+	 * public static class ByReference extends IntMatrix2 implements
+	 * Structure.ByReference {
+	 * 
+	 * public ByReference(int[][] values) { this.length = values.length;
+	 * this.length2 = values[0].length;
+	 * 
+	 * this.values = new int[length * length2]; for (int i = 0; i < length; i++)
+	 * { for (int j = 0; j < length2; j++) { this.values[i * length2 + j] =
+	 * values[i][j]; } } }
+	 * 
+	 * public int[][] getMatrix() { int[][] matrix = new int[length][length2];
+	 * 
+	 * for (int i = 0; i < length; i++) { for (int j = 0; j < length2; j++) {
+	 * matrix[i][j] = values[i * length2 + j]; } }
+	 * 
+	 * return matrix; } } }
+	 */
+
 	public void registerCallbacks(PrepareCallCallback prepareCallcallback,
 		AddParameterCallback setParameterCallback,
 		MakeCallCallback makeCallCallback);

@@ -33,9 +33,55 @@ void Game::addAi(short aiId, char *aiName, char *playerName) {
 
 void Game::play() {
 	cout << "Play..." << endl;
-	commander->initGame(42, 100);
+	
 	commander->setFrame();
-	commander->setTimeout(1000);
+	
+	int **arch = new int*[3];
+	for(int i = 0; i < 3; i++) {
+		arch[i] = new int[4];
+		for(int j = 0; j < 4; j++) {
+			arch[i][j] = i * j;
+		}
+	}
+	
+	commander->initGame(0, 4, 3, StdIntMatrix2(arch, 3, 4));
+	
+	delete arch;
+	
+	/*
+	int **architecture = new int*[4];
+	
+	for(int i = 0; i < 4; i++) {
+		architecture[i] = new int[3];
+		for(int j = 0; j < 3; j++) {
+			architecture[i][j] = i * 3 + j;
+		}
+	}
+	
+	//StdIntMatrix2 *s = toStdIntMatrix2(architecture, 4, 3);
+	
+	StdIntMatrix2 *s = new StdIntMatrix2();
+	s->length = 12;
+	s->values = new int[12];
+	for(int i = 0; i < 12; i++) {
+		s->values[i] = i;
+	}
+	
+	cout << "s check [";
+	for(int i = 0; i < 12; i++) {
+		cout << s->values[i] << ", ";
+	}
+	cout << "]" << endl;
+	
+	commander->initGame(0, 3, 4, s);
+	
+	cout << "OVER" << endl;
+
+	delete(s);
+	for(int i = 0; i < 4; i++) {
+		delete(architecture[i]);
+	}
+	delete(architecture);*/
 }
 
 void Game::endGame() {

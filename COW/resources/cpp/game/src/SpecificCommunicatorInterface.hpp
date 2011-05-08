@@ -3,6 +3,10 @@
 
 #include "Variant.hpp"
 
+// -------------------------------------------------------------------------
+// SpecificGameInterface interface
+// -------------------------------------------------------------------------
+
 class SpecificCommunicatorInterface {
 public:
 	virtual void init(int nbParameters, char *parameters[]) = 0;

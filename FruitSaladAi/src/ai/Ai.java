@@ -13,8 +13,18 @@ public class Ai implements FruitSaladAi {
 	// -------------------------------------------------------------------------
 
 	@Override
-	public void initGame(int width, int height) {
+	public void initGame(int width, int height, int[][] architecture) {
 		System.out.println("AI: Initializing game (w="+width+" ; h"+height+")");
+
+		System.out.println("{");
+		for(int i = 0; i < height; i++) {
+			System.out.print("\t{");
+			for (int j = 0; j < width; j++) {
+				System.out.print(architecture[i][j] + ", ");
+			}
+			System.out.println("},");
+		}
+		System.out.println("}");
 	}
 
 	@Override

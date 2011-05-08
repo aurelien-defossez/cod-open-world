@@ -55,7 +55,8 @@ public class AiCommunicator extends JavaAiCommunicator {
 		switch (call.getFunctionId()) {
 		case __AI_API_FUNCTION_INIT_GAME__:
 			aiInstance.initGame(call.getParameter(0).getIntValue(),
-				call.getParameter(1).getIntValue());
+				call.getParameter(1).getIntValue(),
+				call.getParameter(2).getIntMatrix2Value());
 			break;
 		}
 	}

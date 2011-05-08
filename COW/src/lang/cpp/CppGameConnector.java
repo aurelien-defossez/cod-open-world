@@ -62,7 +62,22 @@ public class CppGameConnector extends GameConnector {
 			new Variant(-45)
 		});
 		
-		System.out.println("result=" + performGameFunction(moveCall, null));
+		System.out.println("result="+performGameFunction(moveCall, null));
+
+		// Test 41
+		ApiCall test41 = new ApiCall((short) 41, new Variant[] {
+			new Variant(new int[]{ 10, 15, 30 })
+		});
+		
+		performGameFunction(test41, null);
+		
+		// Test 42
+		ApiCall test42 = new ApiCall((short) 42, new Variant[] {
+			new Variant(new int[][]{{ 1, 2, 3 }, { 4, 5, 6 }})
+		});
+		
+		performGameFunction(test42, null);
+		
 		
 		/*
 		 * // Test boolean { VariantUnion[] params =

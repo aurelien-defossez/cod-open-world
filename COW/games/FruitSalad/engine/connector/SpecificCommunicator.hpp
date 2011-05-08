@@ -5,8 +5,6 @@
 #include "FruitSaladEngine.hpp"
 #include "Variant.hpp"
 
-//void setGame(FruitSaladEngine *game);
-
 class SpecificCommunicator : public SpecificCommunicatorInterface {
 private:
 	FruitSaladEngine *game;
