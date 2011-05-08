@@ -9,6 +9,10 @@ class Game : FruitSaladEngine {
 private:
 	SpecificCommunicator *communicator;
 	SpecificCommander *commander;
+	
+	int height;
+	int width;
+	int **architecture;
 
 public:
 	// Constructor & Destructor

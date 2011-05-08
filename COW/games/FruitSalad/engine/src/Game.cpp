@@ -11,11 +11,33 @@ Game game = Game();
 Game::Game() {
 	communicator = new SpecificCommunicator(this);
 	commander = new SpecificCommander();
+	
+	height = 12;
+	width = 10;
+	
+	// Create empty architecture
+	architecture = new int *[height];
+	for(int i = 0; i < height; i++) {
+		architecture[i] = new int[width];
+		for(int j = 0; j < width; j++) {
+			
+			if(i == 0 || i == height - 1 || j == 0 || j == width - 1) {
+				architecture[i][j] = WALL;
+			} else {
+				architecture[i][j] = NOTHING;
+			}
+		}
+	}
 }
 
 Game::~Game() {
-	delete(commander);
-	delete(communicator);
+	delete commander;
+	delete communicator;
+	
+	for(int i = 0; i < height; i++) {
+		delete[] architecture[i];
+	}
+	delete[] architecture;
 }
 
 void Game::init(int nbParameters, char *parameters[]) {
@@ -34,54 +56,65 @@ void Game::addAi(short aiId, char *aiName, char *playerName) {
 void Game::play() {
 	cout << "Play..." << endl;
 	
+	cout << "setFrame" << endl;
 	commander->setFrame();
 	
-	int **arch = new int*[3];
-	for(int i = 0; i < 3; i++) {
-		arch[i] = new int[4];
-		for(int j = 0; j < 4; j++) {
-			arch[i][j] = i * j;
-		}
+	// Create fruits array
+	int nbFruits = 3;
+	int **fruits = new int *[nbFruits];
+	for(int i = 0; i < nbFruits; i++) {
+		fruits[i] = new int[4];
 	}
+	fruits[0][OBJECT_ID] = 1;
+	fruits[0][OBJECT_X] = 8;
+	fruits[0][OBJECT_Y] = 5;
+	fruits[0][OBJECT_TYPE] = FRUIT_CHERRY;
+	fruits[1][OBJECT_ID] = 2;
+	fruits[1][OBJECT_X] = 8;
+	fruits[1][OBJECT_Y] = 6;
+	fruits[1][OBJECT_TYPE] = FRUIT_KIWI;
+	fruits[2][OBJECT_ID] = 3;
+	fruits[2][OBJECT_X] = 8;
+	fruits[2][OBJECT_Y] = 7;
+	fruits[2][OBJECT_TYPE] = FRUIT_NUT;
 	
-	commander->initGame(0, 4, 3, StdIntMatrix2(arch, 3, 4));
-	
-	delete arch;
-	
-	/*
-	int **architecture = new int*[4];
-	
-	for(int i = 0; i < 4; i++) {
-		architecture[i] = new int[3];
-		for(int j = 0; j < 3; j++) {
-			architecture[i][j] = i * 3 + j;
-		}
+	// Create buildings array
+	int nbBuildings = 3;
+	int **buildings = new int *[nbBuildings];
+	for(int i = 0; i < nbBuildings; i++) {
+		buildings[i] = new int[4];
 	}
+	buildings[0][OBJECT_ID] = 4;
+	buildings[0][OBJECT_X] = 1;
+	buildings[0][OBJECT_Y] = 1;
+	buildings[0][OBJECT_TYPE] = BUILDING_JUICE_BARREL;
+	buildings[1][OBJECT_ID] = 5;
+	buildings[1][OBJECT_X] = 1;
+	buildings[1][OBJECT_Y] = 2;
+	buildings[1][OBJECT_TYPE] = BUILDING_SUGAR_BOWL;
+	buildings[2][OBJECT_ID] = 6;
+	buildings[2][OBJECT_X] = 1;
+	buildings[2][OBJECT_Y] = 3;
+	buildings[2][OBJECT_TYPE] = BUILDING_FRUCTIFICATION_TANK;
 	
-	//StdIntMatrix2 *s = toStdIntMatrix2(architecture, 4, 3);
+	cout << "Initializing AI #0" << endl;
+	commander->initGame(0,
+		StdIntMatrix2(architecture, height, width),
+		StdIntMatrix2(fruits, nbFruits, 4),
+		StdIntMatrix2(buildings, nbFruits, 4),
+		4, 5, 6
+	);
 	
-	StdIntMatrix2 *s = new StdIntMatrix2();
-	s->length = 12;
-	s->values = new int[12];
-	for(int i = 0; i < 12; i++) {
-		s->values[i] = i;
+	// Delete allocated arrays
+	for(int i = 0; i < nbFruits; i++) {
+		delete[] fruits[i];
 	}
+	delete[] fruits;
 	
-	cout << "s check [";
-	for(int i = 0; i < 12; i++) {
-		cout << s->values[i] << ", ";
+	for(int i = 0; i < nbBuildings; i++) {
+		delete[] buildings[i];
 	}
-	cout << "]" << endl;
-	
-	commander->initGame(0, 3, 4, s);
-	
-	cout << "OVER" << endl;
-
-	delete(s);
-	for(int i = 0; i < 4; i++) {
-		delete(architecture[i]);
-	}
-	delete(architecture);*/
+	delete[] buildings;
 }
 
 void Game::endGame() {

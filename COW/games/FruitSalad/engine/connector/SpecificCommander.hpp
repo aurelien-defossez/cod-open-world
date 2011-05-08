@@ -17,8 +17,9 @@
 
 class SpecificCommander : public Commander {
 public:
-	void initGame(short aiId, int width, int height,
-		StdIntMatrix2 architecture);
+	void initGame(short aiId, StdIntMatrix2 architecture,
+		StdIntMatrix2 fruits, StdIntMatrix2 buildings,
+		int limitCherry, int limitKiwi, int limitNut);
 };
 
 #endif
