@@ -122,7 +122,7 @@ public class WatchdogTimer extends Thread {
 			if (!paused) {
 				timeoutCounter += refreshTime;
 				
-				// TimeOut
+				// Timeout
 				if (timeoutCounter >= languageDependentTimeout) {
 					watchdog.disqualifyCurrentAi();
 					stopTimer();
@@ -140,6 +140,15 @@ public class WatchdogTimer extends Thread {
 		if (logger.isTraceEnabled())
 			logger.trace("Thread ended");
 	}
+
+	/**
+	 * Returns whether the timer is paused.
+	 * 
+	 * @return true if the timer is paused.
+	 */
+	public boolean isPaused() {
+		return paused;
+	}
 	
 	/**
 	 * Defines the maximum time before which an AI is disqualified.
@@ -148,6 +157,9 @@ public class WatchdogTimer extends Thread {
 	 */
 	public void setTimeout(int timeout) {
 		baseTimeout = timeout;
+		
+		if (logger.isTraceEnabled())
+			logger.trace("Watchdog base timeout set to " + timeout);
 	}
 	
 	/**

@@ -8,6 +8,16 @@ import com.ApiCall;
 
 public abstract class GameConnector implements GameInterface {
 	// -------------------------------------------------------------------------
+	// Constants
+	// -------------------------------------------------------------------------
+
+	public static final int SET_FRAME = 1;
+	public static final int SET_TIMEOUT = 2;
+	public static final int SET_SCORE = 3;
+	public static final int INCREMENT_SCORE = 4;
+	public static final int CALL_AI_FUNCTION = 5;
+	
+	// -------------------------------------------------------------------------
 	// Attributes
 	// -------------------------------------------------------------------------
 	

@@ -30,6 +30,11 @@ public class Watchdog {
 	 */
 	private WatchdogTimer timer;
 	
+	/**
+	 * True if the watchdog is activated and the timer started.
+	 */
+	private boolean activated;
+	
 	// -------------------------------------------------------------------------
 	// Builder
 	// -------------------------------------------------------------------------
@@ -43,14 +48,31 @@ public class Watchdog {
 		this.simulator = simulator;
 		this.runningAi = null;
 		this.timer = new WatchdogTimer(this);
-		
-		// Start timer
-		timer.start();
+		this.activated = false;
 	}
 	
 	// -------------------------------------------------------------------------
 	// Public methods
 	// -------------------------------------------------------------------------
+	
+	/**
+	 * Activates the watchdog.
+	 */
+	public void activate() {
+		if(!activated) {
+			activated = true;
+			timer.start();
+		}
+	}
+
+	/**
+	 * Returns whether the watchdog is paused.
+	 * 
+	 * @return true if the watchdog is paused.
+	 */
+	public boolean isPaused() {
+		return timer.isPaused();
+	}
 	
 	/**
 	 * Defines the maximum time before which an AI is disqualified.

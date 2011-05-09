@@ -6,8 +6,8 @@
 package ai;
 
 import java.util.Random;
-import unitTesting.Api;
-import unitTesting.UnitTestingAi;
+import game.Api;
+import game.UnitTestingAi;
 
 public class Ai implements UnitTestingAi {
 	// -------------------------------------------------------------------------
@@ -95,7 +95,7 @@ public class Ai implements UnitTestingAi {
 			System.out.println(" ________________");
 			System.out.println("| Test #" + testNb + " failed | "
 				+ e.getMessage());
-			System.out.println(" ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯");
+			System.out.println(" ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
 		}
 	}
 	

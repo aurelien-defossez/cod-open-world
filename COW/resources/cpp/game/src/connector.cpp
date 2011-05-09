@@ -10,65 +10,65 @@
 	#define EXPORT
 #endif
 
-// TEMP
-#include <iostream>
-using namespace std;
-// TEMP END
-
 // Includes
-#include "GameCommunicator.hpp"
+#include "connector.hpp"
+#include "SpecificCommunicatorInterface.hpp"
+#include "Commander.hpp"
 #include "Variant.hpp"
 
-// Create global communicator
-GameCommunicator communicator = GameCommunicator();
+// -------------------------------------------------------------------------
+// Global objects
+// -------------------------------------------------------------------------
 
-// Open extern C if language is C++
-#ifdef __cplusplus
+SpecificCommunicatorInterface *communicator;
+Commander *commander;
+
+// -------------------------------------------------------------------------
+// Internal C++ functions
+// -------------------------------------------------------------------------
+
+void setCommunicator(SpecificCommunicatorInterface *com) {
+	communicator = com;
+}
+
+void setCommander(Commander *com) {
+	commander = com;
+}
+
+// -------------------------------------------------------------------------
+// JNA communication functions
+// -------------------------------------------------------------------------
+
 extern "C" {
-#endif
-
-// Include self header file
-#include "connector.hpp"
-
-/*
-EXPORT void test(Variant variant[]) {
-	cout << "[Test]" << endl;
-	int *i = (int*)variant[0].value;
-	double *d = (double*)variant[1].value;
+	EXPORT void registerCallbacks(prepareCallCallback prepareCall,
+			addParameterCallback addParameter,
+			makeCallCallback makeCall) {
+		commander->registerCallbacks(prepareCall, addParameter, makeCall);
+	}
 	
-	cout << "[Plop]" << endl;
-	
-	cout << "Variant 0: variant.type=" << (int)variant[0].type << "; variant.value=" << *i << endl;
-	cout << "Variant 1: variant.type=" << (double)variant[1].type << "; variant.value=" << *d << endl;
-}
-*/
+	EXPORT void init(int nbParameters, char *parameters[]) {
+		communicator->init(nbParameters, parameters);
+	}
 
-EXPORT void init(int nbParameters, char *parameters[]) {
-	communicator.init(nbParameters, parameters);
-}
+	EXPORT void addAi(short aiId, char *aiName, char *playerName) {
+		communicator->addAi(aiId, aiName, playerName);
+	}
 
-EXPORT void addAi(short aiId, char *aiName, char *playerName) {
-	communicator.addAi(aiId, aiName, playerName);
-}
+	EXPORT void play() {
+		communicator->play();
+	}
 
-EXPORT void play() {
-	communicator.play();
-}
+	EXPORT void endGame() {
+		communicator->endGame();
+	}
 
-EXPORT void endGame() {
-	communicator.endGame();
-}
+	EXPORT void disqualifyAi(char *aiName, char *reason) {
+		communicator->disqualifyAi(aiName, reason);
+	}
 
-EXPORT void disqualifyAi(char *aiName, char *reason) {
-	communicator.disqualifyAi(aiName, reason);
+	EXPORT Variant performGameFunction(int functionId, int nbParameters,
+			Variant parameters[]) {
+		return communicator->performGameFunction(functionId, nbParameters, parameters);
+	}
 }
-
-EXPORT void performGameFunction(int functionId, int nbParameters, void *parameters[]) {
-	communicator.performGameFunction(functionId, nbParameters, parameters);
-}
-
-// Close extern C
-#ifdef __cplusplus
-}
-#endif
 

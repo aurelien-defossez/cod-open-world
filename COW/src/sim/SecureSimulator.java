@@ -46,6 +46,8 @@ public class SecureSimulator extends LiveSimulator {
 	 */
 	@Override
 	public void addAi(short aiId, String aiName) {
+		watchdog.activate();
+		
 		addAi(new ProxyAi(this, getGameName(), aiId, aiName, watchdog));
 	}
 	
@@ -62,9 +64,13 @@ public class SecureSimulator extends LiveSimulator {
 	 */
 	@Override
 	public void setFrame() {
-		watchdog.pause();
-		super.setFrame();
-		watchdog.resume();
+		if(!watchdog.isPaused()) {
+			watchdog.pause();
+			super.setFrame();
+			watchdog.resume();
+		} else {
+			super.setFrame();
+		}
 	}
 	
 	/**
