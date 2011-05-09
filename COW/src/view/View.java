@@ -23,6 +23,9 @@ public abstract class View implements GameListener, KeyboardListener {
 	public static final int PRINT_TEXT = 10;
 	
 	public static final int DISPLAY_GRID = 20;
+	public static final int DRAW_LINE = 21;
+	public static final int DRAW_RECTANGLE = 22;
+	public static final int DRAW_OVAL = 23;
 	
 	public static final int CREATE_ENTITY = 50;
 	public static final int DELETE_ENTITY = 51;
@@ -105,37 +108,52 @@ public abstract class View implements GameListener, KeyboardListener {
 		try {
 			switch (call.getFunctionId()) {
 			case PRINT_TEXT:
-				printText((String) call.getParameter(0).getValue());
+				printText(
+					(String) call.getParameter(0).getValue());
 				break;
 			
 			case DISPLAY_GRID:
-				displayGrid((Integer) call.getParameter(0).getValue(),
-					(Integer) call.getParameter(1).getValue(), (Integer) call
-						.getParameter(2).getValue(), (Integer) call
-						.getParameter(3).getValue(), (Integer) call
-						.getParameter(4).getValue(), (Integer) call
-						.getParameter(5).getValue(), (Integer) call
-						.getParameter(6).getValue());
+				displayGrid(
+					(Integer) call.getParameter(0).getValue(),
+					(Integer) call.getParameter(1).getValue(),
+					(Integer) call.getParameter(2).getValue(),
+					(Integer) call.getParameter(3).getValue(),
+					(Integer) call.getParameter(4).getValue(),
+					(Integer) call.getParameter(5).getValue(),
+					(Integer) call.getParameter(6).getValue());
 				break;
 			
 			case CREATE_ENTITY:
-				createEntity((Integer) call.getParameter(0).getValue(),
+				createEntity(
+					(Integer) call.getParameter(0).getValue(),
 					(Integer) call.getParameter(1).getValue());
 				break;
 			
 			case DELETE_ENTITY:
-				deleteEntity((Integer) call.getParameter(0).getValue());
+				deleteEntity(
+					(Integer) call.getParameter(0).getValue());
 				break;
 			
 			case MOVE_ENTITY:
-				moveEntity((Integer) call.getParameter(0).getValue(),
-					(Integer) call.getParameter(1).getValue(), (Integer) call
-						.getParameter(2).getValue());
+				moveEntity(
+					(Integer) call.getParameter(0).getValue(),
+					(Integer) call.getParameter(1).getValue(),
+					(Integer) call.getParameter(2).getValue());
 				break;
 			
 			case ROTATE_ENTITY:
-				rotateEntity((Integer) call.getParameter(0).getValue(),
+				rotateEntity(
+					(Integer) call.getParameter(0).getValue(),
 					(Integer) call.getParameter(1).getValue());
+				break;
+			
+			case DRAW_LINE:
+				drawLine(
+					(Integer) call.getParameter(0).getValue(),
+					(Integer) call.getParameter(1).getValue(),
+					(Integer) call.getParameter(2).getValue(),
+					(Integer) call.getParameter(3).getValue(),
+					(Integer) call.getParameter(4).getValue());
 				break;
 			}
 		} catch (CowException e) {
@@ -152,6 +170,9 @@ public abstract class View implements GameListener, KeyboardListener {
 	
 	protected void displayGrid(int x0, int y0, int x1, int y1, int xSpacing,
 		int ySpacing, int color) {
+	}
+	
+	protected void drawLine(int x0, int y0, int x1, int y1, int color) {
 	}
 	
 	protected void createEntity(int definitionId, int id) {

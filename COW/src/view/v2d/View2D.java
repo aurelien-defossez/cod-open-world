@@ -112,6 +112,10 @@ public class View2D extends View {
 			ColorRGBA.darkGray);
 	}
 	
+	protected void drawLine(int x0, int y0, int x1, int y1, int color) {
+		renderer.drawLine(x0, y0, x1, y1, ColorRGBA.red);
+	}
+	
 	protected void createEntity(int definitionId, int id) {
 		scene.createEntity(definitionId, id);
 	}

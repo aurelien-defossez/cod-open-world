@@ -144,14 +144,30 @@ public class SceneRenderer extends SimpleCanvasImpl implements ButtonListener {
 		
 		// Draw lines
 		Geometry grid =
-			new Line("regularLine", lines.toArray(new Vector3f[] {}), null,
-				null, null);
+			new Line("grid", lines.toArray(new Vector3f[] {}), null, null, null);
 		grid.setDefaultColor(color);
-		grid.setZOrder(5);
+		grid.setZOrder(1);
 		grid.updateRenderState();
 		
 		// Attach grid
 		attachChild(grid);
+	}
+	
+	public void drawLine(int x0, int y0, int x1, int y1, ColorRGBA color) {
+		ArrayList<Vector3f> lines = new ArrayList<Vector3f>();
+		
+		// Create line
+		lines.add(new Vector3f(x0, y0, 0));
+		lines.add(new Vector3f(x1, y1, 0));
+		
+		Geometry line =
+			new Line("line", lines.toArray(new Vector3f[] {}), null, null, null);
+		line.setDefaultColor(color);
+		line.setZOrder(1);
+		line.updateRenderState();
+		
+		// Attach line
+		attachChild(line);
 	}
 	
 	@Override
