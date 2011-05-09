@@ -18,12 +18,11 @@ public class CppGameConnector extends GameConnector {
 		super(game);
 		
 		// Set path to game
-		System.setProperty("jna.library.path", "games/" + game.getName()
-			+ "/engine");
+		System.setProperty("jna.library.path",
+			"games/" + game.getName() + "/engine");
 		
 		// Load game
-		gameLib =
-			(GameLibraryInterface) Native.loadLibrary("game",
+		gameLib = (GameLibraryInterface) Native.loadLibrary("game",
 				GameLibraryInterface.class);
 		
 		// Create callback handler
@@ -72,8 +71,8 @@ public class CppGameConnector extends GameConnector {
 	@Override
 	public Variant performGameFunction(ApiCall call, Ai ai) {
 		// TODO: set AI
-		return new Variant(gameLib.performGameFunction(call.getFunctionId(),
-			call.getParameters().length, VariantStruct.createArray(call
-				.getParameters())));
+		return new Variant(gameLib.performGameFunction(
+			call.getFunctionId(), call.getParameters().length,
+			VariantStruct.createArray(call.getParameters())));
 	}
 }

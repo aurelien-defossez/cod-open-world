@@ -255,8 +255,8 @@ public class CowSimulator {
 				
 				// Set game
 				if (loadReplayName == null) {
-					simulator =
-						scheduler.loadGame(gameName, parameters, testMode);
+					simulator = scheduler.loadGame(gameName, parameters,
+						testMode);
 				} else {
 					simulator = scheduler.loadReplay(gameName, loadReplayName);
 				}
@@ -280,15 +280,18 @@ public class CowSimulator {
 					simulator.addGameListener(gui.getView());
 				}
 				
+				// Wait for view to be ready
+				if (useView) {
+					while (!gui.getView().isReady()) {
+						Thread.sleep(1);
+					}
+				}
+				
+				// Initialize game
+				simulator.initGame();
+				
 				// Auto start
 				if (autoStart) {
-					// Wait for the view to be ready
-					if (useView) {
-						while (!gui.getView().isReady()) {
-							Thread.sleep(1);
-						}
-					}
-					
 					// Auto-start
 					scheduler.play();
 				}

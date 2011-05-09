@@ -3,7 +3,7 @@
  * AI.
  */
 
-package treasureHunt;
+package game;
 
 import com.ApiCall;
 import com.Variant;

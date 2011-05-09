@@ -4,15 +4,11 @@ package view.v2d;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
 import view.ButtonListener;
 import view.KeyboardController;
 import view.MouseController;
 import com.jme.math.Vector3f;
-import com.jme.renderer.ColorRGBA;
 import com.jme.renderer.Renderer;
-import com.jme.scene.Geometry;
-import com.jme.scene.Line;
 import com.jme.scene.Spatial;
 import com.jme.system.canvas.SimpleCanvasImpl;
 
@@ -126,50 +122,6 @@ public class SceneRenderer extends SimpleCanvasImpl implements ButtonListener {
 		rootNode.attachChild(node);
 	}
 	
-	public void displayGrid(int x0, int y0, int x1, int y1, int xSpacing,
-		int ySpacing, ColorRGBA color) {
-		ArrayList<Vector3f> lines = new ArrayList<Vector3f>();
-		
-		// Vertical lines
-		for (float x = x0; x <= x1; x += xSpacing) {
-			lines.add(new Vector3f(x, y0, 0));
-			lines.add(new Vector3f(x, y1, 0));
-		}
-		
-		// Horizontal lines
-		for (float y = y0; y <= y1; y += ySpacing) {
-			lines.add(new Vector3f(x0, y, 0));
-			lines.add(new Vector3f(x1, y, 0));
-		}
-		
-		// Draw lines
-		Geometry grid =
-			new Line("grid", lines.toArray(new Vector3f[] {}), null, null, null);
-		grid.setDefaultColor(color);
-		grid.setZOrder(1);
-		grid.updateRenderState();
-		
-		// Attach grid
-		attachChild(grid);
-	}
-	
-	public void drawLine(int x0, int y0, int x1, int y1, ColorRGBA color) {
-		ArrayList<Vector3f> lines = new ArrayList<Vector3f>();
-		
-		// Create line
-		lines.add(new Vector3f(x0, y0, 0));
-		lines.add(new Vector3f(x1, y1, 0));
-		
-		Geometry line =
-			new Line("line", lines.toArray(new Vector3f[] {}), null, null, null);
-		line.setDefaultColor(color);
-		line.setZOrder(1);
-		line.updateRenderState();
-		
-		// Attach line
-		attachChild(line);
-	}
-	
 	@Override
 	public void buttonPressed(int button) {
 		// Start dragging
@@ -232,17 +184,16 @@ public class SceneRenderer extends SimpleCanvasImpl implements ButtonListener {
 				new Vector3f(mousePosition.x, renderer.getHeight()
 					- mousePosition.y, 0);
 		}
-		// Zoom on the centre of the scene
+		// Zoom on the center of the scene
 		else {
-			centre =
-				new Vector3f(renderer.getWidth() / 2, renderer.getHeight() / 2,
-					0);
+			centre = new Vector3f(renderer.getWidth() / 2,
+				renderer.getHeight() / 2, 0);
 		}
 		
 		// Move camera accordingly
 		cameraPosition.set(
-			(float) (dz * cameraPosition.x + centre.x * (1 - dz)), (float) (dz
-				* cameraPosition.y + centre.y * (1 - dz)), 0);
+			(float) (dz * cameraPosition.x + centre.x * (1 - dz)),
+			(float) (dz * cameraPosition.y + centre.y * (1 - dz)), 0);
 		
 		// Move and scale root node
 		rootNode.setLocalScale((float) cameraScale);

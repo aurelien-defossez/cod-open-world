@@ -295,9 +295,6 @@ public class Scheduler extends Thread {
 		
 		logger.info("Game started");
 		
-		// Initialize game
-		simulator.initGame();
-		
 		// Play game
 		simulator.play();
 		

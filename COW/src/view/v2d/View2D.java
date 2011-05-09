@@ -29,7 +29,6 @@ public class View2D extends View {
 	private LWJGLCanvas canvas;
 	private SceneGraph scene;
 	private SceneRenderer renderer;
-	private String gameName;
 	
 	// -------------------------------------------------------------------------
 	// Constructor
@@ -38,8 +37,6 @@ public class View2D extends View {
 	public View2D(String gameName, KeyboardController keyBoardController,
 		MouseController mouseController) {
 		super(keyBoardController);
-		this.gameName = gameName;
-		
 		// Create display
 		DisplaySystem display =
 			DisplaySystem
@@ -47,7 +44,7 @@ public class View2D extends View {
 		display.registerCanvasConstructor("AWT",
 			LWJGLAWTCanvasConstructor.class);
 		
-		// Create canvas (automatic resolution adjustment)
+		// Create canvas (1;1 is for automatic resolution adjustment)
 		canvas = (LWJGLCanvas) display.createCanvas(1, 1);
 		canvas.setTargetRate(FRAME_RATE);
 		
@@ -78,9 +75,6 @@ public class View2D extends View {
 	@Override
 	public void initGame(Collection<Ai> ais) {
 		super.initGame(ais);
-		
-		// Load entities definitions
-		scene.loadDefinitions(gameName);
 	}
 	
 	@Override
@@ -106,29 +100,63 @@ public class View2D extends View {
 		renderer.resizeCanvas(canvas.getWidth(), canvas.getHeight());
 	}
 	
+	@Override
+	protected void printText(String text) {
+		// TODO: Print text
+	}
+	
+	@Override
 	protected void displayGrid(int x0, int y0, int x1, int y1, int xSpacing,
-		int ySpacing, int color) {
-		renderer.displayGrid(x0, y0, x1, y1, xSpacing, ySpacing,
-			ColorRGBA.darkGray);
+		int ySpacing, int color, boolean temporary) {
+		
+		scene.displayGrid(x0, y0, x1, y1, xSpacing, ySpacing,
+			getColor(color), temporary);
 	}
 	
-	protected void drawLine(int x0, int y0, int x1, int y1, int color) {
-		renderer.drawLine(x0, y0, x1, y1, ColorRGBA.red);
+	@Override
+	protected void drawLine(int x0, int y0, int x1, int y1, int color,
+		boolean temporary) {
+		scene.drawLine(x0, y0, x1, y1, getColor(color), temporary);
 	}
 	
+	@Override
+	protected void drawCircle(int x, int y, int radius, int samples, int color,
+		boolean temporary) {
+		scene.drawCircle(x, y, radius, samples, getColor(color), temporary);
+	}
+	
+	@Override
+	protected void deleteTemporaryShapes() {
+		scene.deleteTemporaryShapes();
+	}
+	
+	@Override
 	protected void createEntity(int definitionId, int id) {
 		scene.createEntity(definitionId, id);
 	}
 	
+	@Override
 	protected void deleteEntity(int id) {
 		scene.getEntity(id).delete();
 	}
 	
+	@Override
 	protected void moveEntity(int id, int dx, int dy) {
 		scene.getEntity(id).move(dx, dy, false);
 	}
 	
+	@Override
 	protected void rotateEntity(int id, int angle) {
 		scene.getEntity(id).rotate(angle, false);
+	}
+	
+	// -------------------------------------------------------------------------
+	// Private methods
+	// -------------------------------------------------------------------------
+	
+	ColorRGBA getColor(int rawColor) {
+		ColorRGBA color = new ColorRGBA();
+		color.fromIntARGB(rawColor);
+		return color;
 	}
 }

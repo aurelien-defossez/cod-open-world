@@ -3,7 +3,7 @@
  * communicate between the AI and the simulator.
  */
 
-package treasureHunt;
+package game;
 
 import com.ApiCall;
 import lang.java.JavaAiCommunicator;

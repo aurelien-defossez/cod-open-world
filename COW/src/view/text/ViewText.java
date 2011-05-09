@@ -71,4 +71,47 @@ public class ViewText extends View {
 			scrollBar.setValue(scrollBar.getMaximum());
 		}
 	}
+
+	@Override
+	protected void displayGrid(int x0, int y0, int x1, int y1, int xSpacing,
+		int ySpacing, int color, boolean temporary) {
+		// Do nothing
+	}
+
+	@Override
+	protected void drawLine(int x0, int y0, int x1, int y1, int color,
+		boolean temporary) {
+		// Do nothing
+	}
+
+	@Override
+	protected void drawCircle(int x, int y, int radius, int samples, int color,
+		boolean temporary) {
+		// Do nothing
+	}
+
+	@Override
+	protected void createEntity(int definitionId, int id) {
+		// Do nothing
+	}
+
+	@Override
+	protected void deleteEntity(int id) {
+		// Do nothing
+	}
+
+	@Override
+	protected void moveEntity(int id, int dx, int dy) {
+		// Do nothing
+	}
+
+	@Override
+	protected void rotateEntity(int id, int angle) {
+		// Do nothing
+	}
+
+	@Override
+	protected void deleteTemporaryShapes() {
+		// Do nothing
+	}
 }

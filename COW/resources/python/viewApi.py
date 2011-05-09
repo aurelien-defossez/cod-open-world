@@ -12,8 +12,8 @@ class ViewApi(object):
 		self.factory.addString(text)
 		self.factory.call(View.PRINT_TEXT)
 	
-	def displayGrid(self, x0, y0, x1, y1, xSpacing, ySpacing, color):
-		self.factory.initParameters(7)
+	def displayGrid(self, x0, y0, x1, y1, xSpacing, ySpacing, color, temporary):
+		self.factory.initParameters(8)
 		self.factory.addInt(x0)
 		self.factory.addInt(y0)
 		self.factory.addInt(x1)
@@ -21,7 +21,32 @@ class ViewApi(object):
 		self.factory.addInt(xSpacing)
 		self.factory.addInt(ySpacing)
 		self.factory.addInt(color)
+		self.factory.addBool(temporary)
 		self.factory.call(View.DISPLAY_GRID)
+	
+	def drawLine(self, x0, y0, x1, y1, color, temporary):
+		self.factory.initParameters(6)
+		self.factory.addInt(x0)
+		self.factory.addInt(y0)
+		self.factory.addInt(x1)
+		self.factory.addInt(y1)
+		self.factory.addInt(color)
+		self.factory.addBool(temporary)
+		self.factory.call(View.DRAW_LINE)
+	
+	def drawCircle(self, x, y, radius, samples, color, temporary):
+		self.factory.initParameters(6)
+		self.factory.addInt(x)
+		self.factory.addInt(y)
+		self.factory.addInt(radius)
+		self.factory.addInt(samples)
+		self.factory.addInt(color)
+		self.factory.addBool(temporary)
+		self.factory.call(View.DRAW_CIRCLE)
+	
+	def deleteTemporaryShapes(self):
+		self.factory.initParameters(0)
+		self.factory.call(View.DELETE_TEMPORARY_SHAPES)
 	
 	def createEntity(self, definitionId, id):
 		self.factory.initParameters(2)
@@ -46,4 +71,5 @@ class ViewApi(object):
 		self.factory.addInt(id)
 		self.factory.addInt(angle)
 		self.factory.call(View.ROTATE_ENTITY)
-		
+	
+	

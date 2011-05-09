@@ -20,7 +20,7 @@ class Game(object):
 		self.view = view
 		self.map = Map(self.view, width, height)
 		self.gameOver = False
-		self.view.displayGrid(0, 0, width * 10, height * 10, 10, 10, 0x606060FF)
+		self.view.displayGrid(0, 0, width * 10, height * 10, 10, 10, 0x303030, False)
 	
 	#Sets the player score
 	def setScore(self, aiId, score):
@@ -55,6 +55,7 @@ class Game(object):
 						self.conn.callAiFunction(aiId, PHASE_REINIT)
 			
 			self.conn.setFrame()
+			self.view.deleteTemporaryShapes()
 			
 			if self.gameOver:
 				break

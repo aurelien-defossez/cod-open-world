@@ -3,7 +3,7 @@
  * game "test".
  */
 
-package treasureHunt;
+package game;
 
 public interface TreasureHuntAi {
 	// -------------------------------------------------------------------------
