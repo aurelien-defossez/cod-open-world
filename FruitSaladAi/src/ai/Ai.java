@@ -48,10 +48,14 @@ public class Ai implements FruitSaladAi {
 		for (int i = 0; i < buildings.length; i++) {
 			System.out.println("Building: "
 				+ Api.decode(buildings[i][Api.OBJECT_TYPE]) + " " + "id #"
-				+ fruits[i][Api.OBJECT_ID] + " at (" + fruits[i][Api.OBJECT_X]
-				+ ";" + fruits[i][Api.OBJECT_Y] + ")");
+				+ buildings[i][Api.OBJECT_ID] + " at ("
+				+ buildings[i][Api.OBJECT_X] + ";" + buildings[i][Api.OBJECT_Y]
+				+ ")");
 		}
 		System.out.println();
+		
+		// Test game API functions
+		testGameApi();
 	}
 	
 	@Override
@@ -127,5 +131,59 @@ public class Ai implements FruitSaladAi {
 	@Override
 	public void stop() {
 		System.out.println("AI: Stopped.");
+	}
+	
+	// -------------------------------------------------------------------------
+	// Private methods
+	// -------------------------------------------------------------------------
+	
+	private void testGameApi() {
+		System.out.println("move: " + Api.decode(Api.move(1, 42, 42)));
+		
+		System.out.println("attack: " + Api.decode(Api.attack(1, 2)));
+		
+		System.out.println("useEquipment: "
+			+ Api.decode(Api.useEquipment(1, 512, 1)));
+		
+		System.out.println("pickUpEquipment: "
+			+ Api.decode(Api.pickUpEquipment(1, 57)));
+		
+		System.out.println("dropEquipment: "
+			+ Api.decode(Api.dropEquipment(1, 72, 5, 6)));
+		
+		System.out.println("dropSugar: "
+			+ Api.decode(Api.dropSugar(1, 10, 5, 6)));
+		
+		System.out.println("openChest: " + Api.decode(Api.openChest(1, 18)));
+		
+		System.out.println("stockSugar: " + Api.decode(Api.stockSugar(1)));
+		
+		System.out.println("sellEquipment: "
+			+ Api.decode(Api.sellEquipment(1, 16)));
+		
+		System.out.println("buyEquipment: "
+			+ Api.decode(Api.buyEquipment(1, Api.EQUIPMENT_SALT_SNIPER)));
+		
+		System.out.println("drinkJuice: " + Api.decode(Api.drinkJuice(1)));
+		
+		System.out.println("fructify: "
+			+ Api.decode(Api.fructify(1, Api.FRUIT_CHERRY, 1, 4)));
+		
+		System.out.println("drawVitamin: " + Api.decode(Api.drawVitamin(1)));
+		
+		System.out.println("writeText: "
+			+ Api.decode(Api.writeText("Hello frutty world")));
+		
+		System.out.println("writeTextAt: "
+			+ Api.decode(Api.writeTextAt("Hello from 2;2", 2, 2)));
+		
+		System.out.println("drawLine: "
+			+ Api.decode(Api.drawLine(1, 1, 5, 8, Api.COLOR_RED)));
+		
+		System.out.println("drawCircle: "
+			+ Api.decode(Api.drawCircle(8, 9, 2, Api.COLOR_BLUE)));
+		
+		System.out.println("colorSquare: "
+			+ Api.decode(Api.colorSquare(6, 2, Api.COLOR_YELLOW)));
 	}
 }

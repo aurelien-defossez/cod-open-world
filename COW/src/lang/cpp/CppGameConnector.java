@@ -40,30 +40,6 @@ public class CppGameConnector extends GameConnector {
 		for (Ai ai : ais) {
 			gameLib.addAi(ai.getId(), ai.getName(), ai.getPlayerName());
 		}
-		/*
-		// Test move
-		ApiCall moveCall = new ApiCall((short) 1, new Variant[] {
-			new Variant(42),
-			new Variant(126),
-			new Variant(-45)
-		});
-		
-		System.out.println("result="+performGameFunction(moveCall, null));
-
-		// Test 41
-		ApiCall test41 = new ApiCall((short) 41, new Variant[] {
-			new Variant(new int[]{ 10, 15, 30 })
-		});
-		
-		performGameFunction(test41, null);
-		
-		// Test 42
-		ApiCall test42 = new ApiCall((short) 42, new Variant[] {
-			new Variant(new int[][]{{ 1, 2, 3 }, { 4, 5, 6 }})
-		});
-		
-		performGameFunction(test42, null);
-		*/
 	}
 	
 	/**

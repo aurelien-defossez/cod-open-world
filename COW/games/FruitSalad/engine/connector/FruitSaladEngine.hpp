@@ -4,25 +4,6 @@
 #include "Variant.hpp"
 
 // -------------------------------------------------------------------------
-// Game API functions IDs
-// -------------------------------------------------------------------------
-
-#define __GAME_API_FUNCTION_MOVE__ 1
-#define __GAME_API_FUNCTION_ATTACK__ 2
-#define __GAME_API_FUNCTION_USE_EQUIPMENT__ 3
-#define __GAME_API_FUNCTION_PICK_UP_EQUIPMENT__ 4
-#define __GAME_API_FUNCTION_DROP_EQUIPMENT__ 5
-#define __GAME_API_FUNCTION_PICK_UP_SUGAR__ 6
-#define __GAME_API_FUNCTION_DROP_SUGAR__ 7
-#define __GAME_API_FUNCTION_OPEN_CHEST__ 8
-#define __GAME_API_FUNCTION_STOCK_SUGAR__ 9
-#define __GAME_API_FUNCTION_SELL_EQUIPMENT__ 10
-#define __GAME_API_FUNCTION_BUY_EQUIPMENT__ 11
-#define __GAME_API_FUNCTION_DRINK_JUICE__ 12
-#define __GAME_API_FUNCTION_FRUCTIFY__ 13
-#define __GAME_API_FUNCTION_DRAW_VITAMIN__ 14
-
-// -------------------------------------------------------------------------
 // User-defined constants
 // -------------------------------------------------------------------------
 
@@ -57,6 +38,14 @@
 #define EQUIPMENT_RELOADER 28
 #define CHEST 29
 #define SUGAR_DROP 30
+#define COLOR_BLACK 40
+#define COLOR_BLUE 41
+#define COLOR_GREEN 42
+#define COLOR_ORANGE 43
+#define COLOR_RED 44
+#define COLOR_VIOLET 45
+#define COLOR_WHITE 46
+#define COLOR_YELLOW 47
 #define OK 1
 #define HIT 2
 #define SPLATCHED 3
@@ -117,8 +106,11 @@ public:
 	virtual int drinkJuice(int fruitId) = 0;
 	virtual int fructify(int fruitId, int fruitType, int x, int y) = 0;
 	virtual int drawVitamin(int fruitId) = 0;
-	
-	// TODO: Debug functions
+	virtual int writeText(char *text) = 0;
+	virtual int writeTextAt(char *text, int x, int y) = 0;
+	virtual int drawLine(int x1, int y1, int x2, int y2, int color) = 0;
+	virtual int drawCircle(int x, int y, int radius, int color) = 0;
+	virtual int colorSquare(int x, int y, int color) = 0;
 };
 
 #endif

@@ -4,12 +4,25 @@
 // Standard int[] matrix class
 // -------------------------------------------------------------------------
 
-StdIntMatrix1::StdIntMatrix1(int *values, int length) {
+IntMatrix1::IntMatrix1(int length) {
 	this->length = length;
+	this->allocated = true;
+	this->values = new int[length];
+}
+
+IntMatrix1::IntMatrix1(int length, int *values) {
+	this->length = length;
+	this->allocated = false;
 	this->values = values;
 }
 
-Variant StdIntMatrix1::toVariant() {
+IntMatrix1::~IntMatrix1() {
+	if(allocated) {
+		delete[] values;
+	}
+}
+
+Variant IntMatrix1::toVariant() {
 	Variant var;
 	var.type = VARIANT_INT_MATRIX1;
 	var.length1 = this->length;
@@ -21,34 +34,46 @@ Variant StdIntMatrix1::toVariant() {
 // Standard int[][] matrix class
 // -------------------------------------------------------------------------
 
-StdIntMatrix2::StdIntMatrix2(int *values, int length1, int length2) {
-	this->length1 = length1;
-	this->length2 = length2;
+IntMatrix2::IntMatrix2(int length1, int length2) {
+	this->allocated = true;
+	this->length[0] = length1;
+	this->length[1] = length2;
+	this->values = new int[length1 * length2];
+}
+
+IntMatrix2::IntMatrix2(int length1, int length2, int *values) {
+	this->allocated = false;
+	this->length[0] = length1;
+	this->length[1] = length2;
 	this->values = values;
 }
 
-StdIntMatrix2::StdIntMatrix2(int **values, int length1, int length2) {
-	this->length1 = length1;
-	this->length2 = length2;
+IntMatrix2::IntMatrix2(int length1, int length2, int **values) {
+	this->allocated = true;
+	this->length[0] = length1;
+	this->length[1] = length2;
 	this->values = new int[length1 * length2];
 	
 	for(int i = 0; i < length1; i++) {
+		int offset = i * length2;
 		for(int j = 0; j < length2; j++) {
-			this->values[i * length2 + j] = values[i][j];
+			this->values[offset + j] = values[i][j];
 		}
 	}
 }
 
-StdIntMatrix2::~StdIntMatrix2() {
-	delete[] values;
+IntMatrix2::~IntMatrix2() {
+	if(allocated) {
+		delete[] values;
+	}
 }
 
-Variant StdIntMatrix2::toVariant() {
+Variant IntMatrix2::toVariant() {
 	Variant var;
 	var.type = VARIANT_INT_MATRIX2;
-	var.length1 = this->length1;
-	var.length2 = this->length2;
-	var.value.returnIntMatrix = this->values;
+	var.length1 = length[0];
+	var.length2 = length[1];
+	var.value.returnIntMatrix = values;
 	
 	return var;
 }
@@ -57,9 +82,49 @@ Variant StdIntMatrix2::toVariant() {
 // Simple variant types
 // -------------------------------------------------------------------------
 
-Variant intVariant(int value) {
+Variant voidVariant() {
+	Variant var;
+	var.type = VARIANT_VOID;
+	return var;
+}
+
+Variant toVariant(bool value) {
+	Variant var;
+	var.type = VARIANT_BOOL;
+	var.value.boolValue = value;
+	return var;
+}
+
+Variant toVariant(int value) {
 	Variant var;
 	var.type = VARIANT_INT;
 	var.value.intValue = value;
 	return var;
+}
+
+Variant toVariant(double value) {
+	Variant var;
+	var.type = VARIANT_DOUBLE;
+	var.value.doubleValue = value;
+	return var;
+}
+
+// -------------------------------------------------------------------------
+// From variant functions
+// -------------------------------------------------------------------------
+
+bool boolValue(Variant var) {
+	return var.value.boolValue;
+}
+
+int intValue(Variant var) {
+	return var.value.intValue;
+}
+
+double doubleValue(Variant var) {
+	return var.value.doubleValue;
+}
+
+char *stringValue(Variant var) {
+	return var.value.stringValue;
 }

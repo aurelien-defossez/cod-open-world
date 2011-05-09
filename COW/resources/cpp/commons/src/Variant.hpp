@@ -1,8 +1,6 @@
 #ifndef __VARIANT_H__
 #define __VARIANT_H__
 
-#include <vector>
-
 // -------------------------------------------------------------------------
 // Variant types
 // -------------------------------------------------------------------------
@@ -60,13 +58,16 @@ typedef struct variant {
 // Standard int[] matrix class
 // -------------------------------------------------------------------------
 
-class StdIntMatrix1 {
+class IntMatrix1 {
 private:
+	bool allocated;
 	int length;
 	int *values;
 
 public:
-	StdIntMatrix1(int *values, int length);
+	IntMatrix1(int length);
+	IntMatrix1(int length, int *values);
+	~IntMatrix1();
 	
 	Variant toVariant();
 	
@@ -83,25 +84,26 @@ public:
 // Standard int[][] matrix class
 // -------------------------------------------------------------------------
 
-class StdIntMatrix2 {
+class IntMatrix2 {
 private:
-	int length1;
-	int length2;
+	bool allocated;
+	int length[2];
 	int *values;
 
 public:
-	StdIntMatrix2(int *values, int length1, int length2);
-	StdIntMatrix2(int **values, int length1, int length2);
-	~StdIntMatrix2();
+	IntMatrix2(int length1, int length2);
+	IntMatrix2(int length1, int length2, int *values);
+	IntMatrix2(int length1, int length2, int **values);
+	~IntMatrix2();
 	
 	Variant toVariant();
 	
 	inline int size() {
-		return length1;
+		return length[0];
 	}
 	
-	inline StdIntMatrix1 operator[] (int index) {
-		return StdIntMatrix1(values + index * length2, length2);
+	inline IntMatrix1 operator[] (int index) {
+		return IntMatrix1(length[1], values + index * length[1]);
 	}
 };
 
@@ -109,6 +111,18 @@ public:
 // Simple variant types
 // -------------------------------------------------------------------------
 
-Variant intVariant(int value);
+Variant voidVariant();
+Variant toVariant(bool value);
+Variant toVariant(int value);
+Variant toVariant(double value);
+
+// -------------------------------------------------------------------------
+// From variant functions
+// -------------------------------------------------------------------------
+
+bool boolValue(Variant var);
+int intValue(Variant var);
+double doubleValue(Variant var);
+char *stringValue(Variant var);
 
 #endif

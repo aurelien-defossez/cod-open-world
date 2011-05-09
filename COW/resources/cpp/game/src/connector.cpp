@@ -68,28 +68,6 @@ extern "C" {
 
 	EXPORT Variant performGameFunction(int functionId, int nbParameters,
 			Variant parameters[]) {
-		/*if(functionId == 41) {
-			cout << "function 41" << endl;
-			Variant v = parameters[0];
-			StdIntMatrix1 matrix = StdIntMatrix1(v.value.intMatrix->values, v.length1);
-			
-			for(int i = 0; i < matrix.size(); i++) {
-				cout << "m[i]=" << matrix[i] << endl;
-			}
-		}
-		
-		else if(functionId == 42) {
-			cout << "function 42" << endl;
-			Variant v = parameters[0];
-			StdIntMatrix2 matrix = StdIntMatrix2(v.value.intMatrix->values, v.length1, v.length2);
-			
-			for(int i = 0; i < matrix.size(); i++) {
-				for(int j = 0; j < matrix[0].size(); j++) {
-					cout << "m[" << i << "][" << j << "]=" << matrix[i][j] << endl;
-				}
-			}
-		}*/
-		
 		return communicator->performGameFunction(functionId, nbParameters, parameters);
 	}
 }

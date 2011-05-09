@@ -1,4 +1,5 @@
 #include "Game.hpp"
+
 #include "FruitSaladEngine.hpp"
 #include "SpecificCommunicator.hpp"
 #include "SpecificCommander.hpp"
@@ -61,10 +62,7 @@ void Game::play() {
 	
 	// Create fruits array
 	int nbFruits = 3;
-	int **fruits = new int *[nbFruits];
-	for(int i = 0; i < nbFruits; i++) {
-		fruits[i] = new int[4];
-	}
+	IntMatrix2 fruits = IntMatrix2(nbFruits, 4);
 	fruits[0][OBJECT_ID] = 1;
 	fruits[0][OBJECT_X] = 8;
 	fruits[0][OBJECT_Y] = 5;
@@ -80,10 +78,7 @@ void Game::play() {
 	
 	// Create buildings array
 	int nbBuildings = 3;
-	int **buildings = new int *[nbBuildings];
-	for(int i = 0; i < nbBuildings; i++) {
-		buildings[i] = new int[4];
-	}
+	IntMatrix2 buildings = IntMatrix2(nbBuildings, 4);
 	buildings[0][OBJECT_ID] = 4;
 	buildings[0][OBJECT_X] = 1;
 	buildings[0][OBJECT_Y] = 1;
@@ -97,24 +92,12 @@ void Game::play() {
 	buildings[2][OBJECT_Y] = 3;
 	buildings[2][OBJECT_TYPE] = BUILDING_FRUCTIFICATION_TANK;
 	
+	IntMatrix2 *archPt = new IntMatrix2(height, width, architecture);
+	
 	cout << "Initializing AI #0" << endl;
-	commander->initGame(0,
-		StdIntMatrix2(architecture, height, width),
-		StdIntMatrix2(fruits, nbFruits, 4),
-		StdIntMatrix2(buildings, nbFruits, 4),
-		4, 5, 6
-	);
+	commander->initGame(0, archPt, &fruits, &buildings, 4, 5, 6);
 	
-	// Delete allocated arrays
-	for(int i = 0; i < nbFruits; i++) {
-		delete[] fruits[i];
-	}
-	delete[] fruits;
-	
-	for(int i = 0; i < nbBuildings; i++) {
-		delete[] buildings[i];
-	}
-	delete[] buildings;
+	delete(archPt);
 }
 
 void Game::endGame() {
@@ -199,3 +182,31 @@ int Game::drawVitamin(int fruitId) {
 	cout << "drawVitamin(" << fruitId << ");" << endl;
 	return OK;
 }
+
+int Game::writeText(char *text) {
+	cout << "writeText(\"" << text << "\");" << endl;
+	return OK;
+}
+
+int Game::writeTextAt(char *text, int x, int y) {
+	cout << "writeTextAt(\"" << text << "\", " << x << ", " << y << ");" << endl;
+	return OK;
+}
+
+int Game::drawLine(int x1, int y1, int x2, int y2, int color) {
+	cout << "drawLine(" << x1 << ", " << y1 << ", " << x2 << ", " << y2 << ", ";
+	cout << color << ");" << endl;
+	return OK;
+}
+
+int Game::drawCircle(int x, int y, int radius, int color) {
+	cout << "drawCircle(" << x << ", " << y << ", " << radius << ", ";
+	cout << color << ");" << endl;
+	return OK;
+}
+
+int Game::colorSquare(int x, int y, int color) {
+	cout << "colorSquare(" << x << ", " << y << ", " << color << ");" << endl;
+	return OK;
+}
+

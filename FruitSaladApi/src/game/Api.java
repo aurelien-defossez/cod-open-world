@@ -30,6 +30,11 @@ public class Api extends JavaApi {
 	private static final short __GAME_API_FUNCTION_DRINK_JUICE__ = 12;
 	private static final short __GAME_API_FUNCTION_FRUCTIFY__ = 13;
 	private static final short __GAME_API_FUNCTION_DRAW_VITAMIN__ = 14;
+	private static final short __GAME_API_FUNCTION_WRITE_TEXT__ = 15;
+	private static final short __GAME_API_FUNCTION_WRITE_TEXT_AT__ = 16;
+	private static final short __GAME_API_FUNCTION_DRAW_LINE__ = 17;
+	private static final short __GAME_API_FUNCTION_DRAW_CIRCLE__ = 18;
+	private static final short __GAME_API_FUNCTION_COLOR_SQUARE__ = 19;
 	
 	// User-defined constants
 	public static final int OBJECT_ID = 0;
@@ -63,6 +68,14 @@ public class Api extends JavaApi {
 	public static final int EQUIPMENT_RELOADER = 28;
 	public static final int CHEST = 29;
 	public static final int SUGAR_DROP = 30;
+	public static final int COLOR_BLACK = 40;
+	public static final int COLOR_BLUE = 41;
+	public static final int COLOR_GREEN = 42;
+	public static final int COLOR_ORANGE = 43;
+	public static final int COLOR_RED = 44;
+	public static final int COLOR_VIOLET = 45;
+	public static final int COLOR_WHITE = 46;
+	public static final int COLOR_YELLOW = 47;
 	public static final int OK = 1;
 	public static final int HIT = 2;
 	public static final int SPLATCHED = 3;
@@ -179,6 +192,22 @@ public class Api extends JavaApi {
 			return "CHEST";
 		case SUGAR_DROP:
 			return "SUGAR_DROP";
+		case COLOR_BLACK:
+			return "SUGAR_DROP";
+		case COLOR_BLUE:
+			return "COLOR_BLUE";
+		case COLOR_GREEN:
+			return "COLOR_GREEN";
+		case COLOR_ORANGE:
+			return "COLOR_ORANGE";
+		case COLOR_RED:
+			return "COLOR_RED";
+		case COLOR_VIOLET:
+			return "COLOR_VIOLET";
+		case COLOR_WHITE:
+			return "COLOR_WHITE";
+		case COLOR_YELLOW:
+			return "COLOR_YELLOW";
 		case OK:
 			return "OK";
 		case HIT:
@@ -346,6 +375,47 @@ public class Api extends JavaApi {
 	public static int drawVitamin(int fruitId) {
 		ApiCall call = new ApiCall(__GAME_API_FUNCTION_DRAW_VITAMIN__, 1);
 		call.add(new Variant(fruitId));
+		return callGameFunction(call).getIntValue();
+	}
+	
+	public static int writeText(String text) {
+		ApiCall call = new ApiCall(__GAME_API_FUNCTION_WRITE_TEXT__, 1);
+		call.add(new Variant(text));
+		return callGameFunction(call).getIntValue();
+	}
+	
+	public static int writeTextAt(String text, int x, int y) {
+		ApiCall call = new ApiCall(__GAME_API_FUNCTION_WRITE_TEXT_AT__, 3);
+		call.add(new Variant(text));
+		call.add(new Variant(x));
+		call.add(new Variant(y));
+		return callGameFunction(call).getIntValue();
+	}
+	
+	public static int drawLine(int x1, int y1, int x2, int y2, int color) {
+		ApiCall call = new ApiCall(__GAME_API_FUNCTION_DRAW_LINE__, 5);
+		call.add(new Variant(x1));
+		call.add(new Variant(y1));
+		call.add(new Variant(x2));
+		call.add(new Variant(y2));
+		call.add(new Variant(color));
+		return callGameFunction(call).getIntValue();
+	}
+	
+	public static int drawCircle(int x, int y, int radius, int color) {
+		ApiCall call = new ApiCall(__GAME_API_FUNCTION_DRAW_CIRCLE__, 4);
+		call.add(new Variant(x));
+		call.add(new Variant(y));
+		call.add(new Variant(radius));
+		call.add(new Variant(color));
+		return callGameFunction(call).getIntValue();
+	}
+	
+	public static int colorSquare(int x, int y, int color) {
+		ApiCall call = new ApiCall(__GAME_API_FUNCTION_COLOR_SQUARE__, 3);
+		call.add(new Variant(x));
+		call.add(new Variant(y));
+		call.add(new Variant(color));
 		return callGameFunction(call).getIntValue();
 	}
 }

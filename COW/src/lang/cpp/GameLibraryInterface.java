@@ -19,7 +19,6 @@ public interface GameLibraryInterface extends Library {
 		public Pointer returnIntMatrix;
 		
 		public void setValue(Variant variant) {
-			System.out.println("setValue(" + variant + ")");
 			switch (variant.getType()) {
 			case VOID:
 				setType(int.class);
