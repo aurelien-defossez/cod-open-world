@@ -106,8 +106,6 @@ public abstract class View implements GameListener, KeyboardListener {
 	
 	@Override
 	public final void callViewFunction(ApiCall call) {
-		System.out.println("CallViewFunction("+call.getFunctionId()+")");
-		
 		try {
 			switch (call.getFunctionId()) {
 			case PRINT_TEXT:

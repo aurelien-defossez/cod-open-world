@@ -3,7 +3,7 @@
  * communicate between the AI and the simulator.
  */
 
-package unitTesting;
+package game;
 
 import com.ApiCall;
 import lang.java.JavaAiCommunicator;

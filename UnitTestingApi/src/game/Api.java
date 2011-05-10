@@ -3,7 +3,7 @@
  * AI.
  */
 
-package unitTesting;
+package game;
 
 import com.ApiCall;
 import com.Variant;

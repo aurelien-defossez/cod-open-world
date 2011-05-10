@@ -12,7 +12,7 @@ Game game = Game();
 Game::Game() {
 	communicator = new SpecificCommunicator(this);
 	commander = new SpecificCommander();
-	
+	/*
 	height = 12;
 	width = 10;
 	
@@ -28,17 +28,17 @@ Game::Game() {
 				architecture[i][j] = NOTHING;
 			}
 		}
-	}
+	}*/
 }
 
 Game::~Game() {
 	delete commander;
 	delete communicator;
-	
+	/*
 	for(int i = 0; i < height; i++) {
 		delete[] architecture[i];
 	}
-	delete[] architecture;
+	delete[] architecture;*/
 }
 
 void Game::init(int nbParameters, char *parameters[]) {
@@ -65,7 +65,35 @@ void Game::play() {
 	
 	cout << "Create fruit" << endl;
 	commander->createEntity(11, 1);
-	
+	commander->setFrame();
+	commander->moveEntity(1, 1, 1);
+	commander->setFrame();
+	commander->moveEntity(1, 1, 1);
+	commander->setFrame();
+	commander->moveEntity(1, 1, 1);
+	commander->setFrame();
+	commander->moveEntity(1, 1, 1);
+	commander->setFrame();
+	commander->moveEntity(1, 1, 1);
+	commander->setFrame();
+	commander->moveEntity(1, 1, 1);
+	commander->setFrame();
+	commander->moveEntity(1, 1, 1);
+	commander->setFrame();
+	commander->moveEntity(1, 1, 1);
+	commander->setFrame();
+	commander->moveEntity(1, 1, 1);
+	commander->setFrame();
+	commander->moveEntity(1, 1, 1);
+	commander->setFrame();
+	commander->moveEntity(1, 1, 1);
+	commander->setFrame();
+	commander->moveEntity(1, 1, 1);
+	commander->setFrame();
+	commander->moveEntity(1, 1, 1);
+	commander->setFrame();
+	commander->moveEntity(1, 1, 1);
+	/*
 	// Create fruits array
 	int nbFruits = 3;
 	IntMatrix2 fruits = IntMatrix2(nbFruits, 4);
@@ -106,7 +134,7 @@ void Game::play() {
 	delete(archPt);
 	
 	cout << "setFrame" << endl;
-	commander->setFrame();
+	commander->setFrame();*/
 }
 
 void Game::endGame() {

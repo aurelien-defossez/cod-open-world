@@ -3,7 +3,7 @@
  * game "Unit Testing".
  */
 
-package unitTesting;
+package game;
 
 public interface UnitTestingAi {
 	// -------------------------------------------------------------------------

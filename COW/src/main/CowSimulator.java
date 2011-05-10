@@ -288,11 +288,6 @@ public class CowSimulator {
 					}
 				}
 				
-				// TODO: temporary, not waiting may cause the JNA to work
-				// differently and don't call callback C++ functions
-				// TODO: enable view after the wait
-				Thread.sleep(100);
-				
 				// Initialize game
 				simulator.initGame();
 				
