@@ -27,7 +27,6 @@ public class GameCallbackHandler {
 	}
 	
 	public void makeCall() {
-		System.out.println("Make");
 		switch (call.getFunctionId()) {
 		case GameConnector.SET_FRAME:
 			connector.setFrame();
@@ -61,6 +60,12 @@ public class GameCallbackHandler {
 			// Call AI API function
 			connector.callAiFunction(call.getParameter(0).getIntValue()
 				.shortValue(), aiApiCall);
+			break;
+		
+		// View functions
+		default:
+			System.out.println("CBHandler:Display");
+			connector.callViewFunction(call);
 			break;
 		}
 	}

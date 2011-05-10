@@ -34,7 +34,6 @@ public class Api extends JavaApi {
 	private static final short __GAME_API_FUNCTION_WRITE_TEXT_AT__ = 16;
 	private static final short __GAME_API_FUNCTION_DRAW_LINE__ = 17;
 	private static final short __GAME_API_FUNCTION_DRAW_CIRCLE__ = 18;
-	private static final short __GAME_API_FUNCTION_COLOR_SQUARE__ = 19;
 	
 	// User-defined constants
 	public static final int OBJECT_ID = 0;
@@ -388,7 +387,7 @@ public class Api extends JavaApi {
 		ApiCall call = new ApiCall(__GAME_API_FUNCTION_WRITE_TEXT_AT__, 3);
 		call.add(new Variant(text));
 		call.add(new Variant(x));
-		call.add(new Variant(y));
+		call.add(new Variant(y));0
 		return callGameFunction(call).getIntValue();
 	}
 	
@@ -407,14 +406,6 @@ public class Api extends JavaApi {
 		call.add(new Variant(x));
 		call.add(new Variant(y));
 		call.add(new Variant(radius));
-		call.add(new Variant(color));
-		return callGameFunction(call).getIntValue();
-	}
-	
-	public static int colorSquare(int x, int y, int color) {
-		ApiCall call = new ApiCall(__GAME_API_FUNCTION_COLOR_SQUARE__, 3);
-		call.add(new Variant(x));
-		call.add(new Variant(y));
 		call.add(new Variant(color));
 		return callGameFunction(call).getIntValue();
 	}

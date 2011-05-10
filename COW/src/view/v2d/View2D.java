@@ -108,7 +108,6 @@ public class View2D extends View {
 	@Override
 	protected void displayGrid(int x0, int y0, int x1, int y1, int xSpacing,
 		int ySpacing, int color, boolean temporary) {
-		
 		scene.displayGrid(x0, y0, x1, y1, xSpacing, ySpacing,
 			getColor(color), temporary);
 	}

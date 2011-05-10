@@ -47,6 +47,9 @@ void Game::init(int nbParameters, char *parameters[]) {
 	for(int i = 0; i < nbParameters; i++) {
 		cout << "Parameter #" << i << " = " << parameters[i] << endl;
 	}
+	
+	cout << "Display grid" << endl;
+	commander->displayGrid(0, 0, 100, 100, 1, 1, 0x303030, false);
 }
 
 void Game::addAi(short aiId, char *aiName, char *playerName) {
@@ -59,6 +62,9 @@ void Game::play() {
 	
 	cout << "setFrame" << endl;
 	commander->setFrame();
+	
+	cout << "Create fruit" << endl;
+	commander->createEntity(11, 1);
 	
 	// Create fruits array
 	int nbFruits = 3;
@@ -98,6 +104,9 @@ void Game::play() {
 	commander->initGame(0, archPt, &fruits, &buildings, 4, 5, 6);
 	
 	delete(archPt);
+	
+	cout << "setFrame" << endl;
+	commander->setFrame();
 }
 
 void Game::endGame() {

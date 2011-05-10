@@ -106,6 +106,8 @@ public abstract class View implements GameListener, KeyboardListener {
 	
 	@Override
 	public final void callViewFunction(ApiCall call) {
+		System.out.println("CallViewFunction("+call.getFunctionId()+")");
+		
 		try {
 			switch (call.getFunctionId()) {
 			case PRINT_TEXT:
@@ -191,6 +193,8 @@ public abstract class View implements GameListener, KeyboardListener {
 	protected abstract void drawCircle(int x, int y, int radius, int samples,
 		int color, boolean temporary);
 	
+	protected abstract void deleteTemporaryShapes();
+	
 	protected abstract void createEntity(int definitionId, int id);
 	
 	protected abstract void deleteEntity(int id);
@@ -198,8 +202,6 @@ public abstract class View implements GameListener, KeyboardListener {
 	protected abstract void moveEntity(int id, int dx, int dy);
 	
 	protected abstract void rotateEntity(int id, int angle);
-	
-	protected abstract void deleteTemporaryShapes();
 	
 	// -------------------------------------------------------------------------
 	// Abstract methods

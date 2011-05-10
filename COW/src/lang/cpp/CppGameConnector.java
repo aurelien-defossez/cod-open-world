@@ -24,9 +24,6 @@ public class CppGameConnector extends GameConnector {
 		// Load game
 		gameLib = (GameLibraryInterface) Native.loadLibrary("game",
 				GameLibraryInterface.class);
-		
-		// Create callback handler
-		new GameCallbackHandler(this, gameLib);
 	}
 	
 	/**
@@ -34,6 +31,9 @@ public class CppGameConnector extends GameConnector {
 	 */
 	@Override
 	public void initGame(Collection<Ai> ais, String[] parameters) {
+		// Create callback handler
+		new GameCallbackHandler(this, gameLib);
+		
 		gameLib.init(parameters.length, parameters);
 		
 		for (Ai ai : ais) {

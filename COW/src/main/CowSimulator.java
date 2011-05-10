@@ -16,6 +16,7 @@ import sim.GameSimulator;
 import sim.Scheduler;
 import sim.replay.ReplayWriter;
 import ui.gui.Gui;
+import view.View.ViewType;
 
 public class CowSimulator {
 	// -------------------------------------------------------------------------
@@ -166,8 +167,8 @@ public class CowSimulator {
 						try {
 							gameSpeed = Double.parseDouble(speed);
 							gameSpeed =
-								Math.max(MIN_SPEED,
-									Math.min(gameSpeed, MAX_SPEED));
+								Math.max(MIN_SPEED, Math.min(gameSpeed,
+									MAX_SPEED));
 						} catch (NumberFormatException e) {
 							throw new CowException("Speed must be an float "
 								+ ", \"" + UNLIMITED_NAME + "\" " + "or \""
@@ -255,8 +256,8 @@ public class CowSimulator {
 				
 				// Set game
 				if (loadReplayName == null) {
-					simulator = scheduler.loadGame(gameName, parameters,
-						testMode);
+					simulator =
+						scheduler.loadGame(gameName, parameters, testMode);
 				} else {
 					simulator = scheduler.loadReplay(gameName, loadReplayName);
 				}
@@ -275,7 +276,7 @@ public class CowSimulator {
 				// Create GUI
 				Gui gui = null;
 				if (useView) {
-					gui = new Gui(scheduler, simulator.getViewType());
+					gui = new Gui(scheduler, ViewType.V2D);
 					simulator.addGameListener(gui);
 					simulator.addGameListener(gui.getView());
 				}
@@ -286,6 +287,11 @@ public class CowSimulator {
 						Thread.sleep(1);
 					}
 				}
+				
+				// TODO: temporary, not waiting may cause the JNA to work
+				// differently and don't call callback C++ functions
+				// TODO: enable view after the wait
+				Thread.sleep(100);
 				
 				// Initialize game
 				simulator.initGame();
@@ -303,7 +309,7 @@ public class CowSimulator {
 			// Unexpected exception
 			catch (Exception e) {
 				logger.fatal(e.getMessage(), e);
-				//TODO: handle not catched exception
+				// TODO: handle not catched exception
 			}
 		}
 	}

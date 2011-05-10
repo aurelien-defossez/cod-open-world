@@ -182,8 +182,5 @@ public class Ai implements FruitSaladAi {
 		
 		System.out.println("drawCircle: "
 			+ Api.decode(Api.drawCircle(8, 9, 2, Api.COLOR_BLUE)));
-		
-		System.out.println("colorSquare: "
-			+ Api.decode(Api.colorSquare(6, 2, Api.COLOR_YELLOW)));
 	}
 }
