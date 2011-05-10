@@ -4,15 +4,17 @@
 #include "FruitSaladEngine.hpp"
 #include "SpecificCommunicator.hpp"
 #include "SpecificCommander.hpp"
+#include "Config.h"
+#include "Map.h"
+#include "Fruit.h"
+#include "Chest.h"
 
 class Game : FruitSaladEngine {
 private:
 	SpecificCommunicator *communicator;
 	SpecificCommander *commander;
 	
-	int height;
-	int width;
-	int **architecture;
+	Map *map;
 
 public:
 	// Constructor & Destructor
@@ -46,6 +48,8 @@ public:
 	int drawLine(int x1, int y1, int x2, int y2, int color);
 	int drawCircle(int x, int y, int radius, int color);
 	int colorSquare(int x, int y, int color);
+	
+	void sendOpenedChest(Chest *chest);
 };
 
 #endif

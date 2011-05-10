@@ -21,7 +21,7 @@ void Map::addUpdatedModificationObject(int *newModif)
 {
     for(int i=0; i<listPlayers.size(); i++)
     {
-        if (listPlayers[i]->isCurrentPlayer())
+        if (!(listPlayers[i]->isCurrentPlayer()))
         {
             listPlayers[i]->addUpdatedModificationObject(newModif);
         }
@@ -372,6 +372,17 @@ std::vector<std::pair<int,int> > Map::drawLine(int x0, int y0, int x1, int y1)
 	}
 
 	return squares;
+}
+
+int Map::getCurrentPlayer()
+{
+  for(int i=0; i<listPlayers.size(); i++)
+  {
+	  if (listPlayers[i]->isCurrentPlayer())
+	  {
+		  return i;
+	  }
+  }
 }
 
 std::string Map::printC()

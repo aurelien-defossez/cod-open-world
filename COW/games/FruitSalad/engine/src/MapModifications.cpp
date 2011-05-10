@@ -215,7 +215,32 @@ void MapModifications::addMovedModification(int *newModif)
 
 void MapModifications::reset()
 {
-  
+  std::vector<int*>::iterator it;
+  for (it=newObjects.begin(); it!=newObjects.end(); it++)
+  {
+	  delete[] *it;
+  }
+  newObjects.clear();
+  for (it=modifiedFruits.begin(); it!=modifiedFruits.end(); it++)
+  {
+	  delete[] *it;
+  }
+  modifiedFruits.clear();
+  for (it=modifiedSugarDrops.begin(); it!=modifiedSugarDrops.end(); it++)
+  {
+	  delete[] *it;
+  }
+  modifiedSugarDrops.clear();
+  for (it=movedFruits.begin(); it!=movedFruits.end(); it++)
+  {
+	  delete[] *it;
+  }
+  movedFruits.clear();
+  for (it=deletedObjects.begin(); it!=deletedObjects.end(); it++)
+  {
+	  delete[] *it;
+  }
+  deletedObjects.clear();
 }
 
 std::string MapModifications::printC()

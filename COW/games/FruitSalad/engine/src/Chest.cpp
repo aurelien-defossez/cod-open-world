@@ -36,3 +36,8 @@ std::string Chest::printC()
 
     return str;
 }
+
+std::vector<Equipment*> Chest::getListEquipment()
+{
+  return listEquipment;
+}

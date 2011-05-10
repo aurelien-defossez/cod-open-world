@@ -47,6 +47,7 @@ class Map
         bool canHit(Fruit* fruit, Fruit* target);
         bool detectObstacle(std::vector<std::pair<int,int> > positions);
         std::vector<std::pair<int,int> > drawLine(int x0, int y0, int x1, int y1);
+		void addChestOpened(std::vector<Equipment*> listEquipment);
 
         void createWalls(int x0, int y0, int x1, int y1);
 
@@ -54,6 +55,7 @@ class Map
         void setHeight(int h);
         void setCurrentId(int id);
         std::vector<Player*> getListPlayers();
+		int getCurrentPlayer();
 
         std::string printC();
 

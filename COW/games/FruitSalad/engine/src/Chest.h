@@ -11,6 +11,7 @@ class Chest : public Entity
 		Chest(std::pair<int,int> positionE, int idE, int typeE);
         void dropContent(Map *map);
         void addEquipment(Equipment *equipment);
+		std::vector<Equipment*> getListEquipment();
 
         std::string printC();
 

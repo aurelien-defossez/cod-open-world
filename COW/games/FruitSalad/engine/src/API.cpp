@@ -1,13 +1,119 @@
-#include "API.h"
+#include "Game.hpp"
 
-API::API(Map* mapE)
-{
-    map = mapE;
+#include "FruitSaladEngine.hpp"
+#include "SpecificCommunicator.hpp"
+#include "SpecificCommander.hpp"
+#include <iostream>
+
+using namespace std;
+
+Game game = Game();
+
+Game::Game() {
+	communicator = new SpecificCommunicator(this);
+	commander = new SpecificCommander();
+	/*
+	height = 12;
+	width = 10;
+	
+	// Create empty architecture
+	architecture = new int *[height];
+	for(int i = 0; i < height; i++) {
+		architecture[i] = new int[width];
+		for(int j = 0; j < width; j++) {
+			
+			if(i == 0 || i == height - 1 || j == 0 || j == width - 1) {
+				architecture[i][j] = WALL;
+			} else {
+				architecture[i][j] = NOTHING;
+			}
+		}
+	}
+	*/
 }
 
-int API::move(int fruitId, int x, int y)
-{
-    // entity non defined
+Game::~Game() {
+	delete commander;
+	delete communicator;
+	/*
+	for(int i = 0; i < height; i++) {
+		delete[] architecture[i];
+	}
+	delete[] architecture;
+	*/
+}
+
+void Game::init(int nbParameters, char *parameters[]) {
+	cout << "Initializing game with " << nbParameters << " parameters." << endl;
+	
+	for(int i = 0; i < nbParameters; i++) {
+		cout << "Parameter #" << i << " = " << parameters[i] << endl;
+	}
+}
+
+void Game::addAi(short aiId, char *aiName, char *playerName) {
+	cout << "Adding AI '" << aiName << "' (" << aiId << ") ";
+	cout << "of player " << playerName << endl;
+}
+
+void Game::play() {
+	cout << "Play..." << endl;
+	/*
+	cout << "setFrame" << endl;
+	commander->setFrame();
+	
+	// Create fruits array
+	int nbFruits = 3;
+	IntMatrix2 fruits = IntMatrix2(nbFruits, 4);
+	fruits[0][OBJECT_ID] = 1;
+	fruits[0][OBJECT_X] = 8;
+	fruits[0][OBJECT_Y] = 5;
+	fruits[0][OBJECT_TYPE] = FRUIT_CHERRY;
+	fruits[1][OBJECT_ID] = 2;
+	fruits[1][OBJECT_X] = 8;
+	fruits[1][OBJECT_Y] = 6;
+	fruits[1][OBJECT_TYPE] = FRUIT_KIWI;
+	fruits[2][OBJECT_ID] = 3;
+	fruits[2][OBJECT_X] = 8;
+	fruits[2][OBJECT_Y] = 7;
+	fruits[2][OBJECT_TYPE] = FRUIT_NUT;
+	
+	// Create buildings array
+	int nbBuildings = 3;
+	IntMatrix2 buildings = IntMatrix2(nbBuildings, 4);
+	buildings[0][OBJECT_ID] = 4;
+	buildings[0][OBJECT_X] = 1;
+	buildings[0][OBJECT_Y] = 1;
+	buildings[0][OBJECT_TYPE] = BUILDING_JUICE_BARREL;
+	buildings[1][OBJECT_ID] = 5;
+	buildings[1][OBJECT_X] = 1;
+	buildings[1][OBJECT_Y] = 2;
+	buildings[1][OBJECT_TYPE] = BUILDING_SUGAR_BOWL;
+	buildings[2][OBJECT_ID] = 6;
+	buildings[2][OBJECT_X] = 1;
+	buildings[2][OBJECT_Y] = 3;
+	buildings[2][OBJECT_TYPE] = BUILDING_FRUCTIFICATION_TANK;
+	
+	IntMatrix2 *archPt = new IntMatrix2(height, width, architecture);
+	
+	cout << "Initializing AI #0" << endl;
+	commander->initGame(0, archPt, &fruits, &buildings, 4, 5, 6);
+	
+	delete(archPt);
+	*/
+}
+
+void Game::endGame() {
+	cout << "End game order received." << endl;
+}
+
+void Game::disqualifyAi(char *aiName, char *reason) {
+	cout << "Disqualifying AI " << aiName << " because of " << reason << endl;
+}
+
+// User-defined functions
+int Game::move(int fruitId, int x, int y) {
+	// entity non defined
     if (map->verifyId(fruitId) == -1)
     {
         return UNKNOWN_OBJECT;
@@ -67,9 +173,8 @@ int API::move(int fruitId, int x, int y)
     return OK;
 }
 
-int API::attack(int fruitId, int targetId)
-{
-    // entity non defined
+int Game::attack(int fruitId, int targetFruitId) {
+	// entity non defined
     if (map->verifyId(fruitId) == -1)
     {
         return UNKNOWN_OBJECT;
@@ -80,7 +185,7 @@ int API::attack(int fruitId, int targetId)
         return NOT_FRUIT;
     }
     // target is not a fruit
-    if ((map->verifyId(targetId) != FRUIT_CHERRY) && (map->verifyId(targetId) != FRUIT_KIWI) && (map->verifyId(targetId) != FRUIT_NUT))
+    if ((map->verifyId(targetFruitId) != FRUIT_CHERRY) && (map->verifyId(targetFruitId) != FRUIT_KIWI) && (map->verifyId(targetFruitId) != FRUIT_NUT))
     {
         return NOT_VALID_TARGET;
     }
@@ -97,7 +202,7 @@ int API::attack(int fruitId, int targetId)
         return NO_MORE_ACTIONS;
     }
     // cast in Fruit* of target
-    Fruit *target = (Fruit*)(map->getEntity(targetId));
+    Fruit *target = (Fruit*)(map->getEntity(targetFruitId));
     // target not in range
     if (fruit->maximumOffset(target) > fruit->getRange())
     {
@@ -141,9 +246,8 @@ int API::attack(int fruitId, int targetId)
     }
 }
 
-int API::useEquipment(int fruitId, int equipmentId, int targetId)
-{
-    // entity not defined
+int Game::useEquipment(int fruitId, int equipmentId, int targetId) {
+	// entity not defined
     if (map->verifyId(fruitId) == -1)
     {
         return UNKNOWN_OBJECT;
@@ -264,9 +368,8 @@ int API::useEquipment(int fruitId, int equipmentId, int targetId)
     }
 }
 
-int API::pickUpEquipment(int fruitId, int equipmentId)
-{
-    // entity not defined
+int Game::pickUpEquipment(int fruitId, int equipmentId) {
+	// entity not defined
     if (map->verifyId(fruitId) == -1)
     {
         return UNKNOWN_OBJECT;
@@ -313,18 +416,18 @@ int API::pickUpEquipment(int fruitId, int equipmentId)
     map->removeEntity(equipment);
 
     //creation of modification for all players
-    int *modif = new int[3];
+    int *modif = new int[4];
     modif[0] = equipment->getId();
     modif[1] = equipment->getPosition().first;
     modif[2] = equipment->getPosition().second;
+    modif[3] = equipment->getType();
     map->addDeletedModification(modif);
 
     return OK;
 }
 
-int API::dropEquipment(int fruitId, int equipmentId, int x, int y)
-{
-    // entity non defined
+int Game::dropEquipment(int fruitId, int equipmentId, int x, int y) {
+	// entity non defined
     if (map->verifyId(fruitId) == -1)
     {
         return UNKNOWN_OBJECT;
@@ -385,18 +488,18 @@ int API::dropEquipment(int fruitId, int equipmentId, int x, int y)
 	map->addEntity(equipment);
 
 	//creation of modification for all players
-    int *modif = new int[3];
+    int *modif = new int[4];
     modif[0] = equipment->getId();
     modif[1] = x;
     modif[2] = y;
+    modif[3] = equipment->getType();
     map->addNewModification(modif);
 
     return OK;
 }
 
-int API::pickUpSugar(int fruitId, int sugarDropId)
-{
-    // entity not defined
+int Game::pickUpSugar(int fruitId, int sugarDropId) {
+	// entity not defined
     if (map->verifyId(fruitId) == -1)
     {
         return UNKNOWN_OBJECT;
@@ -455,9 +558,8 @@ int API::pickUpSugar(int fruitId, int sugarDropId)
     return ALL_SUGAR_TAKEN;
 }
 
-int API::dropSugar(int fruitId, int quantity, int x, int y)
-{
-    // entity non defined
+int Game::dropSugar(int fruitId, int quantity, int x, int y) {
+	// entity non defined
     if (map->verifyId(fruitId) == -1)
     {
         return UNKNOWN_OBJECT;
@@ -520,9 +622,8 @@ int API::dropSugar(int fruitId, int quantity, int x, int y)
     return OK;
 }
 
-int API::openChest(int fruitId, int chestId)
-{
-    // entity not defined
+int Game::openChest(int fruitId, int chestId) {
+	// entity not defined
     if (map->verifyId(fruitId) == -1)
     {
         return UNKNOWN_OBJECT;
@@ -561,12 +662,12 @@ int API::openChest(int fruitId, int chestId)
 
     // add sugar
     chest->dropContent(map);
+	sendOpenedChest(chest);
     return OK;
 }
 
-int API::stockSugar(int fruitId)
-{
-    // entity non defined
+int Game::stockSugar(int fruitId) {
+	// entity non defined
     if (map->verifyId(fruitId) == -1)
     {
         return UNKNOWN_OBJECT;
@@ -603,9 +704,8 @@ int API::stockSugar(int fruitId)
     return OK;
 }
 
-int API::sellEquipment(int fruitId, int equipmentId)
-{
-    // entity non defined
+int Game::sellEquipment(int fruitId, int equipmentId) {
+	// entity non defined
     if (map->verifyId(fruitId) == -1)
     {
         return UNKNOWN_OBJECT;
@@ -653,9 +753,8 @@ int API::sellEquipment(int fruitId, int equipmentId)
     return OK;
 }
 
-int API::buyEquipment(int fruitId, int equipmentType)
-{
-    // entity not defined
+int Game::buyEquipment(int fruitId, int equipmentType) {
+	// entity not defined
     if (map->verifyId(fruitId) == -1)
     {
         return UNKNOWN_OBJECT;
@@ -711,9 +810,8 @@ int API::buyEquipment(int fruitId, int equipmentType)
     return OK;
 }
 
-int API::drinkJuice(int fruitId)
-{
-    // entity not defined
+int Game::drinkJuice(int fruitId) {
+	// entity not defined
     if (map->verifyId(fruitId) == -1)
     {
         return UNKNOWN_OBJECT;
@@ -760,53 +858,8 @@ int API::drinkJuice(int fruitId)
     return LIFE_GAINED;
 }
 
-int API::drawVitamin(int fruitId)
-{
-    // entity not defined
-    if (map->verifyId(fruitId) == -1)
-    {
-        return UNKNOWN_OBJECT;
-    }
-    // entity is not a fruit
-    if ((map->verifyId(fruitId) != FRUIT_CHERRY) && (map->verifyId(fruitId) != FRUIT_KIWI) && (map->verifyId(fruitId) != FRUIT_NUT))
-    {
-        return NOT_FRUIT;
-    }
-    // cast in Fruit*
-    Fruit *fruit = (Fruit*)(map->getEntity(fruitId));
-    // fruit is not yours
-    if (fruit->getOwner()->isCurrentPlayer() == false)
-    {
-        return NOT_OWNER;
-    }
-    // fruit has used his 2 actions
-    if (fruit->hasActionLeft() == false)
-    {
-        return NO_MORE_ACTIONS;
-    }
-    // target not in range
-    if (map->verifyBuilding(fruit, BUILDING_VITAMIN_SOURCE) == false)
-    {
-        return TOO_FAR;
-    }
-    // check weight
-    if (map->verifySource() == false)
-    {
-        return SOURCE_FULL;
-    }
-
-	// use action
-	fruit->useAction();
-
-    // add sugar
-    fruit->getOwner()->addVitamins(5);
-    map->addSourceMiner();
-    return OK;
-}
-
-int API::fructify(int fruitId, int fruitType, int x, int y)
-{
-    // entity not defined
+int Game::fructify(int fruitId, int fruitType, int x, int y) {
+	// entity not defined
     if (map->verifyId(fruitId) == -1)
     {
         return UNKNOWN_OBJECT;
@@ -878,3 +931,92 @@ int API::fructify(int fruitId, int fruitType, int x, int y)
 
     return idF;
 }
+
+int Game::drawVitamin(int fruitId) {
+	// entity not defined
+    if (map->verifyId(fruitId) == -1)
+    {
+        return UNKNOWN_OBJECT;
+    }
+    // entity is not a fruit
+    if ((map->verifyId(fruitId) != FRUIT_CHERRY) && (map->verifyId(fruitId) != FRUIT_KIWI) && (map->verifyId(fruitId) != FRUIT_NUT))
+    {
+        return NOT_FRUIT;
+    }
+    // cast in Fruit*
+    Fruit *fruit = (Fruit*)(map->getEntity(fruitId));
+    // fruit is not yours
+    if (fruit->getOwner()->isCurrentPlayer() == false)
+    {
+        return NOT_OWNER;
+    }
+    // fruit has used his 2 actions
+    if (fruit->hasActionLeft() == false)
+    {
+        return NO_MORE_ACTIONS;
+    }
+    // target not in range
+    if (map->verifyBuilding(fruit, BUILDING_VITAMIN_SOURCE) == false)
+    {
+        return TOO_FAR;
+    }
+    // check weight
+    if (map->verifySource() == false)
+    {
+        return SOURCE_FULL;
+    }
+
+	// use action
+	fruit->useAction();
+
+    // add sugar
+    fruit->getOwner()->addVitamins(5);
+    map->addSourceMiner();
+    return OK;
+}
+
+int Game::writeText(char *text) {
+	cout << "writeText(\"" << text << "\");" << endl;
+	return OK;
+}
+
+int Game::writeTextAt(char *text, int x, int y) {
+	cout << "writeTextAt(\"" << text << "\", " << x << ", " << y << ");" << endl;
+	return OK;
+}
+
+int Game::drawLine(int x1, int y1, int x2, int y2, int color) {
+	cout << "drawLine(" << x1 << ", " << y1 << ", " << x2 << ", " << y2 << ", ";
+	cout << color << ");" << endl;
+	return OK;
+}
+
+int Game::drawCircle(int x, int y, int radius, int color) {
+	cout << "drawCircle(" << x << ", " << y << ", " << radius << ", ";
+	cout << color << ");" << endl;
+	return OK;
+}
+
+int Game::colorSquare(int x, int y, int color) {
+	cout << "colorSquare(" << x << ", " << y << ", " << color << ");" << endl;
+	return OK;
+}
+
+void Game::sendOpenedChest(Chest *chest)
+{
+  int size = chest->getListEquipment().size();
+  IntMatrix2 equipments = IntMatrix2(size, 4);
+  int i=0;
+  std::vector<Equipment*>::iterator it;
+  for(it=chest->getListEquipment().begin(); it!=chest->getListEquipment().end();it++)
+  {
+	
+	equipments[i][OBJECT_ID] = (*it)->getId();
+	equipments[i][OBJECT_X] = (*it)->getPosition().first;
+	equipments[i][OBJECT_Y] = (*it)->getPosition().second;
+	equipments[i][OBJECT_TYPE] = (*it)->getType();
+	i++;
+  }
+  commander->chestOpened(map->getCurrentPlayer(), chest->getId(), &equipments);
+}
+
