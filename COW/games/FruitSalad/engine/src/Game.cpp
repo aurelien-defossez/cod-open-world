@@ -13,7 +13,6 @@ Game::Game() {
 	communicator = new SpecificCommunicator(this);
 	commander = new SpecificCommander();
 	
-<<<<<<< local
 	map = new Map(commander);
 	/*
 	height = 12;
@@ -33,9 +32,6 @@ Game::Game() {
 		}
 	}
 	*/
-=======
-	map = new Map();
->>>>>>> other
 }
 
 Game::~Game() {
@@ -75,7 +71,7 @@ void Game::play() {
 	
 	cout << "setFrame" << endl;
 	commander->setFrame();
-	
+	/*
 	int height = 12;
 	int width = 10;
 	
@@ -132,7 +128,7 @@ void Game::play() {
 	commander->initGame(0, archPt, &fruits, &buildings, 4, 5, 6);
 	
 	delete(archPt);
-	delete(architecture);
+	delete(architecture);*/
 	
 }
 
@@ -202,7 +198,7 @@ int Game::move(int fruitId, int x, int y) {
     // move
     fruit->move(x, y);
 	map->moveEntity(fruit, x, y);
-
+	commander->setFrame();
     return OK;
 }
 
@@ -455,6 +451,7 @@ int Game::pickUpEquipment(int fruitId, int equipmentId) {
     modif[2] = equipment->getPosition().second;
     modif[3] = equipment->getType();
     map->addDeletedModification(modif);
+	commander->setFrame();
 
     return OK;
 }
@@ -519,6 +516,8 @@ int Game::dropEquipment(int fruitId, int equipmentId, int x, int y) {
     fruit->removeEquipment(equipment);
     equipment->setPosition(x,y);
 	map->addEntity(equipment);
+	commander->createEntity((equipment->getType()+41), equipment->getId());
+	commander->moveEntity(equipment->getId(), equipment->getPosition().first, equipment->getPosition().second);
 
 	//creation of modification for all players
     int *modif = new int[4];
@@ -527,6 +526,7 @@ int Game::dropEquipment(int fruitId, int equipmentId, int x, int y) {
     modif[2] = y;
     modif[3] = equipment->getType();
     map->addNewModification(modif);
+	commander->setFrame();
 
     return OK;
 }
@@ -587,6 +587,9 @@ int Game::pickUpSugar(int fruitId, int sugarDropId) {
     modif[0] = sugarDrop->getId();
     modif[1] = sugarDrop->getCapacity();
     map->addUpdatedModificationSugar(modif);
+	
+	delete sugarDrop;
+	commander->setFrame();
 
     return ALL_SUGAR_TAKEN;
 }
@@ -651,6 +654,7 @@ int Game::dropSugar(int fruitId, int quantity, int x, int y) {
     modif[1] = x;
     modif[2] = y;
     map->addNewModification(modif);
+	commander->setFrame();
 
     return OK;
 }
@@ -696,6 +700,7 @@ int Game::openChest(int fruitId, int chestId) {
     // add sugar
     chest->dropContent(map);
 	sendOpenedChest(chest);
+	commander->setFrame();
     return OK;
 }
 
@@ -961,6 +966,7 @@ int Game::fructify(int fruitId, int fruitType, int x, int y) {
     modif[1] = x;
     modif[2] = y;
     map->addNewModification(modif);
+	commander->setFrame();
 
     return idF;
 }
@@ -1043,13 +1049,15 @@ void Game::sendOpenedChest(Chest *chest)
   std::vector<Equipment*>::iterator it;
   for(it=chest->getListEquipment().begin(); it!=chest->getListEquipment().end();it++)
   {
-	
+	commander->createEntity(((*it)->getType()+41),(*it)->getId());
+	commander->moveEntity((*it)->getId(), (*it)->getPosition().first, (*it)->getPosition().second);
 	equipments[i][OBJECT_ID] = (*it)->getId();
 	equipments[i][OBJECT_X] = (*it)->getPosition().first;
 	equipments[i][OBJECT_Y] = (*it)->getPosition().second;
 	equipments[i][OBJECT_TYPE] = (*it)->getType();
 	i++;
   }
+  commander->deleteEntity(chest->getId());
   commander->chestOpened(map->getCurrentPlayer(), chest->getId(), &equipments);
 }
 

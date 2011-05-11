@@ -88,6 +88,11 @@ bool Player::verifyNbFruit(int fruitType)
     return true;
 }
 
+int Player::getId()
+{
+  return idIA;
+}
+
 int Player::getIdSugarBowl()
 {
     return idSugarBowl;

@@ -23,6 +23,7 @@ class Player
 
         int hasEnough(int nbSugar, int nbVitamins);
         bool verifyNbFruit(int fruitType);
+		int getId();
         int getIdSugarBowl();
         int getIdFructificationTank();
         int getIdJuiceBarrel();
