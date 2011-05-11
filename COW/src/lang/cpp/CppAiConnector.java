@@ -16,12 +16,12 @@ public class CppAiConnector extends AiConnector {
 		this.initialized = false;
 		
 		// Set path to game
-		System.setProperty("jna.library.path", "games/" + gameName + "/ais/"
-			+ ai.getName());
+		System.setProperty("jna.library.path",
+			"games/" + gameName + "/ais/" + ai.getName());
 		
 		// Load game
 		aiLib =
-			(AiLibraryInterface) Native.loadLibrary("game",
+			(AiLibraryInterface) Native.loadLibrary("ai",
 				AiLibraryInterface.class);
 	}
 	
