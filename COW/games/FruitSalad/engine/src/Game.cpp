@@ -13,12 +13,35 @@ Game::Game() {
 	communicator = new SpecificCommunicator(this);
 	commander = new SpecificCommander();
 	
+<<<<<<< local
+	map = new Map(commander);
+	/*
+	height = 12;
+	width = 10;
+	
+	// Create empty architecture
+	architecture = new int *[height];
+	for(int i = 0; i < height; i++) {
+		architecture[i] = new int[width];
+		for(int j = 0; j < width; j++) {
+			
+			if(i == 0 || i == height - 1 || j == 0 || j == width - 1) {
+				architecture[i][j] = WALL;
+			} else {
+				architecture[i][j] = NOTHING;
+			}
+		}
+	}
+	*/
+=======
 	map = new Map();
+>>>>>>> other
 }
 
 Game::~Game() {
 	delete commander;
 	delete communicator;
+	map->destroy();
 	delete map;
 	/*
 	for(int i = 0; i < height; i++) {
@@ -30,10 +53,11 @@ Game::~Game() {
 
 void Game::init(int nbParameters, char *parameters[]) {
 	cout << "Initializing game with " << nbParameters << " parameters." << endl;
-	cout << "createMapLoader" << endl;
-	MapLoader *mapLoader = new MapLoader(map);
-	cout << "loadMap" << endl;
+	
+	
+	MapLoader *mapLoader = new MapLoader(map, commander);
 	mapLoader->loadMap("/home/pierrick/Fruit_Salad/cod-open-world/COW/games/FruitSalad/engine/src/map.txt");
+	map->printC();
 	/*
 	for(int i = 0; i < nbParameters; i++) {
 		cout << "Parameter #" << i << " = " << parameters[i] << endl;
@@ -43,7 +67,7 @@ void Game::init(int nbParameters, char *parameters[]) {
 }
 
 void Game::addAi(short aiId, char *aiName, char *playerName) {
-	//map->getListPlayers()[(int) aiId]->setInfos(aiId, aiName, playerName);
+	map->getListPlayers()[(int) aiId]->setInfos(aiId, aiName, playerName);
 }
 
 void Game::play() {
@@ -158,7 +182,7 @@ int Game::move(int fruitId, int x, int y) {
     std::pair<int,int> position;
     position.first = x;
     position.second = y;
-    if (fruit->distanceTo(position) >= fruit->getSpeed())
+    if (map->distanceBetween(fruit, x, y) >= fruit->getSpeed())
     {
         return TOO_FAR;
     }
@@ -483,7 +507,7 @@ int Game::dropEquipment(int fruitId, int equipmentId, int x, int y) {
     std::pair<int,int> position;
     position.first = x;
     position.second = y;
-    if (fruit->distanceTo(position) > 1)
+    if (map->distanceBetween(fruit, x, y) > 1)
     {
         return TOO_FAR;
     }
@@ -609,7 +633,7 @@ int Game::dropSugar(int fruitId, int quantity, int x, int y) {
     std::pair<int,int> position;
     position.first = x;
     position.second = y;
-    if (fruit->distanceTo(position) > 1)
+    if (map->distanceBetween(fruit, x, y) > 1)
     {
         return TOO_FAR;
     }

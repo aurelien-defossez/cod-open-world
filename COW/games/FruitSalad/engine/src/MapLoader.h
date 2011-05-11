@@ -10,6 +10,8 @@
 #include "Equipment.h"
 #include "Fruit.h"
 #include "Map.h"
+
+#include "SpecificCommander.hpp"
 #include <time.h>
 #include <fstream>
 
@@ -18,7 +20,7 @@
 class MapLoader
 {
 	public:
-		MapLoader(Map *mapE);
+		MapLoader(Map *mapE, SpecificCommander *commanderE);
         void loadMap(char *fic);
 
         Entity* createBuilding(std::string typeE, int x0, int y0);
@@ -31,6 +33,7 @@ class MapLoader
 
 	protected:
         Map *map;
+		SpecificCommander *commander;
         int currentId;
 
 };

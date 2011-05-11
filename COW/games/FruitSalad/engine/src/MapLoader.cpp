@@ -1,8 +1,9 @@
 #include"MapLoader.h"
 
-MapLoader::MapLoader(Map *mapE)
+MapLoader::MapLoader(Map *mapE, SpecificCommander *commanderE)
 {
     map = mapE;
+	commander = commanderE;
     currentId = 0;
 }
 
@@ -41,19 +42,23 @@ void MapLoader::loadMap(char *fic)
                 std::string contenu;  // déclaration d'une chaîne qui contiendra la ligne lue
                 std::getline(fichier, contenu);
                 std::getline(fichier, contenu); //get Dimensions
-				std::cout << contenu << std::endl;
                 positionComma = contenu.find_first_of(',');
                 width = contenu.substr(0, positionComma);
                 height = contenu.substr(positionComma+1);
+                variable.clear();
                 variable.str(width);
                 variable >> widthint;
                 map->setWidth(widthint);
+                variable.clear();
                 variable.str(height);
                 variable >> heightint;
                 map->setHeight(heightint);
+				
+				commander->displayGrid(0,0,map->getWidth(), map->getHeight(), 1, 1, 0x303030, false);
+				
                 std::getline(fichier, contenu);
                 std::getline(fichier, contenu); //get NbPlayers
-				std::cout << contenu << std::endl;
+                variable.clear();
                 variable.str(contenu);
                 variable >> nbPlayers;
                 map->createPlayers(nbPlayers);
@@ -62,14 +67,12 @@ void MapLoader::loadMap(char *fic)
 				  
 				  if (contenu[0] != '#') // if not comment
                     {
-					  
                         positionComma = contenu.find_first_of(',');
                         letter = contenu.substr(0, positionComma);
                         contenu = contenu.substr(positionComma+1);
 
                         if (letter == "W")
                         {
-                            std::cout << "W" << std::endl;
 							positionComma = contenu.find_first_of(',');
                             x0 = contenu.substr(0, positionComma);
                             contenu = contenu.substr(positionComma+1);
@@ -79,7 +82,9 @@ void MapLoader::loadMap(char *fic)
                             positionComma = contenu.find_first_of(',');
                             x1 = contenu.substr(0, positionComma);
                             contenu = contenu.substr(positionComma+1);
+							positionComma = contenu.find_first_of('\n');
                             y1 = contenu;
+                            variable.clear();
                             variable.str(x0);
                             variable >> x0int;
                             variable.clear();
@@ -94,7 +99,7 @@ void MapLoader::loadMap(char *fic)
                             variable.clear();
                             map->createWalls(x0int, y0int, x1int, y1int);
                         }
-                        /*else if (letter == "B")
+                        else if (letter == "B")
                         {
                             positionComma = contenu.find_first_of(',');
                             typeE = contenu.substr(0, contenu.find_first_of(','));
@@ -106,6 +111,7 @@ void MapLoader::loadMap(char *fic)
                             x0 = contenu.substr(0, contenu.find_first_of(','));
                             contenu = contenu.substr(positionComma+1);
                             y0 = contenu;
+                            variable.clear();
                             variable.str(playerE);
                             variable >> playerEint;
                             variable.clear();
@@ -126,6 +132,7 @@ void MapLoader::loadMap(char *fic)
                             x0 = contenu.substr(0, contenu.find_first_of(','));
                             contenu = contenu.substr(positionComma+1);
                             y0 = contenu;
+                            variable.clear();
                             variable.str(x0);
                             variable >> x0int;
                             variable.clear();
@@ -146,6 +153,7 @@ void MapLoader::loadMap(char *fic)
                             x0 = contenu.substr(0, contenu.find_first_of(','));
                             contenu = contenu.substr(positionComma+1);
                             y0 = contenu;
+                            variable.clear();
                             variable.str(playerE);
                             variable >> playerEint;
                             variable.clear();
@@ -166,6 +174,7 @@ void MapLoader::loadMap(char *fic)
                             x0 = contenu.substr(0, contenu.find_first_of(','));
                             contenu = contenu.substr(positionComma+1);
                             y0 = contenu;
+                            variable.clear();
                             variable.str(x0);
                             variable >> x0int;
                             variable.clear();
@@ -183,6 +192,7 @@ void MapLoader::loadMap(char *fic)
                             y0 = contenu.substr(0, contenu.find_first_of(','));
                             contenu = contenu.substr(positionComma+1);
                             quantityE = contenu;
+                            variable.clear();
                             variable.str(x0);
                             variable >> x0int;
                             variable.clear();
@@ -205,6 +215,7 @@ void MapLoader::loadMap(char *fic)
                             y0 = contenu.substr(0, contenu.find_first_of(','));
                             contenu = contenu.substr(positionComma+1);
                             quantityE = contenu;
+                            variable.clear();
                             variable.str(x0);
                             variable >> x0int;
                             variable.clear();
@@ -224,7 +235,7 @@ void MapLoader::loadMap(char *fic)
                                 contenu = contenu.substr(positionComma+1);
                                 createChestEquipment(typeE, chest);
                             }
-                        }*/
+                        }
                         else
                         {
                         }
@@ -232,6 +243,7 @@ void MapLoader::loadMap(char *fic)
                 }
 
                 fichier.close();
+				std::cout << "close" << std::endl;
                 map->setCurrentId(currentId);
         }
         else
@@ -246,8 +258,10 @@ Entity* MapLoader::createBuilding(std::string typeE, int x0, int y0)
     int typeBuilding;
     if (typeE=="V") {typeBuilding = BUILDING_VITAMIN_SOURCE;}
     else if (typeE=="S") {typeBuilding = BUILDING_SUGAR_TREE;}
-
+	
     Building *building = new Building(std::pair<int,int>(x0,y0), currentId, typeBuilding);
+	commander->createEntity((typeBuilding+58),currentId);
+	commander->moveEntity(currentId, x0, y0);
     currentId++;
     return building;
 }
@@ -255,13 +269,15 @@ Entity* MapLoader::createBuilding(std::string typeE, int x0, int y0)
 Entity* MapLoader::createOwnedBuilding(std::string typeE, int numPlayer, int x0, int y0)
 {
     int typeBuilding;
-    if (typeE=="J") {typeBuilding = BUILDING_JUICE_BARREL;}
+	if (typeE=="J") {typeBuilding = BUILDING_JUICE_BARREL;}
     else if (typeE=="S") {typeBuilding = BUILDING_SUGAR_BOWL;}
     else if (typeE=="F") {typeBuilding = BUILDING_FRUCTIFICATION_TANK;}
 
     Player *owner = map->getListPlayers()[numPlayer];
 
     OwnedBuilding *building = new OwnedBuilding(std::pair<int,int>(x0,y0), currentId, typeBuilding, owner);
+	commander->createEntity((typeBuilding+10*(numPlayer)),currentId);
+	commander->moveEntity(currentId, x0, y0);
     currentId++;
     return building;
 }
@@ -276,6 +292,8 @@ Entity* MapLoader::createFruit(std::string typeE, int numPlayer, int x0, int y0)
     Player *owner = map->getListPlayers()[numPlayer];
 
     Fruit *fruit = new Fruit(std::pair<int,int>(x0,y0), currentId, typeFruit, owner);
+	commander->createEntity((typeFruit-6+10*(numPlayer)),currentId);
+	commander->moveEntity(currentId, x0, y0);
     currentId++;
     return fruit;
 }
@@ -297,18 +315,24 @@ Entity* MapLoader::createEquipment(std::string typeE, int x0, int y0)
     if (type2 == 0)
     {
         Weapon *equipment = new Weapon(std::pair<int,int>(x0,y0), currentId, typeEquipment);
+		commander->createEntity((typeEquipment+41),currentId);
+		commander->moveEntity(currentId, x0, y0);
         currentId++;
         return equipment;
     }
     else if (type2 == 1)
     {
         Peeler *equipment = new Peeler(std::pair<int,int>(x0,y0), currentId, typeEquipment);
+		commander->createEntity((typeEquipment+41),currentId);
+		commander->moveEntity(currentId, x0, y0);
         currentId++;
         return equipment;
     }
     else
     {
         Loader *equipment = new Loader(std::pair<int,int>(x0,y0), currentId, typeEquipment);
+		commander->createEntity((typeEquipment+41),currentId);
+		commander->moveEntity(currentId, x0, y0);
         currentId++;
         return equipment;
     }
@@ -349,6 +373,8 @@ void MapLoader::createChestEquipment(std::string typeE, Chest* chest)
 Entity* MapLoader::createChest(int x0, int y0)
 {
     Chest *chest = new Chest(std::pair<int,int>(x0,y0), currentId, CHEST);
+	commander->createEntity(72,currentId);
+	commander->moveEntity(currentId, x0, y0);
     currentId++;
     return chest;
 }

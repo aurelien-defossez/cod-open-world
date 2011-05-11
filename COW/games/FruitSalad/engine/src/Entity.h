@@ -9,7 +9,6 @@ class Entity
 {
 	public:
 		Entity(std::pair<int,int> positionE, int idE, int typeE);
-        int distanceTo(std::pair<int,int> position);
         int getType();
         int getId();
         std::pair<int,int> getPosition();

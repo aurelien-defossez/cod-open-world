@@ -8,6 +8,9 @@
 #include "SugarDrop.h"
 #include "Equipment.h"
 #include "Fruit.h"
+
+#include "SpecificCommander.hpp"
+
 #include <time.h>
 #include <fstream>
 
@@ -16,7 +19,7 @@
 class Map
 {
 	public:
-		Map();
+		Map(SpecificCommander *commanderE);
 
         void addNewModification(int *newModif);
         void addUpdatedModificationObject(int *newModif);
@@ -39,6 +42,7 @@ class Map
         bool contains(int x, int y);
         bool isWall(int x, int y);
         bool verifyPosition(int x, int y);
+		int distanceBetween(Entity* fruit, int x, int y);
         Entity* getEntity(int id);
         bool verifyBuilding(Fruit *fruit, int buildingType);
         bool verifySource();
@@ -53,9 +57,12 @@ class Map
 
         void setWidth(int w);
         void setHeight(int h);
+		int getWidth();
+        int getHeight();
         void setCurrentId(int id);
         std::vector<Player*> getListPlayers();
 		int getCurrentPlayer();
+		void destroy();
 
         std::string printC();
 
@@ -72,6 +79,7 @@ class Map
 
         int idVitaminSource;
         int idSugarTree;
+		SpecificCommander *commander;
 
 };
 

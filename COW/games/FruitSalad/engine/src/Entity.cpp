@@ -8,10 +8,6 @@ Entity::Entity(std::pair<int,int> positionE, int idE, int typeE)
     type = typeE;
 }
 
-int Entity::distanceTo(std::pair<int,int> position)
-{
-    return 2;
-}
 
 int Entity::getType()
 {

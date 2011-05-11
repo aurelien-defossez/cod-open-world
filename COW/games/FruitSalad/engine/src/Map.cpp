@@ -1,9 +1,10 @@
 #include "Map.h"
 
-Map::Map()
+Map::Map(SpecificCommander *commanderE)
 {
     currentId = 0;
     nbSourceMiner = 0;
+	commander = commanderE;
 }
 
 void Map::addNewModification(int *newModif)
@@ -82,6 +83,8 @@ int Map::addSugarDrop(int x, int y, int quantity)
 	}
 	*/
     SugarDrop *sugarDrop = new SugarDrop(pos, currentId, SUGAR_DROP, quantity);
+	commander->createEntity(73,currentId);
+	commander->moveEntity(currentId, x, y);
     currentId++;
     addEntity(sugarDrop);
     return sugarDrop->getId();
@@ -158,6 +161,16 @@ void Map::setHeight(int h)
     height = h;
 }
 
+int Map::getWidth()
+{
+  return width;
+}
+
+int Map::getHeight()
+{
+  return height;
+}
+
 void Map::setCurrentId(int id)
 {
     currentId = id;
@@ -170,14 +183,13 @@ std::vector<Player*> Map::getListPlayers()
 
 void Map::createWalls(int x0, int y0, int x1, int y1)
 {
-    for (int i=x0; i<=x1; i++)
+	for (int i=x0; i<=x1; i++)
     {
         for (int j=y0; j<=y1; j++)
         {
             mapWalls.insert(std::pair<int,int>(i,j));
         }
     }
-    std::cout << "createWalls" << std::endl;
 }
 
 
@@ -228,7 +240,7 @@ bool  Map::verifyPosition(int x, int y)
         int type = it->second->getType();
         if ((type == CHEST) ||
             ((type >= FRUIT_CHERRY) && (type <= FRUIT_NUT)) ||
-            ((type >= BUILDING_VITAMIN_SOURCE) && (type <= BUILDING_FRUCTIFICATION_TANK)))
+            ((type >= BUILDING_SUGAR_TREE) && (type <= BUILDING_FRUCTIFICATION_TANK)))
         {
             return false;
         }
@@ -396,6 +408,20 @@ int Map::getCurrentPlayer()
   }
 }
 
+int Map::distanceBetween(Entity* fruit, int x, int y)
+{
+  return 2;
+}
+
+void Map::destroy()
+{
+  std::map<int,Entity* >::iterator it;
+  for(it = mapIds.begin(); it != mapIds.end(); ++it)
+  {
+	  delete it->second;
+  }
+}
+
 std::string Map::printC()
 {
     std::string str;
@@ -430,17 +456,13 @@ std::string Map::printC()
         std::cout << it2->second->getPosition().second;
     }
 
-    /*
+    
     std::set<std::pair<int,int> >::iterator it;
     for(it = mapWalls.begin(); it != mapWalls.end(); ++it)
     {
-        out << it->first;;
-        str += "\nmapWalls - "+out.str();
-        out.str("");
-        out << it->second;;
-        str += "/"+out.str();
-        out.str("");
+        std::cout << "walls" << it->first;
+        std::cout << it->second << std::endl;
     }
-    */
+    
     return str;
 }
