@@ -26,35 +26,36 @@ class Map
         void addUpdatedModificationSugar(int *newModif);
         void addDeletedModification(int *newModif);
         void addMovedModification(int *newModif);
+		
         void addSugar(Player *player, int quantity);
-
+		
         int addSugarDrop(int x, int y, int quantity);
-        void removeEntity(Entity *entity);
-        void addEntity(Entity *entity);
-        void moveEntity(Entity *entity, int x, int y);
-
-        std::pair<int,int> getValidSquare(int x, int y, int distance);
+        void createPlayers(int nbPlayers);
         Equipment* createEquipment(int equipmentType, int x, int y);
         int createFruit(int fruitType, int x, int y, Player *owner);
-        void createPlayers(int nbPlayers);
+        void createWalls(int x0, int y0, int x1, int y1);
+		
+        void addEntity(Entity *entity);
+        void moveEntity(Entity *entity, int x, int y);
+        void removeEntity(Entity *entity);
+        Entity* getEntity(int id);
 
         int verifyId(int id);
+        bool verifyBuilding(Fruit *fruit, int buildingType);
+        bool verifyPosition(int x, int y);
+        bool verifySource();
+		
         bool contains(int x, int y);
         bool isWall(int x, int y);
-        bool verifyPosition(int x, int y);
 		int distanceBetween(Entity* fruit, int x, int y);
-        Entity* getEntity(int id);
-        bool verifyBuilding(Fruit *fruit, int buildingType);
-        bool verifySource();
-        void addSourceMiner();
-        void resetSourceMiner();
+        std::pair<int,int> getValidSquare(int x, int y, int distance);
         bool canHit(Fruit* fruit, Fruit* target);
         bool detectObstacle(std::vector<std::pair<int,int> > positions);
+		
         std::vector<std::pair<int,int> > drawLine(int x0, int y0, int x1, int y1);
-		void addChestOpened(std::vector<Equipment*> listEquipment);
 
-        void createWalls(int x0, int y0, int x1, int y1);
-
+        void addSourceMiner();
+        void resetSourceMiner();
         void setWidth(int w);
         void setHeight(int h);
 		int getWidth();
@@ -62,6 +63,7 @@ class Map
         void setCurrentId(int id);
         std::vector<Player*> getListPlayers();
 		int getCurrentPlayer();
+		void endTurn();
 		void destroy();
 
         std::string printC();

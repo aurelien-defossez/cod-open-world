@@ -102,6 +102,7 @@ void Map::removeEntity(Entity *entity)
         }
     }
     mapIds.erase(mapIds.find(entity->getId()));
+	commander->deleteEntity(entity->getId());
 }
 
 void Map::addEntity(Entity *entity)
@@ -125,6 +126,7 @@ void Map::moveEntity(Entity *entity, int x, int y)
         }
     }
     mapPositions.insert(std::pair<std::pair<int, int>, Entity*>(std::pair<int,int>(x,y), entity));
+	commander->moveEntity(entity->getId(), x-entity->getPosition().first, y-entity->getPosition().second);
 }
 
 std::pair<int,int> Map::getValidSquare(int x, int y, int distance)
@@ -240,7 +242,7 @@ bool  Map::verifyPosition(int x, int y)
         int type = it->second->getType();
         if ((type == CHEST) ||
             ((type >= FRUIT_CHERRY) && (type <= FRUIT_NUT)) ||
-            ((type >= BUILDING_SUGAR_TREE) && (type <= BUILDING_FRUCTIFICATION_TANK)))
+            ((type >= BUILDING_VITAMIN_SOURCE) && (type <= BUILDING_FRUCTIFICATION_TANK)))
         {
             return false;
         }
@@ -295,6 +297,8 @@ int Map::createFruit(int fruitType, int x, int y, Player *owner)
     Fruit *fruit = new Fruit(pos, currentId, fruitType, owner);
     currentId++;
     addEntity(fruit);
+	commander->createEntity((fruitType-6+10*(owner->getId())),fruit->getId());
+	commander->moveEntity(fruit->getId(), x, y);
     return fruit->getId();
 }
 
@@ -411,6 +415,20 @@ int Map::getCurrentPlayer()
 int Map::distanceBetween(Entity* fruit, int x, int y)
 {
   return 2;
+}
+
+void Map::endTurn()
+{
+  resetSourceMiner();
+  std::map<int,Entity* >::iterator it;
+  for(it = mapIds.begin(); it != mapIds.end(); ++it)
+  {
+	  if ((it->second->getType() >= FRUIT_CHERRY) && (it->second->getType() <= FRUIT_NUT))
+	  {
+		Fruit *fruit = (Fruit*) it->second;
+		fruit->resetAction();
+	  }
+  }
 }
 
 void Map::destroy()
