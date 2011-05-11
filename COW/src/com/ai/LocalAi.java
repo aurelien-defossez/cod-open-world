@@ -56,7 +56,7 @@ public class LocalAi extends Ai {
 			break;
 		
 		default:
-			throw new CowException("Can't load AI (" + aiName
+			throw new CowException("Cannot load AI (" + aiName
 				+ "): Not supported language (" + getLanguage() + ")");
 		}
 	}
