@@ -139,7 +139,7 @@ int SpecificApiConnector::drawCircle(int x, int y, int radius, int color) {
 	return intValue(callGameFunction(__GAME_API_FUNCTION_DRAW_CIRCLE__, 4, parameters));
 }
 
-std::string decode(int code) {
+std::string SpecificApiConnector::decode(int code) {
 	switch (code) {
 	case NOTHING:
 		return "NOTHING";

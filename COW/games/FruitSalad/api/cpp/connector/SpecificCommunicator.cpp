@@ -40,3 +40,7 @@ void SpecificCommunicator::performAiFunction(int functionId,
 			break;
 	}
 }
+
+void SpecificCommunicator::stop() {
+	ai->stop();
+}
