@@ -14,24 +14,6 @@ Game::Game() {
 	commander = new SpecificCommander();
 	
 	map = new Map();
-	/*
-	height = 12;
-	width = 10;
-	
-	// Create empty architecture
-	architecture = new int *[height];
-	for(int i = 0; i < height; i++) {
-		architecture[i] = new int[width];
-		for(int j = 0; j < width; j++) {
-			
-			if(i == 0 || i == height - 1 || j == 0 || j == width - 1) {
-				architecture[i][j] = WALL;
-			} else {
-				architecture[i][j] = NOTHING;
-			}
-		}
-	}
-	*/
 }
 
 Game::~Game() {
@@ -66,9 +48,27 @@ void Game::addAi(short aiId, char *aiName, char *playerName) {
 
 void Game::play() {
 	cout << "Play..." << endl;
-	/*
+	
 	cout << "setFrame" << endl;
 	commander->setFrame();
+	
+	int height = 12;
+	int width = 10;
+	
+	// Create empty architecture
+	int **architecture = new int *[height];
+	for(int i = 0; i < height; i++) {
+		architecture[i] = new int[width];
+		for(int j = 0; j < width; j++) {
+			
+			if(i == 0 || i == height - 1 || j == 0 || j == width - 1) {
+				architecture[i][j] = WALL;
+			} else {
+				architecture[i][j] = NOTHING;
+			}
+		}
+	}
+	
 	
 	// Create fruits array
 	int nbFruits = 3;
@@ -108,7 +108,8 @@ void Game::play() {
 	commander->initGame(0, archPt, &fruits, &buildings, 4, 5, 6);
 	
 	delete(archPt);
-	*/
+	delete(architecture);
+	
 }
 
 void Game::endGame() {

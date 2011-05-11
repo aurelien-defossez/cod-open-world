@@ -110,14 +110,4 @@ public class JavaAiConnector extends AiConnector {
 	public void stop() {
 		aiCommunicator.stop();
 	}
-	
-	// -------------------------------------------------------------------------
-	// Private methods
-	// -------------------------------------------------------------------------
-	
-	private String getPackageName(String gameName) {
-		return Character.toLowerCase(gameName.charAt(0))
-			+ gameName.substring(1);
-	}
-	
 }

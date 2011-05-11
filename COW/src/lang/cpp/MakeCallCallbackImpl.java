@@ -1,9 +1,9 @@
 package lang.cpp;
 
 public class MakeCallCallbackImpl implements MakeCallCallback {
-	private GameCallbackHandler callbackHandler;
+	private CallbackHandler callbackHandler;
 	
-	public MakeCallCallbackImpl(GameCallbackHandler callbackHandler) {
+	public MakeCallCallbackImpl(CallbackHandler callbackHandler) {
 		this.callbackHandler = callbackHandler;
 	}
 	

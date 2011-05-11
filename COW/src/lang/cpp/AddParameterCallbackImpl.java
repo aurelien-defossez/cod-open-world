@@ -1,11 +1,9 @@
 package lang.cpp;
 
-import lang.cpp.GameLibraryInterface.VariantStruct;
-
 public class AddParameterCallbackImpl implements AddParameterCallback {
-	private GameCallbackHandler callbackHandler;
+	private CallbackHandler callbackHandler;
 	
-	public AddParameterCallbackImpl(GameCallbackHandler callbackHandler) {
+	public AddParameterCallbackImpl(CallbackHandler callbackHandler) {
 		this.callbackHandler = callbackHandler;
 	}
 

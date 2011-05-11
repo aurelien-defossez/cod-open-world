@@ -15,7 +15,7 @@ void SpecificCommander::initGame(short aiId, IntMatrix2 *architecture,
 
 
 void SpecificCommander::playTurn(short aiId, IntMatrix2 *newObjects, 
-		IntMatrix2 *deletedObjects, IntMatrix2 *movedFruits,
+		IntMatrix1 *deletedObjects, IntMatrix2 *movedFruits,
 		IntMatrix2 *modifiedFruits, IntMatrix2 *modifiedSugarDrops) {
 	Variant parameters[5];
 	parameters[0] = newObjects->toVariant();

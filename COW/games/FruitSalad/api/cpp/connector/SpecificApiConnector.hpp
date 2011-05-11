@@ -1,12 +1,11 @@
-#ifndef __SPECIFIC_COMMUNICATOR_H__
-#define __SPECIFIC_COMMUNICATOR_H__
+#ifndef __SPECIFIC_API_CONNECTOR_H__
+#define __SPECIFIC_API_CONNECTOR_H__
 
-#include "SpecificCommunicatorInterface.hpp"
-#include "FruitSaladEngine.hpp"
-#include "Variant.hpp"
+#include "ApiConnector.hpp"
+#include <string>
 
 // -------------------------------------------------------------------------
-// Game API functions IDs
+// AI API function IDs
 // -------------------------------------------------------------------------
 
 #define __GAME_API_FUNCTION_MOVE__ 1
@@ -29,23 +28,31 @@
 #define __GAME_API_FUNCTION_DRAW_CIRCLE__ 18
 
 // -------------------------------------------------------------------------
-// SpecificCommunicator Class
+// Specific commander class
 // -------------------------------------------------------------------------
 
-class SpecificCommunicator : public SpecificCommunicatorInterface {
-private:
-	FruitSaladEngine *game;
-
+class SpecificApiConnector : public ApiConnector {
 public:
-	SpecificCommunicator(FruitSaladEngine *game);
+	int move(int fruitId, int x, int y);
+	int attack(int fruitId, int targetFruitId);
+	int useEquipment(int fruitId, int equipmentId, int targetId);
+	int pickUpEquipment(int fruitId, int equipmentId);
+	int dropEquipment(int fruitId, int equipmentId, int x, int y);
+	int pickUpSugar(int fruitId, int sugarDropId);
+	int dropSugar(int fruitId, int quantity, int x, int y);
+	int openChest(int fruitId, int chestId);
+	int stockSugar(int fruitId);
+	int sellEquipment(int fruitId, int equipmentId);
+	int buyEquipment(int fruitId, int equipmentType);
+	int drinkJuice(int fruitId);
+	int fructify(int fruitId, int fruitType, int x, int y);
+	int drawVitamin(int fruitId);
+	int writeText(char *text);
+	int writeTextAt(char *text, int x, int y);
+	int drawLine(int x1, int y1, int x2, int y2, int color);
+	int drawCircle(int x, int y, int radius, int color);
 	
-	void init(int nbParameters, char *parameters[]);
-	void addAi(short aiId, char *aiName, char *playerName);
-	void play();
-	void endGame();
-	void disqualifyAi(char *aiName, char *reason);
-	Variant performGameFunction(int functionId, int nbParameters,
-		Variant parameters[]);
+	std::string decode(int code);
 };
 
 #endif

@@ -5,15 +5,21 @@
 // -------------------------------------------------------------------------
 
 IntMatrix1::IntMatrix1(int length) {
-	this->length = length;
 	this->allocated = true;
+	this->length = length;
 	this->values = new int[length];
 }
 
 IntMatrix1::IntMatrix1(int length, int *values) {
-	this->length = length;
 	this->allocated = false;
+	this->length = length;
 	this->values = values;
+}
+
+IntMatrix1::IntMatrix1(Variant var) {
+	this->allocated = false;
+	this->length = var.length1;
+	this->values = var.value.intMatrix->values;
 }
 
 IntMatrix1::~IntMatrix1() {
@@ -62,6 +68,13 @@ IntMatrix2::IntMatrix2(int length1, int length2, int **values) {
 	}
 }
 
+IntMatrix2::IntMatrix2(Variant var) {
+	this->allocated = false;
+	this->length[0] = var.length1;
+	this->length[1] = var.length2;
+	this->values = var.value.intMatrix->values;
+}
+
 IntMatrix2::~IntMatrix2() {
 	if(allocated) {
 		delete[] values;
@@ -106,6 +119,13 @@ Variant toVariant(double value) {
 	Variant var;
 	var.type = VARIANT_DOUBLE;
 	var.value.doubleValue = value;
+	return var;
+}
+
+Variant toVariant(char *value) {
+	Variant var;
+	var.type = VARIANT_STRING;
+	var.value.stringValue = value;
 	return var;
 }
 

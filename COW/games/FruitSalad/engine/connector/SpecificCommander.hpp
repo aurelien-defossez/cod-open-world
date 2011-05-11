@@ -22,7 +22,7 @@ public:
 		int limitCherry, int limitKiwi, int limitNut);
 	
 	void playTurn(short aiId, IntMatrix2 *newObjects,
-		IntMatrix2 *deletedObjects, IntMatrix2 *movedFruits,
+		IntMatrix1 *deletedObjects, IntMatrix2 *movedFruits,
 		IntMatrix2 *modifiedFruits, IntMatrix2 *modifiedSugarDrops);
 	
 	void chestOpened(short aiId, int chestId, IntMatrix2 *equipments);

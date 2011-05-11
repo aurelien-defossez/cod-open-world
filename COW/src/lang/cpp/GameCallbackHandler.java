@@ -4,9 +4,8 @@ package lang.cpp;
 import com.ApiCall;
 import com.Variant;
 import com.game.GameConnector;
-import lang.cpp.GameLibraryInterface.VariantStruct;
 
-public class GameCallbackHandler {
+public class GameCallbackHandler implements CallbackHandler {
 	private CppGameConnector connector;
 	private ApiCall call;
 	

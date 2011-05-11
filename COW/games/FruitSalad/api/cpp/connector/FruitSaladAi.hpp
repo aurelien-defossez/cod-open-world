@@ -1,5 +1,5 @@
-#ifndef __FRUIT_SALAD_ENGINE_H__
-#define __FRUIT_SALAD_ENGINE_H__
+#ifndef __FRUIT_SALAD_AI_H__
+#define __FRUIT_SALAD_AI_H__
 
 #include "Variant.hpp"
 
@@ -82,34 +82,21 @@
 // FruitSaladEngine interface
 // -------------------------------------------------------------------------
 
-class FruitSaladEngine {
+class FruitSaladAi {
 public:
 	// Commons functions
-	virtual void init(int nbParameters, char *parameters[]) = 0;
-	virtual void addAi(short aiId, char *aiName, char *playerName) = 0;
-	virtual void play() = 0;
-	virtual void endGame() = 0;
-	virtual void disqualifyAi(char *aiName, char *reason) = 0;
+	virtual void stop() = 0;
 	
 	// User-defined functions
-	virtual int move(int fruitId, int x, int y) = 0;
-	virtual int attack(int fruitId, int targetFruitId) = 0;
-	virtual int useEquipment(int fruitId, int equipmentId, int targetId) = 0;
-	virtual int pickUpEquipment(int fruitId, int equipmentId) = 0;
-	virtual int dropEquipment(int fruitId, int equipmentId, int x, int y) = 0;
-	virtual int pickUpSugar(int fruitId, int sugarDropId) = 0;
-	virtual int dropSugar(int fruitId, int quantity, int x, int y) = 0;
-	virtual int openChest(int fruitId, int chestId) = 0;
-	virtual int stockSugar(int fruitId) = 0;
-	virtual int sellEquipment(int fruitId, int equipmentId) = 0;
-	virtual int buyEquipment(int fruitId, int equipmentType) = 0;
-	virtual int drinkJuice(int fruitId) = 0;
-	virtual int fructify(int fruitId, int fruitType, int x, int y) = 0;
-	virtual int drawVitamin(int fruitId) = 0;
-	virtual int writeText(char *text) = 0;
-	virtual int writeTextAt(char *text, int x, int y) = 0;
-	virtual int drawLine(int x1, int y1, int x2, int y2, int color) = 0;
-	virtual int drawCircle(int x, int y, int radius, int color) = 0;
+	virtual void initGame(IntMatrix2 architecture,
+		IntMatrix2 fruits, IntMatrix2 buildings,
+		int limitCherry, int limitKiwi, int limitNut) = 0;
+	
+	virtual void playTurn(IntMatrix2 newObjects,
+		IntMatrix1 deletedObjects, IntMatrix2 movedFruits,
+		IntMatrix2 modifiedFruits, IntMatrix2 modifiedSugarDrops) = 0;
+	
+	virtual void chestOpened(int chestId, IntMatrix2 equipments) = 0;
 };
 
 #endif

@@ -167,14 +167,6 @@ Variant SpecificCommunicator::performGameFunction(int functionId,
 			));
 			break;
 		
-		case __GAME_API_FUNCTION_COLOR_SQUARE__:
-			return toVariant(game->colorSquare(
-				intValue(parameters[0]),
-				intValue(parameters[1]),
-				intValue(parameters[2])
-			));
-			break;
-		
 		default:
 			return toVariant(-404);
 	}

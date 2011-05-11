@@ -9,7 +9,7 @@ package com;
 import java.io.IOException;
 import com.remote.CompressedDataInputStream;
 import com.remote.CompressedDataOutputStream;
-import lang.cpp.GameLibraryInterface.VariantStruct;
+import lang.cpp.VariantStruct;
 import main.CowException;
 
 public class Variant {

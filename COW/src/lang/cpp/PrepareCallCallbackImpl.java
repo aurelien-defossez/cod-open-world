@@ -2,9 +2,9 @@
 package lang.cpp;
 
 public class PrepareCallCallbackImpl implements PrepareCallCallback {
-	private GameCallbackHandler callbackHandler;
+	private CallbackHandler callbackHandler;
 	
-	public PrepareCallCallbackImpl(GameCallbackHandler callbackHandler) {
+	public PrepareCallCallbackImpl(CallbackHandler callbackHandler) {
 		this.callbackHandler = callbackHandler;
 	}
 	

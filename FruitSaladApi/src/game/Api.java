@@ -387,7 +387,7 @@ public class Api extends JavaApi {
 		ApiCall call = new ApiCall(__GAME_API_FUNCTION_WRITE_TEXT_AT__, 3);
 		call.add(new Variant(text));
 		call.add(new Variant(x));
-		call.add(new Variant(y));0
+		call.add(new Variant(y));
 		return callGameFunction(call).getIntValue();
 	}
 	

@@ -67,6 +67,7 @@ private:
 public:
 	IntMatrix1(int length);
 	IntMatrix1(int length, int *values);
+	IntMatrix1(Variant var);
 	~IntMatrix1();
 	
 	Variant toVariant();
@@ -94,6 +95,7 @@ public:
 	IntMatrix2(int length1, int length2);
 	IntMatrix2(int length1, int length2, int *values);
 	IntMatrix2(int length1, int length2, int **values);
+	IntMatrix2(Variant var);
 	~IntMatrix2();
 	
 	Variant toVariant();
@@ -115,6 +117,7 @@ Variant voidVariant();
 Variant toVariant(bool value);
 Variant toVariant(int value);
 Variant toVariant(double value);
+Variant toVariant(char *value);
 
 // -------------------------------------------------------------------------
 // From variant functions

@@ -2,7 +2,6 @@
 package lang.cpp;
 
 import java.util.Collection;
-import lang.cpp.GameLibraryInterface.VariantStruct;
 import com.ApiCall;
 import com.Variant;
 import com.ai.Ai;
