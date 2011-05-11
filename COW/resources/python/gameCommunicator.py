@@ -1,4 +1,4 @@
-from com.python import PyGameCommunicator
+from lang.python import PyGameCommunicator
 from viewApi import ViewApi
 from com import ApiCall
 
@@ -14,8 +14,8 @@ class GameCommunicator(PyGameCommunicator):
 		self.apiDemux.init(api)
 		api.init(game)
 	
-	def initGame(self):
-		self.game.initGame(self, ViewApi(self))
+	def initGame(self, parameters):
+		self.game.initGame(self, ViewApi(self), parameters)
 	
 	def addAi(self, aiId, playerName, aiName):
 		self.game.addAi(aiId, playerName, aiName)

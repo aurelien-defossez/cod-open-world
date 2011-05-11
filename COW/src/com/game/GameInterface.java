@@ -19,8 +19,9 @@ public interface GameInterface {
 	 * Tells the game to initialize itself in order to start the game.
 	 * 
 	 * @param ais the AIs.
+	 * @param parameters the game parameters.
 	 */
-	public abstract void initGame(Collection<Ai> ais);
+	public abstract void initGame(Collection<Ai> ais, String[] parameters);
 	
 	/**
 	 * Plays the game.
@@ -50,6 +51,13 @@ public interface GameInterface {
 	public abstract void endGame();
 	
 	/**
+	 * Defines the AI timeout.
+	 * 
+	 * @param timeout the maximum execution time of an AI in milliseconds.
+	 */
+	public void setTimeout(int timeout);
+	
+	/**
 	 * Sets a game key frame.
 	 */
 	public void setFrame();
@@ -60,7 +68,7 @@ public interface GameInterface {
 	 * @param aiId the AI id.
 	 * @param score the new score for this AI.
 	 */
-	public void setScore(short aiId, long score);
+	public void setScore(short aiId, int score);
 	
 	/**
 	 * Increments the score of an AI.
@@ -68,7 +76,7 @@ public interface GameInterface {
 	 * @param aiId the AI id.
 	 * @param increment the value to add to the score of this AI.
 	 */
-	public abstract void incrementScore(short aiId, long increment);
+	public abstract void incrementScore(short aiId, int increment);
 	
 	/**
 	 * Calls an AI API function.

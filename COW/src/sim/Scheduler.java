@@ -27,11 +27,11 @@ public class Scheduler extends Thread {
 	
 	/**
 	 * The game state enumeration. CREATED: Scheduler created, game not started;
-	 * PLAYING: Game playing continuously; PAUSED: Game paused; WAITING_STEP:
-	 * Game in step by step mode; STOPPED: Game ended.
+	 * PLAYING: Game playing continuously; PAUSED: Game paused; WAITING_FRAME:
+	 * Game in frame by frame mode; STOPPED: Game ended.
 	 */
 	private enum GameState {
-		CREATED, PLAYING, PAUSED, WAITING_STEP, STOPPED
+		CREATED, PLAYING, PAUSED, WAITING_FRAME, STOPPED
 	};
 	
 	// -------------------------------------------------------------------------
@@ -51,7 +51,7 @@ public class Scheduler extends Thread {
 	/**
 	 * The time between two frames, in milliseconds.
 	 */
-	private int timeBetweenFrames;
+	private int period;
 	
 	/**
 	 * The game state.
@@ -88,20 +88,21 @@ public class Scheduler extends Thread {
 	 * Loads the game specified by the given name.
 	 * 
 	 * @param gameName the game name.
+	 * @param parameters the game parameters.
 	 * @param testMode tells whether the game is in test mode or secure mode.
 	 * @return the game live simulator.
 	 * @throws CowException if the game cannot be loaded.
 	 */
-	public LiveSimulator loadGame(String gameName, boolean testMode)
-			throws CowException {
+	public LiveSimulator loadGame(String gameName, String[] parameters,
+		boolean testMode) throws CowException {
 		if (logger.isTraceEnabled())
 			logger.trace("Loading game (" + gameName + ")...");
 		
 		// Create game simulator
 		if (testMode) {
-			this.simulator = new TestSimulator(this, gameName);
+			this.simulator = new TestSimulator(this, gameName, parameters);
 		} else {
-			this.simulator = new SecureSimulator(this, gameName);
+			this.simulator = new SecureSimulator(this, gameName, parameters);
 		}
 		
 		if (logger.isDebugEnabled())
@@ -120,7 +121,7 @@ public class Scheduler extends Thread {
 	 * @throws IOException if an error occurs while loading the replay.
 	 */
 	public ReplaySimulator loadReplay(String gameName, String replayName)
-			throws FileNotFoundException, IOException {
+		throws FileNotFoundException, IOException {
 		if (logger.isTraceEnabled())
 			logger.trace("Loading replay (" + replayName + ")...");
 		
@@ -150,7 +151,7 @@ public class Scheduler extends Thread {
 			start();
 		}
 		// Resume game
-		else if (state == GameState.PAUSED || state == GameState.WAITING_STEP) {
+		else if (state == GameState.PAUSED || state == GameState.WAITING_FRAME) {
 			// Change state
 			state = GameState.PLAYING;
 			
@@ -181,17 +182,17 @@ public class Scheduler extends Thread {
 	}
 	
 	/**
-	 * Plays one step of the game (state set to WAITING_STEP). Starts the game
+	 * Plays one frame of the game (state set to WAITING_FRAME). Starts the game
 	 * if not already done.
 	 */
-	public void nextStep() {
+	public void nextFrame() {
 		if (logger.isDebugEnabled())
-			logger.debug("Next step");
+			logger.debug("Next frame");
 		
 		// Start game
 		if (state == GameState.CREATED) {
 			// Change state
-			state = GameState.WAITING_STEP;
+			state = GameState.WAITING_FRAME;
 			
 			// Start scheduling thread
 			start();
@@ -199,7 +200,7 @@ public class Scheduler extends Thread {
 		// Play one step
 		else if (state != GameState.STOPPED) {
 			// Change state
-			state = GameState.WAITING_STEP;
+			state = GameState.WAITING_FRAME;
 			
 			// Wake scheduling thread up
 			wakeUp();
@@ -235,14 +236,14 @@ public class Scheduler extends Thread {
 			try {
 				// Wait for event
 				if (state == GameState.PAUSED
-						|| state == GameState.WAITING_STEP) {
+					|| state == GameState.WAITING_FRAME) {
 					synchronized (this) {
 						wait();
 					}
 				}
 				// Wait between two frames
 				else if (speed < CowSimulator.UNLIMITED_SPEED) {
-					Thread.sleep(timeBetweenFrames);
+					Thread.sleep(period);
 				}
 			} catch (InterruptedException e) {
 				logger.error(e.getMessage(), e);
@@ -263,7 +264,7 @@ public class Scheduler extends Thread {
 	 */
 	public void setSpeed(double speed) {
 		this.speed = speed;
-		this.timeBetweenFrames = (int) (1000 / speed);
+		this.period = (int) (1000 / speed);
 	}
 	
 	/**
@@ -294,9 +295,6 @@ public class Scheduler extends Thread {
 		
 		logger.info("Game started");
 		
-		// Initialize game
-		simulator.initGame();
-		
 		// Play game
 		simulator.play();
 		
@@ -307,6 +305,9 @@ public class Scheduler extends Thread {
 			// End game
 			endGame();
 		}
+		
+		// Trace final scores
+		simulator.printScores();
 		
 		if (logger.isTraceEnabled())
 			logger.trace("Thread ended");

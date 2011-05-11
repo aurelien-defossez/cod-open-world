@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.Vector;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
-import sim.LiveSimulator;
+import sim.GameSimulator;
 import sim.Scheduler;
 import sim.replay.ReplayWriter;
 import ui.gui.Gui;
@@ -36,7 +36,7 @@ public class CowSimulator {
 	/**
 	 * The maximal speed, in frames per second.
 	 */
-	public static final double MAX_SPEED = 100;
+	public static final double MAX_SPEED = 1000;
 	
 	/**
 	 * The unlimited speed constant.
@@ -52,7 +52,7 @@ public class CowSimulator {
 	/**
 	 * The unlimited speed small name, to use with the speed option (-s u).
 	 */
-	public static final char UNLIMITED_LETTER = 'u';
+	public static final String UNLIMITED_LETTER = "u";
 	
 	/**
 	 * Help file name.
@@ -91,167 +91,160 @@ public class CowSimulator {
 	 * @param args the arguments.
 	 */
 	public CowSimulator(String[] args) {
-		// Initialize logger
-		PropertyConfigurator.configure("log4j-config.txt");
-		
 		// Parameters
-		char arg = ' ';
+		String option = "";
 		Vector<String> ais = new Vector<String>();
 		Vector<String> replays = new Vector<String>();
+		String[] parameters = new String[0];
 		String gameName = null;
+		String loadReplayName = null;
 		double gameSpeed = DEFAULT_SPEED;
-		ViewType viewType = ViewType.None;
 		boolean displayHelp = false;
 		boolean autoStart = false;
 		boolean testMode = false;
+		boolean useView = true;
+		boolean quiet = false;
 		
 		// Parse arguments
 		try {
 			for (int i = 0; i < args.length;) {
-				arg = args[i++].charAt(1);
+				option = args[i++].toLowerCase();
 				
-				switch (arg) {
-				
-				// -a: Add an AI
-				case 'a':
+				// -a, --ai: Add an AI
+				if (option.equals("-a") || option.equals("--ai")) {
 					String aiName = args[i++];
 					ais.add(aiName);
-					
-					if (logger.isTraceEnabled())
-						logger.trace("Add AI: " + aiName);
-					break;
-				
-				// -g: Determine game
-				case 'g':
+				}
+
+				// -g, --game: Determine game
+				else if (option.equals("-g") || option.equals("--game")) {
 					if (gameName == null) {
 						gameName = args[i++];
-						
-						if (logger.isTraceEnabled())
-							logger.trace("Set game: " + gameName);
 					} else {
 						throw new CowException(
-								"The game can't be specified twice");
+							"The game can't be specified twice");
 					}
-					break;
-				
-				// -h: Display help
-				case 'h':
-					if (logger.isTraceEnabled())
-						logger.trace("Display help");
-					
-					testMode = true;
-					break;
-				
-				// -r: Save replay
-				case 'r':
+				}
+
+				// -h, --help: Display help
+				else if (option.equals("-h") || option.equals("--help")) {
+					displayHelp = true;
+				}
+
+				// -n, --noview: Don't show a view and play the game blindly
+				else if (option.equals("-n") || option.equals("--noview")) {
+					useView = false;
+					autoStart = true;
+				}
+
+				// -p, --load: Load and play a replay
+				else if (option.equals("-p") || option.equals("--load")) {
+					loadReplayName = args[i++];
+				}
+
+				// -q, --quiet: Plays quietly and don't log anything
+				else if (option.equals("-q") || option.equals("--quiet")) {
+					quiet = true;
+				}
+
+				// -r, --save: Save replay
+				else if (option.equals("-r") || option.equals("--save")) {
 					String replayName = args[i++];
 					replays.add(replayName);
-					
-					if (logger.isTraceEnabled())
-						logger.trace("Save replay: " + replayName);
-					break;
-				
-				// -s: Set speed
-				case 's':
+				}
+
+				// -s, --speed: Set speed
+				else if (option.equals("-s") || option.equals("--speed")) {
 					String speed = args[i++].toLowerCase();
 					
 					// Check unlimited speed
 					if (speed.equals(UNLIMITED_NAME)
-							|| speed.equals(UNLIMITED_LETTER)) {
+						|| speed.equals(UNLIMITED_LETTER)) {
 						gameSpeed = UNLIMITED_SPEED;
 					}
-					// Get number speed
+					// Get integer speed
 					else {
 						try {
 							gameSpeed = Double.parseDouble(speed);
 							gameSpeed =
-									Math.max(MIN_SPEED,
-											Math.min(gameSpeed, MAX_SPEED));
+								Math.max(MIN_SPEED, Math.min(gameSpeed,
+									MAX_SPEED));
 						} catch (NumberFormatException e) {
 							throw new CowException("Speed must be an float "
-									+ "or \"" + UNLIMITED_NAME + "\".");
+								+ ", \"" + UNLIMITED_NAME + "\" " + "or \""
+								+ UNLIMITED_LETTER + "\".");
 						}
 					}
-					
-					if (logger.isTraceEnabled())
-						logger.trace("Set speed: " + gameSpeed);
-					break;
-				
-				// -t: Test mode
-				case 't':
-					if (logger.isTraceEnabled())
-						logger.trace("Test mode");
-					
+				}
+
+				// -t, --test: Test mode
+				else if (option.equals("-t") || option.equals("--test")) {
 					testMode = true;
-					break;
-				
-				// -v: Set view
-				case 'v':
-					String strViewType = args[i++].toLowerCase();
-					
-					// Define view
-					if (strViewType.equals("none")) {
-						viewType = ViewType.None;
-						throw new CowException("Not implemented yet");
-					} else if (strViewType.equals("console")) {
-						viewType = ViewType.Console;
-						throw new CowException("Not implemented yet");
-					} else if (strViewType.equals("text")) {
-						viewType = ViewType.Text;
-					} else if (strViewType.equals("2d")) {
-						viewType = ViewType.V2D;
-					} else if (strViewType.equals("3d")) {
-						viewType = ViewType.V3D;
-						throw new CowException("Not implemented yet");
-					} else {
-						throw new CowException("View type '" + strViewType
-								+ "' invalid.");
-					}
-					
-					if (logger.isTraceEnabled())
-						logger.trace("Set view: " + viewType);
-					break;
-				
-				// -x: Auto-start
-				case 'x':
+				}
+
+				// -x, --auto: Auto-start
+				else if (option.equals("-x") || option.equals("--auto")) {
 					autoStart = true;
-					
-					if (logger.isTraceEnabled())
-						logger.trace("Auto-start enabled");
-					break;
-				
-				// Unknown option
-				default:
-					throw new CowException("Unknown option: " + arg + ".");
 				}
-			}
-			
-			// Display help
-			if (displayHelp) {
-				try {
-					// Open file
-					String line;
-					BufferedReader reader =
-							new BufferedReader(new FileReader(new File(
-									HELP_FILE)));
+
+				// -z, --parameters: Set game parameters
+				else if (option.equals("-z") || option.equals("--parameters")) {
+					parameters = new String[args.length - i];
 					
-					// Print file
-					while ((line = reader.readLine()) != null) {
-						System.out.println(line);
+					for (int j = 0; j < parameters.length; j++) {
+						parameters[j] = args[i++];
 					}
 				}
-				// Help file not found
-				catch (FileNotFoundException e) {
-					logger.fatal("Help file not found: can't display help");
-				}
-				// IO Exception
-				catch (IOException e) {
-					logger.fatal("An IO error occurred while reading the "
-							+ "help file (" + e.getMessage() + ").");
+
+				// Unknown option
+				else {
+					throw new CowException("Unknown option: " + option + ".");
 				}
 			}
-			// Launch game
-			else {
+		}
+		// Specific exception
+		catch (CowException e) {
+			System.out.println(e.getMessage());
+			return;
+		}
+		// Not enough arguments
+		catch (IndexOutOfBoundsException e) {
+			System.out.println("Argument expected after " + option);
+		}
+		
+		// Initialize logger
+		if (quiet) {
+			PropertyConfigurator.configure("log4j-quiet-config.txt");
+		} else {
+			PropertyConfigurator.configure("log4j-config.txt");
+		}
+		
+		// Display help
+		if (displayHelp) {
+			try {
+				// Open file
+				String line;
+				BufferedReader reader =
+					new BufferedReader(new FileReader(new File(HELP_FILE)));
+				
+				// Print file
+				while ((line = reader.readLine()) != null) {
+					System.out.println(line);
+				}
+			}
+			// Help file not found
+			catch (FileNotFoundException e) {
+				logger.fatal("Help file not found: can't display help");
+			}
+			// IO Exception
+			catch (IOException e) {
+				logger.fatal("An IO error occurred while reading the "
+					+ "help file (" + e.getMessage() + ").");
+			}
+		}
+		// Launch game
+		else {
+			try {
 				// Game not specified
 				if (gameName == null) {
 					throw new CowException("The game must be specified.");
@@ -259,10 +252,15 @@ public class CowSimulator {
 				
 				// Create scheduler
 				Scheduler scheduler = new Scheduler(gameSpeed);
+				GameSimulator simulator;
 				
 				// Set game
-				LiveSimulator simulator =
-						scheduler.loadGame(gameName, testMode);
+				if (loadReplayName == null) {
+					simulator =
+						scheduler.loadGame(gameName, parameters, testMode);
+				} else {
+					simulator = scheduler.loadReplay(gameName, loadReplayName);
+				}
 				
 				// Add AIs
 				for (short i = 0; i < ais.size(); i++) {
@@ -272,37 +270,42 @@ public class CowSimulator {
 				// Add replay writers
 				for (String replay : replays) {
 					simulator
-							.addGameListener(new ReplayWriter(gameName, replay));
+						.addGameListener(new ReplayWriter(gameName, replay));
 				}
 				
 				// Create GUI
-				Gui gui = new Gui(scheduler, viewType);
-				simulator.addGameListener(gui);
-				simulator.addGameListener(gui.getView());
+				Gui gui = null;
+				if (useView) {
+					gui = new Gui(scheduler, ViewType.V2D);
+					simulator.addGameListener(gui);
+					simulator.addGameListener(gui.getView());
+				}
 				
-				// Auto start
-				if (autoStart) {
-					// Wait for the view to be ready
+				// Wait for view to be ready
+				if (useView) {
 					while (!gui.getView().isReady()) {
 						Thread.sleep(1);
 					}
-					
+				}
+				
+				// Initialize game
+				simulator.initGame();
+				
+				// Auto start
+				if (autoStart) {
 					// Auto-start
 					scheduler.play();
 				}
 			}
-		}
-		// Not enough arguments
-		catch (IndexOutOfBoundsException e) {
-			logger.fatal("Argument expected after -" + arg);
-		}
-		// Cow exception
-		catch (CowException e) {
-			logger.fatal(e.getMessage());
-		}
-		// Unexpected exception
-		catch (Exception e) {
-			logger.fatal(e.getMessage(), e);
+			// Cow exception
+			catch (CowException e) {
+				logger.fatal(e.getMessage(), e);
+			}
+			// Unexpected exception
+			catch (Exception e) {
+				logger.fatal(e.getMessage(), e);
+				// TODO: handle not catched exception
+			}
 		}
 	}
 }

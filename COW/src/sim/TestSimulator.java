@@ -18,11 +18,12 @@ public class TestSimulator extends LiveSimulator {
 	 * 
 	 * @param scheduler the game scheduler.
 	 * @param gameName the game name.
+	 * @param parameters the game parameters.
 	 * @throws CowException if the game cannot be loaded.
 	 */
-	public TestSimulator(Scheduler scheduler, String gameName)
-			throws CowException {
-		super(scheduler, gameName);
+	public TestSimulator(Scheduler scheduler, String gameName,
+		String[] parameters) throws CowException {
+		super(scheduler, gameName, parameters);
 	}
 	
 	// -------------------------------------------------------------------------
@@ -35,5 +36,13 @@ public class TestSimulator extends LiveSimulator {
 	@Override
 	public void addAi(short aiId, String aiName) {
 		addAi(new LocalAi(this, getGameName(), aiId, aiName));
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void setTimeout(int timeout) {
+		// Do nothing
 	}
 }

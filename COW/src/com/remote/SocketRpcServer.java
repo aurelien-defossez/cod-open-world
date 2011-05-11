@@ -5,8 +5,6 @@
 
 package com.remote;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -46,11 +44,6 @@ public class SocketRpcServer implements RpcServer {
 	private ProxyAi ai;
 	
 	/**
-	 * The AI process.
-	 */
-	private Process aiProcess;
-	
-	/**
 	 * The security watchdog.
 	 */
 	private Watchdog watchdog;
@@ -68,17 +61,22 @@ public class SocketRpcServer implements RpcServer {
 	/**
 	 * The socket reader.
 	 */
-	private DataInputStream in;
+	private CompressedDataInputStream in;
 	
 	/**
 	 * The socket writer.
 	 */
-	private DataOutputStream out;
+	private CompressedDataOutputStream out;
 	
 	/**
 	 * The local port.
 	 */
 	private int port;
+	
+	/**
+	 * True if the RPC server is stopping.
+	 */
+	private boolean stopping;
 	
 	// -------------------------------------------------------------------------
 	// Constructor
@@ -121,17 +119,15 @@ public class SocketRpcServer implements RpcServer {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void connectAiProcess(Process aiProcess) throws IOException {
-		this.aiProcess = aiProcess;
-		
+	public void connect() throws IOException {
 		if (logger.isDebugEnabled())
 			logger.debug("Waiting for socket connection...");
 		
 		// Connect with the AI process
 		// TODO: Add timeout
 		socket = serverSocket.accept();
-		in = new DataInputStream(socket.getInputStream());
-		out = new DataOutputStream(socket.getOutputStream());
+		in = new CompressedDataInputStream(socket.getInputStream());
+		out = new CompressedDataOutputStream(socket.getOutputStream());
 		
 		// Close server socket
 		serverSocket.close();
@@ -150,23 +146,6 @@ public class SocketRpcServer implements RpcServer {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void initGame() {
-		try {
-			// Send initialize AI command
-			out.writeByte(RpcValues.CMD_AI_INIT);
-			out.flush();
-			
-			// Read AI stream
-			waitForCommand();
-		} catch (IOException e) {
-			logger.error(e.getMessage(), e);
-		}
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
 	public void performAiFunction(ApiCall call) {
 		try {
 			// Send execute AI command
@@ -177,7 +156,9 @@ public class SocketRpcServer implements RpcServer {
 			// Read AI stream
 			waitForCommand();
 		} catch (IOException e) {
-			logger.error(e.getMessage(), e);
+			if (!stopping) {
+				logger.error(e.getMessage(), e);
+			}
 		}
 	}
 	
@@ -195,19 +176,28 @@ public class SocketRpcServer implements RpcServer {
 			waitForCommand();
 			
 			// Close socket
+			close();
+		} catch (IOException e) {
+			if (!stopping) {
+				logger.error(e.getMessage(), e);
+			}
+		}
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void close() {
+		stopping = true;
+		
+		try {
+			// Close socket
 			in.close();
 			out.close();
 			socket.close();
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		
-		try {
-			// Wait for AI termination
-			aiProcess.waitFor();
-		} catch (InterruptedException e) {
-			logger.error(e.getMessage(), e);
+			// Do nothing
 		}
 	}
 	
@@ -232,11 +222,11 @@ public class SocketRpcServer implements RpcServer {
 		
 		do {
 			// Read command
-			command = in.readByte();
+			command = (byte) in.read();
 			
 			if (logger.isDebugEnabled())
 				logger.debug("Command read: "
-						+ RpcValues.getConstantName(command));
+					+ RpcValues.getConstantName(command));
 			
 			switch (command) {
 			case RpcValues.CMD_GAME_CALL_API:
@@ -244,11 +234,10 @@ public class SocketRpcServer implements RpcServer {
 				
 				if (logger.isTraceEnabled()) {
 					logger.trace("API call: function=" + call.getFunctionId()
-							+ ", " + "nbParameters="
-							+ call.getParameters().length);
+						+ ", " + "nbParameters=" + call.getParameters().length);
 					for (Variant parameter : call.getParameters()) {
 						logger.trace("API call parameter="
-								+ parameter.getValue());
+							+ parameter.getValue());
 					}
 				}
 				
@@ -271,6 +260,6 @@ public class SocketRpcServer implements RpcServer {
 		} while (command != RpcValues.ACK);
 		
 		// Pause WatchDog
-		watchdog.pause();
+		watchdog.stop();
 	}
 }

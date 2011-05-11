@@ -6,6 +6,7 @@ from jarray import array
 from com import Variant
 
 #Phases
+PHASE_INIT = 2
 PHASE_REINIT = 0
 PHASE_PLAY = 1
 
@@ -31,11 +32,11 @@ class ApiCallDemux(object):
 	def performGameFunction(self, function, aiId, parameters):
 		#Get map size
 		if function == self.API_GET_MAP_SIZE:
-			return array(self.api.getMapSize(aiId), Integer)
+			return array(self.api.getMapSize(aiId), 'i')
 		
 		#Get map position
 		elif function == self.API_GET_POSITION:
-			return array(self.api.getPosition(aiId), Integer)
+			return array(self.api.getPosition(aiId), 'i')
 		
 		#Move
 		elif function == self.API_MOVE:

@@ -23,6 +23,10 @@ public abstract class View implements GameListener, KeyboardListener {
 	public static final int PRINT_TEXT = 10;
 	
 	public static final int DISPLAY_GRID = 20;
+	public static final int DRAW_LINE = 21;
+	public static final int DRAW_RECTANGLE = 22;
+	public static final int DRAW_CIRCLE = 23;
+	public static final int DELETE_TEMPORARY_SHAPES = 30;
 	
 	public static final int CREATE_ENTITY = 50;
 	public static final int DELETE_ENTITY = 51;
@@ -34,7 +38,7 @@ public abstract class View implements GameListener, KeyboardListener {
 	// -------------------------------------------------------------------------
 	
 	public enum ViewType {
-		None, Console, Text, V2D, V3D
+		None, Console, Text, V2D, V3D, Specific
 	};
 	
 	// -------------------------------------------------------------------------
@@ -56,6 +60,24 @@ public abstract class View implements GameListener, KeyboardListener {
 	public View(KeyboardController keyboardController) {
 		this.keyboardController = keyboardController;
 		keyboardController.addListener(this);
+	}
+	
+	// -------------------------------------------------------------------------
+	// Class methods
+	// -------------------------------------------------------------------------
+	
+	public static final ViewType getViewType(String view) {
+		view = view.toLowerCase();
+		
+		if (view.equals("2d")) {
+			return ViewType.V2D;
+		}
+		
+		if (view.equals("text")) {
+			return ViewType.Text;
+		}
+		
+		return null;
 	}
 	
 	// -------------------------------------------------------------------------
@@ -90,19 +112,10 @@ public abstract class View implements GameListener, KeyboardListener {
 				printText((String) call.getParameter(0).getValue());
 				break;
 			
-			case DISPLAY_GRID:
-				displayGrid((Double) call.getParameter(0).getValue(),
-						(Double) call.getParameter(1).getValue(), (Double) call
-								.getParameter(2).getValue(), (Double) call
-								.getParameter(3).getValue(), (Double) call
-								.getParameter(4).getValue(), (Double) call
-								.getParameter(5).getValue(), (Integer) call
-								.getParameter(6).getValue());
-				break;
-			
 			case CREATE_ENTITY:
-				createEntity((Integer) call.getParameter(0).getValue(),
-						(Integer) call.getParameter(1).getValue());
+				createEntity(
+					(Integer) call.getParameter(0).getValue(),
+					(Integer) call.getParameter(1).getValue());
 				break;
 			
 			case DELETE_ENTITY:
@@ -110,14 +123,52 @@ public abstract class View implements GameListener, KeyboardListener {
 				break;
 			
 			case MOVE_ENTITY:
-				moveEntity((Integer) call.getParameter(0).getValue(),
-						(Double) call.getParameter(1).getValue(), (Double) call
-								.getParameter(2).getValue());
+				moveEntity(
+					(Integer) call.getParameter(0).getValue(),
+					(Integer) call.getParameter(1).getValue(),
+					(Integer) call.getParameter(2).getValue());
 				break;
 			
 			case ROTATE_ENTITY:
-				rotateEntity((Integer) call.getParameter(0).getValue(),
-						(Double) call.getParameter(1).getValue());
+				rotateEntity(
+					(Integer) call.getParameter(0).getValue(),
+					(Integer) call.getParameter(1).getValue());
+				break;
+			
+			case DRAW_LINE:
+				drawLine(
+					(Integer) call.getParameter(0).getValue(),
+					(Integer) call.getParameter(1).getValue(),
+					(Integer) call.getParameter(2).getValue(),
+					(Integer) call.getParameter(3).getValue(),
+					(Integer) call.getParameter(4).getValue(),
+					(Boolean) call.getParameter(5).getValue());
+				break;
+			
+			case DRAW_CIRCLE:
+				drawCircle(
+					(Integer) call.getParameter(0).getValue(),
+					(Integer) call.getParameter(1).getValue(),
+					(Integer) call.getParameter(2).getValue(),
+					(Integer) call.getParameter(3).getValue(),
+					(Integer) call.getParameter(4).getValue(),
+					(Boolean) call.getParameter(5).getValue());
+				break;
+			
+			case DISPLAY_GRID:
+				displayGrid(
+					(Integer) call.getParameter(0).getValue(),
+					(Integer) call.getParameter(1).getValue(),
+					(Integer) call.getParameter(2).getValue(),
+					(Integer) call.getParameter(3).getValue(),
+					(Integer) call.getParameter(4).getValue(),
+					(Integer) call.getParameter(5).getValue(),
+					(Integer) call.getParameter(6).getValue(),
+					(Boolean) call.getParameter(7).getValue());
+				break;
+			
+			case DELETE_TEMPORARY_SHAPES:
+				deleteTemporaryShapes();
 				break;
 			}
 		} catch (CowException e) {
@@ -129,24 +180,26 @@ public abstract class View implements GameListener, KeyboardListener {
 	// Optional abstract methods
 	// -------------------------------------------------------------------------
 	
-	protected void printText(String text) {
-	}
+	protected abstract void printText(String text);
 	
-	protected void displayGrid(double x0, double y0, double x1, double y1,
-			double xSpacing, double ySpacing, int color) {
-	}
+	protected abstract void displayGrid(int x0, int y0, int x1, int y1,
+		int xSpacing, int ySpacing, int color, boolean temporary);
 	
-	protected void createEntity(int definitionId, int id) {
-	}
+	protected abstract void drawLine(int x0, int y0, int x1, int y1, int color,
+		boolean temporary);
 	
-	protected void deleteEntity(int id) {
-	}
+	protected abstract void drawCircle(int x, int y, int radius, int samples,
+		int color, boolean temporary);
 	
-	protected void moveEntity(int id, double dx, double dy) {
-	}
+	protected abstract void deleteTemporaryShapes();
 	
-	protected void rotateEntity(int id, double angle) {
-	}
+	protected abstract void createEntity(int definitionId, int id);
+	
+	protected abstract void deleteEntity(int id);
+	
+	protected abstract void moveEntity(int id, int dx, int dy);
+	
+	protected abstract void rotateEntity(int id, int angle);
 	
 	// -------------------------------------------------------------------------
 	// Abstract methods

@@ -6,9 +6,11 @@
 package security;
 
 import sim.LiveSimulator;
+import com.Lang;
 import com.remote.ProxyAi;
 
 public class Watchdog {
+	
 	// -------------------------------------------------------------------------
 	// Attributes
 	// -------------------------------------------------------------------------
@@ -28,6 +30,11 @@ public class Watchdog {
 	 */
 	private WatchdogTimer timer;
 	
+	/**
+	 * True if the watchdog is activated and the timer started.
+	 */
+	private boolean activated;
+	
 	// -------------------------------------------------------------------------
 	// Builder
 	// -------------------------------------------------------------------------
@@ -40,15 +47,41 @@ public class Watchdog {
 	public Watchdog(LiveSimulator simulator) {
 		this.simulator = simulator;
 		this.runningAi = null;
-		this.timer = new WatchdogTimer(this, 100, 2000);
-		
-		// Start timer
-		timer.start();
+		this.timer = new WatchdogTimer(this);
+		this.activated = false;
 	}
 	
 	// -------------------------------------------------------------------------
 	// Public methods
 	// -------------------------------------------------------------------------
+	
+	/**
+	 * Activates the watchdog.
+	 */
+	public void activate() {
+		if(!activated) {
+			activated = true;
+			timer.start();
+		}
+	}
+
+	/**
+	 * Returns whether the watchdog is paused.
+	 * 
+	 * @return true if the watchdog is paused.
+	 */
+	public boolean isPaused() {
+		return timer.isPaused();
+	}
+	
+	/**
+	 * Defines the maximum time before which an AI is disqualified.
+	 * 
+	 * @param timeout the maximum time in milliseconds.
+	 */
+	public void setTimeout(int timeout) {
+		timer.setTimeout(timeout);
+	}
 	
 	/**
 	 * Starts the timer for the given AI.
@@ -57,7 +90,7 @@ public class Watchdog {
 	 */
 	public void start(ProxyAi ai) {
 		runningAi = ai;
-		timer.resumeTimer();
+		timer.startTimer(Lang.getLanguageSpeedHandicap(ai.getLanguage()));
 	}
 	
 	/**
@@ -65,6 +98,13 @@ public class Watchdog {
 	 */
 	public void pause() {
 		timer.pauseTimer();
+	}
+	
+	/**
+	 * Resumes the timer when it was when paused.
+	 */
+	public void resume() {
+		timer.resumeTimer();
 	}
 	
 	/**
@@ -79,6 +119,13 @@ public class Watchdog {
 	 */
 	public void disqualifyCurrentAi() {
 		simulator.disqualifyAi(runningAi, "timeout");
-		runningAi.stop();
+		runningAi.kill();
+	}
+	
+	/**
+	 * Ends the watchdog.
+	 */
+	public void endWatchdog() {
+		timer.stopTimerThread();
 	}
 }

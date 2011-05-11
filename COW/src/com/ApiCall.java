@@ -5,11 +5,11 @@
 
 package com;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import main.CowException;
 import org.apache.log4j.Logger;
+import com.remote.CompressedDataInputStream;
+import com.remote.CompressedDataOutputStream;
 
 public class ApiCall {
 	// -------------------------------------------------------------------------
@@ -19,7 +19,7 @@ public class ApiCall {
 	/**
 	 * The log4j logger.
 	 */
-	private Logger logger = Logger.getLogger(ApiCall.class);
+	private static Logger logger = Logger.getLogger(ApiCall.class);
 	
 	// -------------------------------------------------------------------------
 	// Attributes
@@ -111,12 +111,13 @@ public class ApiCall {
 	}
 	
 	/**
-	 * Serializes the call into a data output stream.
+	 * Serializes the call into a data output stream, without protobuf
+	 * optimization.
 	 * 
 	 * @param out the data output stream.
 	 * @throws IOException if an error occurs while writing data.
 	 */
-	public void serialize(DataOutputStream out) throws IOException {
+	public void serialize(CompressedDataOutputStream out) throws IOException {
 		// Write function code
 		out.writeShort(functionId);
 		
@@ -132,6 +133,29 @@ public class ApiCall {
 		}
 	}
 	
+	/**
+	 * Returns the string presentation of the API call.
+	 * 
+	 * @return the string presentation.
+	 */
+	@Override
+	public String toString() {
+		StringBuffer sb = new StringBuffer();
+		sb.append("ApiCall(function #"+functionId+"(");
+		
+		for (int i = 0; i < parameters.length; i++) {
+			sb.append(parameters[i]);
+			
+			if(i < parameters.length - 1) {
+				sb.append(", ");
+			}
+		}
+		
+		sb.append("))");
+		
+		return sb.toString();
+	}
+	
 	// -------------------------------------------------------------------------
 	// Class methods
 	// -------------------------------------------------------------------------
@@ -143,8 +167,8 @@ public class ApiCall {
 	 * @return the API call.
 	 * @throws IOException if an error occurs while reading data.
 	 */
-	public static ApiCall deserialize(DataInputStream in) throws IOException,
-			CowException {
+	public static ApiCall deserialize(CompressedDataInputStream in)
+		throws IOException, CowException {
 		// Read function id and number of parameters
 		short functionId = in.readShort();
 		byte nbParameters = in.readByte();
@@ -159,4 +183,5 @@ public class ApiCall {
 		
 		return call;
 	}
+	
 }

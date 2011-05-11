@@ -28,11 +28,12 @@ public class SecureSimulator extends LiveSimulator {
 	 * 
 	 * @param scheduler the game scheduler.
 	 * @param gameName the game name.
+	 * @param parameters the game parameters.
 	 * @throws CowException if the game cannot be loaded.
 	 */
-	public SecureSimulator(Scheduler scheduler, String gameName)
-			throws CowException {
-		super(scheduler, gameName);
+	public SecureSimulator(Scheduler scheduler, String gameName,
+		String[] parameters) throws CowException {
+		super(scheduler, gameName, parameters);
 		watchdog = new Watchdog(this);
 	}
 	
@@ -45,7 +46,31 @@ public class SecureSimulator extends LiveSimulator {
 	 */
 	@Override
 	public void addAi(short aiId, String aiName) {
+		watchdog.activate();
+		
 		addAi(new ProxyAi(this, getGameName(), aiId, aiName, watchdog));
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void setTimeout(int timeout) {
+		watchdog.setTimeout(timeout);
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void setFrame() {
+		if(!watchdog.isPaused()) {
+			watchdog.pause();
+			super.setFrame();
+			watchdog.resume();
+		} else {
+			super.setFrame();
+		}
 	}
 	
 	/**
@@ -55,6 +80,6 @@ public class SecureSimulator extends LiveSimulator {
 	public void endGame() {
 		super.endGame();
 		
-		watchdog.stop();
+		watchdog.endWatchdog();
 	}
 }

@@ -35,7 +35,7 @@ public class CowException extends RuntimeException {
 	 * @param exception the previously thrown exception.
 	 */
 	public CowException(String message, Exception exception) {
-		super(message + " (" + exception.getMessage() + ")");
+		super(message + " (error=" + exception.getMessage() + ")");
 	}
 	
 	/**

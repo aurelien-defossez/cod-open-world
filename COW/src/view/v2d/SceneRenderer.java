@@ -4,15 +4,11 @@ package view.v2d;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
 import view.ButtonListener;
 import view.KeyboardController;
 import view.MouseController;
 import com.jme.math.Vector3f;
-import com.jme.renderer.ColorRGBA;
 import com.jme.renderer.Renderer;
-import com.jme.scene.Geometry;
-import com.jme.scene.Line;
 import com.jme.scene.Spatial;
 import com.jme.system.canvas.SimpleCanvasImpl;
 
@@ -44,7 +40,7 @@ public class SceneRenderer extends SimpleCanvasImpl implements ButtonListener {
 	// -------------------------------------------------------------------------
 	
 	public SceneRenderer(KeyboardController keyboardController,
-			MouseController mouseController) {
+		MouseController mouseController) {
 		super(1, 1);
 		
 		this.keyboardController = keyboardController;
@@ -114,7 +110,7 @@ public class SceneRenderer extends SimpleCanvasImpl implements ButtonListener {
 			Point currentMousePosition = mouseController.getAbsolutePosition();
 			cameraPosition.set(beforeDragCameraPosition);
 			moveView(currentMousePosition.x - beforeDragMousePosition.x,
-					beforeDragMousePosition.y - currentMousePosition.y);
+				beforeDragMousePosition.y - currentMousePosition.y);
 		}
 	}
 	
@@ -124,34 +120,6 @@ public class SceneRenderer extends SimpleCanvasImpl implements ButtonListener {
 	
 	public void attachChild(Spatial node) {
 		rootNode.attachChild(node);
-	}
-	
-	public void displayGrid(float x0, float y0, float x1, float y1,
-			float xSpacing, float ySpacing, ColorRGBA color) {
-		ArrayList<Vector3f> lines = new ArrayList<Vector3f>();
-		
-		// Vertical lines
-		for (float x = x0; x <= x1; x += xSpacing) {
-			lines.add(new Vector3f(x, y0, 0));
-			lines.add(new Vector3f(x, y1, 0));
-		}
-		
-		// Horizontal lines
-		for (float y = y0; y <= y1; y += ySpacing) {
-			lines.add(new Vector3f(x0, y, 0));
-			lines.add(new Vector3f(x1, y, 0));
-		}
-		
-		// Draw lines
-		Geometry grid =
-				new Line("regularLine", lines.toArray(new Vector3f[] {}), null,
-						null, null);
-		grid.setDefaultColor(color);
-		grid.setZOrder(5);
-		grid.updateRenderState();
-		
-		// Attach grid
-		attachChild(grid);
 	}
 	
 	@Override
@@ -213,20 +181,19 @@ public class SceneRenderer extends SimpleCanvasImpl implements ButtonListener {
 		// Zoom on the cursor
 		if (mousePosition != null) {
 			centre =
-					new Vector3f(mousePosition.x, renderer.getHeight()
-							- mousePosition.y, 0);
+				new Vector3f(mousePosition.x, renderer.getHeight()
+					- mousePosition.y, 0);
 		}
-		// Zoom on the centre of the scene
+		// Zoom on the center of the scene
 		else {
-			centre =
-					new Vector3f(renderer.getWidth() / 2,
-							renderer.getHeight() / 2, 0);
+			centre = new Vector3f(renderer.getWidth() / 2,
+				renderer.getHeight() / 2, 0);
 		}
 		
 		// Move camera accordingly
 		cameraPosition.set(
-				(float) (dz * cameraPosition.x + centre.x * (1 - dz)),
-				(float) (dz * cameraPosition.y + centre.y * (1 - dz)), 0);
+			(float) (dz * cameraPosition.x + centre.x * (1 - dz)),
+			(float) (dz * cameraPosition.y + centre.y * (1 - dz)), 0);
 		
 		// Move and scale root node
 		rootNode.setLocalScale((float) cameraScale);

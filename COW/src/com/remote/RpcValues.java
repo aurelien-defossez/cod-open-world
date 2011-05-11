@@ -11,11 +11,6 @@ public abstract class RpcValues {
 	// -------------------------------------------------------------------------
 	
 	/**
-	 * Command: Initialize AI.
-	 */
-	public final static byte CMD_AI_INIT = 1;
-	
-	/**
 	 * Command: Execute AI.
 	 */
 	public final static byte CMD_AI_EXE = 2;
@@ -57,8 +52,6 @@ public abstract class RpcValues {
 	 */
 	public static String getConstantName(byte constant) {
 		switch (constant) {
-		case CMD_AI_INIT:
-			return "CMD_AI_INIT";
 		case CMD_AI_EXE:
 			return "CMD_AI_EXE";
 		case CMD_AI_STOP:

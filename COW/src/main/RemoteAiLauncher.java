@@ -45,6 +45,14 @@ public class RemoteAiLauncher {
 	 * @param args the arguments.
 	 */
 	public RemoteAiLauncher(String[] args) {
+		RpcClient rpcClient = null;
+		ProxySimulator simulator;
+		String gameName = "";
+		String aiName = "";
+		short aiId = 0;
+		String rpcType = "";
+		boolean loadOk = true;
+		
 		// Initialize logger
 		PropertyConfigurator.configure("log4j-config.txt");
 		
@@ -59,17 +67,14 @@ public class RemoteAiLauncher {
 			logger.trace("RemoteAiLauncher arguments: " + arguments);
 		}
 		
+		simulator = new ProxySimulator();
+		
 		try {
-			RpcClient rpcClient = null;
-			
-			// Create proxy simulator
-			ProxySimulator simulator = new ProxySimulator();
-			
 			// Get generic parameters
-			String gameName = args[0];
-			String aiName = args[1];
-			short aiId = Short.parseShort(args[2]);
-			String rpcType = args[3];
+			gameName = args[0];
+			aiName = args[1];
+			aiId = Short.parseShort(args[2]);
+			rpcType = args[3];
 			
 			// Rename Remote AI thread
 			Thread.currentThread().setName(aiName + " (" + aiId + ")");
@@ -86,7 +91,18 @@ public class RemoteAiLauncher {
 				// Create RPC client
 				rpcClient = new SocketRpcClient(simulator, address, port);
 			}
-			
+		} catch (IndexOutOfBoundsException e) {
+			System.out.println("usage: java -jar RemoteAiLauncher.jar "
+				+ "<gameName> <aiName> <aiId> <rpcType> "
+				+ "[<rpcParameters>]*");
+			loadOk = false;
+		} catch (NumberFormatException e) {
+			System.out.println("parameter type error, integer expected: "
+				+ e.getMessage());
+			loadOk = false;
+		}
+		
+		if (loadOk) {
 			// Set RPC client
 			simulator.setRpcClient(rpcClient);
 			
@@ -101,13 +117,6 @@ public class RemoteAiLauncher {
 			
 			// Start RPC client
 			rpcClient.start();
-		} catch (IndexOutOfBoundsException e) {
-			System.out.println("usage: java -jar RemoteAiLauncher.jar "
-					+ "<gameName> <aiName> <aiId> <rpcType> "
-					+ "[<rpcParameters>]*");
-		} catch (NumberFormatException e) {
-			System.out.println("parameter type error, integer expected: "
-					+ e.getMessage());
 		}
 	}
 }

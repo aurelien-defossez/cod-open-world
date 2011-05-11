@@ -1,0 +1,89 @@
+#ifndef HEADER_MAP
+#define HEADER_MAP
+
+#include "Player.h"
+#include "Building.h"
+#include "OwnedBuilding.h"
+#include "Entity.h"
+#include "SugarDrop.h"
+#include "Equipment.h"
+#include "Fruit.h"
+
+#include "SpecificCommander.hpp"
+
+#include <time.h>
+#include <fstream>
+
+#include <iostream>
+
+class Map
+{
+	public:
+		Map(SpecificCommander *commanderE);
+
+        void addNewModification(int *newModif);
+        void addUpdatedModificationObject(int *newModif);
+        void addUpdatedModificationSugar(int *newModif);
+        void addDeletedModification(int *newModif);
+        void addMovedModification(int *newModif);
+		
+        void addSugar(Player *player, int quantity);
+		
+        int addSugarDrop(int x, int y, int quantity);
+        void createPlayers(int nbPlayers);
+        Equipment* createEquipment(int equipmentType, int x, int y);
+        int createFruit(int fruitType, int x, int y, Player *owner);
+        void createWalls(int x0, int y0, int x1, int y1);
+		
+        void addEntity(Entity *entity);
+        void moveEntity(Entity *entity, int x, int y);
+        void removeEntity(Entity *entity);
+        Entity* getEntity(int id);
+
+        int verifyId(int id);
+        bool verifyBuilding(Fruit *fruit, int buildingType);
+        bool verifyPosition(int x, int y);
+        bool verifySource();
+		
+        bool contains(int x, int y);
+        bool isWall(int x, int y);
+		int distanceBetween(Entity* fruit, int x, int y);
+        std::pair<int,int> getValidSquare(int x, int y, int distance);
+        bool canHit(Fruit* fruit, Fruit* target);
+        bool detectObstacle(std::vector<std::pair<int,int> > positions);
+		
+        std::vector<std::pair<int,int> > drawLine(int x0, int y0, int x1, int y1);
+
+        void addSourceMiner();
+        void resetSourceMiner();
+        void setWidth(int w);
+        void setHeight(int h);
+		int getWidth();
+        int getHeight();
+        void setCurrentId(int id);
+        std::vector<Player*> getListPlayers();
+		int getCurrentPlayer();
+		void endTurn();
+		void destroy();
+
+        std::string printC();
+
+	protected:
+        std::vector<Player*> listPlayers;
+        std::multimap<std::pair<int,int>, Entity* > mapPositions;
+        std::map<int,Entity*> mapIds;
+        std::set<std::pair<int, int> > mapWalls; //true = WALL
+
+        int currentId;
+        int nbSourceMiner;
+        int width;
+        int height;
+
+        int idVitaminSource;
+        int idSugarTree;
+		SpecificCommander *commander;
+
+};
+
+
+#endif

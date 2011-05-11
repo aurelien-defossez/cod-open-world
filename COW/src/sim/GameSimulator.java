@@ -9,6 +9,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
+import view.View.ViewType;
 import com.ApiCall;
 import com.GameListener;
 import com.ai.Ai;
@@ -38,6 +39,11 @@ public abstract class GameSimulator implements Simulator {
 	 */
 	private Map<Short, Ai> ais;
 	
+	/**
+	 * The game parameters.
+	 */
+	private String[] parameters;
+	
 	// -------------------------------------------------------------------------
 	// Constructor
 	// -------------------------------------------------------------------------
@@ -47,12 +53,15 @@ public abstract class GameSimulator implements Simulator {
 	 * 
 	 * @param scheduler the game scheduler.
 	 * @param gameName the game name.
+	 * @param parameters the game parameters.
 	 */
-	public GameSimulator(Scheduler scheduler, String gameName) {
+	public GameSimulator(Scheduler scheduler, String gameName,
+		String[] parameters) {
 		this.scheduler = scheduler;
 		this.gameName = gameName;
 		this.listeners = new Vector<GameListener>();
 		this.ais = new HashMap<Short, Ai>();
+		this.parameters = parameters;
 	}
 	
 	// -------------------------------------------------------------------------
@@ -67,15 +76,11 @@ public abstract class GameSimulator implements Simulator {
 	}
 	
 	/**
-	 * Initializes the game listeners and AIs.
+	 * Initializes the game listeners.
 	 */
 	public void initGame() {
 		for (GameListener listener : listeners) {
 			listener.initGame(getAis());
-		}
-		
-		for (Ai ai : getAis()) {
-			ai.init();
 		}
 	}
 	
@@ -109,7 +114,7 @@ public abstract class GameSimulator implements Simulator {
 	 * @param aiId the AI id.
 	 * @param score the new score.
 	 */
-	public void setScore(short aiId, long score) {
+	public void setScore(short aiId, int score) {
 		getAi(aiId).setScore(score);
 		updateScore();
 	}
@@ -120,7 +125,7 @@ public abstract class GameSimulator implements Simulator {
 	 * @param aiId the AI id.
 	 * @param increment the value to add to the current score.
 	 */
-	public void incrementScore(short aiId, long increment) {
+	public void incrementScore(short aiId, int increment) {
 		Ai ai = getAi(aiId);
 		ai.setScore(ai.getScore() + increment);
 		updateScore();
@@ -146,6 +151,26 @@ public abstract class GameSimulator implements Simulator {
 		return gameName;
 	}
 	
+	/**
+	 * Returns the game parameters.
+	 * 
+	 * @return the game parameters.
+	 */
+	public final String[] getParameters() {
+		return parameters;
+	}
+
+	/**
+	 * Prints the score in the output stream, one integer for each AI, in the
+	 * order of the initial AI order in the parameter list.
+	 */
+	public final void printScores() {
+		for(Ai ai : ais.values()) {
+			System.out.print(ai.getScore() + " ");
+		}
+		System.out.println();
+	}
+	
 	// -------------------------------------------------------------------------
 	// Protected methods
 	// -------------------------------------------------------------------------
@@ -153,7 +178,6 @@ public abstract class GameSimulator implements Simulator {
 	/**
 	 * Adds an AI.
 	 * 
-	 * @param aiId the AI id.
 	 * @param ai the AI.
 	 */
 	protected final void addAi(Ai ai) {
@@ -213,4 +237,11 @@ public abstract class GameSimulator implements Simulator {
 	 * Plays the game.
 	 */
 	public abstract void play();
+	
+	/**
+	 * Returns the game view type.
+	 * 
+	 * @return the view type.
+	 */
+	public abstract ViewType getViewType();
 }

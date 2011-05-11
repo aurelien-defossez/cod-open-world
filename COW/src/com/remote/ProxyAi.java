@@ -38,6 +38,11 @@ public class ProxyAi extends Ai {
 	 */
 	private Process aiProcess;
 	
+	/**
+	 * The process reader.
+	 */
+	private ProcessReader processReader;
+	
 	// -------------------------------------------------------------------------
 	// Constructor
 	// -------------------------------------------------------------------------
@@ -49,10 +54,11 @@ public class ProxyAi extends Ai {
 	 * @param gameName the game name.
 	 * @param aiId the AI id.
 	 * @param aiName the AI name.
+	 * @param watchdog the security watchdog.
 	 * @throws CowException if the AI cannot be loaded.
 	 */
 	public ProxyAi(Simulator simulator, String gameName, short aiId,
-			String aiName, Watchdog watchdog) {
+		String aiName, Watchdog watchdog) {
 		super(simulator, gameName, aiId, aiName);
 		
 		ProcessBuilder builder;
@@ -91,31 +97,25 @@ public class ProxyAi extends Ai {
 			aiProcess = builder.start();
 			
 			// Start process reader
-			new ProcessReader(aiProcess, aiName + " (" + aiId + ")").start();
+			processReader =
+				new ProcessReader(aiProcess, aiName + " (" + aiId + ")");
+			processReader.start();
 			
 			if (logger.isDebugEnabled())
 				logger.debug("Connect RPC server...");
 			
 			// Connect RPC server to AI process
-			rpcServer.connectAiProcess(aiProcess);
+			rpcServer.connect();
 			
 		} catch (IOException e) {
 			throw new CowException("A problem occurred while proxying AI "
-					+ "(" + aiName + "): " + e.getMessage());
+				+ "(" + aiName + "): " + e.getMessage());
 		}
 	}
 	
 	// -------------------------------------------------------------------------
 	// Public methods
 	// -------------------------------------------------------------------------
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void init() {
-		rpcServer.initGame();
-	}
 	
 	/**
 	 * {@inheritDoc}
@@ -130,7 +130,22 @@ public class ProxyAi extends Ai {
 	 */
 	@Override
 	public void stop() {
-		aiProcess.destroy();
 		rpcServer.stopAi();
+		processReader.stopReading();
+		
+		try {
+			aiProcess.waitFor();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Kills the remote process.
+	 */
+	public void kill() {
+		rpcServer.close();
+		aiProcess.destroy();
 	}
 }

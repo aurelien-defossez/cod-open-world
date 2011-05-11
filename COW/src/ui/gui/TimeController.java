@@ -30,6 +30,6 @@ public class TimeController implements ChangeListener {
 	@Override
 	public void stateChanged(ChangeEvent event) {
 		scheduler.setSpeed(Math.exp((double) slider.getValue()
-				/ ControlPanel.PRECISION));
+			/ ControlPanel.PRECISION));
 	}
 }

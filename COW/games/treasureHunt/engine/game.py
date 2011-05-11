@@ -8,12 +8,19 @@ class Game(object):
 	gameOver = False
 	
 	#Initialises the game
-	def initGame(self, connector, view):
+	def initGame(self, connector, view, parameters):
+		if(len(parameters) == 2):
+			width = int(parameters[0])
+			height = int(parameters[1])
+		else:
+			width = 42
+			height = 42
+		
 		self.conn = connector
 		self.view = view
-		self.map = Map(self.view, 40, 40)
+		self.map = Map(self.view, width, height)
 		self.gameOver = False
-		self.view.displayGrid(0, 0, 400, 400, 10, 10, 0x606060FF)
+		self.view.displayGrid(0, 0, width * 10, height * 10, 10, 10, 0x303030, False)
 	
 	#Sets the player score
 	def setScore(self, aiId, score):
@@ -35,6 +42,9 @@ class Game(object):
 	
 	#Plays the game
 	def play(self):
+		for aiId in self.ais:
+			self.conn.callAiFunction(aiId, PHASE_INIT)
+		
 		for numTurn in range(1000):
 			for aiId in self.ais:
 				self.conn.callAiFunction(aiId, PHASE_PLAY)
@@ -45,6 +55,7 @@ class Game(object):
 						self.conn.callAiFunction(aiId, PHASE_REINIT)
 			
 			self.conn.setFrame()
+			self.view.deleteTemporaryShapes()
 			
 			if self.gameOver:
 				break

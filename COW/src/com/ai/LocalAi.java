@@ -5,10 +5,11 @@
 
 package com.ai;
 
+import lang.cpp.CppAiConnector;
+import lang.java.JavaAiConnector;
+import lang.python.PyAiConnector;
 import main.CowException;
 import com.ApiCall;
-import com.java.JavaAiConnector;
-import com.python.PyAiConnector;
 import sim.Simulator;
 
 public class LocalAi extends Ai {
@@ -35,10 +36,15 @@ public class LocalAi extends Ai {
 	 * @throws CowException if the AI cannot be loaded.
 	 */
 	public LocalAi(Simulator simulator, String gameName, short aiId,
-			String aiName) {
+		String aiName) {
 		super(simulator, gameName, aiId, aiName);
 		
 		switch (getLanguage()) {
+		// Load C++ AI
+		case Cpp:
+			connector = new CppAiConnector(this, gameName);
+			break;
+		
 		// Load Java AI
 		case Java:
 			connector = new JavaAiConnector(this, gameName);
@@ -48,20 +54,16 @@ public class LocalAi extends Ai {
 		case Python:
 			connector = new PyAiConnector(this, gameName);
 			break;
+		
+		default:
+			throw new CowException("Cannot load AI (" + aiName
+				+ "): Not supported language (" + getLanguage() + ")");
 		}
 	}
 	
 	// -------------------------------------------------------------------------
 	// Public methods
 	// -------------------------------------------------------------------------
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void init() {
-		connector.init();
-	}
 	
 	/**
 	 * {@inheritDoc}

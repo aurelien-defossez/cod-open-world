@@ -46,7 +46,8 @@ public class ControlPanel extends JPanel implements KeyboardListener {
 		
 		// Create next step button
 		nextStep = new JButton(new ImageIcon("images/next.png"));
-		nextStep.addActionListener(new ControlAction(this, ButtonType.NextStep));
+		nextStep
+			.addActionListener(new ControlAction(this, ButtonType.NextStep));
 		
 		// Create stop button
 		stop = new JButton(new ImageIcon("images/stop.png"));
@@ -54,12 +55,10 @@ public class ControlPanel extends JPanel implements KeyboardListener {
 		
 		// Create time slider
 		timeSlider =
-				new JSlider((int) Math.floor(PRECISION
-						* Math.log(CowSimulator.MIN_SPEED)),
-						(int) Math.ceil(PRECISION
-								* Math.log(CowSimulator.UNLIMITED_SPEED)),
-						(int) Math.round(PRECISION
-								* Math.log(scheduler.getSpeed())));
+			new JSlider((int) Math.floor(PRECISION
+				* Math.log(CowSimulator.MIN_SPEED)), (int) Math.ceil(PRECISION
+				* Math.log(CowSimulator.UNLIMITED_SPEED)),
+				(int) Math.round(PRECISION * Math.log(scheduler.getSpeed())));
 		timeSlider.addChangeListener(new TimeController(timeSlider, scheduler));
 		
 		// Create control panel
@@ -93,7 +92,7 @@ public class ControlPanel extends JPanel implements KeyboardListener {
 	}
 	
 	public synchronized void nextStep() {
-		scheduler.nextStep();
+		scheduler.nextFrame();
 	}
 	
 	public synchronized void stopGame() {

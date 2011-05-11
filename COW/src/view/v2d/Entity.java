@@ -22,7 +22,7 @@ public class Entity {
 	private Vector3f position;
 	private Vector3f destination;
 	private Quaternion rotation;
-	private float rotationAngle;
+	private int rotationAngle;
 	
 	// -------------------------------------------------------------------------
 	// Constructor
@@ -48,11 +48,11 @@ public class Entity {
 		return rotationAngle;
 	}
 	
-	public void move(double dx, double dy, boolean interpolate) {
-		destination.addLocal((float) dx, (float) dy, 0);
+	public void move(int dx, int dy, boolean interpolate) {
+		destination.addLocal(dx, dy, 0);
 		
 		if (!interpolate) {
-			position.addLocal((float) dx, (float) dy, 0);
+			position.addLocal(dx, dy, 0);
 		}
 		
 		sprite.setLocalTranslation(position);
@@ -62,7 +62,7 @@ public class Entity {
 		sprite.removeFromParent();
 	}
 	
-	public void rotate(float angle, boolean interpolate) {
+	public void rotate(int angle, boolean interpolate) {
 		rotationAngle += angle;
 		rotation.fromAngleAxis(rotationAngle * PI_180, zRotation);
 		sprite.setLocalRotation(rotation);

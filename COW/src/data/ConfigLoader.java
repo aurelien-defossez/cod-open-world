@@ -59,7 +59,7 @@ public class ConfigLoader {
 			return value;
 		} else {
 			throw new IOException("Missing value \"" + name + "\" "
-					+ "in file " + file);
+				+ "in file " + file);
 		}
 	}
 	
@@ -72,7 +72,7 @@ public class ConfigLoader {
 	 *             integer.
 	 */
 	public final int getIntValue(String name) throws IOException,
-			NumberFormatException {
+		NumberFormatException {
 		return Integer.parseInt(getValue(name));
 	}
 	
@@ -84,7 +84,7 @@ public class ConfigLoader {
 	 * @throws NumberFormatException if the value cannot be cast into a double.
 	 */
 	public final double getDoubleValue(String name) throws IOException,
-			NumberFormatException {
+		NumberFormatException {
 		return Double.parseDouble(getValue(name));
 	}
 	
@@ -95,7 +95,7 @@ public class ConfigLoader {
 	 * @param defaultValue the default value if the attribute doesn't exist.
 	 */
 	public final String getValue(String name, String defaultValue)
-			throws IOException {
+		throws IOException {
 		if (config.containsKey(name)) {
 			return getValue(name);
 		} else {
@@ -112,7 +112,7 @@ public class ConfigLoader {
 	 *             integer.
 	 */
 	public final int getIntValue(String name, int defaultValue)
-			throws IOException, NumberFormatException {
+		throws IOException, NumberFormatException {
 		if (config.containsKey(name)) {
 			return Integer.parseInt(getValue(name));
 		} else {
@@ -128,7 +128,7 @@ public class ConfigLoader {
 	 * @throws NumberFormatException if the value cannot be cast into a double.
 	 */
 	public final double getDoubleValue(String name, double defaultValue)
-			throws IOException, NumberFormatException {
+		throws IOException, NumberFormatException {
 		if (config.containsKey(name)) {
 			return Double.parseDouble(getValue(name));
 		} else {

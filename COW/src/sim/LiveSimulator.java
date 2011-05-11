@@ -7,6 +7,7 @@ package sim;
 
 import main.CowException;
 import org.apache.log4j.Logger;
+import view.View.ViewType;
 import com.ApiCall;
 import com.Variant;
 import com.ai.Ai;
@@ -41,11 +42,12 @@ public abstract class LiveSimulator extends GameSimulator {
 	 * 
 	 * @param scheduler the game scheduler.
 	 * @param gameName the game name.
+	 * @param parameters the game parameters.
 	 * @throws CowException if the game cannot be loaded.
 	 */
-	public LiveSimulator(Scheduler scheduler, String gameName)
-			throws CowException {
-		super(scheduler, gameName);
+	public LiveSimulator(Scheduler scheduler, String gameName,
+		String[] parameters) throws CowException {
+		super(scheduler, gameName, parameters);
 		
 		// Load local game
 		this.game = new LocalGame(this, gameName);
@@ -73,9 +75,9 @@ public abstract class LiveSimulator extends GameSimulator {
 	 */
 	@Override
 	public void initGame() {
-		game.initGame(getAis());
-		
 		super.initGame();
+		
+		game.initGame(getAis(), getParameters());
 	}
 	
 	/**
@@ -87,7 +89,7 @@ public abstract class LiveSimulator extends GameSimulator {
 	public void callAiFunction(short aiId, ApiCall call) {
 		if (logger.isDebugEnabled())
 			logger.debug("Execute AI #" + aiId + ", phase #"
-					+ call.getFunctionId() + ".");
+				+ call.getFunctionId() + ".");
 		
 		Ai ai = getAi(aiId);
 		if (ai != null) {
@@ -122,8 +124,28 @@ public abstract class LiveSimulator extends GameSimulator {
 	@Override
 	public Variant callGameFunction(ApiCall call, Ai ai) {
 		if (logger.isTraceEnabled())
-			logger.trace("Call API, function #" + call.getFunctionId() + ".");
+			logger.trace("AI " + ai.getId() + ": Call API, function #"
+				+ call.getFunctionId() + ".");
 		
 		return game.performGameFunction(call, ai);
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public ViewType getViewType() {
+		return game.getViewType();
+	}
+	
+	// -------------------------------------------------------------------------
+	// Abstract methods
+	// -------------------------------------------------------------------------
+	
+	/**
+	 * Defines the AI timeout.
+	 * 
+	 * @param timeout the maximum execution time in milliseconds.
+	 */
+	public abstract void setTimeout(int timeout);
 }

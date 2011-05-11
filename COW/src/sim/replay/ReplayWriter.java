@@ -4,7 +4,6 @@
 
 package sim.replay;
 
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -17,6 +16,7 @@ import com.ApiCall;
 import com.GameListener;
 import com.Variant;
 import com.ai.Ai;
+import com.remote.CompressedDataOutputStream;
 
 public class ReplayWriter implements GameListener {
 	// -------------------------------------------------------------------------
@@ -35,7 +35,7 @@ public class ReplayWriter implements GameListener {
 	/**
 	 * The data writer for the replay file.
 	 */
-	private DataOutputStream out;
+	private CompressedDataOutputStream out;
 	
 	/**
 	 * The AIs for this game.
@@ -65,16 +65,11 @@ public class ReplayWriter implements GameListener {
 			File fd = new File("games/" + gameName + "/replays/" + replayName);
 			
 			// Open data writer
-			out = new DataOutputStream(new FileOutputStream(fd));
+			out = new CompressedDataOutputStream(new FileOutputStream(fd));
 			opened = true;
-			
-			// Write game name
-			out.writeUTF(gameName);
 		} catch (FileNotFoundException e) {
 			throw new CowException("Cannot create replay file (\"" + replayName
-					+ "\").", e);
-		} catch (IOException e) {
-			throw new CowException("Cannot create replay writer.", e);
+				+ "\").", e);
 		}
 	}
 	
@@ -82,23 +77,22 @@ public class ReplayWriter implements GameListener {
 	// Public methods
 	// -------------------------------------------------------------------------
 	
-	@Override
 	/**
 	 * Initializes the replay file, by writing the AI information.
 	 * 
 	 * @param ais the AIs.
 	 */
+	@Override
 	public void initGame(Collection<Ai> ais) {
 		this.ais = ais;
 		
 		if (opened) {
-			// Insert game name
 			try {
 				// Write AIs information
-				out.writeShort(ais.size());
+				out.writeUnsignedVarint(ais.size());
 				
 				for (Ai ai : ais) {
-					out.writeShort(ai.getId());
+					out.writeUnsignedVarint(ai.getId());
 					out.writeUTF(ai.getPlayerName());
 					out.writeUTF(ai.getName());
 				}
@@ -106,29 +100,31 @@ public class ReplayWriter implements GameListener {
 				logger.error(e.getMessage(), e);
 				stopWriting();
 			}
+		} else {
+			throw new CowException("File not opened yet");
 		}
 	}
 	
-	@Override
 	/**
 	 * Stops the replay writer from writing.
 	 */
+	@Override
 	public void endGame() {
 		stopWriting();
 	}
 	
-	@Override
 	/**
 	 * Writes the scores in the file.
 	 */
+	@Override
 	public void updateScore() {
 		if (opened) {
 			try {
 				// Write scores
-				out.writeShort(View.UPDATE_SCORE);
+				out.writeUnsignedVarint(View.UPDATE_SCORE);
 				
 				for (Ai ai : ais) {
-					out.writeLong(ai.getScore());
+					out.writeVarint(ai.getScore());
 				}
 			} catch (IOException e) {
 				logger.error(e.getMessage(), e);
@@ -137,15 +133,15 @@ public class ReplayWriter implements GameListener {
 		}
 	}
 	
-	@Override
 	/**
 	 * Writes the frame in the file.
 	 */
+	@Override
 	public void setFrame() {
 		if (opened) {
 			try {
 				// Write frame
-				out.writeShort(View.SET_FRAME);
+				out.writeUnsignedVarint(View.SET_FRAME);
 			} catch (IOException e) {
 				logger.error(e.getMessage(), e);
 				stopWriting();
@@ -153,74 +149,21 @@ public class ReplayWriter implements GameListener {
 		}
 	}
 	
-	@Override
 	/**
 	 * Serializes the view API call in the file.
 	 * 
 	 * @param call the view API call.
 	 */
+	@Override
 	public void callViewFunction(ApiCall call) {
 		if (opened) {
 			try {
 				// Write function id
-				out.writeShort(call.getFunctionId());
+				out.writeUnsignedVarint(call.getFunctionId());
 				
 				// Write parameters
 				for (Variant parameter : call.getParameters()) {
-					switch (parameter.getType()) {
-					case Variant.BOOLEAN:
-						out.writeBoolean((Boolean) parameter.getValue());
-						break;
-					
-					case Variant.INTEGER:
-						out.writeInt((Integer) parameter.getValue());
-						break;
-					
-					case Variant.DOUBLE:
-						out.writeDouble((Double) parameter.getValue());
-						break;
-					
-					case Variant.STRING:
-						out.writeUTF((String) parameter.getValue());
-						break;
-					
-					case Variant.BOOLEAN_ARRAY:
-						boolean[] booleanArray =
-								(boolean[]) parameter.getValue();
-						out.writeInt(booleanArray.length);
-						
-						for (boolean value : booleanArray) {
-							out.writeBoolean(value);
-						}
-						break;
-					
-					case Variant.INTEGER_ARRAY:
-						int[] intArray = (int[]) parameter.getValue();
-						out.writeInt(intArray.length);
-						
-						for (Integer value : intArray) {
-							out.writeInt(value);
-						}
-						break;
-					
-					case Variant.DOUBLE_ARRAY:
-						double[] doubleArray = (double[]) parameter.getValue();
-						out.writeInt(doubleArray.length);
-						
-						for (Double value : doubleArray) {
-							out.writeDouble(value);
-						}
-						break;
-					
-					case Variant.STRING_ARRAY:
-						String[] stringArray = (String[]) parameter.getValue();
-						out.writeInt(stringArray.length);
-						
-						for (String value : stringArray) {
-							out.writeUTF(value);
-						}
-						break;
-					}
+					out.writeVariantValue(parameter);
 				}
 			} catch (IOException e) {
 				logger.error(e.getMessage(), e);

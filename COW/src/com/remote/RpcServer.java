@@ -24,16 +24,10 @@ public interface RpcServer {
 	/**
 	 * Connects the AI process to the RPC server.
 	 * 
-	 * @param aiProcess the AI process.
 	 * @throws IOException if an error occurs while connecting to the AI
 	 *             process.
 	 */
-	public abstract void connectAiProcess(Process aiProcess) throws IOException;
-	
-	/**
-	 * Initializes the game.
-	 */
-	public abstract void initGame();
+	public abstract void connect() throws IOException;
 	
 	/**
 	 * Calls an AI API function.
@@ -46,4 +40,9 @@ public interface RpcServer {
 	 * Tells the AI to stop.
 	 */
 	public abstract void stopAi();
+	
+	/**
+	 * Stops the RPC server.
+	 */
+	public void close();
 }

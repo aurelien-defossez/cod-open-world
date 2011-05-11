@@ -7,7 +7,8 @@ package com.ai;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import com.ApiCall;
-import com.Language;
+import com.Lang;
+import com.Lang.Language;
 import com.Variant;
 import main.CowException;
 import data.ConfigLoader;
@@ -55,7 +56,7 @@ public abstract class Ai implements AiInterface {
 	/**
 	 * The AI score.
 	 */
-	private long score;
+	private int score;
 	
 	// -------------------------------------------------------------------------
 	// Constructor
@@ -71,7 +72,7 @@ public abstract class Ai implements AiInterface {
 	 * @throws CowException if the AI cannot be loaded.
 	 */
 	public Ai(Simulator simulator, String gameName, short aiId, String aiName)
-			throws CowException {
+		throws CowException {
 		this.simulator = simulator;
 		this.id = aiId;
 		this.name = aiName;
@@ -80,38 +81,31 @@ public abstract class Ai implements AiInterface {
 		try {
 			// Load config.ini file
 			ConfigLoader config =
-					new ConfigLoader("games/" + gameName + "/ais/" + aiName
-							+ "/" + CONFIG_FILE);
+				new ConfigLoader("games/" + gameName + "/ais/" + aiName + "/"
+					+ CONFIG_FILE);
 			
 			// Read creator name
 			this.playerName = config.getValue("creator");
 			
 			// Read language
-			String languageString = config.getValue("language").toLowerCase();
+			language = Lang.getLanguage(config.getValue("language"));
 			
-			// Java
-			if (languageString.equals("java")) {
-				this.language = Language.Java;
-			}
-			// Python
-			else if (languageString.equals("python")) {
-				this.language = Language.Python;
-			}
 			// Not supported language
-			else {
+			if (language == null) {
 				throw new CowException("Cannot load AI \"" + aiName
-						+ ": language " + languageString + " not supported.");
+					+ "\": language " + config.getValue("language")
+					+ " not supported.");
 			}
 		}
 		// Configuration file not found
 		catch (FileNotFoundException e) {
 			throw new CowException("Cannot load AI \"" + aiName
-					+ ": config file missing.");
+				+ "\": config file missing.");
 		}
 		// Configuration file not complete
 		catch (IOException e) {
 			throw new CowException("Cannot load AI \"" + aiName
-					+ ": a problem occurs while reading config file.", e);
+				+ "\": a problem occurs while reading config file.", e);
 		}
 	}
 	
@@ -160,7 +154,7 @@ public abstract class Ai implements AiInterface {
 	 * 
 	 * @return the AI score.
 	 */
-	public final long getScore() {
+	public final int getScore() {
 		return score;
 	}
 	
@@ -169,7 +163,7 @@ public abstract class Ai implements AiInterface {
 	 * 
 	 * @param score the new score.
 	 */
-	public final void setScore(long score) {
+	public final void setScore(int score) {
 		this.score = score;
 	}
 	

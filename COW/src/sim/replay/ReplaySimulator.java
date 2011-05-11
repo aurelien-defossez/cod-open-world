@@ -5,7 +5,6 @@
 
 package sim.replay;
 
-import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -14,9 +13,12 @@ import org.apache.log4j.Logger;
 import sim.GameSimulator;
 import sim.Scheduler;
 import view.View;
+import view.View.ViewType;
 import com.ApiCall;
 import com.Variant;
+import com.VariantType;
 import com.ai.Ai;
+import com.remote.CompressedDataInputStream;
 
 public class ReplaySimulator extends GameSimulator {
 	// -------------------------------------------------------------------------
@@ -35,7 +37,12 @@ public class ReplaySimulator extends GameSimulator {
 	/**
 	 * The replay file data reader.
 	 */
-	private DataInputStream in;
+	private CompressedDataInputStream in;
+	
+	/**
+	 * The replay game.
+	 */
+	private ReplayGame game;
 	
 	// -------------------------------------------------------------------------
 	// Constructor
@@ -50,55 +57,55 @@ public class ReplaySimulator extends GameSimulator {
 	 * @throws IOException if an error occurs while loading the replay.
 	 */
 	public ReplaySimulator(Scheduler scheduler, String gameName,
-			String replayName) throws FileNotFoundException, IOException {
-		super(scheduler, gameName);
+		String replayName) throws FileNotFoundException, IOException {
+		super(scheduler, gameName, new String[0]);
 		
 		// Open file
 		File fd = new File("games/" + gameName + "/replays/" + replayName);
-		in = new DataInputStream(new FileInputStream(fd));
-		
-		// Read game name
-		in.readUTF();
+		in = new CompressedDataInputStream(new FileInputStream(fd));
 		
 		// Load AIs
-		short nbAis = in.readShort();
+		int nbAis = in.readUnsignedVarint();
 		for (int i = 0; i < nbAis; i++) {
-			short aiId = in.readShort();
+			short aiId = (short) in.readUnsignedVarint();
 			in.readUTF(); // Read player name
 			String aiName = in.readUTF();
 			
 			// Add AI
 			addAi(new ReplayAi(this, aiId, aiName));
 		}
+		
+		// Load game
+		game = new ReplayGame(gameName);
 	}
 	
 	// -------------------------------------------------------------------------
 	// Public methods
 	// -------------------------------------------------------------------------
 	
-	@Override
 	/**
 	 * Adds an AI (not implemented, does nothing).
 	 * 
 	 * @param aiId the AI id.
 	 * @param aiName the AI name.
 	 */
+	@Override
 	public void addAi(short aiId, String aiName) {
 		// Do nothing
 	}
 	
-	@Override
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void initGame() {
 		super.initGame();
 	}
 	
-	@Override
 	/**
 	 * Ends the game replay.
 	 */
+	@Override
 	public void endGame() {
 		super.endGame();
 		
@@ -110,14 +117,15 @@ public class ReplaySimulator extends GameSimulator {
 		}
 	}
 	
-	@Override
 	/**
 	 * Plays the replay.
 	 */
+	@Override
 	public void play() {
 		try {
 			while (in.available() > 0) {
-				short function = in.readShort();
+				int function = in.readUnsignedVarint();
+				ApiCall call;
 				
 				switch (function) {
 				case View.SET_FRAME:
@@ -126,15 +134,56 @@ public class ReplaySimulator extends GameSimulator {
 				
 				case View.UPDATE_SCORE:
 					for (Ai ai : getAis()) {
-						ai.setScore(in.readLong());
+						ai.setScore(in.readVarint());
 					}
 					updateScore();
 					break;
 				
 				case View.PRINT_TEXT:
-					ApiCall call = new ApiCall(function, 1);
+					call = new ApiCall((short) function, 1);
 					call.add(new Variant(in.readUTF()));
 					callViewApi(call);
+					break;
+				
+				case View.DISPLAY_GRID:
+					call = new ApiCall((short) function, 7);
+					call.add(in.readVariantValue(VariantType.INT));
+					call.add(in.readVariantValue(VariantType.INT));
+					call.add(in.readVariantValue(VariantType.INT));
+					call.add(in.readVariantValue(VariantType.INT));
+					call.add(in.readVariantValue(VariantType.INT));
+					call.add(in.readVariantValue(VariantType.INT));
+					call.add(in.readVariantValue(VariantType.INT));
+					callViewApi(call);
+					break;
+				
+				case View.CREATE_ENTITY:
+					call = new ApiCall((short) function, 2);
+					call.add(in.readVariantValue(VariantType.INT));
+					call.add(in.readVariantValue(VariantType.INT));
+					callViewApi(call);
+					break;
+				
+				case View.DELETE_ENTITY:
+					call = new ApiCall((short) function, 1);
+					call.add(in.readVariantValue(VariantType.INT));
+					callViewApi(call);
+					break;
+				
+				case View.MOVE_ENTITY:
+					call = new ApiCall((short) function, 3);
+					call.add(in.readVariantValue(VariantType.INT));
+					call.add(in.readVariantValue(VariantType.INT));
+					call.add(in.readVariantValue(VariantType.INT));
+					callViewApi(call);
+					break;
+				
+				case View.ROTATE_ENTITY:
+					call = new ApiCall((short) function, 2);
+					call.add(in.readVariantValue(VariantType.INT));
+					call.add(in.readVariantValue(VariantType.INT));
+					callViewApi(call);
+					break;
 				}
 			}
 		} catch (IOException e) {
@@ -142,7 +191,6 @@ public class ReplaySimulator extends GameSimulator {
 		}
 	}
 	
-	@Override
 	/**
 	 * Makes a game API call (not implemented, returns null).
 	 * 
@@ -150,8 +198,17 @@ public class ReplaySimulator extends GameSimulator {
 	 * @param ai the AI making the call.
 	 * @return the return value of this call.
 	 */
+	@Override
 	public Variant callGameFunction(ApiCall call, Ai ai) {
 		// Do nothing
 		return null;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public ViewType getViewType() {
+		return game.getViewType();
 	}
 }

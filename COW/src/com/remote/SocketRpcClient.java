@@ -5,8 +5,6 @@
 
 package com.remote;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -41,12 +39,12 @@ public class SocketRpcClient implements RpcClient {
 	/**
 	 * The socket reader.
 	 */
-	private DataInputStream in;
+	private CompressedDataInputStream in;
 	
 	/**
 	 * The socket writer.
 	 */
-	private DataOutputStream out;
+	private CompressedDataOutputStream out;
 	
 	// -------------------------------------------------------------------------
 	// Constructor
@@ -65,12 +63,12 @@ public class SocketRpcClient implements RpcClient {
 			
 			if (logger.isDebugEnabled())
 				logger.debug("Connecting to framework at " + address + ":"
-						+ port + "...");
+					+ port + "...");
 			
 			// Create socket and connect
 			socket = new Socket(address, port);
-			in = new DataInputStream(socket.getInputStream());
-			out = new DataOutputStream(socket.getOutputStream());
+			in = new CompressedDataInputStream(socket.getInputStream());
+			out = new CompressedDataOutputStream(socket.getOutputStream());
 			
 			if (logger.isDebugEnabled())
 				logger.debug("Remote AI connected to port " + port);
@@ -96,16 +94,14 @@ public class SocketRpcClient implements RpcClient {
 		int nbParameters = call.getParameters().length;
 		
 		logger.trace("API call: function=" + call.getFunctionId() + ", "
-				+ "nbParameters=" + nbParameters);
+			+ "nbParameters=" + nbParameters);
 		
 		try {
 			// Write call API command
 			out.writeByte(RpcValues.CMD_GAME_CALL_API);
 			
-			// Serialize call
+			// Serialize and sendcall
 			call.serialize(out);
-			
-			// Flush data
 			out.flush();
 			
 			// Read return value
@@ -132,9 +128,9 @@ public class SocketRpcClient implements RpcClient {
 			// Send Ack
 			ack();
 			
-			// Play while not ordered otherwise
-			while (waitForCommand())
-				;
+			while (waitForCommand()) {
+				// Play while not ordered otherwise
+			}
 		} catch (IOException e) {
 			logger.fatal(e.getMessage(), e);
 		}
@@ -165,7 +161,7 @@ public class SocketRpcClient implements RpcClient {
 			logger.trace("Wait for command...");
 		
 		// Read command type
-		byte command = in.readByte();
+		byte command = (byte) in.read();
 		
 		if (logger.isTraceEnabled())
 			logger.trace("Command: " + RpcValues.getConstantName(command));
@@ -175,12 +171,6 @@ public class SocketRpcClient implements RpcClient {
 		case RpcValues.CMD_AI_EXE:
 			ApiCall call = ApiCall.deserialize(in);
 			simulator.callAiFunction(call);
-			ack();
-			break;
-		
-		// Initializes the game
-		case RpcValues.CMD_AI_INIT:
-			simulator.initGame();
 			ack();
 			break;
 		

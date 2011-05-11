@@ -1,8 +1,8 @@
 
 package ai;
 
-import treasureHunt.Api;
-import treasureHunt.TreasureHuntAi;
+import game.Api;
+import game.TreasureHuntAi;
 
 public class Ai implements TreasureHuntAi {
 	private int w;

@@ -29,6 +29,11 @@ public class ProcessReader extends Thread {
 	 */
 	private BufferedReader processStdOut;
 	
+	/**
+	 * True while reading to the remote process.
+	 */
+	private boolean reading;
+	
 	// -------------------------------------------------------------------------
 	// Builder
 	// -------------------------------------------------------------------------
@@ -41,10 +46,10 @@ public class ProcessReader extends Thread {
 	 */
 	public ProcessReader(Process process, String name) {
 		super(name);
+		reading = true;
 		
 		processStdOut =
-				new BufferedReader(new InputStreamReader(
-						process.getInputStream()));
+			new BufferedReader(new InputStreamReader(process.getInputStream()));
 	}
 	
 	// -------------------------------------------------------------------------
@@ -61,18 +66,25 @@ public class ProcessReader extends Thread {
 			logger.debug("ProcessReader started");
 		
 		try {
-			while (true) {
-				if (processStdOut.ready()) {
-					System.out.println(processStdOut.readLine());
-				} else {
-					Thread.yield();
+			while (reading) {
+				String line = processStdOut.readLine();
+				
+				if(line != null) {
+					System.out.println(line);
 				}
 			}
 		} catch (IOException e) {
-			logger.error(e.getMessage(), e);
+			// Do nothing
 		}
 		
 		if (logger.isDebugEnabled())
 			logger.debug("ProcessReader ended");
+	}
+	
+	/**
+	 * Stops the process reader.
+	 */
+	public void stopReading() {
+		reading = false;
 	}
 }

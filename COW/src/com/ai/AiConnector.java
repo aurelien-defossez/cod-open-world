@@ -41,4 +41,8 @@ public abstract class AiConnector implements AiInterface {
 	public Variant callGameFunction(ApiCall call) {
 		return ai.callGameFunction(call);
 	}
+	
+	public int getId() {
+		return ai.getId();
+	}
 }

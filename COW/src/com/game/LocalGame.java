@@ -6,12 +6,14 @@
 package com.game;
 
 import java.util.Collection;
+import lang.cpp.CppGameConnector;
+import lang.java.JavaGameConnector;
+import lang.python.PyGameConnector;
 import main.CowException;
 import sim.LiveSimulator;
 import com.ApiCall;
 import com.Variant;
 import com.ai.Ai;
-import com.python.PyGameConnector;
 
 public class LocalGame extends Game {
 	// -------------------------------------------------------------------------
@@ -32,16 +34,33 @@ public class LocalGame extends Game {
 	 * 
 	 * @param simulator the game simulator.
 	 * @param gameName the game name.
+	 * @param parameters the game parameters.
 	 * @throws CowException if the game cannot be loaded.
 	 */
 	public LocalGame(LiveSimulator simulator, String gameName) {
 		super(simulator, gameName);
 		
 		switch (getLanguage()) {
-		// Load Python AI
+		// Load Python game
 		case Python:
 			connector = new PyGameConnector(this);
 			break;
+		
+		// Load Java game
+		case Java:
+			connector = new JavaGameConnector(this);
+			break;
+		
+		// Load C++ game
+		case Cpp:
+			connector = new CppGameConnector(this);
+			break;
+		
+		// Not implemented language
+		default:
+			throw new CowException("Game '" + gameName
+				+ "' could not be loaded: language '" + getLanguage()
+				+ "' not supported.");
 		}
 	}
 	
@@ -53,8 +72,8 @@ public class LocalGame extends Game {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void initGame(Collection<Ai> ais) {
-		connector.initGame(ais);
+	public void initGame(Collection<Ai> ais, String[] parameters) {
+		connector.initGame(ais, parameters);
 	}
 	
 	/**

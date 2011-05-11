@@ -45,7 +45,7 @@ public class ScorePanel extends JPanel {
 		
 		for (Ai ai : ais) {
 			scoreArea.append(" " + ai.getName() + " (" + ai.getPlayerName()
-					+ ") : " + ai.getScore() + " points\n");
+				+ ") : " + ai.getScore() + " points\n");
 		}
 	}
 }
