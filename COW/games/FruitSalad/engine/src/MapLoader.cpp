@@ -107,7 +107,6 @@ void MapLoader::loadMap(char *fic)
                             positionComma = contenu.find_first_of(',');
                             x1 = contenu.substr(0, positionComma);
                             contenu = contenu.substr(positionComma+1);
-							positionComma = contenu.find_first_of('\n');
                             y1 = contenu;
                             variable.clear();
                             variable.str(x0);
