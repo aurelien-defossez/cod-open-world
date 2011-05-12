@@ -6,8 +6,6 @@ Player::Player()
     sugarQuantity = 0;
     vitaminsQuantity = 0;
     isCurrent = false;
-	namePlayer = new char();
-	nameIA = new char();
 }
 
 void Player::setInfos(short aiId, char *aiName, char *playerName)
@@ -83,11 +81,6 @@ int Player::hasEnough(int nbSugar, int nbVitamins)
     }
 }
 
-bool Player::verifyNbFruit(int fruitType)
-{
-    return true;
-}
-
 int Player::getId()
 {
   return idIA;
@@ -131,4 +124,47 @@ void Player::setCurrentPlayer(bool state)
 void Player::resetMapModifications()
 {
   mapModifications->reset();
+}
+
+void Player::setCounts(int countCherryE, int countKiwiE, int countNutE)
+{
+	countCherry = countCherryE;
+	countKiwi = countKiwiE;
+	countNut = countNutE;
+}
+int Player::getCountCherry()
+{
+	return countCherry;
+}
+int Player::getCountKiwi()
+{
+	return countKiwi;
+}
+int Player::getCountNut()
+{
+	return countNut;
+}
+IntMatrix2 Player::getNewObjects()
+{
+	return mapModifications->getNewObjects();
+}
+IntMatrix1 Player::getDeletedObjects()
+{
+	return mapModifications->getDeletedObjects();
+}
+IntMatrix2 Player::getMovedFruits()
+{
+	return mapModifications->getMovedFruits();
+}
+IntMatrix2 Player::getModifiedFruits()
+{
+	return mapModifications->getModifiedFruits();
+}
+IntMatrix2 Player::getModifiedSugarDrops()
+{
+	return mapModifications->getModifiedSugarDrops();
+}
+Player::~Player()
+{
+	delete mapModifications;
 }

@@ -8,6 +8,9 @@
 #include <set>
 #include <string>
 #include <sstream>
+#include "FruitSaladEngine.hpp"
+#include "SpecificCommunicator.hpp"
+#include "SpecificCommander.hpp"
 
 //Buildings
 #define BUILDING_VITAMIN_SOURCE 12
@@ -74,5 +77,11 @@
 #define HEALTHY -123
 #define NOT_VALID_COLOR -124
 
+#define COUNT_NEW_SUGAR_DROP 1
+#define DISTANCE_OF_EJECTION 1
+#define QUANTITY_SUGAR_EJECTED 3
+#define FRUCTIFICATION_SUGAR_QUANTITY 42
+#define FRUCTIFICATION_VITAMINS_QUANTITY 42
+#define QUANTITY_VITAMINS_TAKEN 1
 
 #endif

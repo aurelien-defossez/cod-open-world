@@ -9,6 +9,8 @@ class Chest : public Entity
 {
 	public:
 		Chest(std::pair<int,int> positionE, int idE, int typeE);
+		~Chest();
+		
         void dropContent(Map *map);
         void addEquipment(Equipment *equipment);
 		std::vector<Equipment*> getListEquipment();

@@ -6,6 +6,14 @@ Entity(positionE, idE, typeE)
 
 }
 
+Chest::~Chest()
+{
+	for (int i=0; i<listEquipment.size(); i++)
+    {
+        delete listEquipment[i];
+    }
+}
+
 void Chest::dropContent(Map *map)
 {
     int count = 0;

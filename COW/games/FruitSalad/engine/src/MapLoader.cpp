@@ -18,6 +18,8 @@ void MapLoader::loadMap(char *fic)
                 int heightint;
                 std::string width;
                 int widthint;
+				std::string limitFruit;
+				int limitFruitint;
                 int nbPlayers;
                 std::string letter;     //letter defining entity
                 std::string x0;         //position X
@@ -62,6 +64,30 @@ void MapLoader::loadMap(char *fic)
                 variable.str(contenu);
                 variable >> nbPlayers;
                 map->createPlayers(nbPlayers);
+				std::getline(fichier, contenu);
+				std::getline(fichier, contenu); //get Limits
+				//LimitCherry
+				positionComma = contenu.find_first_of(',');
+				limitFruit = contenu.substr(0, positionComma);
+				contenu = contenu.substr(positionComma+1);
+				variable.clear();
+				variable.str(limitFruit);
+				variable >> limitFruitint;
+				map->setLimitCherry(limitFruitint);
+				//LimitKiwi
+				positionComma = contenu.find_first_of(',');
+				limitFruit = contenu.substr(0, positionComma);
+				contenu = contenu.substr(positionComma+1);
+				variable.clear();
+				variable.str(limitFruit);
+				variable >> limitFruitint;
+				map->setLimitKiwi(limitFruitint);
+				//LimitNut
+				limitFruit = contenu;
+				variable.clear();
+				variable.str(limitFruit);
+				variable >> limitFruitint;
+				map->setLimitNut(limitFruitint);
                 while (std::getline(fichier, contenu))
                 {  
 				  

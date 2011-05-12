@@ -13,6 +13,7 @@ class Equipment : public Entity
         int getSellValue();
         int getCost();
         int getRange();
+		int getAmmo();
 
 	protected:
         int range;

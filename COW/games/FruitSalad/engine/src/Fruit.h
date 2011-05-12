@@ -10,6 +10,8 @@ class Fruit : public OwnedEntity
 {
 	public:
 		Fruit(std::pair<int,int> positionE, int idE, int typeFruitE, Player *ownerE);
+		~Fruit();
+		
         void move(int xD, int yD);
         bool attack(Fruit *fruit);
         bool useEquipment(Equipment *equipment, Entity *target);

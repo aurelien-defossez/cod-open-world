@@ -8,8 +8,7 @@
 #include "SugarDrop.h"
 #include "Equipment.h"
 #include "Fruit.h"
-
-#include "SpecificCommander.hpp"
+#include "Config.h"
 
 #include <time.h>
 #include <fstream>
@@ -20,6 +19,7 @@ class Map
 {
 	public:
 		Map(SpecificCommander *commanderE);
+		~Map();
 
         void addNewModification(int *newModif);
         void addUpdatedModificationObject(int *newModif);
@@ -53,6 +53,15 @@ class Map
         bool detectObstacle(std::vector<std::pair<int,int> > positions);
 		
         std::vector<std::pair<int,int> > drawLine(int x0, int y0, int x1, int y1);
+		
+		void dropSugarRandomly();
+		IntMatrix2 getArchitecture();
+		IntMatrix2 getFruits(Player *owner);
+		IntMatrix2 getBuildings(Player *owner);
+		bool verifyNbFruit(int fruitType, Player *owner);
+		void setLimitCherry(int lim);
+		void setLimitKiwi(int lim);
+		void setLimitNut(int lim);
 
         void addSourceMiner();
         void resetSourceMiner();
@@ -64,7 +73,6 @@ class Map
         std::vector<Player*> getListPlayers();
 		int getCurrentPlayer();
 		void endTurn();
-		void destroy();
 
         std::string printC();
 
@@ -78,6 +86,11 @@ class Map
         int nbSourceMiner;
         int width;
         int height;
+		
+		int countFruits;
+		int limitCherry;
+		int limitKiwi;
+		int limitNut;
 
         int idVitaminSource;
         int idSugarTree;

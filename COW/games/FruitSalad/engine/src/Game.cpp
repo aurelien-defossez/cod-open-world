@@ -37,7 +37,6 @@ Game::Game() {
 Game::~Game() {
 	delete commander;
 	delete communicator;
-	map->destroy();
 	delete map;
 	/*
 	for(int i = 0; i < height; i++) {
@@ -53,7 +52,6 @@ void Game::init(int nbParameters, char *parameters[]) {
 	
 	MapLoader *mapLoader = new MapLoader(map, commander);
 	mapLoader->loadMap("/home/pierrick/Fruit_Salad/cod-open-world/COW/games/FruitSalad/engine/src/map.txt");
-	map->printC();
 	/*
 	for(int i = 0; i < nbParameters; i++) {
 		cout << "Parameter #" << i << " = " << parameters[i] << endl;
@@ -71,6 +69,39 @@ void Game::play() {
 	
 	cout << "setFrame" << endl;
 	commander->setFrame();
+	int nbTours;
+	int currentPlayer = 0;
+	int nbPlayers = map->getListPlayers().size();
+	
+	
+	for (int currentTour=0; currentTour<nbTours; currentTour++)
+	{
+		for (currentPlayer=0; currentPlayer<nbPlayers; currentPlayer++)
+		{
+			//On passe le joueur à joueur actif
+			map->getListPlayers()[currentPlayer]->setCurrentPlayer(true);
+			
+			//On récupère les données à lui fournir
+			IntMatrix2 newObjects = map->getListPlayers()[currentPlayer]->getNewObjects();
+			IntMatrix1 deletedObjects = map->getListPlayers()[currentPlayer]->getDeletedObjects();
+			IntMatrix2 movedFruits = map->getListPlayers()[currentPlayer]->getMovedFruits();
+			IntMatrix2 modifiedFruits = map->getListPlayers()[currentPlayer]->getModifiedFruits();
+			IntMatrix2 modifiedSugarDrops = map->getListPlayers()[currentPlayer]->getModifiedSugarDrops();
+			
+			//On reset les modifications qu'on vient de lui envoyer
+			map->getListPlayers()[currentPlayer]->resetMapModifications();
+			
+			//On le fait jouer
+			commander->playTurn(currentPlayer, &newObjects, &deletedObjects, &movedFruits, &modifiedFruits, &modifiedSugarDrops);
+			
+			//On remet le joueur en passif
+			map->getListPlayers()[currentPlayer]->setCurrentPlayer(false);
+			
+		}
+		//On remet le compteur d'action de tous les fruits à 0
+		map->endTurn();
+		map->dropSugarRandomly();
+	}
 	/*
 	int height = 12;
 	int width = 10;
@@ -520,11 +551,12 @@ int Game::dropEquipment(int fruitId, int equipmentId, int x, int y) {
 	commander->moveEntity(equipment->getId(), equipment->getPosition().first, equipment->getPosition().second);
 
 	//creation of modification for all players
-    int *modif = new int[4];
+    int *modif = new int[5];
     modif[0] = equipment->getId();
     modif[1] = x;
     modif[2] = y;
     modif[3] = equipment->getType();
+	modif[4] = equipment->getAmmo();
     map->addNewModification(modif);
 	commander->setFrame();
 
@@ -649,10 +681,12 @@ int Game::dropSugar(int fruitId, int quantity, int x, int y) {
 	int idSugar = map->addSugarDrop(x, y, quantity);
 
 	//creation of modification for all players
-    int *modif = new int[3];
+    int *modif = new int[4];
     modif[0] = idSugar;
     modif[1] = x;
     modif[2] = y;
+	modif[3] = SUGAR_DROP;
+	modif[4] = quantity;
     map->addNewModification(modif);
 	commander->setFrame();
 
@@ -788,6 +822,7 @@ int Game::sellEquipment(int fruitId, int equipmentId) {
     // drop
     fruit->removeEquipment(equipment);
 	map->addSugar(fruit->getOwner(), equipment->getSellValue());
+	delete equipment;
     return OK;
 }
 
@@ -919,7 +954,7 @@ int Game::fructify(int fruitId, int fruitType, int x, int y) {
     {
         return NOT_OWNER;
     }
-    if (fruit->getOwner()->verifyNbFruit(fruitType) == false)
+    if (map->verifyNbFruit(fruitType, fruit->getOwner()) == false)
     {
         return LIMIT_REACHED;
     }
@@ -944,12 +979,12 @@ int Game::fructify(int fruitId, int fruitType, int x, int y) {
         return TOO_FAR;
     }
     // not enough sugar
-    if (fruit->getOwner()->hasEnough(20, 10) == NOT_ENOUGH_SUGAR)
+    if (fruit->getOwner()->hasEnough(FRUCTIFICATION_SUGAR_QUANTITY, FRUCTIFICATION_VITAMINS_QUANTITY) == NOT_ENOUGH_SUGAR)
     {
         return NOT_ENOUGH_SUGAR;
     }
     // not enough vitamins
-    if (fruit->getOwner()->hasEnough(20, 10) == NOT_ENOUGH_VITAMIN)
+    if (fruit->getOwner()->hasEnough(FRUCTIFICATION_SUGAR_QUANTITY, FRUCTIFICATION_VITAMINS_QUANTITY) == NOT_ENOUGH_SUGAR)
     {
         return NOT_ENOUGH_VITAMIN;
     }
@@ -961,10 +996,12 @@ int Game::fructify(int fruitId, int fruitType, int x, int y) {
     int idF = map->createFruit(fruitType, x, y, fruit->getOwner());
 
     //creation of modification for all players
-    int *modif = new int[3];
+    int *modif = new int[5];
     modif[0] = idF;
     modif[1] = x;
     modif[2] = y;
+	modif[3] = fruitType;
+	modif[4] = 0;
     map->addNewModification(modif);
 	commander->setFrame();
 
@@ -1009,7 +1046,7 @@ int Game::drawVitamin(int fruitId) {
 	fruit->useAction();
 
     // add sugar
-    fruit->getOwner()->addVitamins(5);
+    fruit->getOwner()->addVitamins(QUANTITY_VITAMINS_TAKEN);
     map->addSourceMiner();
     return OK;
 }

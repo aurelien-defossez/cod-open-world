@@ -5,6 +5,7 @@
 #include <utility>
 #include <map>
 #include <string>
+#include "Config.h"
 
 class MapModifications
 {
@@ -16,6 +17,11 @@ class MapModifications
         void addDeletedModification(int *newModif);
         void addMovedModification(int *newModif);
 		void reset();
+		IntMatrix2 getNewObjects();
+		IntMatrix1 getDeletedObjects();
+		IntMatrix2 getMovedFruits();
+		IntMatrix2 getModifiedFruits();
+		IntMatrix2 getModifiedSugarDrops();
 
         std::string printC();
 

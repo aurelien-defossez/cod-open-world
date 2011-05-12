@@ -1,6 +1,6 @@
 
-objects = Game.o Chest.o Equipment.o MapLoader.o OwnedBuilding.o Peeler.o SugarDrop.o Weapon.o Building.o Entity.o Fruit.o Loader.o Map.o MapModifications.o OwnedEntity.o Player.o SugarFountain.o
-sources = Game.cpp Chest.cpp Equipment.cpp MapLoader.cpp OwnedBuilding.cpp Peeler.cpp SugarDrop.cpp Weapon.cpp Building.cpp Entity.cpp Fruit.cpp Loader.cpp Map.cpp MapModifications.cpp OwnedEntity.cpp Player.cpp SugarFountain.cpp
+objects = Game.o Chest.o Equipment.o MapLoader.o OwnedBuilding.o Peeler.o SugarDrop.o Weapon.o Building.o Entity.o Fruit.o Loader.o Map.o MapModifications.o OwnedEntity.o Player.o 
+sources = Game.cpp Chest.cpp Equipment.cpp MapLoader.cpp OwnedBuilding.cpp Peeler.cpp SugarDrop.cpp Weapon.cpp Building.cpp Entity.cpp Fruit.cpp Loader.cpp Map.cpp MapModifications.cpp OwnedEntity.cpp Player.cpp
 
 
 # now give target as lab1 with objects as variable dependencies + command line

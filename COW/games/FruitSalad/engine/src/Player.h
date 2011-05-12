@@ -9,6 +9,8 @@ class Player
 {
 	public:
 		Player();
+		~Player();
+		
         void addNewModification(int *newModif);
         void addUpdatedModificationObject(int *newModif);
         void addUpdatedModificationSugar(int *newModif);
@@ -22,7 +24,6 @@ class Player
         void removeVitamins(int nbVitamins);
 
         int hasEnough(int nbSugar, int nbVitamins);
-        bool verifyNbFruit(int fruitType);
 		int getId();
         int getIdSugarBowl();
         int getIdFructificationTank();
@@ -33,6 +34,16 @@ class Player
         void setCurrentPlayer(bool state);
 		void setInfos(short aiId, char *aiName, char *playerName);
 		void resetMapModifications();
+		
+		IntMatrix2 getNewObjects();
+		IntMatrix1 getDeletedObjects();
+		IntMatrix2 getMovedFruits();
+		IntMatrix2 getModifiedFruits();
+		IntMatrix2 getModifiedSugarDrops();
+		void setCounts(int countCherryE, int countKiwiE, int countNutE);
+		int getCountCherry();
+		int getCountKiwi();
+		int getCountNut();
 
 	protected:
         MapModifications *mapModifications;
@@ -47,6 +58,9 @@ class Player
         int idSugarBowl;
         int idFructificationTank;
         int idJuiceBarrel;
+		int countCherry;
+		int countKiwi;
+		int countNut;
 };
 
 

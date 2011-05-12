@@ -145,3 +145,8 @@ int Equipment::getRange()
 {
     return range;
 }
+
+int Equipment::getAmmo()
+{
+	return ammo;
+}

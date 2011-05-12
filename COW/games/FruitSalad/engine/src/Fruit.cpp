@@ -58,6 +58,14 @@ OwnedEntity(positionE, idE, typeFruitE, ownerE)
     }
 }
 
+Fruit::~Fruit()
+{
+	for (int i=0; i<listEquipment.size(); i++)
+    {
+        delete listEquipment[i];
+    }
+}
+
 void Fruit::move(int xD, int yD)
 {
     x = xD;

@@ -5,6 +5,154 @@ Map::Map(SpecificCommander *commanderE)
     currentId = 0;
     nbSourceMiner = 0;
 	commander = commanderE;
+	countFruits = 0;
+}
+
+Map::~Map()
+{
+	std::map<int,Entity* >::iterator it;
+	for(it = mapIds.begin(); it != mapIds.end(); ++it)
+	{
+		delete it->second;
+	}
+	for(int i=0; i<listPlayers.size(); i++)
+	{
+		delete listPlayers[i];
+	}
+}
+void Map::setLimitCherry(int lim)
+{
+	limitCherry = lim;
+}
+void Map::setLimitKiwi(int lim)
+{
+	limitKiwi = lim;
+}
+void Map::setLimitNut(int lim)
+{
+	limitNut = lim;
+}
+bool Map::verifyNbFruit(int fruitType, Player *owner)
+{
+	if (fruitType == FRUIT_CHERRY)
+	{
+		return (owner->getCountCherry() < limitCherry);
+	}
+	if (fruitType == FRUIT_KIWI)
+	{
+		return (owner->getCountKiwi() < limitKiwi);
+	}
+	if (fruitType == FRUIT_NUT)
+	{
+		return (owner->getCountNut() < limitNut);
+	}
+}
+void Map::dropSugarRandomly()
+{
+    int count = 0;
+	Entity *sugarTree = getEntity(idSugarTree);
+    while (count < COUNT_NEW_SUGAR_DROP)
+    {
+        std::pair<int,int> position = getValidSquare(sugarTree->getPosition().first, sugarTree->getPosition().second, DISTANCE_OF_EJECTION);
+        if ((position.first == -1) && (position.second == -1))
+        {
+            break;
+        }
+        addSugarDrop(position.first, position.second, QUANTITY_SUGAR_EJECTED);
+    }
+}
+IntMatrix2 Map::getArchitecture()
+{
+	IntMatrix2 architecture = IntMatrix2(width, height);
+	//Ajout des murs et des vides
+	for (int i=0; i<width; i++)
+	{
+		for (int j=0; j<height; j++)
+		{
+			if (mapWalls.find(std::pair<int, int>(i, j)) != mapWalls.end())
+			{
+				architecture[i][j] = WALL;
+			}
+			else
+			{
+				architecture[i][j] = NOTHING;
+			}
+		}
+	}
+	Entity *building;
+	int x;
+	int y;
+	//Ajout des owned buildings
+	for(int i=0; i<listPlayers.size(); i++)
+    {
+        building = getEntity(listPlayers[i]->getIdFructificationTank());
+		x = building->getPosition().first;
+		y = building->getPosition().second;
+		architecture[x][y] = BUILDING_FRUCTIFICATION_TANK;
+		building = getEntity(listPlayers[i]->getIdSugarBowl());
+		x = building->getPosition().first;
+		y = building->getPosition().second;
+		architecture[x][y] = BUILDING_SUGAR_BOWL;
+		building = getEntity(listPlayers[i]->getIdJuiceBarrel());
+		x = building->getPosition().first;
+		y = building->getPosition().second;
+		architecture[x][y] = BUILDING_JUICE_BARREL;
+    }
+	//ajout des neutral buildings
+	building = getEntity(idVitaminSource);
+	x = building->getPosition().first;
+	y = building->getPosition().second;
+	architecture[x][y] = BUILDING_VITAMIN_SOURCE;
+	building = getEntity(idSugarTree);
+	x = building->getPosition().first;
+	y = building->getPosition().second;
+	architecture[x][y] = BUILDING_SUGAR_TREE;
+
+	return architecture;
+}
+IntMatrix2 Map::getFruits(Player *owner)
+{
+	IntMatrix2 fruitMatrix = IntMatrix2(countFruits, 4);
+	std::map<int,Entity* >::iterator it;
+	int count = 0;
+    for(it = mapIds.begin(); it != mapIds.end(); it++)
+    {
+        if ((it->second->getType() >= FRUIT_CHERRY) && (it->second->getType() <= FRUIT_NUT))
+		{
+			Fruit *fruit = (Fruit*)(it->second);
+			if (fruit->getOwner() == owner)
+			{
+				fruitMatrix[count][OBJECT_ID] = it->second->getId();
+				fruitMatrix[count][OBJECT_X] = it->second->getPosition().first;
+				fruitMatrix[count][OBJECT_Y] = it->second->getPosition().second;
+				fruitMatrix[count][OBJECT_TYPE] = it->second->getType();
+				count++;
+			}
+		}
+    }
+	return fruitMatrix;
+}
+IntMatrix2 Map::getBuildings(Player *owner)
+{
+	IntMatrix2 buildingMatrix = IntMatrix2(3, 4);
+	std::map<int,Entity* >::iterator it;
+	int count = 0;
+    for(it = mapIds.begin(); it != mapIds.end(); it++)
+    {
+        if ((it->second->getType() >= BUILDING_JUICE_BARREL) && (it->second->getType() <= BUILDING_FRUCTIFICATION_TANK))
+		{
+			OwnedBuilding *building = (OwnedBuilding*)(it->second);
+			if (building->getOwner() == owner)
+			{
+				buildingMatrix[count][OBJECT_ID] = it->second->getId();
+				buildingMatrix[count][OBJECT_X] = it->second->getPosition().first;
+				buildingMatrix[count][OBJECT_Y] = it->second->getPosition().second;
+				buildingMatrix[count][OBJECT_TYPE] = it->second->getType();
+				count++;
+			}
+		}
+    }
+	return buildingMatrix;
 }
 
 void Map::addNewModification(int *newModif)
@@ -109,6 +257,14 @@ void Map::addEntity(Entity *entity)
 {
     mapIds[entity->getId()] = entity;
     mapPositions.insert(std::pair<std::pair<int, int>, Entity*>(entity->getPosition(), entity));
+	if ((entity->getType() >= FRUIT_CHERRY) && (entity->getType() <= FRUIT_NUT))
+	{
+		Fruit *fruit = (Fruit*) entity;
+		if (fruit->getOwner() == listPlayers[0])
+		{
+			countFruits++;
+		}
+	}
 }
 
 void Map::moveEntity(Entity *entity, int x, int y)
@@ -428,15 +584,6 @@ void Map::endTurn()
 		Fruit *fruit = (Fruit*) it->second;
 		fruit->resetAction();
 	  }
-  }
-}
-
-void Map::destroy()
-{
-  std::map<int,Entity* >::iterator it;
-  for(it = mapIds.begin(); it != mapIds.end(); ++it)
-  {
-	  delete it->second;
   }
 }
 
