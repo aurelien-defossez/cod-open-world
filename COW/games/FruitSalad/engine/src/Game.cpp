@@ -51,7 +51,7 @@ void Game::init(int nbParameters, char *parameters[]) {
 	
 	
 	MapLoader *mapLoader = new MapLoader(map, commander);
-	mapLoader->loadMap("/home/pierrick/Fruit_Salad/cod-open-world/COW/games/FruitSalad/engine/src/map.txt");
+	mapLoader->loadMap("games/FruitSalad/engine/maps/map1.txt");
 	/*
 	for(int i = 0; i < nbParameters; i++) {
 		cout << "Parameter #" << i << " = " << parameters[i] << endl;
