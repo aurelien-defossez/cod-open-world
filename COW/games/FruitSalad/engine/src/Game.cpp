@@ -69,6 +69,8 @@ void Game::play() {
 	
 	cout << "setFrame" << endl;
 	commander->setFrame();
+	
+	
 	int nbTours;
 	int currentPlayer = 0;
 	int nbPlayers = map->getListPlayers().size();
@@ -82,24 +84,6 @@ void Game::play() {
 		IntMatrix2 fruits = map->getFruits(map->getListPlayers()[currentPlayer]);
 		IntMatrix2 buildings = map->getBuildings(map->getListPlayers()[currentPlayer]);
 		commander->initGame(currentPlayer, &archi, &fruits, &buildings, limitCherry, limitKiwi, limitNut);
-	  
-		
-		//On récupère les données à lui fournir
-		IntMatrix2 newObjects = map->getListPlayers()[currentPlayer]->getNewObjects();
-		IntMatrix1 deletedObjects = map->getListPlayers()[currentPlayer]->getDeletedObjects();
-		IntMatrix2 movedFruits = map->getListPlayers()[currentPlayer]->getMovedFruits();
-		IntMatrix2 modifiedFruits = map->getListPlayers()[currentPlayer]->getModifiedFruits();
-		IntMatrix2 modifiedSugarDrops = map->getListPlayers()[currentPlayer]->getModifiedSugarDrops();
-		
-		//On reset les modifications qu'on vient de lui envoyer
-		map->getListPlayers()[currentPlayer]->resetMapModifications();
-		
-		//On le fait jouer
-		commander->playTurn(currentPlayer, &newObjects, &deletedObjects, &movedFruits, &modifiedFruits, &modifiedSugarDrops);
-		
-		//On remet le joueur en passif
-		map->getListPlayers()[currentPlayer]->setCurrentPlayer(false);
-		
 	}
 	
 	for (int currentTour=0; currentTour<nbTours; currentTour++)
@@ -130,65 +114,13 @@ void Game::play() {
 		map->endTurn();
 		map->dropSugarRandomly();
 	}
-	/*
-	int height = 12;
-	int width = 10;
 	
-	// Create empty architecture
-	int **architecture = new int *[height];
-	for(int i = 0; i < height; i++) {
-		architecture[i] = new int[width];
-		for(int j = 0; j < width; j++) {
-			
-			if(i == 0 || i == height - 1 || j == 0 || j == width - 1) {
-				architecture[i][j] = WALL;
-			} else {
-				architecture[i][j] = NOTHING;
-			}
-		}
-	}
-	
-	
-	// Create fruits array
-	int nbFruits = 3;
-	IntMatrix2 fruits = IntMatrix2(nbFruits, 4);
-	fruits[0][OBJECT_ID] = 1;
-	fruits[0][OBJECT_X] = 8;
-	fruits[0][OBJECT_Y] = 5;
-	fruits[0][OBJECT_TYPE] = FRUIT_CHERRY;
-	fruits[1][OBJECT_ID] = 2;
-	fruits[1][OBJECT_X] = 8;
-	fruits[1][OBJECT_Y] = 6;
-	fruits[1][OBJECT_TYPE] = FRUIT_KIWI;
-	fruits[2][OBJECT_ID] = 3;
-	fruits[2][OBJECT_X] = 8;
-	fruits[2][OBJECT_Y] = 7;
-	fruits[2][OBJECT_TYPE] = FRUIT_NUT;
-	
-	// Create buildings array
-	int nbBuildings = 3;
-	IntMatrix2 buildings = IntMatrix2(nbBuildings, 4);
-	buildings[0][OBJECT_ID] = 4;
-	buildings[0][OBJECT_X] = 1;
-	buildings[0][OBJECT_Y] = 1;
-	buildings[0][OBJECT_TYPE] = BUILDING_JUICE_BARREL;
-	buildings[1][OBJECT_ID] = 5;
-	buildings[1][OBJECT_X] = 1;
-	buildings[1][OBJECT_Y] = 2;
-	buildings[1][OBJECT_TYPE] = BUILDING_SUGAR_BOWL;
-	buildings[2][OBJECT_ID] = 6;
-	buildings[2][OBJECT_X] = 1;
-	buildings[2][OBJECT_Y] = 3;
-	buildings[2][OBJECT_TYPE] = BUILDING_FRUCTIFICATION_TANK;
-	
-	IntMatrix2 *archPt = new IntMatrix2(height, width, architecture);
-	
-	cout << "Initializing AI #0" << endl;
-	commander->initGame(0, archPt, &fruits, &buildings, 4, 5, 6);
-	
-	delete(archPt);
-	delete(architecture);*/
-	
+	/*map->getListPlayers()[0]->setCurrentPlayer(true);
+	cout << move(8,4,3) << endl;
+	commander->setFrame();
+	cout << attack(9,11) << endl;
+	commander->setFrame();
+	*/
 }
 
 void Game::endGame() {

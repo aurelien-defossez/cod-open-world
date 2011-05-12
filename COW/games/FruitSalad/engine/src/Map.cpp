@@ -353,7 +353,9 @@ void Map::moveEntity(Entity *entity, int x, int y)
         }
     }
     mapPositions.insert(std::pair<std::pair<int, int>, Entity*>(std::pair<int,int>(x,y), entity));
-	commander->moveEntity(entity->getId(), x-entity->getPosition().first, y-entity->getPosition().second);
+	commander->moveEntity(entity->getId(), x-(entity->getPosition().first), y-(entity->getPosition().second));
+	std::cout << x << "-" << entity->getPosition().first << std::endl;
+	std::cout << y << "-" << entity->getPosition().second << std::endl;
 }
 
 std::pair<int,int> Map::getValidSquare(int x, int y, int distance)
@@ -425,7 +427,6 @@ void Map::createWalls(int x0, int y0, int x1, int y1)
             mapWalls.insert(std::pair<int,int>(i,j));
 			commander->createEntity(80, wallId);
 			commander->moveEntity(wallId, i, j);
-			commander->setFrame();
 			wallId--;
         }
     }

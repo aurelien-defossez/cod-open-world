@@ -59,7 +59,7 @@ void MapLoader::loadMap(char *fic)
                 variable >> heightint;
                 map->setDimensions(heightint, widthint);
 				
-				commander->displayGrid(0,0,map->getWidth(), map->getHeight(), 1, 1, 0x303030, false);
+				commander->displayGrid(0,0,map->getHeight(), map->getWidth(), 1, 1, 0x303030, false);
 				
                 std::getline(fichier, contenu);
                 std::getline(fichier, contenu); //get NbPlayers
@@ -126,7 +126,6 @@ void MapLoader::loadMap(char *fic)
                             variable >> y1int;
                             variable.clear();
                             map->createWalls(x0int, y0int, x1int, y1int);
-							cout << "Create walls from " << x0int << ";" << y0int << " to " << x1int << ";" << y1int << endl;
                         }
                         else if (letter == "B")
                         {
