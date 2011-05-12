@@ -1,4 +1,39 @@
 #include "Map.h"
+#include <queue>
+#include <cmath>
+
+using namespace std;
+
+struct AStarNode
+{
+	pair<int, int> pos;
+	int cost;
+	float estimated_cost;
+
+	AStarNode(int i, int j, int c, float ec) :
+		pos(make_pair(i, j)),
+		cost(c),
+		estimated_cost(ec)
+	{
+		// Do nothing
+	}
+	
+	AStarNode(pair<int, int> p, int c, float ec) :
+		pos(p),
+		cost(c),
+		estimated_cost(ec)
+	{
+		// Do nothing
+	}
+	
+	bool operator>(const AStarNode& rhs) const
+	{
+		return estimated_cost > rhs.estimated_cost;
+	}
+};
+
+typedef priority_queue<AStarNode, vector<AStarNode>, greater<AStarNode> >
+				PriorityQueue;
 
 Map::Map(SpecificCommander *commanderE)
 {
@@ -6,6 +41,7 @@ Map::Map(SpecificCommander *commanderE)
     nbSourceMiner = 0;
 	commander = commanderE;
 	countFruits = 0;
+	aStartInitialized = false;
 }
 
 Map::~Map()
@@ -15,23 +51,56 @@ Map::~Map()
 	{
 		delete it->second;
 	}
+	
 	for(int i=0; i<listPlayers.size(); i++)
 	{
 		delete listPlayers[i];
+	}
+	
+	// Delete Pathfinding matrices
+	if(aStartInitialized)
+	{
+		for(int i = 0; i < height; i++)
+		{
+			delete[] distances[i];
+			delete[] visited[i];
+		}
+		
+		delete[] distances;
+		delete[] visited;
 	}
 }
 void Map::setLimitCherry(int lim)
 {
 	limitCherry = lim;
 }
+
 void Map::setLimitKiwi(int lim)
 {
 	limitKiwi = lim;
 }
+
 void Map::setLimitNut(int lim)
 {
 	limitNut = lim;
 }
+
+int Map::getLimitCherry()
+{
+	return limitCherry;
+}
+
+int Map::getLimitKiwi()
+{
+	return limitKiwi;
+}
+
+int Map::getLimitNut()
+{
+	return limitNut;
+}
+
+
 bool Map::verifyNbFruit(int fruitType, Player *owner)
 {
 	if (fruitType == FRUIT_CHERRY)
@@ -79,6 +148,7 @@ IntMatrix2 Map::getArchitecture()
 			}
 		}
 	}
+	
 	Entity *building;
 	int x;
 	int y;
@@ -308,15 +378,21 @@ std::pair<int,int> Map::getValidSquare(int x, int y, int distance)
     return validSquares[randSquare];
 }
 
-
-void Map::setWidth(int w)
-{
-    width = w;
-}
-
-void Map::setHeight(int h)
+void Map::setDimensions(int h, int w)
 {
     height = h;
+    width = w;
+	
+	// Initialise l'algo de Pathfinding
+	aStartInitialized = true;
+	distances = new float*[height];
+	visited = new bool*[height];
+	for(int i = 0; i < height; i++)
+	{
+		distances[i] = new float[width];
+		visited[i] = new bool[width];
+	}
+	
 }
 
 int Map::getWidth()
@@ -520,6 +596,121 @@ bool Map::detectObstacle(std::vector<std::pair<int,int> > positions)
 	}
 }
 
+bool Map::checkObstacle(int x, int y)
+{
+	// Outside map
+	if(x < 0 || x >= height || y < 0 || y >= width)
+	{
+		return true;
+	}
+	
+	// Create position
+	pair<int, int> pos = make_pair(x, y);
+	
+	// Is wall
+	if(mapWalls.find(pos) != mapWalls.end())
+	{
+		return true;
+	}
+	
+	// Check for obstacles
+	pair<multimap<pair<int,int>, Entity* >::iterator,
+			 multimap<pair<int,int>, Entity* >::iterator>
+	  range = mapPositions.equal_range(pos);
+	multimap<pair<int,int>, Entity* >::iterator it;
+	for(it = range.first; it != range.second; it++)
+	{
+		// Entity bloquing the way
+		if(it->second->isObstacle())
+		{
+			return true;
+		}
+	}
+	
+	// Not an obstacle
+	return false;
+}
+
+int Map::distanceBetween(Entity *entity, int x, int y, int maxDistance = -1)
+{
+	pair<int, int> start = entity->getPosition();
+	pair<int, int> goal = make_pair(x, y);
+	int sx = start.first;
+	int sy = start.second;
+	PriorityQueue heap;
+	
+	// Initialize matrices
+	for(int i = 0; i < height; i++)
+	{
+		for(int j = 0; j < width; j++)
+		{
+			distances[i][j] = -1;
+			visited[i][j] = false;
+		}
+	}
+	
+	// Push start node
+	heap.push(AStarNode(sx, sy, 0, 0));
+	distances[sx][sy] = 0;
+	
+	// While there are possibilities to try ...
+	while(!heap.empty())
+	{
+		// Retrieve Node
+		AStarNode current = heap.top();
+		heap.pop();
+		int cx = current.pos.first;
+		int cy = current.pos.second;
+		
+		// Visit square
+		if(!visited[cx][cy])
+		{
+			visited[cx][cy] = true;
+			
+			// Path found, returning path length
+			if(current.pos == goal)
+			{
+				return current.cost;
+			}
+			
+			// Add neighbours
+			for(int i = -1; i <= 1; i++)
+			{
+				for(int j = -1; j <= 1; j++)
+				{
+					if(i != 0 && j != 0)
+					{
+						int tx = cx + i;
+						int ty = cy + j;
+						
+						// If this square is empty
+						if(!checkObstacle(tx, ty))
+						{
+							int cost = distances[cx][cy] + 1;
+							
+							// If this square wat not yet explored or has a better path
+							if(!visited[tx][ty]
+							&& (distances[tx][ty] < 0 || cost < distances[tx][ty]))
+							{
+								distances[tx][ty] = cost;
+								
+								// Add node only if interesting
+								if(maxDistance == -1 || cost <= maxDistance)
+								{
+									int hCost = max(abs(x - tx), abs(y - ty)); 
+									heap.push(AStarNode(tx, ty, cost, hCost));
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	return -1;
+}
+
 std::vector<std::pair<int,int> > Map::drawLine(int x0, int y0, int x1, int y1)
 {
 	std::vector<std::pair<int, int> > squares = std::vector<std::pair<int, int> >();
@@ -566,11 +757,6 @@ int Map::getCurrentPlayer()
 		  return i;
 	  }
   }
-}
-
-int Map::distanceBetween(Entity* fruit, int x, int y)
-{
-  return 2;
 }
 
 void Map::endTurn()

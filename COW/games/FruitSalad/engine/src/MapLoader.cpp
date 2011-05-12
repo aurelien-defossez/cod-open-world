@@ -50,11 +50,10 @@ void MapLoader::loadMap(char *fic)
                 variable.clear();
                 variable.str(width);
                 variable >> widthint;
-                map->setWidth(widthint);
                 variable.clear();
                 variable.str(height);
                 variable >> heightint;
-                map->setHeight(heightint);
+                map->setDimensions(heightint, widthint);
 				
 				commander->displayGrid(0,0,map->getWidth(), map->getHeight(), 1, 1, 0x303030, false);
 				

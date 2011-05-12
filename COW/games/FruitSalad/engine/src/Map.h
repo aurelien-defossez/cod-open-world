@@ -47,10 +47,11 @@ class Map
 		
         bool contains(int x, int y);
         bool isWall(int x, int y);
-		int distanceBetween(Entity* fruit, int x, int y);
         std::pair<int,int> getValidSquare(int x, int y, int distance);
         bool canHit(Fruit* fruit, Fruit* target);
         bool detectObstacle(std::vector<std::pair<int,int> > positions);
+		bool checkObstacle(int x, int y);
+		int distanceBetween(Entity *entity, int x, int y, int maxDistance = -1);
 		
         std::vector<std::pair<int,int> > drawLine(int x0, int y0, int x1, int y1);
 		
@@ -62,11 +63,13 @@ class Map
 		void setLimitCherry(int lim);
 		void setLimitKiwi(int lim);
 		void setLimitNut(int lim);
+		int getLimitCherry();
+		int getLimitKiwi();
+		int getLimitNut();
 
         void addSourceMiner();
         void resetSourceMiner();
-        void setWidth(int w);
-        void setHeight(int h);
+        void setDimensions(int h, int w);
 		int getWidth();
         int getHeight();
         void setCurrentId(int id);
@@ -95,7 +98,10 @@ class Map
         int idVitaminSource;
         int idSugarTree;
 		SpecificCommander *commander;
-
+		
+		bool aStartInitialized;
+		int **distances;
+		bool **visited;
 };
 
 
