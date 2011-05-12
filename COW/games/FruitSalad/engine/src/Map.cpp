@@ -8,9 +8,9 @@ struct AStarNode
 {
 	pair<int, int> pos;
 	int cost;
-	float estimated_cost;
+	int estimated_cost;
 
-	AStarNode(int i, int j, int c, float ec) :
+	AStarNode(int i, int j, int c, int ec) :
 		pos(make_pair(i, j)),
 		cost(c),
 		estimated_cost(ec)
@@ -18,7 +18,7 @@ struct AStarNode
 		// Do nothing
 	}
 	
-	AStarNode(pair<int, int> p, int c, float ec) :
+	AStarNode(pair<int, int> p, int c, int ec) :
 		pos(p),
 		cost(c),
 		estimated_cost(ec)
@@ -385,11 +385,11 @@ void Map::setDimensions(int h, int w)
 	
 	// Initialise l'algo de Pathfinding
 	aStartInitialized = true;
-	distances = new float*[height];
+	distances = new int*[height];
 	visited = new bool*[height];
 	for(int i = 0; i < height; i++)
 	{
-		distances[i] = new float[width];
+		distances[i] = new int[width];
 		visited[i] = new bool[width];
 	}
 	
@@ -631,7 +631,7 @@ bool Map::checkObstacle(int x, int y)
 	return false;
 }
 
-int Map::distanceBetween(Entity *entity, int x, int y, int maxDistance = -1)
+int Map::distanceBetween(Entity *entity, int x, int y, int maxDistance)
 {
 	pair<int, int> start = entity->getPosition();
 	pair<int, int> goal = make_pair(x, y);

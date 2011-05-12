@@ -73,6 +73,34 @@ void Game::play() {
 	int currentPlayer = 0;
 	int nbPlayers = map->getListPlayers().size();
 	
+	IntMatrix2 archi = map->getArchitecture();
+	int limitCherry = map->getLimitCherry();
+	int limitKiwi = map->getLimitKiwi();
+	int limitNut = map->getLimitNut();
+	for (currentPlayer=0; currentPlayer<nbPlayers; currentPlayer++)
+	{
+		IntMatrix2 fruits = map->getFruits(map->getListPlayers()[currentPlayer]);
+		IntMatrix2 buildings = map->getBuildings(map->getListPlayers()[currentPlayer]);
+		commander->initGame(currentPlayer, &archi, &fruits, &buildings, limitCherry, limitKiwi, limitNut);
+	  
+		
+		//On récupère les données à lui fournir
+		IntMatrix2 newObjects = map->getListPlayers()[currentPlayer]->getNewObjects();
+		IntMatrix1 deletedObjects = map->getListPlayers()[currentPlayer]->getDeletedObjects();
+		IntMatrix2 movedFruits = map->getListPlayers()[currentPlayer]->getMovedFruits();
+		IntMatrix2 modifiedFruits = map->getListPlayers()[currentPlayer]->getModifiedFruits();
+		IntMatrix2 modifiedSugarDrops = map->getListPlayers()[currentPlayer]->getModifiedSugarDrops();
+		
+		//On reset les modifications qu'on vient de lui envoyer
+		map->getListPlayers()[currentPlayer]->resetMapModifications();
+		
+		//On le fait jouer
+		commander->playTurn(currentPlayer, &newObjects, &deletedObjects, &movedFruits, &modifiedFruits, &modifiedSugarDrops);
+		
+		//On remet le joueur en passif
+		map->getListPlayers()[currentPlayer]->setCurrentPlayer(false);
+		
+	}
 	
 	for (int currentTour=0; currentTour<nbTours; currentTour++)
 	{
@@ -209,7 +237,7 @@ int Game::move(int fruitId, int x, int y) {
     std::pair<int,int> position;
     position.first = x;
     position.second = y;
-    if (map->distanceBetween(fruit, x, y) >= fruit->getSpeed())
+    if (map->distanceBetween(fruit, x, y, fruit->getSpeed()) == -1)
     {
         return TOO_FAR;
     }
@@ -535,7 +563,7 @@ int Game::dropEquipment(int fruitId, int equipmentId, int x, int y) {
     std::pair<int,int> position;
     position.first = x;
     position.second = y;
-    if (map->distanceBetween(fruit, x, y) > 1)
+    if (map->distanceBetween(fruit, x, y, 1) == -1)
     {
         return TOO_FAR;
     }
@@ -668,7 +696,7 @@ int Game::dropSugar(int fruitId, int quantity, int x, int y) {
     std::pair<int,int> position;
     position.first = x;
     position.second = y;
-    if (map->distanceBetween(fruit, x, y) > 1)
+    if (map->distanceBetween(fruit, x, y, 1) == -1)
     {
         return TOO_FAR;
     }

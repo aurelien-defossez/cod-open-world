@@ -96,7 +96,6 @@ bool Fruit::removeHP(int nbHP)
         life -= damage;
         if (life <= 0)
         {
-            die();
             return true;
         }
     }
@@ -199,14 +198,11 @@ void Fruit::useAction()
     counterAction += 1;
 }
 
-void Fruit::die()
-{
-    //emit die
-}
-
 void Fruit::addEquipment(Equipment *equipment)
 {
     listEquipment.push_back(equipment);
+	capacity += equipment->getWeight();
+	updateSpeed();
 }
 
 void Fruit::removeEquipment(Equipment *equipment)
@@ -217,10 +213,38 @@ void Fruit::removeEquipment(Equipment *equipment)
         if (listEquipment[i] == equipment)
         {
             index = i;
+			capacity -= listEquipment[i]->getWeight();
+			updateSpeed();
             break;
         }
     }
     listEquipment.erase(listEquipment.begin()+index-1);
+}
+
+void Fruit::updateSpeed()
+{
+  switch (type) {
+	case FRUIT_CHERRY :
+	  if (capacity<20) speed = 6;
+	  else if (capacity<30) speed = 5;
+	  else if (capacity<35) speed = 4;
+	  else if (capacity<39) speed = 3;
+	  else if (capacity<42) speed = 2;
+	  else speed = 1;
+	  break;
+	case FRUIT_KIWI :
+	  if (capacity<35) speed = 4;
+	  else if (capacity<45) speed = 3;
+	  else if (capacity<51) speed = 2;
+	  else speed = 1;
+	  break;
+	case FRUIT_NUT :
+	  if (capacity<42) speed = 2;
+	  else speed = 1;
+	  break;
+	default :
+	  break;
+  }
 }
 
 bool Fruit::hasActionLeft()
@@ -265,17 +289,17 @@ bool Fruit::hasEquipment(Equipment *equipment)
 
 bool Fruit::useEquipment(Equipment *equipment, Entity *target)
 {
-    if (((equipment->getType() >= 20) && (equipment->getType() <= 25)) || ((equipment->getType() == 27)))
+    if (((equipment->getType() >= EQUIPMENT_TEA_SPOON) && (equipment->getType() <= EQUIPMENT_SALT_SNIPER)) || ((equipment->getType() == EQUIPMENT_JUICE_NEEDLE)))
     {
         Weapon *weapon = (Weapon*)equipment;
         return weapon->use(target);
     }
-    else if (equipment->getType() == 26)
+    else if (equipment->getType() == EQUIPMENT_PEELER)
     {
         Peeler *peeler = (Peeler*)equipment;
         return peeler->use(target);
     }
-    else if (equipment->getType() == 28)
+    else if (equipment->getType() == EQUIPMENT_RELOADER)
     {
         Loader *loader = (Loader*)equipment;
         return loader->use(target);

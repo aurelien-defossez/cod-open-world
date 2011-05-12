@@ -25,7 +25,7 @@ class Fruit : public OwnedEntity
         void addDefense(int nbDefense);
         void removeDefense(int nbDefense);
         void reload();
-        void die();
+		void updateSpeed();
         void resetAction();
 
         bool hasMaxHP();
