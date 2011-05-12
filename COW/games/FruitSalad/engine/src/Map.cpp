@@ -139,7 +139,7 @@ IntMatrix2 Map::getArchitecture()
 	{
 		for (int j=0; j<height; j++)
 		{
-			if (mapWalls.find(std::pair<int, int>(i, j)) != mapWalls.end())
+			if (mapWalls.find(std::pair<int, int>(i,j)) != mapWalls.end())
 			{
 				architecture[i][j] = WALL;
 			}
@@ -149,7 +149,6 @@ IntMatrix2 Map::getArchitecture()
 			}
 		}
 	}
-	
 	Entity *building;
 	int x;
 	int y;
@@ -178,7 +177,6 @@ IntMatrix2 Map::getArchitecture()
 	x = building->getPosition().first;
 	y = building->getPosition().second;
 	architecture[x][y] = BUILDING_SUGAR_TREE;
-
 	return architecture;
 }
 IntMatrix2 Map::getFruits(Player *owner)
@@ -335,6 +333,30 @@ void Map::addEntity(Entity *entity)
 		{
 			countFruits++;
 		}
+	}
+	else if ((entity->getType() >= BUILDING_JUICE_BARREL) && (entity->getType() <= BUILDING_FRUCTIFICATION_TANK))
+	{
+		OwnedBuilding *building = (OwnedBuilding*) entity;
+		if (entity->getType() == BUILDING_JUICE_BARREL)
+		{
+		  building->getOwner()->setIdJuiceBarrel(building->getId());
+		}
+		else if (entity->getType() == BUILDING_SUGAR_BOWL)
+		{
+		  building->getOwner()->setIdSugarBowl(building->getId());
+		}
+		else if (entity->getType() == BUILDING_FRUCTIFICATION_TANK)
+		{
+		  building->getOwner()->setIdFructificationTank(building->getId());
+		}
+	}
+	else if (entity->getType() == BUILDING_VITAMIN_SOURCE)
+	{
+		idVitaminSource = entity->getId();
+	}
+	else if (entity->getType() == BUILDING_SUGAR_TREE)
+	{
+		idSugarTree = entity->getId();
 	}
 }
 

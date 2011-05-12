@@ -71,14 +71,16 @@ void Game::play() {
 	commander->setFrame();
 	
 	
-	int nbTours;
+	int nbTours = 20;
 	int currentPlayer = 0;
 	int nbPlayers = map->getListPlayers().size();
-	
+	cout << "getarchi" << endl;
 	IntMatrix2 archi = map->getArchitecture();
+	cout << "alors ?" << endl;
 	int limitCherry = map->getLimitCherry();
 	int limitKiwi = map->getLimitKiwi();
 	int limitNut = map->getLimitNut();
+	
 	for (currentPlayer=0; currentPlayer<nbPlayers; currentPlayer++)
 	{
 		IntMatrix2 fruits = map->getFruits(map->getListPlayers()[currentPlayer]);
