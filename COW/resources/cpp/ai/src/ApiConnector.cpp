@@ -2,6 +2,10 @@
 #include "connector.hpp"
 #include "Variant.hpp"
 
+// TODO TEMP
+#include <iostream>
+using namespace std;
+
 ApiConnector::ApiConnector() {
 	setApiConnector(this);
 }
@@ -21,6 +25,8 @@ Variant ApiConnector::callGameFunction(int functionId, int nbParameters,
 		addParameter(parameters[i]);
 	}
 	
-	makeCall();
-	return toVariant(42);
+	cout << "Making call..." << endl;
+	int value = makeCall();
+	cout << "Call made, value = " << value << endl;
+	return toVariant(value);
 }

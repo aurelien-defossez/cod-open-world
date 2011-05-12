@@ -10,7 +10,7 @@ public class AiCallbackHandler implements CallbackHandler {
 	
 	private PrepareCallCallbackImpl prepareCallback;
 	private AddParameterCallbackImpl addParameterCallback;
-	private MakeCallCallbackImpl makeCallCallback;
+	private MakeReturnCallCallbackImpl makeCallCallback;
 	
 	public AiCallbackHandler(CppAiConnector connector,
 		AiLibraryInterface aiLib) {
@@ -20,7 +20,7 @@ public class AiCallbackHandler implements CallbackHandler {
 		// collector
 		prepareCallback = new PrepareCallCallbackImpl(this);
 		addParameterCallback = new AddParameterCallbackImpl(this);
-		makeCallCallback = new MakeCallCallbackImpl(this);
+		makeCallCallback = new MakeReturnCallCallbackImpl(this);
 		
 		// Register callbacks
 		aiLib.registerCallbacks(prepareCallback, addParameterCallback,
@@ -39,5 +39,10 @@ public class AiCallbackHandler implements CallbackHandler {
 		// Call Game API function
 		// TODO: return variant
 		connector.callGameFunction(call);
+	}
+	
+	public int makeReturnCall() {
+		connector.callGameFunction(call);
+		return 42;
 	}
 }

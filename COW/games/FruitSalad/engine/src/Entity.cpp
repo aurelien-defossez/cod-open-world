@@ -21,10 +21,7 @@ int Entity::getId()
 
 std::pair<int,int> Entity::getPosition()
 {
-    std::pair<int,int> position;
-    position.first = x;
-    position.second = y;
-    return position;
+    return std::pair<int,int>(x, y);
 }
 
 int Entity::maximumOffset(Entity *target)

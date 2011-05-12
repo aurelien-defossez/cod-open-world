@@ -78,4 +78,9 @@ public class GameCallbackHandler implements CallbackHandler {
 			break;
 		}
 	}
+	
+	public int makeReturnCall() {
+		// Not used by game
+		return 0;
+	}
 }

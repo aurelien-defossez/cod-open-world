@@ -86,7 +86,7 @@ class Map
         std::set<std::pair<int, int> > mapWalls; //true = WALL
 
         int currentId;
-		//int wallId;
+		int wallId;
         int nbSourceMiner;
         int width;
         int height;

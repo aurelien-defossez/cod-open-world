@@ -10,7 +10,7 @@
 
 typedef void prepareCallCallback(int, int);
 typedef void addParameterCallback(Variant);
-typedef void makeCallCallback();
+typedef int makeCallCallback();
 
 // -------------------------------------------------------------------------
 // Commander class

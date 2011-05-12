@@ -6,4 +6,6 @@ public interface CallbackHandler {
 	public abstract void addParameter(VariantStruct parameter);
 	
 	public abstract void makeCall();
+
+	public abstract int makeReturnCall();
 }

@@ -1,5 +1,9 @@
 #include"MapLoader.h"
 
+// TODO REMOVE
+#include <iostream>
+using namespace std;
+
 MapLoader::MapLoader(Map *mapE, SpecificCommander *commanderE)
 {
     map = mapE;
@@ -122,6 +126,7 @@ void MapLoader::loadMap(char *fic)
                             variable >> y1int;
                             variable.clear();
                             map->createWalls(x0int, y0int, x1int, y1int);
+							cout << "Create walls from " << x0int << ";" << y0int << " to " << x1int << ";" << y1int << endl;
                         }
                         else if (letter == "B")
                         {

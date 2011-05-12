@@ -38,7 +38,7 @@ typedef priority_queue<AStarNode, vector<AStarNode>, greater<AStarNode> >
 Map::Map(SpecificCommander *commanderE)
 {
     currentId = 0;
-	//wallId = -1;
+	wallId = -1;
     nbSourceMiner = 0;
 	commander = commanderE;
 	countFruits = 0;
@@ -423,9 +423,10 @@ void Map::createWalls(int x0, int y0, int x1, int y1)
         for (int j=y0; j<=y1; j++)
         {
             mapWalls.insert(std::pair<int,int>(i,j));
-			commander->createEntity(80, -1);
-			commander->moveEntity(-1, i, j);
-			//wallId--;
+			commander->createEntity(80, wallId);
+			commander->moveEntity(wallId, i, j);
+			commander->setFrame();
+			wallId--;
         }
     }
 }

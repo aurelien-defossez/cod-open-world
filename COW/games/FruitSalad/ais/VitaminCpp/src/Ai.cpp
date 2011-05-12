@@ -31,6 +31,8 @@ void Ai::playTurn(IntMatrix2 newObjects,
 	IntMatrix1 deletedObjects, IntMatrix2 movedFruits,
 	IntMatrix2 modifiedFruits, IntMatrix2 modifiedSugarDrops) {
 	cout << "VitaminCpp: Play Turn..." << endl;
+	
+	//api->move(0, 1, 1);
 }
 
 void Ai::chestOpened(int chestId, IntMatrix2 equipments) {

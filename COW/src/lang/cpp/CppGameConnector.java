@@ -7,21 +7,23 @@ import com.Variant;
 import com.ai.Ai;
 import com.game.Game;
 import com.game.GameConnector;
+import com.sun.jna.Library;
 import com.sun.jna.Native;
 
 public class CppGameConnector extends GameConnector {
 	
 	private GameLibraryInterface gameLib;
+	private GameCallbackHandler callbackHandler;
 	
 	public CppGameConnector(Game game) {
 		super(game);
 		
 		// Set path to game
-		System.setProperty("jna.library.path",
-			"games/" + game.getName() + "/engine");
+		CppUtils.setJNALibraryPath("");
+		CppUtils.appendJNALibraryPath("games/" + game.getName() + "/engine");
 		
 		// Load game
-		gameLib = (GameLibraryInterface) Native.loadLibrary("game",
+		gameLib = (GameLibraryInterface) (Library)Native.loadLibrary("game",
 				GameLibraryInterface.class);
 	}
 	
@@ -31,8 +33,7 @@ public class CppGameConnector extends GameConnector {
 	@Override
 	public void initGame(Collection<Ai> ais, String[] parameters) {
 		// Create callback handler
-		new GameCallbackHandler(this, gameLib);
-		
+		callbackHandler = new GameCallbackHandler(this, gameLib);
 		gameLib.init(parameters.length, parameters);
 		
 		for (Ai ai : ais) {
