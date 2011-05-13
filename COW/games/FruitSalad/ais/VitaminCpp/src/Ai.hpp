@@ -27,7 +27,10 @@ public:
 		IntMatrix1 deletedObjects, IntMatrix2 movedFruits,
 		IntMatrix2 modifiedFruits, IntMatrix2 modifiedSugarDrops);
 	
-	void chestOpened(int chestId, IntMatrix2 equipments);
+	void mapUpdate(IntMatrix2 newObjects, IntMatrix2 modifiedSugarDrops);
+
+private:
+	void testGameApi();
 };
 
 #endif

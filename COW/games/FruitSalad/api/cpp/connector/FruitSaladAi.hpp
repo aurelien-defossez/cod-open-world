@@ -98,7 +98,8 @@ public:
 		IntMatrix1 deletedObjects, IntMatrix2 movedFruits,
 		IntMatrix2 modifiedFruits, IntMatrix2 modifiedSugarDrops) = 0;
 	
-	virtual void chestOpened(int chestId, IntMatrix2 equipments) = 0;
+	virtual void mapUpdate(IntMatrix2 newObjects,
+		IntMatrix2 modifiedSugarDrops) = 0;
 };
 
 #endif

@@ -21,9 +21,9 @@ void SpecificCommunicator::performAiFunction(int functionId,
 			);
 			break;
 		
-		case __AI_API_FUNCTION_CHEST_OPENED__:
-			ai->chestOpened(
-				intValue(parameters[0]),
+		case __AI_API_FUNCTION_MAP_UPDATE__:
+			ai->mapUpdate(
+				IntMatrix2(parameters[0]),
 				IntMatrix2(parameters[1])
 			);
 			break;

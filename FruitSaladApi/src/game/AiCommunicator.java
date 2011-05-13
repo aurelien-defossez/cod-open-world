@@ -17,7 +17,7 @@ public class AiCommunicator extends JavaAiCommunicator {
 	// Phases
 	private static final byte __AI_API_FUNCTION_INIT_GAME__ = 1;
 	private static final byte __AI_API_FUNCTION_PLAY_TURN__ = 2;
-	private static final byte __AI_API_FUNCTION_CHEST_OPENED__ = 3;
+	private static final byte __AI_API_FUNCTION_MAP_UPDATE__ = 3;
 	
 	// -------------------------------------------------------------------------
 	// Attributes
@@ -53,17 +53,6 @@ public class AiCommunicator extends JavaAiCommunicator {
 	@Override
 	public void performAiFunction(ApiCall call) {
 		switch (call.getFunctionId()) {
-		case __AI_API_FUNCTION_INIT_GAME__:
-			aiInstance.initGame(
-				call.getParameter(0).getIntMatrix2Value(),
-				call.getParameter(1).getIntMatrix2Value(),
-				call.getParameter(2).getIntMatrix2Value(),
-				call.getParameter(3).getIntValue(),
-				call.getParameter(4).getIntValue(),
-				call.getParameter(5).getIntValue()
-			);
-			break;
-			
 		case __AI_API_FUNCTION_PLAY_TURN__:
 			aiInstance.playTurn(
 				call.getParameter(0).getIntMatrix2Value(),
@@ -73,9 +62,21 @@ public class AiCommunicator extends JavaAiCommunicator {
 				call.getParameter(4).getIntMatrix2Value());
 			break;
 			
-		case __AI_API_FUNCTION_CHEST_OPENED__:
-			aiInstance.chestOpened(call.getParameter(0).getIntValue(),
-				call.getParameter(0).getIntMatrix2Value());
+		case __AI_API_FUNCTION_MAP_UPDATE__:
+			aiInstance.mapUpdate(
+				call.getParameter(0).getIntMatrix2Value(),
+				call.getParameter(1).getIntMatrix2Value());
+			break;
+		
+		case __AI_API_FUNCTION_INIT_GAME__:
+			aiInstance.initGame(
+				call.getParameter(0).getIntMatrix2Value(),
+				call.getParameter(1).getIntMatrix2Value(),
+				call.getParameter(2).getIntMatrix2Value(),
+				call.getParameter(3).getIntValue(),
+				call.getParameter(4).getIntValue(),
+				call.getParameter(5).getIntValue()
+			);
 			break;
 		}
 	}

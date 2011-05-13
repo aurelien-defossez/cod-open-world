@@ -47,8 +47,6 @@ public:
 	int drinkJuice(int fruitId);
 	int fructify(int fruitId, int fruitType, int x, int y);
 	int drawVitamin(int fruitId);
-	int writeText(char *text);
-	int writeTextAt(char *text, int x, int y);
 	int drawLine(int x1, int y1, int x2, int y2, int color);
 	int drawCircle(int x, int y, int radius, int color);
 	

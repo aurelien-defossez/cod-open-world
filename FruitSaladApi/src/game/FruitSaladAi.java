@@ -21,5 +21,5 @@ public interface FruitSaladAi {
 	public void playTurn(int[][] newObjects, int[] deletedObjects,
 		int[][] movedFruits, int[][] modifiedFruits, int[][] modifiedSugarDrops);
 	
-	public void chestOpened(int chestId, int[][] equipments);
+	public void mapUpdate(int[][] newObjects, int[][] modifiedSugarDrops);
 }

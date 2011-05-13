@@ -106,20 +106,6 @@ int SpecificApiConnector::drawVitamin(int fruitId) {
 	return intValue(callGameFunction(__GAME_API_FUNCTION_DRAW_VITAMIN__, 1, parameters));
 }
 
-int SpecificApiConnector::writeText(char *text) {
-	Variant parameters[1];
-	parameters[0] = toVariant(text);
-	return intValue(callGameFunction(__GAME_API_FUNCTION_WRITE_TEXT__, 1, parameters));
-}
-
-int SpecificApiConnector::writeTextAt(char *text, int x, int y) {
-	Variant parameters[3];
-	parameters[0] = toVariant(text);
-	parameters[1] = toVariant(x);
-	parameters[2] = toVariant(y);
-	return intValue(callGameFunction(__GAME_API_FUNCTION_WRITE_TEXT_AT__, 3, parameters));
-}
-
 int SpecificApiConnector::drawLine(int x1, int y1, int x2, int y2, int color) {
 	Variant parameters[5];
 	parameters[0] = toVariant(x1);

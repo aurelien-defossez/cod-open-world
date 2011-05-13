@@ -108,8 +108,6 @@ public:
 	virtual int drinkJuice(int fruitId) = 0;
 	virtual int fructify(int fruitId, int fruitType, int x, int y) = 0;
 	virtual int drawVitamin(int fruitId) = 0;
-	virtual int writeText(char *text) = 0;
-	virtual int writeTextAt(char *text, int x, int y) = 0;
 	virtual int drawLine(int x1, int y1, int x2, int y2, int color) = 0;
 	virtual int drawCircle(int x, int y, int radius, int color) = 0;
 };

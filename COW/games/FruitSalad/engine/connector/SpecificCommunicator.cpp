@@ -134,20 +134,6 @@ Variant SpecificCommunicator::performGameFunction(int functionId,
 			));
 			break;
 		
-		case __GAME_API_FUNCTION_WRITE_TEXT__:
-			return toVariant(game->writeText(
-				stringValue(parameters[0])
-			));
-			break;
-		
-		case __GAME_API_FUNCTION_WRITE_TEXT_AT__:
-			return toVariant(game->writeTextAt(
-				stringValue(parameters[0]),
-				intValue(parameters[1]),
-				intValue(parameters[2])
-			));
-			break;
-		
 		case __GAME_API_FUNCTION_DRAW_LINE__:
 			return toVariant(game->drawLine(
 				intValue(parameters[0]),

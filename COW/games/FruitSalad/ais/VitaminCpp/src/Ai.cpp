@@ -114,9 +114,73 @@ void Ai::playTurn(IntMatrix2 newObjects,
 	}
 	cout << endl;
 	
-	cout << "move = " << api->move(1, 2, 3) << endl;
+	cout << "== Test Game API ==" << endl;
+	// Test game API functions
+	testGameApi();
 }
 
-void Ai::chestOpened(int chestId, IntMatrix2 equipments) {
-	cout << "VitaminCpp: Open chest..." << endl;
+void Ai::mapUpdate(IntMatrix2 newObjects, IntMatrix2 modifiedSugarDrops) {
+	cout << "VitaminCpp: Map update..." << endl;
+	
+	// Display new objects
+	cout << "== New objects ==" << endl;
+	for (int i = 0; i < newObjects.size(); i++) {
+		cout << "New object: "
+			<< api->decode(newObjects[i][OBJECT_TYPE]) << " " << "id #"
+			<< newObjects[i][OBJECT_ID] << " at ("
+			<< newObjects[i][OBJECT_X] << ";"
+			<< newObjects[i][OBJECT_Y] << ") ; info="
+			<< newObjects[i][OBJECT_INFO] << endl;
+	}
+	cout << endl;
+	
+	// Display modified sugar drops objects
+	cout << "== Modified sugar drops ==" << endl;
+	for (int i = 0; i < modifiedSugarDrops.size(); i++) {
+		cout << "Sugar drop: id #"
+			<< modifiedSugarDrops[i][OBJECT_ID] << " now has "
+			<< modifiedSugarDrops[i][OBJECT_SUGAR] << " sugar grains" << endl;
+	}
+	cout << endl;
+}
+
+void Ai::testGameApi() {
+	cout << "move: " + api->decode(api->move(1, 42, 42)) << endl;
+	
+	cout << "attack: " + api->decode(api->attack(1, 2)) << endl;
+	
+	cout << "useEquipment: "
+		+ api->decode(api->useEquipment(1, 512, 1)) << endl;
+	
+	cout << "pickUpEquipment: "
+		+ api->decode(api->pickUpEquipment(1, 57)) << endl;
+	
+	cout << "dropEquipment: "
+		+ api->decode(api->dropEquipment(1, 72, 5, 6)) << endl;
+	
+	cout << "dropSugar: "
+		+ api->decode(api->dropSugar(1, 10, 5, 6)) << endl;
+	
+	cout << "openChest: " + api->decode(api->openChest(1, 18)) << endl;
+	
+	cout << "stockSugar: " + api->decode(api->stockSugar(1)) << endl;
+	
+	cout << "sellEquipment: "
+		+ api->decode(api->sellEquipment(1, 16)) << endl;
+	
+	cout << "buyEquipment: "
+		+ api->decode(api->buyEquipment(1, EQUIPMENT_SALT_SNIPER)) << endl;
+	
+	cout << "drinkJuice: " + api->decode(api->drinkJuice(1)) << endl;
+	
+	cout << "fructify: "
+		+ api->decode(api->fructify(1, FRUIT_CHERRY, 1, 4)) << endl;
+	
+	cout << "drawVitamin: " + api->decode(api->drawVitamin(1)) << endl;
+	
+	cout << "drawLine: "
+		+ api->decode(api->drawLine(1, 1, 5, 8, COLOR_RED)) << endl;
+	
+	cout << "drawCircle: "
+		+ api->decode(api->drawCircle(8, 9, 2, COLOR_BLUE)) << endl;
 }

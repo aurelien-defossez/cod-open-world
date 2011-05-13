@@ -26,10 +26,10 @@ void SpecificCommander::playTurn(short aiId, IntMatrix2 *newObjects,
 	callAiFunction(aiId, __AI_API_FUNCTION_PLAY_TURN__, 5, parameters);
 }
 
-void SpecificCommander::chestOpened(short aiId, int chestId,
-		IntMatrix2 *equipments) {
+void SpecificCommander::mapUpdate(short aiId, IntMatrix2 *newObjects,
+		IntMatrix2 *modifiedSugarDrops) {
 	Variant parameters[2];
-	parameters[0] = toVariant(chestId);
-	parameters[1] = equipments->toVariant();
-	callAiFunction(aiId, __AI_API_FUNCTION_CHEST_OPENED__, 2, parameters);
+	parameters[0] = newObjects->toVariant();
+	parameters[1] = modifiedSugarDrops->toVariant();
+	callAiFunction(aiId, __AI_API_FUNCTION_MAP_UPDATE__, 2, parameters);
 }

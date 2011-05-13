@@ -30,8 +30,6 @@ public class Api extends JavaApi {
 	private static final short __GAME_API_FUNCTION_DRINK_JUICE__ = 12;
 	private static final short __GAME_API_FUNCTION_FRUCTIFY__ = 13;
 	private static final short __GAME_API_FUNCTION_DRAW_VITAMIN__ = 14;
-	private static final short __GAME_API_FUNCTION_WRITE_TEXT__ = 15;
-	private static final short __GAME_API_FUNCTION_WRITE_TEXT_AT__ = 16;
 	private static final short __GAME_API_FUNCTION_DRAW_LINE__ = 17;
 	private static final short __GAME_API_FUNCTION_DRAW_CIRCLE__ = 18;
 	
@@ -380,20 +378,6 @@ public class Api extends JavaApi {
 	public static int drawVitamin(int fruitId) {
 		ApiCall call = new ApiCall(__GAME_API_FUNCTION_DRAW_VITAMIN__, 1);
 		call.add(new Variant(fruitId));
-		return callGameFunction(call).getIntValue();
-	}
-	
-	public static int writeText(String text) {
-		ApiCall call = new ApiCall(__GAME_API_FUNCTION_WRITE_TEXT__, 1);
-		call.add(new Variant(text));
-		return callGameFunction(call).getIntValue();
-	}
-	
-	public static int writeTextAt(String text, int x, int y) {
-		ApiCall call = new ApiCall(__GAME_API_FUNCTION_WRITE_TEXT_AT__, 3);
-		call.add(new Variant(text));
-		call.add(new Variant(x));
-		call.add(new Variant(y));
 		return callGameFunction(call).getIntValue();
 	}
 	

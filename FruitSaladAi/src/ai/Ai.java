@@ -113,17 +113,27 @@ public class Ai implements FruitSaladAi {
 	}
 	
 	@Override
-	public void chestOpened(int chestId, int[][] equipments) {
-		System.out.println("AI: Chest #" + chestId + " opened...");
+	public void mapUpdate(int[][] newObjects, int[][] modifiedSugarDrops) {
+		System.out.println("AI: Map update...");
+
+		// Display new objects
+		System.out.println("== New objects ==");
+		for (int i = 0; i < newObjects.length; i++) {
+			System.out.println("New object: "
+				+ Api.decode(newObjects[i][Api.OBJECT_TYPE]) + " " + "id #"
+				+ newObjects[i][Api.OBJECT_ID] + " at ("
+				+ newObjects[i][Api.OBJECT_X] + ";"
+				+ newObjects[i][Api.OBJECT_Y] + ") ; info="
+				+ newObjects[i][Api.OBJECT_INFO]);
+		}
+		System.out.println();
 		
-		// Display chest equipments
-		System.out.println("== Chest equipments ==");
-		for (int i = 0; i < equipments.length; i++) {
-			System.out.println("Equipment: "
-				+ Api.decode(equipments[i][Api.OBJECT_TYPE]) + " id #"
-				+ equipments[i][Api.OBJECT_ID] + " at ("
-				+ equipments[i][Api.OBJECT_X] + ";"
-				+ equipments[i][Api.OBJECT_Y] + ")");
+		// Display modified sugar drops objects
+		System.out.println("== Modified sugar drops ==");
+		for (int i = 0; i < modifiedSugarDrops.length; i++) {
+			System.out.println("Sugar drop: id #"
+				+ modifiedSugarDrops[i][Api.OBJECT_ID] + " now has "
+				+ modifiedSugarDrops[i][Api.OBJECT_SUGAR] + " sugar grains");
 		}
 		System.out.println();
 	}
@@ -170,12 +180,6 @@ public class Ai implements FruitSaladAi {
 			+ Api.decode(Api.fructify(1, Api.FRUIT_CHERRY, 1, 4)));
 		
 		System.out.println("drawVitamin: " + Api.decode(Api.drawVitamin(1)));
-		
-		System.out.println("writeText: "
-			+ Api.decode(Api.writeText("Hello frutty world")));
-		
-		System.out.println("writeTextAt: "
-			+ Api.decode(Api.writeTextAt("Hello from 2;2", 2, 2)));
 		
 		System.out.println("drawLine: "
 			+ Api.decode(Api.drawLine(1, 1, 5, 8, Api.COLOR_RED)));
