@@ -14,50 +14,23 @@ Game::Game() {
 	commander = new SpecificCommander();
 	
 	map = new Map(commander);
-	/*
-	height = 12;
-	width = 10;
 	
-	// Create empty architecture
-	architecture = new int *[height];
-	for(int i = 0; i < height; i++) {
-		architecture[i] = new int[width];
-		for(int j = 0; j < width; j++) {
-			
-			if(i == 0 || i == height - 1 || j == 0 || j == width - 1) {
-				architecture[i][j] = WALL;
-			} else {
-				architecture[i][j] = NOTHING;
-			}
-		}
-	}
-	*/
+    srand(time(NULL));
 }
 
 Game::~Game() {
 	delete commander;
 	delete communicator;
 	delete map;
-	/*
-	for(int i = 0; i < height; i++) {
-		delete[] architecture[i];
-	}
-	delete[] architecture;
-	*/
 }
 
 void Game::init(int nbParameters, char *parameters[]) {
-	cout << "Initializing game with " << nbParameters << " parameters." << endl;
-	
-	
-	MapLoader *mapLoader = new MapLoader(map, commander);
-	mapLoader->loadMap(parameters[0]);
-	/*
-	for(int i = 0; i < nbParameters; i++) {
-		cout << "Parameter #" << i << " = " << parameters[i] << endl;
+	if(nbParameters == 0) {
+		cout << "FruitSalad: missing parameter (map)" << endl;
+	} else {
+		MapLoader mapLoader = MapLoader(map, commander);
+		mapLoader.loadMap(parameters[0]);
 	}
-	*/
-	delete mapLoader;
 }
 
 void Game::addAi(short aiId, char *aiName, char *playerName) {
@@ -71,7 +44,7 @@ void Game::play() {
 	commander->setFrame();
 	
 	
-	int nbTours = 20;
+	int nbTours = 10;
 	int currentPlayer = 0;
 	int nbPlayers = map->getListPlayers().size();
 	
@@ -93,33 +66,30 @@ void Game::play() {
 		{
 			//On passe le joueur à joueur actif
 			map->getListPlayers()[currentPlayer]->setCurrentPlayer(true);
-			
+			cout << "recuperation" << endl;
 			//On récupère les données à lui fournir
 			IntMatrix2 newObjects = map->getListPlayers()[currentPlayer]->getNewObjects();
 			IntMatrix1 deletedObjects = map->getListPlayers()[currentPlayer]->getDeletedObjects();
 			IntMatrix2 movedFruits = map->getListPlayers()[currentPlayer]->getMovedFruits();
 			IntMatrix2 modifiedFruits = map->getListPlayers()[currentPlayer]->getModifiedFruits();
 			IntMatrix2 modifiedSugarDrops = map->getListPlayers()[currentPlayer]->getModifiedSugarDrops();
-			
+			cout << "resetModifs" << endl;
 			//On reset les modifications qu'on vient de lui envoyer
 			map->getListPlayers()[currentPlayer]->resetMapModifications();
-			
+			cout << "playTurn" << endl;
 			//On le fait jouer
 			commander->playTurn(currentPlayer, &newObjects, &deletedObjects, &movedFruits, &modifiedFruits, &modifiedSugarDrops);
-			
+			cout << "player false" << endl;
 			//On remet le joueur en passif
 			map->getListPlayers()[currentPlayer]->setCurrentPlayer(false);
 			
 		}
-<<<<<<< local
-=======
-		
->>>>>>> other
+		cout << "Fin boucle playTurn" << endl;
 		//On remet le compteur d'action de tous les fruits à 0
 		map->endTurn();
-		
+		cout << "endTurn fait" << endl;
 		map->dropSugarRandomly();
-		
+		cout << "dropSugar Fait" << endl;
 	}
 	
 	/*map->getListPlayers()[0]->setCurrentPlayer(true);
@@ -646,7 +616,7 @@ int Game::dropSugar(int fruitId, int quantity, int x, int y) {
     // drop
     fruit->removeSugar(quantity);
 	int idSugar = map->addSugarDrop(x, y, quantity);
-
+	commander->setFrame();
 
     return OK;
 }
