@@ -33,7 +33,8 @@ class Fruit : public OwnedEntity
         bool hasSugarFull();
         bool hasActionLeft();
         bool hasAmmoLeft();
-        bool hasEquipment(Equipment *equipment);
+        bool hasEquipment(int id);
+		Equipment* getEquipment(int id);
         int hasPlaceLeft();
         int getSugar();
         int getLife();

@@ -124,9 +124,7 @@ void Map::dropSugarRandomly()
 	Entity *sugarTree = getEntity(idSugarTree);
     while (count < COUNT_NEW_SUGAR_DROP)
     {
-		std::cout << "valid..." << std::endl;
         Position position = getValidSquare(sugarTree->getPosition().first, sugarTree->getPosition().second, DISTANCE_OF_EJECTION);
-        std::cout << position.first << "/" << position.second << std::endl;
 		
 		if (position.first != -1)
         {
@@ -391,8 +389,6 @@ void Map::moveEntity(Entity *entity, int x, int y)
     }
     mapPositions.insert(std::pair<std::pair<int, int>, Entity*>(std::pair<int,int>(x,y), entity));
 	commander->moveEntity(entity->getId(), x-(entity->getPosition().first), y-(entity->getPosition().second));
-	std::cout << x << "-" << entity->getPosition().first << std::endl;
-	std::cout << y << "-" << entity->getPosition().second << std::endl;
 }
 
 std::pair<int,int> Map::getValidSquare(int x, int y, int distance)
@@ -485,7 +481,7 @@ void Map::createPlayers(int nbPlayers)
 
 int Map::verifyId(int id)
 {
-    if (mapIds.find(id) != mapIds.end())
+	if (mapIds.find(id) != mapIds.end())
     {
         return (mapIds[id]->getType());
     }
@@ -511,7 +507,7 @@ bool  Map::verifyPosition(int x, int y)
     // if it's a wall
     if (isWall(x,y))
     {
-        return false;
+	  return false;
     }
     std::multimap<std::pair<int,int>, Entity* >::iterator it;
     std::pair<std::multimap<std::pair<int,int>, Entity* >::iterator,std::multimap<std::pair<int,int>, Entity* >::iterator> range;
@@ -519,11 +515,13 @@ bool  Map::verifyPosition(int x, int y)
     for(it = range.first; it != range.second; ++it)
     {
         int type = it->second->getType();
+		 
         if ((type == CHEST) ||
             ((type >= FRUIT_CHERRY) && (type <= FRUIT_NUT)) ||
             ((type >= BUILDING_VITAMIN_SOURCE) && (type <= BUILDING_FRUCTIFICATION_TANK)))
         {
-            return false;
+            
+		  return false;
         }
     }
     // case = NOTHING
@@ -603,11 +601,12 @@ void Map::resetSourceMiner()
     nbSourceMiner = 0;
 }
 
-bool Map::canHit(Fruit* fruit, Fruit* target)
+bool Map::canHit(Fruit* fruit, int range, Fruit* target)
 {
-	if (fruit->maximumOffset(target) > fruit->getRange())
+	if (fruit->maximumOffset(target) > range)
 	{
-		return false;
+		std::cout << "maximumOffset" << std::endl;
+	  return false;
 	}
 	else
 	{
@@ -616,7 +615,8 @@ bool Map::canHit(Fruit* fruit, Fruit* target)
                      target->getPosition().first, target->getPosition().second);
 		if (detectObstacle(positions))
 		{
-			return false;
+			std::cout << "detectObstacle" << std::endl;
+		  return false;
 		}
 	}
 	return true;
@@ -832,15 +832,13 @@ std::string Map::printC()
     out << mapPositions.size();
     str += "\nmapPosSize - "+out.str();
     out.str("");
-
+  */
     std::map<int,Entity* >::iterator it;
     for(it = mapIds.begin(); it != mapIds.end(); ++it)
     {
-        out << it->second->getType();
-        str += "\nmapIds - "+out.str();
-        out.str("");
+        std::cout << "\nmapIds - " << it->second->getId() << it->second->getType();
     }
-    */
+    
 
     std::multimap<std::pair<int,int>, Entity* >::iterator it2;
     for(it2 = mapPositions.begin(); it2 != mapPositions.end(); ++it2)

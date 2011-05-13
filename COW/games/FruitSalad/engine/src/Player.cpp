@@ -1,4 +1,5 @@
 #include "Player.h"
+#include <iostream>
 
 Player::Player()
 {
@@ -166,5 +167,6 @@ IntMatrix2 Player::getModifiedSugarDrops()
 }
 Player::~Player()
 {
-	delete mapModifications;
+	mapModifications->reset();
+	//delete mapModifications;
 }

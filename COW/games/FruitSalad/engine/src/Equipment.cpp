@@ -62,13 +62,13 @@ Entity(positionE, idE, typeEquipmentE)
     {
         //A checker
         range = 10;
-        ammo = 25;
-        cost = 80;
-        sellValue = 50;
-        ammoValue = 1;
+        ammo = 10;
+        cost = 60;
+        sellValue = 40;
+        ammoValue = 0.5;
         weight = 30;
-        ammoWeight = 2;
-        maxAmmo = 25;
+        ammoWeight = 1;
+        maxAmmo = 10;
     }
     else if (type == EQUIPMENT_PEELER)
     {

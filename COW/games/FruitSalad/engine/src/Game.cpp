@@ -51,6 +51,7 @@ void Game::play() {
 	cout << "setFrame" << endl;
 	commander->setFrame();
 	
+
 	if(mapLoaded)
 	{
 		
@@ -62,13 +63,14 @@ void Game::play() {
 		int limitCherry = map->getLimitCherry();
 		int limitKiwi = map->getLimitKiwi();
 		int limitNut = map->getLimitNut();
-		
+		/*
 		for (currentPlayer=0; currentPlayer<nbPlayers; currentPlayer++)
 		{
 			IntMatrix2 fruits = map->getFruits(map->getListPlayers()[currentPlayer]);
 			IntMatrix2 buildings = map->getBuildings(map->getListPlayers()[currentPlayer]);
 			commander->initGame(currentPlayer, &archi, &fruits, &buildings, limitCherry, limitKiwi, limitNut);
 		}
+
 		
 		for (int currentTour=0; currentTour<nbTours; currentTour++)
 		{
@@ -100,15 +102,40 @@ void Game::play() {
 			cout << "endTurn fait" << endl;
 			map->dropSugarRandomly();
 			cout << "dropSugar Fait" << endl;
-		}
-	}
+		}*/
 	
-	/*map->getListPlayers()[0]->setCurrentPlayer(true);
-	cout << move(8,4,3) << endl;
+	map->getListPlayers()[0]->setCurrentPlayer(true);
+	//cout << move(8,2,2) << endl;
+	//commander->setFrame();
+	//cout << attack(9,11) << endl;
+	//commander->setFrame();
+	map->printC();
+	//cout << pickUpEquipment(8,14) << endl;
+	Fruit *fruit = (Fruit*) map->getEntity(8);
+	cout << fruit->printC() << endl;
+	//cout << useEquipment(8,14,11) << endl;
+	//cout << fruit->printC() << endl;
+	//fruit = (Fruit*) map->getEntity(11);
+	//cout << fruit->printC() << endl;
+	//fruit = (Fruit*) map->getEntity(8);
+	//fruit->resetAction();
+	//cout << dropEquipment(8,14,4,4) << endl;
+	//cout << fruit->printC() << endl;
+	cout << pickUpSugar(8,15) << endl;
+	cout << pickUpSugar(8,15) << endl;
+	map->printC();
+	fruit->resetAction();
+	cout << dropSugar(8,2,3,3) << endl;
+	cout << fruit->printC() << endl;
+	map->printC();
 	commander->setFrame();
-	cout << attack(9,11) << endl;
-	commander->setFrame();
-	*/
+	
+	for (currentPlayer=0; currentPlayer<nbPlayers; currentPlayer++)
+	{
+		map->getListPlayers()[currentPlayer]->resetMapModifications();
+
+	}
+	}
 }
 
 void Game::endGame() {
@@ -217,7 +244,7 @@ int Game::attack(int fruitId, int targetFruitId) {
         return TOO_FAR;
     }
     // target not visible
-    if (!(map->canHit(fruit, target)))
+    if (!(map->canHit(fruit, fruit->getRange(), target)))
     {
         return OBSTACLE_PRESENT;
     }
@@ -265,16 +292,23 @@ int Game::useEquipment(int fruitId, int equipmentId, int targetId) {
     {
         return NOT_FRUIT;
     }
+    Fruit *fruit = (Fruit*)(map->getEntity(fruitId));
+    // fruit has not the equipment
+    if (fruit->hasEquipment(equipmentId) == false)
+    {
+        return NOT_EQUIPPED;
+    }
+    Equipment *equipment = fruit->getEquipment(equipmentId);
     // equipment is a weapon and target is not fruit
-    if ((map->verifyId(equipmentId) >= EQUIPMENT_TEA_SPOON) && (map->verifyId(equipmentId) <= EQUIPMENT_JUICE_NEEDLE)
+    if ((equipment->getType() >= EQUIPMENT_TEA_SPOON) && (equipment->getType() <= EQUIPMENT_JUICE_NEEDLE)
         && (map->verifyId(targetId) != FRUIT_CHERRY) && (map->verifyId(targetId) != FRUIT_KIWI) && (map->verifyId(targetId) != FRUIT_NUT))
     {
         return NOT_VALID_TARGET;
     }
     // equipment is a reloader and target is not a weapon or a kiwi
-    if ((map->verifyId(equipmentId) == EQUIPMENT_RELOADER) &&
+    if ((equipment->getType() == EQUIPMENT_RELOADER) &&
         (map->verifyId(targetId) != FRUIT_KIWI) &&
-        ((map->verifyId(equipmentId) < EQUIPMENT_TEA_SPOON) || (map->verifyId(equipmentId) > EQUIPMENT_JUICE_NEEDLE)))
+        ((equipment->getType() < EQUIPMENT_TEA_SPOON) || (equipment->getType() > EQUIPMENT_JUICE_NEEDLE)))
     {
         return NOT_VALID_TARGET;
     }
@@ -282,31 +316,36 @@ int Game::useEquipment(int fruitId, int equipmentId, int targetId) {
     bool reloading = false;
     bool targetFruit = false;
     Entity *target;
-    Equipment *equipment;
     // equipment is a weapon, target is a fruit
-    if ((map->verifyId(equipmentId) >= EQUIPMENT_TEA_SPOON) && (map->verifyId(equipmentId) <= EQUIPMENT_JUICE_NEEDLE))
+    if (((equipment->getType() >= EQUIPMENT_TEA_SPOON) && (equipment->getType() <= EQUIPMENT_SALT_SNIPER)) 
+	  || (equipment->getType() == EQUIPMENT_JUICE_NEEDLE))
     {
-        target = (Fruit*)(map->getEntity(targetId));
-        equipment = (Weapon*)(map->getEntity(equipmentId));
+		target = (Fruit*)(map->getEntity(targetId));
+        equipment = (Weapon*)equipment;
         targetFruit = true;
     }
     // equipment is a reloader and target a kiwi
-    else if ((map->verifyId(equipmentId) == EQUIPMENT_RELOADER) && (map->verifyId(targetId) == FRUIT_KIWI))
+    else if ((equipment->getType() == EQUIPMENT_RELOADER) && (map->verifyId(targetId) == FRUIT_KIWI))
     {
-        target = (Fruit*)(map->getEntity(targetId));
-        equipment = (Loader*)(map->getEntity(equipmentId));
+		target = (Fruit*)(map->getEntity(targetId));
+        equipment = (Loader*)equipment;
         reloading = true;
+        targetFruit = true;
+    }
+    // equipment is a peeler
+    else if (equipment->getType() == EQUIPMENT_PEELER)
+    {
+		target = (Fruit*)(map->getEntity(targetId));
+        equipment = (Peeler*)equipment;
         targetFruit = true;
     }
     // equipment is a reloader, target is a weapon
     else
     {
-        target = (Weapon*)(map->getEntity(targetId));
-        equipment = (Loader*)(map->getEntity(equipmentId));
+		target = (Weapon*)(map->getEntity(targetId));
+        equipment = (Loader*)equipment;
         reloading = true;
     }
-    // cast in Fruit*
-    Fruit *fruit = (Fruit*)(map->getEntity(fruitId));
     // fruit is not yours
     if (fruit->getOwner()->isCurrentPlayer() == false)
     {
@@ -325,22 +364,17 @@ int Game::useEquipment(int fruitId, int equipmentId, int targetId) {
             return TOO_FAR;
         }
         // target not visible
-        if (!(map->canHit(fruit, (Fruit*)target)))
+        if (!(map->canHit(fruit, equipment->getRange(), (Fruit*)target)))
         {
             return OBSTACLE_PRESENT;
         }
-    }
-    // fruit has not the equipment
-    if (fruit->hasEquipment((Equipment*)equipment) == false)
-    {
-        return NOT_EQUIPPED;
     }
 
 	// use action
 	fruit->useAction();
 
     // use equipment
-    if (fruit->useEquipment((Equipment*)equipment, target) == false)
+    if (fruit->useEquipment(equipment, target) == false)
     {
         if (reloading == true)
         {
@@ -446,23 +480,18 @@ int Game::dropEquipment(int fruitId, int equipmentId, int x, int y) {
     {
         return NOT_FRUIT;
     }
-    // equipment is not an equipment
-    if ((map->verifyId(equipmentId) < EQUIPMENT_TEA_SPOON) || (map->verifyId(equipmentId) > EQUIPMENT_RELOADER))
-    {
-        return NOT_EQUIPMENT;
-    }
     // cast in Fruit*
     Fruit *fruit = (Fruit*)(map->getEntity(fruitId));
+    // fruit has not the equipment
+    if (fruit->hasEquipment(equipmentId) == false)
+    {
+        return NOT_EQUIPPED;
+    }
+    Equipment *equipment = fruit->getEquipment(equipmentId);
     // fruit is not yours
     if (fruit->getOwner()->isCurrentPlayer() == false)
     {
         return NOT_OWNER;
-    }
-    Equipment *equipment = (Equipment*)(map->getEntity(equipmentId));
-    // fruit has not the equipment
-    if (fruit->hasEquipment(equipment) == false)
-    {
-        return NOT_EQUIPPED;
     }
     // fruit has used his 2 actions
     if (fruit->hasActionLeft() == false)
@@ -558,15 +587,20 @@ int Game::pickUpSugar(int fruitId, int sugarDropId) {
     fruit->addSugar(1);
     if (sugarDrop->removeSugar(1) == false)
     {
-        return SOME_SUGAR_TAKEN;
+		int *modif = new int[2];
+		modif[0] = sugarDrop->getId();
+		modif[1] = sugarDrop->getCapacity();
+		map->addUpdatedModificationSugar(modif);  
+		return SOME_SUGAR_TAKEN;
     }
     map->removeEntity(sugarDrop);
 
-    //creation of modification for all players
-    int *modif = new int[2];
-    modif[0] = sugarDrop->getId();
-    modif[1] = sugarDrop->getCapacity();
-    map->addUpdatedModificationSugar(modif);
+    //creation of modification for all players (delete ici)
+    int *modif = new int[3];
+	modif[0] = sugarDrop->getId();
+	modif[1] = sugarDrop->getPosition().first;
+	modif[2] = sugarDrop->getPosition().second;
+	map->addDeletedModification(modif);
 	
 	delete sugarDrop;
 	commander->setFrame();
@@ -726,23 +760,18 @@ int Game::sellEquipment(int fruitId, int equipmentId) {
     {
         return NOT_FRUIT;
     }
-    // equipment is not an equipment
-    if ((map->verifyId(equipmentId) < EQUIPMENT_TEA_SPOON) || (map->verifyId(equipmentId) > EQUIPMENT_RELOADER))
-    {
-        return NOT_EQUIPMENT;
-    }
     // cast in Fruit*
     Fruit *fruit = (Fruit*)(map->getEntity(fruitId));
+    // fruit has not the equipment
+    if (fruit->hasEquipment(equipmentId) == false)
+    {
+        return NOT_EQUIPPED;
+    }
+    Equipment *equipment = fruit->getEquipment(equipmentId);
     // fruit is not yours
     if (fruit->getOwner()->isCurrentPlayer() == false)
     {
         return NOT_OWNER;
-    }
-    Equipment *equipment = (Equipment*)(map->getEntity(equipmentId));
-    // fruit has not the equipment
-    if (fruit->hasEquipment(equipment) == false)
-    {
-        return NOT_EQUIPPED;
     }
     // fruit has used his 2 actions
     if (fruit->hasActionLeft() == false)
@@ -764,6 +793,7 @@ int Game::sellEquipment(int fruitId, int equipmentId) {
 	delete equipment;
     return OK;
 }
+
 
 int Game::buyEquipment(int fruitId, int equipmentType) {
 	// entity not defined

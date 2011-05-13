@@ -1,4 +1,5 @@
 #include "Fruit.h"
+#include <iostream>
 
 Fruit::Fruit(std::pair<int,int> positionE, int idE, int typeFruitE, Player *ownerE) :
 OwnedEntity(positionE, idE, typeFruitE, ownerE)
@@ -199,9 +200,9 @@ void Fruit::useAction()
 }
 
 void Fruit::addEquipment(Equipment *equipment)
-{
-    listEquipment.push_back(equipment);
-	capacity += equipment->getWeight();
+{ 
+	listEquipment.push_back(equipment);
+	capacity -= equipment->getWeight();
 	updateSpeed();
 }
 
@@ -213,7 +214,7 @@ void Fruit::removeEquipment(Equipment *equipment)
         if (listEquipment[i] == equipment)
         {
             index = i;
-			capacity -= listEquipment[i]->getWeight();
+			capacity += listEquipment[i]->getWeight();
 			updateSpeed();
             break;
         }
@@ -225,21 +226,21 @@ void Fruit::updateSpeed()
 {
   switch (type) {
 	case FRUIT_CHERRY :
-	  if (capacity<20) speed = 6;
-	  else if (capacity<30) speed = 5;
-	  else if (capacity<35) speed = 4;
-	  else if (capacity<39) speed = 3;
-	  else if (capacity<42) speed = 2;
+	  if ((45-capacity)<20) speed = 6;
+	  else if ((45-capacity)<30) speed = 5;
+	  else if ((45-capacity)<35) speed = 4;
+	  else if ((45-capacity)<39) speed = 3;
+	  else if ((45-capacity)<42) speed = 2;
 	  else speed = 1;
 	  break;
 	case FRUIT_KIWI :
-	  if (capacity<35) speed = 4;
-	  else if (capacity<45) speed = 3;
-	  else if (capacity<51) speed = 2;
+	  if ((55-capacity)<35) speed = 4;
+	  else if ((55-capacity)<45) speed = 3;
+	  else if ((55-capacity)<51) speed = 2;
 	  else speed = 1;
 	  break;
 	case FRUIT_NUT :
-	  if (capacity<42) speed = 2;
+	  if ((65-capacity)<42) speed = 2;
 	  else speed = 1;
 	  break;
 	default :
@@ -275,16 +276,28 @@ bool Fruit::hasAmmoLeft()
     }
 }
 
-bool Fruit::hasEquipment(Equipment *equipment)
+bool Fruit::hasEquipment(int id)
 {
     for (int i=0; i<listEquipment.size(); i++)
     {
-        if (listEquipment[i] == equipment)
+        if (listEquipment[i]->getId() == id)
         {
             return true;
         }
     }
     return false;
+}
+
+Equipment* Fruit::getEquipment(int id)
+{
+    for (int i=0; i<listEquipment.size(); i++)
+    {
+        if (listEquipment[i]->getId() == id)
+        {
+            return listEquipment[i];
+        }
+    }
+    return NULL;
 }
 
 bool Fruit::useEquipment(Equipment *equipment, Entity *target)
@@ -345,42 +358,12 @@ int Fruit::getRange()
 
 std::string Fruit::printC()
 {
-    std::string str;
-    std::stringstream out;
-    out << position.first;
-    str += "\nPosition - "+out.str();
-    out << position.second;
-    str += "\nPosition - "+out.str();
-    out << id;
-    str += "\nId - "+out.str();
-    out << life;
-    str += "\nLife - "+out.str();
-    out << defense;
-    str += "\ndefense - "+out.str();
-    out << force;
-    str += "\nforce - "+out.str();
-    out << range;
-    str += "\nrange - "+out.str();
-    out << ammo;
-    str += "\nammo - "+out.str();
-    out << capacity;
-    str += "\ncapacity - "+out.str();
-    out << sugar;
-    str += "\nsugar - "+out.str();
-    out << speed;
-    str += "\nspeed - "+out.str();
-    out << maxLife;
-    str += "\nmaxLife - "+out.str();
-    out << maxDefense;
-    str += "\nmaxDefense - "+out.str();
-    out << maxAmmo;
-    str += "\nmaxAmmo - "+out.str();
-    out << sugarWallet;
-    str += "\nsugarWallet - "+out.str();
-    out << counterAction;
-    str += "\ncounterAction - "+out.str();
-    out << listEquipment.size();
-    str += "\nbagSize - "+out.str();
+    
+    std::cout << "Position - " << position.first << "/" << position.second << std::endl;
+	std::cout << "Id - " << id << std::endl;
+	std::cout << "Life - " << life << std::endl;
+	std::cout << "Speed - " << speed << std::endl;
+	std::cout << "sugar - " << sugar << std::endl;
 
-    return str;
+    return "";
 }

@@ -25,7 +25,7 @@ Equipment(positionE, idE, typeEquipmentE)
     }
     else if (type == EQUIPMENT_SALT_SNIPER)
     {
-        attack = 5;
+        attack = 6;
     }
     else if (type == EQUIPMENT_JUICE_NEEDLE)
     {

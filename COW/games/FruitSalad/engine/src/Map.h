@@ -48,7 +48,7 @@ class Map
         bool contains(int x, int y);
         bool isWall(int x, int y);
         std::pair<int,int> getValidSquare(int x, int y, int distance);
-        bool canHit(Fruit* fruit, Fruit* target);
+        bool canHit(Fruit* fruit, int range, Fruit* target);
         bool detectObstacle(std::vector<std::pair<int,int> > positions);
 		bool checkObstacle(int x, int y);
 		int distanceBetween(Entity *entity, int x, int y, int maxDistance = -1);
