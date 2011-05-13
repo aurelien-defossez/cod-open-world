@@ -8,7 +8,7 @@ MapLoader::MapLoader(Map *mapE, SpecificCommander *commanderE)
 }
 
 
-void MapLoader::loadMap(char *fic)
+void MapLoader::loadMap(const char *fic)
 {
     std::ifstream fichier(fic, std::ios::in);  // on ouvre en lecture
 	std::cout << fic << std::endl;

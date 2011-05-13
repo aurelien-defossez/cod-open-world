@@ -21,7 +21,7 @@ class MapLoader
 {
 	public:
 		MapLoader(Map *mapE, SpecificCommander *commanderE);
-        void loadMap(char *fic);
+        void loadMap(const char *fic);
 
         Entity* createBuilding(std::string typeE, int x0, int y0);
         Entity* createOwnedBuilding(std::string typeE, int numPlayer, int x0, int y0);

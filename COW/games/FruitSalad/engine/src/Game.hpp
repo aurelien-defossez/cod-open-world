@@ -16,6 +16,7 @@ private:
 	SpecificCommander *commander;
 	
 	Map *map;
+	bool mapLoaded;
 
 public:
 	// Constructor & Destructor

@@ -1,11 +1,12 @@
 <?xml version="1.0" ?>
 
-<project default="makeJar">
+<project>
 	<target name="makeJar" description="Make COW and Remote AI Launcher jars">
 		
 		<jar destfile="resources/COW.jar"
-			basedir="bin"
-			includes="**/*.class" />
+			manifest="CowManifest.mf">
+			<fileset dir="bin" includes="**/*.class"/>
+		</jar>
 		
 		<jar destfile="resources/RemoteAiLauncher.jar"
 			basedir="bin"
