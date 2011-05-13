@@ -279,7 +279,11 @@ void MapModifications::reset()
   {
 	  delete[] *it;
   }*/
+<<<<<<< local
   newObjects.clear();
+=======
+  newObjects.erase(newObjects.begin(),newObjects.end());
+>>>>>>> other
   /*for (it=modifiedFruits.begin(); it!=modifiedFruits.end(); ++it)
   {
 	  delete[] *it;

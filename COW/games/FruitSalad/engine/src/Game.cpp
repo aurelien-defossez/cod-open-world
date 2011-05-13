@@ -111,6 +111,10 @@ void Game::play() {
 			map->getListPlayers()[currentPlayer]->setCurrentPlayer(false);
 			
 		}
+<<<<<<< local
+=======
+		
+>>>>>>> other
 		//On remet le compteur d'action de tous les fruits à 0
 		map->endTurn();
 		
