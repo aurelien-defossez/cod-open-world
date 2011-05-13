@@ -216,13 +216,14 @@ void MapModifications::addMovedModification(int *newModif)
 
 IntMatrix2 MapModifications::getNewObjects()
 {
-	IntMatrix2 matrixNewObjects = IntMatrix2(nbNewObjects, 4);
+	IntMatrix2 matrixNewObjects = IntMatrix2(nbNewObjects, 5);
 	for (int i = 0; i < nbNewObjects; i++)
     {
 		matrixNewObjects[i][OBJECT_ID] = newObjects[i][0];
 		matrixNewObjects[i][OBJECT_X] = newObjects[i][1];
 		matrixNewObjects[i][OBJECT_Y] = newObjects[i][2];
 		matrixNewObjects[i][OBJECT_TYPE] = newObjects[i][3];
+		matrixNewObjects[i][OBJECT_INFO] = newObjects[i][4];
     }
 	return matrixNewObjects;
 }
@@ -278,7 +279,7 @@ void MapModifications::reset()
   {
 	  delete[] *it;
   }
-  newObjects.clear();
+  newObjects.erase(newObjects.begin(),newObjects.end());
   for (it=modifiedFruits.begin(); it!=modifiedFruits.end(); it++)
   {
 	  delete[] *it;

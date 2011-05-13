@@ -74,9 +74,8 @@ void Game::play() {
 	int nbTours = 20;
 	int currentPlayer = 0;
 	int nbPlayers = map->getListPlayers().size();
-	cout << "getarchi" << endl;
+	
 	IntMatrix2 archi = map->getArchitecture();
-	cout << "alors ?" << endl;
 	int limitCherry = map->getLimitCherry();
 	int limitKiwi = map->getLimitKiwi();
 	int limitNut = map->getLimitNut();
@@ -94,27 +93,30 @@ void Game::play() {
 		{
 			//On passe le joueur à joueur actif
 			map->getListPlayers()[currentPlayer]->setCurrentPlayer(true);
-			
+			cout << "recuperation" << endl;
 			//On récupère les données à lui fournir
 			IntMatrix2 newObjects = map->getListPlayers()[currentPlayer]->getNewObjects();
 			IntMatrix1 deletedObjects = map->getListPlayers()[currentPlayer]->getDeletedObjects();
 			IntMatrix2 movedFruits = map->getListPlayers()[currentPlayer]->getMovedFruits();
 			IntMatrix2 modifiedFruits = map->getListPlayers()[currentPlayer]->getModifiedFruits();
 			IntMatrix2 modifiedSugarDrops = map->getListPlayers()[currentPlayer]->getModifiedSugarDrops();
-			
+			cout << "resetModifs" << endl;
 			//On reset les modifications qu'on vient de lui envoyer
 			map->getListPlayers()[currentPlayer]->resetMapModifications();
-			
+			cout << "playTurn" << endl;
 			//On le fait jouer
 			commander->playTurn(currentPlayer, &newObjects, &deletedObjects, &movedFruits, &modifiedFruits, &modifiedSugarDrops);
-			
+			cout << "player false" << endl;
 			//On remet le joueur en passif
 			map->getListPlayers()[currentPlayer]->setCurrentPlayer(false);
 			
 		}
+		cout << "Fin boucle playTurn" << endl;
 		//On remet le compteur d'action de tous les fruits à 0
 		map->endTurn();
+		cout << "endTurn fait" << endl;
 		map->dropSugarRandomly();
+		cout << "dropSugar Fait" << endl;
 	}
 	
 	/*map->getListPlayers()[0]->setCurrentPlayer(true);
@@ -643,7 +645,7 @@ int Game::dropSugar(int fruitId, int quantity, int x, int y) {
 	int idSugar = map->addSugarDrop(x, y, quantity);
 
 	//creation of modification for all players
-    int *modif = new int[4];
+    int *modif = new int[5];
     modif[0] = idSugar;
     modif[1] = x;
     modif[2] = y;

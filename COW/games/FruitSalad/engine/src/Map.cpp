@@ -124,11 +124,13 @@ void Map::dropSugarRandomly()
     while (count < COUNT_NEW_SUGAR_DROP)
     {
         std::pair<int,int> position = getValidSquare(sugarTree->getPosition().first, sugarTree->getPosition().second, DISTANCE_OF_EJECTION);
-        if ((position.first == -1) && (position.second == -1))
+        std::cout << position.first << "/" << position.second << std::endl;
+		if ((position.first == -1) && (position.second == -1))
         {
-            break;
+            return;
         }
         addSugarDrop(position.first, position.second, QUANTITY_SUGAR_EJECTED);
+		count++;
     }
 }
 IntMatrix2 Map::getArchitecture()
@@ -304,6 +306,14 @@ int Map::addSugarDrop(int x, int y, int quantity)
 	commander->moveEntity(currentId, x, y);
     currentId++;
     addEntity(sugarDrop);
+	int *modif = new int[5];
+    modif[0] = currentId-1;
+    modif[1] = x;
+    modif[2] = y;
+	modif[3] = SUGAR_DROP;
+	modif[4] = quantity;
+    addNewModification(modif);
+	commander->setFrame();
     return sugarDrop->getId();
 }
 
@@ -388,7 +398,7 @@ std::pair<int,int> Map::getValidSquare(int x, int y, int distance)
     {
         for (int j = y - distance; j <= y + distance; j++)
         {
-            if ((contains(i, j)) && (verifyPosition(x,y)))
+            if ((!checkObstacle(i,j)) && (mapPositions.find(std::pair<int,int>(i,j)) == mapPositions.end()))
             {
                 validSquares.push_back(std::pair<int, int>(i, j));
             }
@@ -399,7 +409,7 @@ std::pair<int,int> Map::getValidSquare(int x, int y, int distance)
         return std::pair<int,int>(-1,-1);
     }
     srand(time(NULL));
-    int randSquare = (int)((double)rand() / ((double)RAND_MAX) * (validSquares.size()+1));
+    int randSquare = (int)((double)rand() / ((double)RAND_MAX) * (validSquares.size()));
     return validSquares[randSquare];
 }
 
