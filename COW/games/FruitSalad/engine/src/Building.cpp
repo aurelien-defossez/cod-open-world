@@ -10,10 +10,10 @@ std::string Building::printC()
 {
     std::string str;
     std::stringstream out;
-    out << x;
+    out << position.first;
     str += "\nPosition - "+out.str();
     out.str("");
-    out << y;
+    out << position.second;
     str += "/"+out.str();
     out.str("");
     out << type;

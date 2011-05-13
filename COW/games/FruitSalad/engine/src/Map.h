@@ -83,10 +83,9 @@ class Map
         std::vector<Player*> listPlayers;
         std::multimap<std::pair<int,int>, Entity* > mapPositions;
         std::map<int,Entity*> mapIds;
-        std::set<std::pair<int, int> > mapWalls; //true = WALL
+		bool **mapWalls;
 
         int currentId;
-		int wallId;
         int nbSourceMiner;
         int width;
         int height;
@@ -100,7 +99,7 @@ class Map
         int idSugarTree;
 		SpecificCommander *commander;
 		
-		bool aStartInitialized;
+		bool aStarInitialized;
 		int **distances;
 		bool **visited;
 };

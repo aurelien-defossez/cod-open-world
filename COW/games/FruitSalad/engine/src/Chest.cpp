@@ -1,6 +1,6 @@
 #include "Chest.h"
 
-Chest::Chest(std::pair<int,int> positionE, int idE, int typeE) :
+Chest::Chest(Position positionE, int idE, int typeE) :
 Entity(positionE, idE, typeE)
 {
 
@@ -20,12 +20,13 @@ void Chest::dropContent(Map *map)
     map->removeEntity(this);
     while (count < listEquipment.size())
     {
-        std::pair<int,int> position = map->getValidSquare(x, y, 1);
-        if ((position.first == -1) && (position.second == -1))
+        Position validPos = map->getValidSquare(
+			position.first, position.second, 1);
+        if ((validPos.first == -1) && (validPos.second == -1))
         {
             break;
         }
-        listEquipment[count]->setPosition(position.first, position.second);
+        listEquipment[count]->setPosition(validPos.first, validPos.second);
         map->addEntity(listEquipment.at(count));
     }
 }

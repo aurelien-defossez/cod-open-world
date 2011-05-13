@@ -16,6 +16,11 @@ public class VariantStruct extends Structure {
 		values = new VariantUnion.ByValue();
 	}
 	
+	public VariantStruct(Variant variant) {
+		this();
+		setValue(variant);
+	}
+
 	public void setValue(Variant variant) {
 		VariantType vType = variant.getType();
 		type = vType.getId();
@@ -27,7 +32,7 @@ public class VariantStruct extends Structure {
 		} else if (vType == VariantType.INT_MATRIX2) {
 			int[][] matrix = (int[][]) variant.getValue();
 			length1 = matrix.length;
-			length2 = matrix[0].length;
+			length2 = (length1 > 0) ? matrix[0].length : 0;
 		}
 	}
 	

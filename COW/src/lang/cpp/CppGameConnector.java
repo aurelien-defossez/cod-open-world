@@ -2,6 +2,8 @@
 package lang.cpp;
 
 import java.util.Collection;
+import main.CowException;
+import org.apache.log4j.Logger;
 import com.ApiCall;
 import com.Variant;
 import com.ai.Ai;
@@ -11,29 +13,61 @@ import com.sun.jna.Library;
 import com.sun.jna.Native;
 
 public class CppGameConnector extends GameConnector {
+	// -------------------------------------------------------------------------
+	// Class attributes
+	// -------------------------------------------------------------------------
+	
+	/**
+	 * The log4j logger.
+	 */
+	private Logger logger = Logger.getLogger(CppGameConnector.class);
+	
+	// -------------------------------------------------------------------------
+	// Attributes
+	// -------------------------------------------------------------------------
 	
 	private GameLibraryInterface gameLib;
 	private GameCallbackHandler callbackHandler;
+
+	// -------------------------------------------------------------------------
+	// Constructor
+	// -------------------------------------------------------------------------
 	
 	public CppGameConnector(Game game) {
 		super(game);
 		
-		// Set path to game
-		CppUtils.setJNALibraryPath("");
-		CppUtils.appendJNALibraryPath("games/" + game.getName() + "/engine");
+		if (logger.isDebugEnabled())
+			logger.debug("Connecting Cpp Game (" + game.getName() + ")...");
 		
+		// Set path to game
+		CppUtils.appendJNALibraryPath("games/" + game.getName() + "/engine");
+
 		// Load game
-		gameLib = (GameLibraryInterface) (Library)Native.loadLibrary("game",
-				GameLibraryInterface.class);
+		try {
+			gameLib = (GameLibraryInterface) (Library)Native.loadLibrary("game",
+					GameLibraryInterface.class);
+			
+			callbackHandler = new GameCallbackHandler(this, gameLib);
+			
+			if (logger.isDebugEnabled())
+				logger.info("Cpp Game (" + game.getName() + ") connected.");
+		} catch(UnsatisfiedLinkError e) {
+			throw new CowException("Cannot load Game (" + game.getName() + ")",
+				e.getMessage());
+		}
 	}
+
+	// -------------------------------------------------------------------------
+	// Public methods
+	// -------------------------------------------------------------------------
 	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public void initGame(Collection<Ai> ais, String[] parameters) {
-		// Create callback handler
-		callbackHandler = new GameCallbackHandler(this, gameLib);
+		callbackHandler.registerCallbacks();
+		
 		gameLib.init(parameters.length, parameters);
 		
 		for (Ai ai : ais) {

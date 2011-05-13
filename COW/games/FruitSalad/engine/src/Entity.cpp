@@ -1,9 +1,8 @@
 #include "Entity.h"
 
-Entity::Entity(std::pair<int,int> positionE, int idE, int typeE)
+Entity::Entity(Position p, int idE, int typeE)
 {
-    x = positionE.first;
-    y = positionE.second;
+    position = Position(p.first, p.second);
     id = idE;
     type = typeE;
 }
@@ -19,14 +18,15 @@ int Entity::getId()
     return id;
 }
 
-std::pair<int,int> Entity::getPosition()
+Position Entity::getPosition()
 {
-    return std::pair<int,int>(x, y);
+    return position;
 }
 
 int Entity::maximumOffset(Entity *target)
 {
-    return std::max(abs(target->getPosition().first - x), abs(target->getPosition().second - y));
+    return std::max(abs(target->getPosition().first - getPosition().first),
+					abs(target->getPosition().second - getPosition().second));
 }
 
 bool Entity::isNearby(Entity *target)
@@ -36,8 +36,7 @@ bool Entity::isNearby(Entity *target)
 
 void Entity::setPosition(int xN, int yN)
 {
-    x = xN;
-    y = yN;
+    position = Position(xN, yN);
 }
 
 bool Entity::isObstacle()
@@ -110,10 +109,10 @@ std::string Entity::printC()
 {
     std::string str;
     std::stringstream out;
-    out << x;
+    out << getPosition().first;
     str += "\nPosition - "+out.str();
     out.str("");
-    out << y;
+    out << getPosition().second;
     str += "\nPosition - "+out.str();
     out.str("");
     out << id;

@@ -108,12 +108,8 @@ void Commander::rotateEntity(int id, int angle) {
 	addParameter(toVariant(angle));
 	makeCall();
 }
-
-#include <iostream>
-
 void Commander::callAiFunction(short aiId, int functionId, int nbParameters,
 			Variant parameters[]) {
-	std::cout << "callAiFunction" << std::endl;
 	prepareCall(__CALLBACK_FUNCTION_CALL_AI_FUNCTION__, nbParameters + 2);
 	addParameter(toVariant(aiId));
 	addParameter(toVariant(functionId));
@@ -123,5 +119,4 @@ void Commander::callAiFunction(short aiId, int functionId, int nbParameters,
 	}
 	
 	makeCall();
-	std::cout << "callAiFunction over" << std::endl;
 }

@@ -68,8 +68,8 @@ Fruit::~Fruit()
 
 void Fruit::move(int xD, int yD)
 {
-    x = xD;
-    y = yD;
+    position.first = xD;
+    position.second = yD;
 }
 
 bool Fruit::attack(Fruit *fruit)
@@ -347,9 +347,9 @@ std::string Fruit::printC()
 {
     std::string str;
     std::stringstream out;
-    out << x;
+    out << position.first;
     str += "\nPosition - "+out.str();
-    out << y;
+    out << position.second;
     str += "\nPosition - "+out.str();
     out << id;
     str += "\nId - "+out.str();

@@ -54,13 +54,15 @@ public class VariantUnion extends Union {
 		
 		case INT_MATRIX1:
 			setType(IntMatrix.ByReference.class);
-			this.intMatrix =
+			this.intMatrix = (((int[])variant.getValue()).length == 0) ?
+				new IntMatrix.ByReference(new int[] { 0 }) :
 				new IntMatrix.ByReference((int[]) variant.getValue());
 			break;
 		
 		case INT_MATRIX2:
 			setType(IntMatrix.ByReference.class);
-			this.intMatrix =
+			this.intMatrix = (((int[][])variant.getValue()).length == 0) ?
+				new IntMatrix.ByReference(new int[][] { { 0 } }) :
 				new IntMatrix.ByReference((int[][]) variant.getValue());
 			break;
 		

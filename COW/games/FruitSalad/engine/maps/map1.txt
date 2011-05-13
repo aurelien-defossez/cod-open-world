@@ -1,5 +1,5 @@
 # Height=21 ; Width=19
-21,19
+19,21
 # NbPlayers = 2
 2
 # Limites

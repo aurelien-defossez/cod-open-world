@@ -9,6 +9,7 @@ public class GameCallbackHandler implements CallbackHandler {
 	private CppGameConnector connector;
 	private ApiCall call;
 	
+	private GameLibraryInterface gameLib;
 	private PrepareCallCallbackImpl prepareCallback;
 	private AddParameterCallbackImpl addParameterCallback;
 	private MakeCallCallbackImpl makeCallCallback;
@@ -16,13 +17,16 @@ public class GameCallbackHandler implements CallbackHandler {
 	public GameCallbackHandler(CppGameConnector connector,
 		GameLibraryInterface gameLib) {
 		this.connector = connector;
+		this.gameLib = gameLib;
 		
 		// Store callback references so they're not deleted by Java garbage
 		// collector
 		prepareCallback = new PrepareCallCallbackImpl(this);
 		addParameterCallback = new AddParameterCallbackImpl(this);
 		makeCallCallback = new MakeCallCallbackImpl(this);
-		
+	}
+	
+	public void registerCallbacks() {
 		// Register callbacks
 		gameLib.registerCallbacks(prepareCallback, addParameterCallback,
 			makeCallCallback);

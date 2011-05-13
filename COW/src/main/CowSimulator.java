@@ -105,6 +105,9 @@ public class CowSimulator {
 		boolean useView = true;
 		boolean quiet = false;
 		
+		// Stop JME flooding (log4j)
+		System.setProperty("java.util.logging.config.file", "");
+		
 		// Parse arguments
 		try {
 			for (int i = 0; i < args.length;) {

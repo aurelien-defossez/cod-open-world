@@ -8,10 +8,10 @@
 class Entity
 {
 	public:
-		Entity(std::pair<int,int> positionE, int idE, int typeE);
+		Entity(Position positionE, int idE, int typeE);
         int getType();
         int getId();
-        std::pair<int,int> getPosition();
+        Position getPosition();
         int maximumOffset(Entity *target);
         bool isNearby(Entity *target);
         void setPosition(int xN, int yN);
@@ -20,8 +20,7 @@ class Entity
         std::string printC();
 
 	protected:
-        int x;
-        int y;
+        Position position;
         int id;
         int type;
 

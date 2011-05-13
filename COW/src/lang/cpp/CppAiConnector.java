@@ -6,11 +6,9 @@ import org.apache.log4j.Logger;
 import com.ApiCall;
 import com.ai.Ai;
 import com.ai.AiConnector;
-import com.sun.jna.Library;
 import com.sun.jna.Native;
 
 public class CppAiConnector extends AiConnector {
-	
 	// -------------------------------------------------------------------------
 	// Class attributes
 	// -------------------------------------------------------------------------
@@ -19,9 +17,18 @@ public class CppAiConnector extends AiConnector {
 	 * The log4j logger.
 	 */
 	private Logger logger = Logger.getLogger(CppAiConnector.class);
+
+	// -------------------------------------------------------------------------
+	// Attributes
+	// -------------------------------------------------------------------------
 	
 	private AiLibraryInterface aiLib;
+	private AiCallbackHandler callbackHandler;
 	private boolean initialized;
+
+	// -------------------------------------------------------------------------
+	// Constructor
+	// -------------------------------------------------------------------------
 	
 	public CppAiConnector(Ai ai, String gameName) {
 		super(ai);
@@ -30,14 +37,16 @@ public class CppAiConnector extends AiConnector {
 		if (logger.isDebugEnabled())
 			logger.debug("Connecting Cpp AI (" + ai.getName() + ")...");
 		
-		// Set path to game
+		// Set path to AI
 		CppUtils.appendJNALibraryPath(
 			"games/" + gameName + "/ais/" + ai.getName());
 		
-		// Load game
+		// Load AI
 		try {
 			aiLib = (AiLibraryInterface) Native.loadLibrary("ai",
 					AiLibraryInterface.class);
+			
+			callbackHandler = new AiCallbackHandler(this, aiLib);
 			
 			if (logger.isDebugEnabled())
 				logger.info("Cpp AI (" + ai.getName() + ") connected.");
@@ -46,13 +55,18 @@ public class CppAiConnector extends AiConnector {
 				e.getMessage());
 		}
 	}
+
+	// -------------------------------------------------------------------------
+	// Public methods
+	// -------------------------------------------------------------------------
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void performAiFunction(ApiCall call) {
-		System.out.println("performAiFunction "+call.getFunctionId());
 		if(!initialized) {
-			// Attach callback handlers
-			new AiCallbackHandler(this, aiLib);
+			callbackHandler.registerCallbacks();
 		}
 		
 		aiLib.performAiFunction(call.getFunctionId(),
@@ -60,6 +74,9 @@ public class CppAiConnector extends AiConnector {
 			VariantStruct.createArray(call.getParameters()));
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void stop() {
 		aiLib.stop();

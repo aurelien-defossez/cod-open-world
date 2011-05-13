@@ -14,50 +14,23 @@ Game::Game() {
 	commander = new SpecificCommander();
 	
 	map = new Map(commander);
-	/*
-	height = 12;
-	width = 10;
 	
-	// Create empty architecture
-	architecture = new int *[height];
-	for(int i = 0; i < height; i++) {
-		architecture[i] = new int[width];
-		for(int j = 0; j < width; j++) {
-			
-			if(i == 0 || i == height - 1 || j == 0 || j == width - 1) {
-				architecture[i][j] = WALL;
-			} else {
-				architecture[i][j] = NOTHING;
-			}
-		}
-	}
-	*/
+    srand(time(NULL));
 }
 
 Game::~Game() {
 	delete commander;
 	delete communicator;
 	delete map;
-	/*
-	for(int i = 0; i < height; i++) {
-		delete[] architecture[i];
-	}
-	delete[] architecture;
-	*/
 }
 
 void Game::init(int nbParameters, char *parameters[]) {
-	cout << "Initializing game with " << nbParameters << " parameters." << endl;
-	
-	
-	MapLoader *mapLoader = new MapLoader(map, commander);
-	mapLoader->loadMap(parameters[0]);
-	/*
-	for(int i = 0; i < nbParameters; i++) {
-		cout << "Parameter #" << i << " = " << parameters[i] << endl;
+	if(nbParameters == 0) {
+		cout << "FruitSalad: missing parameter (map)" << endl;
+	} else {
+		MapLoader mapLoader = MapLoader(map, commander);
+		mapLoader.loadMap(parameters[0]);
 	}
-	*/
-	delete mapLoader;
 }
 
 void Game::addAi(short aiId, char *aiName, char *playerName) {
@@ -71,7 +44,7 @@ void Game::play() {
 	commander->setFrame();
 	
 	
-	int nbTours = 20;
+	int nbTours = 1;
 	int currentPlayer = 0;
 	int nbPlayers = map->getListPlayers().size();
 	

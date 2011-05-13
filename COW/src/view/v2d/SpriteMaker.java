@@ -47,10 +47,6 @@ public class SpriteMaker {
 		this.height = height;
 		this.depth = depth;
 		
-		if (logger.isDebugEnabled())
-			logger.debug("Load entity(" + name + ", " + spritePath + ", "
-				+ width + ", " + height + ", " + depth + ", " + center + ")");
-		
 		// Load texture
 		Texture texture = spriteLoader.loadSprite(spritePath);
 		TextureState textureState = renderer.getRenderer().createTextureState();

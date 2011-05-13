@@ -1,9 +1,5 @@
 #include"MapLoader.h"
 
-// TODO REMOVE
-#include <iostream>
-using namespace std;
-
 MapLoader::MapLoader(Map *mapE, SpecificCommander *commanderE)
 {
     map = mapE;

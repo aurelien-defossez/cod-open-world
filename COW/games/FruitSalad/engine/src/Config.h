@@ -84,4 +84,6 @@
 #define FRUCTIFICATION_VITAMINS_QUANTITY 42
 #define QUANTITY_VITAMINS_TAKEN 1
 
+typedef std::pair<int, int> Position;
+
 #endif

@@ -15,7 +15,7 @@ public class IntMatrix extends Structure {
 		
 		public ByReference(int[][] values) {
 			int length = values.length;
-			int length2 = values[0].length;
+			int length2 = (length > 0) ? values[0].length : 0;
 			
 			this.values = new int[length * length2];
 			for (int i = 0; i < length; i++) {

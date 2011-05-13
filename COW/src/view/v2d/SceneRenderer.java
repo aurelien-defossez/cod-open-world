@@ -19,7 +19,7 @@ public class SceneRenderer extends SimpleCanvasImpl implements ButtonListener {
 	
 	private final int CAMERA_SPEED = 400;
 	private final Vector3f CAMERA_INITIAL_POSITION = new Vector3f(0, 0, 0);
-	private final float CAMERA_INITIAL_SCALE = 1;
+	private final float CAMERA_INITIAL_SCALE = 20;
 	
 	// -------------------------------------------------------------------------
 	// Attributes

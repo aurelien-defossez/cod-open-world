@@ -28,9 +28,9 @@ std::string SugarDrop::printC()
 {
     std::string str;
     std::stringstream out;
-    out << x;
+    out << position.first;
     str += "\nPosition - "+out.str();
-    out << y;
+    out << position.second;
     str += "\nPosition - "+out.str();
     out << type;
     str += "\ntype - "+out.str();

@@ -68,9 +68,9 @@ std::string Weapon::printC()
     std::string str;
     std::stringstream out;
     str += "\nlistSize - "+out.str();
-    out << x;
+    out << position.first;
     str += "\nPosition - "+out.str();
-    out << y;
+    out << position.second;
     str += "/"+out.str();
     out << range;
     str += "\nrange - "+out.str();

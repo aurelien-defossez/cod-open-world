@@ -37,6 +37,7 @@ public class View2D extends View {
 	public View2D(String gameName, KeyboardController keyBoardController,
 		MouseController mouseController) {
 		super(keyBoardController);
+		
 		// Create display
 		DisplaySystem display =
 			DisplaySystem
