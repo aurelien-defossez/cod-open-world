@@ -274,32 +274,38 @@ IntMatrix2 MapModifications::getModifiedSugarDrops()
 
 void MapModifications::reset()
 {
-  std::vector<int*>::iterator it;
-  for (it=newObjects.begin(); it!=newObjects.end(); it++)
+  //std::vector<int*>::iterator it;
+  /*for (it=newObjects.begin(); it!=newObjects.end(); ++it)
   {
 	  delete[] *it;
-  }
+  }*/
   newObjects.erase(newObjects.begin(),newObjects.end());
-  for (it=modifiedFruits.begin(); it!=modifiedFruits.end(); it++)
+  /*for (it=modifiedFruits.begin(); it!=modifiedFruits.end(); ++it)
   {
 	  delete[] *it;
-  }
+  }*/
   modifiedFruits.clear();
-  for (it=modifiedSugarDrops.begin(); it!=modifiedSugarDrops.end(); it++)
+  /*for (it=modifiedSugarDrops.begin(); it!=modifiedSugarDrops.end(); ++it)
   {
 	  delete[] *it;
-  }
+  }*/
   modifiedSugarDrops.clear();
-  for (it=movedFruits.begin(); it!=movedFruits.end(); it++)
+  /*for (it=movedFruits.begin(); it!=movedFruits.end(); ++it)
   {
 	  delete[] *it;
-  }
+  }*/
   movedFruits.clear();
-  for (it=deletedObjects.begin(); it!=deletedObjects.end(); it++)
+  /*for (it=deletedObjects.begin(); it!=deletedObjects.end(); ++it)
   {
 	  delete[] *it;
-  }
+  }*/
   deletedObjects.clear();
+  
+  nbNewObjects = 0;
+  nbDeletedObjects = 0;
+  nbMovedFruits = 0;
+  nbModifiedFruits = 0;
+  nbModifiedSugarDrops = 0;
 }
 
 std::string MapModifications::printC()
