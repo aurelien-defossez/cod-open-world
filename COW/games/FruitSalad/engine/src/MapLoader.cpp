@@ -70,7 +70,7 @@ void MapLoader::loadMap(const char *fic)
                 variable >> heightint;
                 map->setDimensions(heightint, widthint);
 				
-				commander->displayGrid(0,0,map->getHeight(), map->getWidth(), 1, 1, 0x303030, false);
+				commander->displayGrid(0, 0, 2 * map->getHeight(), 2 * map->getWidth(), 2, 2, 0x303030, false);
 				
                 std::getline(fichier, contenu);
                 std::getline(fichier, contenu); //get NbPlayers
@@ -300,7 +300,7 @@ Entity* MapLoader::createBuilding(std::string typeE, int x0, int y0)
 	
     Building *building = new Building(std::pair<int,int>(x0,y0), currentId, typeBuilding);
 	commander->createEntity((typeBuilding+58),currentId);
-	commander->moveEntity(currentId, x0, y0);
+	commander->moveEntity(currentId, 2 * x0, 2 * y0);
     currentId++;
     return building;
 }
@@ -316,7 +316,7 @@ Entity* MapLoader::createOwnedBuilding(std::string typeE, int numPlayer, int x0,
 
     OwnedBuilding *building = new OwnedBuilding(std::pair<int,int>(x0,y0), currentId, typeBuilding, owner);
 	commander->createEntity((typeBuilding+10*(numPlayer)),currentId);
-	commander->moveEntity(currentId, x0, y0);
+	commander->moveEntity(currentId, 2 * x0, 2 * y0);
     currentId++;
     return building;
 }
@@ -332,7 +332,7 @@ Entity* MapLoader::createFruit(std::string typeE, int numPlayer, int x0, int y0)
 
     Fruit *fruit = new Fruit(std::pair<int,int>(x0,y0), currentId, typeFruit, owner);
 	commander->createEntity((typeFruit-6+10*(numPlayer)),currentId);
-	commander->moveEntity(currentId, x0, y0);
+	commander->moveEntity(currentId, 2 * x0, 2 * y0);
     currentId++;
     return fruit;
 }
@@ -355,7 +355,7 @@ Entity* MapLoader::createEquipment(std::string typeE, int x0, int y0)
     {
         Weapon *equipment = new Weapon(std::pair<int,int>(x0,y0), currentId, typeEquipment);
 		commander->createEntity((typeEquipment+41),currentId);
-		commander->moveEntity(currentId, x0, y0);
+	commander->moveEntity(currentId, 2 * x0, 2 * y0);
         currentId++;
         return equipment;
     }
@@ -363,7 +363,7 @@ Entity* MapLoader::createEquipment(std::string typeE, int x0, int y0)
     {
         Peeler *equipment = new Peeler(std::pair<int,int>(x0,y0), currentId, typeEquipment);
 		commander->createEntity((typeEquipment+41),currentId);
-		commander->moveEntity(currentId, x0, y0);
+	commander->moveEntity(currentId, 2 * x0, 2 * y0);
         currentId++;
         return equipment;
     }
@@ -371,7 +371,7 @@ Entity* MapLoader::createEquipment(std::string typeE, int x0, int y0)
     {
         Loader *equipment = new Loader(std::pair<int,int>(x0,y0), currentId, typeEquipment);
 		commander->createEntity((typeEquipment+41),currentId);
-		commander->moveEntity(currentId, x0, y0);
+	commander->moveEntity(currentId, 2 * x0, 2 * y0);
         currentId++;
         return equipment;
     }
@@ -413,7 +413,7 @@ Entity* MapLoader::createChest(int x0, int y0)
 {
     Chest *chest = new Chest(std::pair<int,int>(x0,y0), currentId, CHEST);
 	commander->createEntity(72,currentId);
-	commander->moveEntity(currentId, x0, y0);
+	commander->moveEntity(currentId, 2 * x0, 2 * y0);
     currentId++;
     return chest;
 }

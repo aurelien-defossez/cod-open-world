@@ -45,6 +45,11 @@ void Game::init(int nbParameters, char *parameters[]) {
 		mapLoader.loadMap(mapPath.c_str());
 		mapLoaded = true;
 	}
+	
+	drawLine(0, 0, 1, 0, COLOR_RED);
+	drawLine(2, 3, 4, 42, COLOR_VIOLET);
+	drawCircle(10, 10, 1, COLOR_GREEN);
+	drawCircle(10, 10, 2, COLOR_ORANGE);
 }
 
 void Game::addAi(short aiId, char *aiName, char *playerName) {
@@ -536,7 +541,7 @@ int Game::dropEquipment(int fruitId, int equipmentId, int x, int y) {
     equipment->setPosition(x,y);
 	map->addEntity(equipment);
 	commander->createEntity((equipment->getType()+41), equipment->getId());
-	commander->moveEntity(equipment->getId(), equipment->getPosition().first, equipment->getPosition().second);
+	commander->moveEntity(equipment->getId(), 2 * equipment->getPosition().first, 2 * equipment->getPosition().second);
 
 	//creation of modification for all players
     int *modif = new int[5];
@@ -1042,19 +1047,12 @@ int Game::writeTextAt(char *text, int x, int y) {
 }
 
 int Game::drawLine(int x1, int y1, int x2, int y2, int color) {
-	cout << "drawLine(" << x1 << ", " << y1 << ", " << x2 << ", " << y2 << ", ";
-	cout << color << ");" << endl;
+	commander->drawLine(2 * x1 + 1, 2 * y1 + 1, 2 * x2 + 1, 2 * y2 + 1, getRGBColor(color), true);
 	return OK;
 }
 
 int Game::drawCircle(int x, int y, int radius, int color) {
-	cout << "drawCircle(" << x << ", " << y << ", " << radius << ", ";
-	cout << color << ");" << endl;
-	return OK;
-}
-
-int Game::colorSquare(int x, int y, int color) {
-	cout << "colorSquare(" << x << ", " << y << ", " << color << ");" << endl;
+	commander->drawCircle(2 * x + 1, 2 * y + 1, radius, 16, getRGBColor(color), true);
 	return OK;
 }
 
@@ -1066,7 +1064,7 @@ void Game::sendOpenedChest(Chest *chest)
   for(int i=0; i<size;i++)
   {
 	commander->createEntity((liste[i]->getType()+41),liste[i]->getId());
-	commander->moveEntity(liste[i]->getId(), liste[i]->getPosition().first, liste[i]->getPosition().second);
+	commander->moveEntity(liste[i]->getId(), 2 * liste[i]->getPosition().first, 2 * liste[i]->getPosition().second);
 	equipments[i][OBJECT_ID] = liste[i]->getId();
 	equipments[i][OBJECT_X] = liste[i]->getPosition().first;
 	equipments[i][OBJECT_Y] = liste[i]->getPosition().second;
@@ -1079,3 +1077,18 @@ void Game::sendOpenedChest(Chest *chest)
   delete chest;
 }
 
+int Game::getRGBColor(int color)
+{
+	switch(color)
+	{
+		case COLOR_BLACK:  return 0x000000;
+		case COLOR_BLUE:   return 0x0000FF;
+		case COLOR_GREEN:  return 0x00FF00;
+		case COLOR_ORANGE: return 0xFFA500;
+		case COLOR_RED:    return 0xFF0000;
+		case COLOR_VIOLET: return 0x800080;
+		case COLOR_WHITE:  return 0xFFFFFF;
+		case COLOR_YELLOW: return 0xFFFF00;
+		default:           return 0xFFFFFF;
+	}
+}

@@ -275,7 +275,7 @@ int Map::addSugarDrop(int x, int y, int quantity)
 	*/
     SugarDrop *sugarDrop = new SugarDrop(pos, currentId, SUGAR_DROP, quantity);
 	commander->createEntity(73, currentId);
-	commander->moveEntity(currentId, x, y);
+	commander->moveEntity(currentId, 2 * x, 2 * y);
     currentId++;
     addEntity(sugarDrop);
 	/* TODO: envoyer une modification QUE si ya deja un tas de sucre, sinon c'est une nouvelle entité */
@@ -366,7 +366,7 @@ void Map::moveEntity(Entity *entity, int x, int y)
         }
     }
     mapPositions.insert(std::pair<std::pair<int, int>, Entity*>(std::pair<int,int>(x,y), entity));
-	commander->moveEntity(entity->getId(), x-(entity->getPosition().first), y-(entity->getPosition().second));
+	commander->moveEntity(entity->getId(), 2 * (x-(entity->getPosition().first)), 2 * (y-(entity->getPosition().second)));
 }
 
 std::pair<int,int> Map::getValidSquare(int x, int y, int distance)
@@ -442,7 +442,7 @@ void Map::createWalls(int x0, int y0, int x1, int y1)
         {
 			mapWalls[i][j] = true;
 			commander->createEntity(80, -1);
-			commander->moveEntity(-1, i, j);
+			commander->moveEntity(-1, 2 * i, 2 * j);
         }
     }
 }
@@ -553,7 +553,7 @@ int Map::createFruit(int fruitType, int x, int y, Player *owner)
     currentId++;
     addEntity(fruit);
 	commander->createEntity((fruitType-6+10*(owner->getId())),fruit->getId());
-	commander->moveEntity(fruit->getId(), x, y);
+	commander->moveEntity(fruit->getId(), 2 * x, 2 * y);
     return fruit->getId();
 }
 

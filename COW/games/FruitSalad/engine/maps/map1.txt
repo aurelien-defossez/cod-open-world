@@ -1,4 +1,4 @@
-# Height=21 ; Width=19
+# Width=19 ; Height=21 
 19,21
 # NbPlayers = 2
 2

@@ -31,7 +31,7 @@ public class Ai implements FruitSaladAi {
 		System.out.println("}");
 		System.out.println();
 		
-		// Display fruits
+		// Display fruits	
 		System.out.println("== Fruits ==");
 		for (int i = 0; i < fruits.length; i++) {
 			System.out.println("Fruit: "
