@@ -38,10 +38,11 @@ typedef priority_queue<AStarNode, vector<AStarNode>, greater<AStarNode> >
 Map::Map(SpecificCommander *commanderE)
 {
     currentId = 0;
+	wallId = -1;
     nbSourceMiner = 0;
 	commander = commanderE;
 	countFruits = 0;
-	aStarInitialized = false;
+	aStartInitialized = false;
 }
 
 Map::~Map()
@@ -58,18 +59,16 @@ Map::~Map()
 	}
 	
 	// Delete Pathfinding matrices
-	if(aStarInitialized)
+	if(aStartInitialized)
 	{
 		for(int i = 0; i < height; i++)
 		{
 			delete[] distances[i];
 			delete[] visited[i];
-			delete[] mapWalls[i];
 		}
 		
 		delete[] distances;
 		delete[] visited;
-		delete[] mapWalls;
 	}
 }
 void Map::setLimitCherry(int lim)
@@ -124,17 +123,14 @@ void Map::dropSugarRandomly()
 	Entity *sugarTree = getEntity(idSugarTree);
     while (count < COUNT_NEW_SUGAR_DROP)
     {
-		std::cout << "valid..." << std::endl;
-        Position position = getValidSquare(sugarTree->getPosition().first, sugarTree->getPosition().second, DISTANCE_OF_EJECTION);
+        std::pair<int,int> position = getValidSquare(sugarTree->getPosition().first, sugarTree->getPosition().second, DISTANCE_OF_EJECTION);
         std::cout << position.first << "/" << position.second << std::endl;
-		
-		if (position.first != -1)
+		if ((position.first == -1) && (position.second == -1))
         {
-            addSugarDrop(position.first, position.second, QUANTITY_SUGAR_EJECTED);
-			count++;
-        } else {
-			break;
-		}
+            return;
+        }
+        addSugarDrop(position.first, position.second, QUANTITY_SUGAR_EJECTED);
+		count++;
     }
 }
 IntMatrix2 Map::getArchitecture()
@@ -145,7 +141,7 @@ IntMatrix2 Map::getArchitecture()
 	{
 		for (int j=0; j<height; j++)
 		{
-			if (mapWalls[i,j])
+			if (mapWalls.find(std::pair<int, int>(i,j)) != mapWalls.end())
 			{
 				architecture[i][j] = WALL;
 			}
@@ -292,7 +288,7 @@ void Map::addSugar(Player *player, int quantity)
 
 int Map::addSugarDrop(int x, int y, int quantity)
 {
-    Position pos;
+    std::pair<int,int> pos;
     pos.first = x;
     pos.second = y;
 	/*
@@ -306,11 +302,10 @@ int Map::addSugarDrop(int x, int y, int quantity)
 	}
 	*/
     SugarDrop *sugarDrop = new SugarDrop(pos, currentId, SUGAR_DROP, quantity);
-	commander->createEntity(73, currentId);
+	commander->createEntity(73,currentId);
 	commander->moveEntity(currentId, x, y);
     currentId++;
     addEntity(sugarDrop);
-	/* TODO: envoyer une modification QUE si ya deja un tas de sucre, sinon c'est une nouvelle entité */
 	int *modif = new int[5];
     modif[0] = currentId-1;
     modif[1] = x;
@@ -403,7 +398,7 @@ std::pair<int,int> Map::getValidSquare(int x, int y, int distance)
     {
         for (int j = y - distance; j <= y + distance; j++)
         {
-            if (!checkObstacle(i,j))
+            if ((!checkObstacle(i,j)) && (mapPositions.find(std::pair<int,int>(i,j)) == mapPositions.end()))
             {
                 validSquares.push_back(std::pair<int, int>(i, j));
             }
@@ -413,7 +408,7 @@ std::pair<int,int> Map::getValidSquare(int x, int y, int distance)
     {
         return std::pair<int,int>(-1,-1);
     }
-    
+    srand(time(NULL));
     int randSquare = (int)((double)rand() / ((double)RAND_MAX) * (validSquares.size()));
     return validSquares[randSquare];
 }
@@ -424,20 +419,15 @@ void Map::setDimensions(int h, int w)
     width = w;
 	
 	// Initialise l'algo de Pathfinding
-	aStarInitialized = true;
+	aStartInitialized = true;
 	distances = new int*[height];
 	visited = new bool*[height];
-	mapWalls = new bool*[height];
 	for(int i = 0; i < height; i++)
 	{
 		distances[i] = new int[width];
 		visited[i] = new bool[width];
-		mapWalls[i] = new bool[width];
-		
-		for(int j = 0; j < width; j++) {
-			mapWalls[i][j] = false;
-		}
 	}
+	
 }
 
 int Map::getWidth()
@@ -466,9 +456,10 @@ void Map::createWalls(int x0, int y0, int x1, int y1)
     {
         for (int j=y0; j<=y1; j++)
         {
-			mapWalls[i][j] = true;
-			commander->createEntity(80, -1);
-			commander->moveEntity(-1, i, j);
+            mapWalls.insert(std::pair<int,int>(i,j));
+			commander->createEntity(80, wallId);
+			commander->moveEntity(wallId, i, j);
+			wallId--;
         }
     }
 }
@@ -503,7 +494,7 @@ bool  Map::contains(int x, int y)
 
 bool Map::isWall(int x, int y)
 {
-    return mapWalls[x][y];
+    return (mapWalls.find(std::pair<int, int>(x, y)) != mapWalls.end());
 }
 
 bool  Map::verifyPosition(int x, int y)
@@ -622,19 +613,18 @@ bool Map::canHit(Fruit* fruit, Fruit* target)
 	return true;
 }
 
-bool Map::detectObstacle(std::vector<Position> positions)
+bool Map::detectObstacle(std::vector<std::pair<int,int> > positions)
 {
 	for (int i=0; i<positions.size(); i++)
 	{
-		Position p = positions[i];
-		if (mapWalls[p.first][p.second])
+		if (mapWalls.find(positions[i]) != mapWalls.end())
 		{
 			return true;
 		}
 		else
 		{
-			std::map<Position, Entity*>::iterator it;
-			it = mapPositions.find(p);
+			std::map<std::pair<int,int>, Entity*>::iterator it;
+			it = mapPositions.find(positions[i]);
 			if (it != mapPositions.end())
 			{
 				Entity* entity = getEntity(it->second->getId());
@@ -656,7 +646,7 @@ bool Map::checkObstacle(int x, int y)
 	pair<int, int> pos = make_pair(x, y);
 	
 	// Is wall
-	if(mapWalls[x][y])
+	if(mapWalls.find(pos) != mapWalls.end())
 	{
 		return true;
 	}
@@ -854,6 +844,14 @@ std::string Map::printC()
         std::cout << "/";
         std::cout << it2->second->getPosition().second;
     }
-	
+
+    
+    std::set<std::pair<int,int> >::iterator it;
+    for(it = mapWalls.begin(); it != mapWalls.end(); ++it)
+    {
+        std::cout << "walls" << it->first;
+        std::cout << it->second << std::endl;
+    }
+    
     return str;
 }
