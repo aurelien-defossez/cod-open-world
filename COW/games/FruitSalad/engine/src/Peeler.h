@@ -2,7 +2,6 @@
 #define HEADER_PEELER
 
 #include "Equipment.h"
-#include "Fruit.h"
 
 class Peeler : public Equipment
 {

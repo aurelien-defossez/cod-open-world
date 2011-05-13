@@ -1,4 +1,5 @@
 #include "Chest.h"
+#include <iostream>
 
 Chest::Chest(Position positionE, int idE, int typeE) :
 Entity(positionE, idE, typeE)
@@ -20,14 +21,14 @@ void Chest::dropContent(Map *map)
     map->removeEntity(this);
     while (count < listEquipment.size())
     {
-        Position validPos = map->getValidSquare(
-			position.first, position.second, 1);
+	  Position validPos = map->getValidSquare(position.first, position.second, 1);
         if ((validPos.first == -1) && (validPos.second == -1))
         {
             break;
         }
         listEquipment[count]->setPosition(validPos.first, validPos.second);
-        map->addEntity(listEquipment.at(count));
+        map->addEntity(listEquipment[count]);
+		count++;
     }
 }
 
@@ -38,15 +39,20 @@ void Chest::addEquipment(Equipment *equipment)
 
 std::string Chest::printC()
 {
-    std::string str;
-    std::stringstream out;
-    out << listEquipment.size();
-    str += "\nlistSize - "+out.str();
+   for (int i=0; i<listEquipment.size(); i++)
+    {
+        std::cout << listEquipment[i]->getId() << std::endl;
+    }
 
-    return str;
+    return "";
 }
 
 std::vector<Equipment*> Chest::getListEquipment()
 {
   return listEquipment;
+}
+
+void Chest::clear()
+{
+  listEquipment.clear();
 }

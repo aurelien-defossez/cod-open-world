@@ -1,4 +1,5 @@
 #include "Weapon.h"
+#include "Fruit.h"
 
 Weapon::Weapon(std::pair<int,int> positionE, int idE, int typeEquipmentE) :
 Equipment(positionE, idE, typeEquipmentE)

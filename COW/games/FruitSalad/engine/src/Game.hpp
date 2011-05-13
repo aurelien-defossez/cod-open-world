@@ -4,10 +4,7 @@
 #include "FruitSaladEngine.hpp"
 #include "SpecificCommunicator.hpp"
 #include "SpecificCommander.hpp"
-#include "Config.h"
 #include "Map.h"
-#include "MapLoader.h"
-#include "Fruit.h"
 #include "Chest.h"
 
 class Game : FruitSaladEngine {

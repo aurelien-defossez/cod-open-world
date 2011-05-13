@@ -1,6 +1,14 @@
 #include "Map.h"
 #include <queue>
 #include <cmath>
+#include <stdlib.h>
+#include <algorithm>
+#include "Building.h"
+#include "OwnedBuilding.h"
+#include "SugarDrop.h"
+#include <iostream>
+#include <time.h>
+#include <fstream>
 
 using namespace std;
 
@@ -37,7 +45,8 @@ typedef priority_queue<AStarNode, vector<AStarNode>, greater<AStarNode> >
 
 Map::Map(SpecificCommander *commanderE)
 {
-    currentId = 0;
+    architecture = NULL;
+	currentId = 0;
     nbSourceMiner = 0;
 	commander = commanderE;
 	countFruits = 0;
@@ -135,9 +144,13 @@ void Map::dropSugarRandomly()
 		}
     }
 }
-IntMatrix2 Map::getArchitecture()
+IntMatrix2* Map::getArchitecture()
 {
-	IntMatrix2 architecture = IntMatrix2(width, height);
+	if (architecture != NULL)
+	{
+	  delete architecture;
+	}
+	architecture = new IntMatrix2(width, height);
 	//Ajout des murs et des vides
 	for (int i=0; i<width; i++)
 	{
@@ -183,50 +196,7 @@ IntMatrix2 Map::getArchitecture()
 	architecture[x][y] = BUILDING_SUGAR_TREE;
 	return architecture;
 }
-IntMatrix2 Map::getFruits(Player *owner)
-{
-	IntMatrix2 fruitMatrix = IntMatrix2(countFruits, 4);
-	std::map<int,Entity* >::iterator it;
-	int count = 0;
-    for(it = mapIds.begin(); it != mapIds.end(); it++)
-    {
-        if ((it->second->getType() >= FRUIT_CHERRY) && (it->second->getType() <= FRUIT_NUT))
-		{
-			Fruit *fruit = (Fruit*)(it->second);
-			if (fruit->getOwner() == owner)
-			{
-				fruitMatrix[count][OBJECT_ID] = it->second->getId();
-				fruitMatrix[count][OBJECT_X] = it->second->getPosition().first;
-				fruitMatrix[count][OBJECT_Y] = it->second->getPosition().second;
-				fruitMatrix[count][OBJECT_TYPE] = it->second->getType();
-				count++;
-			}
-		}
-    }
-	return fruitMatrix;
-}
-IntMatrix2 Map::getBuildings(Player *owner)
-{
-	IntMatrix2 buildingMatrix = IntMatrix2(3, 4);
-	std::map<int,Entity* >::iterator it;
-	int count = 0;
-    for(it = mapIds.begin(); it != mapIds.end(); it++)
-    {
-        if ((it->second->getType() >= BUILDING_JUICE_BARREL) && (it->second->getType() <= BUILDING_FRUCTIFICATION_TANK))
-		{
-			OwnedBuilding *building = (OwnedBuilding*)(it->second);
-			if (building->getOwner() == owner)
-			{
-				buildingMatrix[count][OBJECT_ID] = it->second->getId();
-				buildingMatrix[count][OBJECT_X] = it->second->getPosition().first;
-				buildingMatrix[count][OBJECT_Y] = it->second->getPosition().second;
-				buildingMatrix[count][OBJECT_TYPE] = it->second->getType();
-				count++;
-			}
-		}
-    }
-	return buildingMatrix;
-}
+
 
 void Map::addNewModification(int *newModif)
 {
@@ -342,10 +312,12 @@ void Map::addEntity(Entity *entity)
 	if ((entity->getType() >= FRUIT_CHERRY) && (entity->getType() <= FRUIT_NUT))
 	{
 		Fruit *fruit = (Fruit*) entity;
-		if (fruit->getOwner() == listPlayers[0])
-		{
-			countFruits++;
-		}
+		int *infos = new int[4];
+		infos[0] = fruit->getId();
+		infos[1] = fruit->getPosition().first;
+		infos[2] = fruit->getPosition().second;
+		infos[3] = fruit->getType();
+		fruit->getOwner()->addToListFruits(infos);
 	}
 	else if ((entity->getType() >= BUILDING_JUICE_BARREL) && (entity->getType() <= BUILDING_FRUCTIFICATION_TANK))
 	{
@@ -362,6 +334,12 @@ void Map::addEntity(Entity *entity)
 		{
 		  building->getOwner()->setIdFructificationTank(building->getId());
 		}
+		int *infos = new int[4];
+		infos[0] = building->getId();
+		infos[1] = building->getPosition().first;
+		infos[2] = building->getPosition().second;
+		infos[3] = building->getType();
+		building->getOwner()->addToListBuildings(infos);
 	}
 	else if (entity->getType() == BUILDING_VITAMIN_SOURCE)
 	{

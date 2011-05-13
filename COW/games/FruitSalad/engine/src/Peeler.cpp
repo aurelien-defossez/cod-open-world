@@ -1,4 +1,5 @@
 #include "Peeler.h"
+#include "Fruit.h"
 
 Peeler::Peeler(std::pair<int,int> positionE, int idE, int typeEquipmentE) :
 Equipment(positionE, idE, typeEquipmentE)

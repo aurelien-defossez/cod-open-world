@@ -2,8 +2,9 @@
 #define HEADER_PLAYER
 
 #include "MapModifications.h"
+#include "Entity.h"
 #include "Config.h"
-
+#include <iostream>
 
 class Player
 {
@@ -35,11 +36,15 @@ class Player
 		void setInfos(short aiId, char *aiName, char *playerName);
 		void resetMapModifications();
 		
-		IntMatrix2 getNewObjects();
-		IntMatrix1 getDeletedObjects();
-		IntMatrix2 getMovedFruits();
-		IntMatrix2 getModifiedFruits();
-		IntMatrix2 getModifiedSugarDrops();
+		IntMatrix2* getNewObjects();
+		IntMatrix1* getDeletedObjects();
+		IntMatrix2* getMovedFruits();
+		IntMatrix2* getModifiedFruits();
+		IntMatrix2* getModifiedSugarDrops();
+		IntMatrix2* getMatrixFruits();
+		IntMatrix2* getMatrixBuildings();
+		void addToListFruits(int *infos);
+		void addToListBuildings(int *infos);
 		void setCounts(int countCherryE, int countKiwiE, int countNutE);
 		int getCountCherry();
 		int getCountKiwi();
@@ -47,6 +52,10 @@ class Player
 
 	protected:
         MapModifications *mapModifications;
+		std::vector<int*> listFruits;
+		std::vector<int*> listBuildings;
+		IntMatrix2 *matrixFruits;
+		IntMatrix2 *matrixBuildings;
 
         int sugarQuantity;
         int vitaminsQuantity;

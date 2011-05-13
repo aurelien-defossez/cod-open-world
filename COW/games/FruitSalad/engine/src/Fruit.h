@@ -1,10 +1,8 @@
 #ifndef HEADER_FRUIT
 #define HEADER_FRUIT
 
-#include "Weapon.h"
-#include "Peeler.h"
-#include "Loader.h"
 #include "OwnedEntity.h"
+#include "Equipment.h"
 
 class Fruit : public OwnedEntity
 {

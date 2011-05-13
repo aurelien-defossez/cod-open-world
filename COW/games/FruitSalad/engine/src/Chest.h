@@ -14,6 +14,7 @@ class Chest : public Entity
         void dropContent(Map *map);
         void addEquipment(Equipment *equipment);
 		std::vector<Equipment*> getListEquipment();
+		void clear();
 
         std::string printC();
 

@@ -2,7 +2,6 @@
 #define HEADER_LOADER
 
 #include "Equipment.h"
-#include "Weapon.h"
 
 class Loader : public Equipment
 {

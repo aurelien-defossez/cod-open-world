@@ -1,21 +1,10 @@
 #ifndef HEADER_MAPLOADER
 #define HEADER_MAPLOADER
 
-#include "Player.h"
-#include "Building.h"
-#include "OwnedBuilding.h"
-#include "Entity.h"
-#include "Chest.h"
-#include "SugarDrop.h"
-#include "Equipment.h"
-#include "Fruit.h"
+
 #include "Map.h"
-
 #include "SpecificCommander.hpp"
-#include <time.h>
-#include <fstream>
-
-#include <iostream>
+#include "Chest.h"
 
 class MapLoader
 {

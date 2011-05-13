@@ -1,5 +1,8 @@
 #include "Fruit.h"
 #include <iostream>
+#include "Weapon.h"
+#include "Peeler.h"
+#include "Loader.h"
 
 Fruit::Fruit(std::pair<int,int> positionE, int idE, int typeFruitE, Player *ownerE) :
 OwnedEntity(positionE, idE, typeFruitE, ownerE)

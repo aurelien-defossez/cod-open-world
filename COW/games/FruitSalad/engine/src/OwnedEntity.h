@@ -1,8 +1,8 @@
 #ifndef HEADER_OWNEDENTITY
 #define HEADER_OWNEDENTITY
 
-#include "Player.h"
 #include "Entity.h"
+#include "Player.h"
 
 class OwnedEntity : public Entity
 {

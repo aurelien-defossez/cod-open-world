@@ -1,9 +1,10 @@
 #include "Player.h"
-#include <iostream>
 
 Player::Player()
 {
     mapModifications = new MapModifications();
+	matrixFruits = NULL;
+	matrixBuildings = NULL;
     sugarQuantity = 0;
     vitaminsQuantity = 0;
     isCurrent = false;
@@ -14,6 +15,51 @@ void Player::setInfos(short aiId, char *aiName, char *playerName)
   namePlayer = playerName;
   nameIA = aiName;
   idIA = aiId;
+}
+
+void Player::addToListFruits(int *infos)
+{
+  listFruits.push_back(infos);
+}
+
+void Player::addToListBuildings(int *infos)
+{
+  listBuildings.push_back(infos);
+}
+
+IntMatrix2* Player::getMatrixFruits()
+{
+	if (matrixFruits != NULL)
+	{
+	  delete matrixFruits;
+	}
+	matrixFruits = new IntMatrix2(listFruits.size(), 5);
+	for (int i = 0; i < listFruits.size(); i++)
+    {
+		matrixFruits[i][OBJECT_ID] = listFruits[i][0];
+		matrixFruits[i][OBJECT_X] = listFruits[i][1];
+		matrixFruits[i][OBJECT_Y] = listFruits[i][2];
+		matrixFruits[i][OBJECT_TYPE] = listFruits[i][3];
+		matrixFruits[i][OBJECT_INFO] = listFruits[i][4];
+    }
+	return matrixFruits;
+}
+
+IntMatrix2* Player::getMatrixBuildings()
+{
+	if (matrixBuildings != NULL)
+	{
+	  delete matrixBuildings;
+	}
+	matrixBuildings = new IntMatrix2(listBuildings.size(), 4);
+	for (int i = 0; i < listBuildings.size(); i++)
+    {
+		matrixBuildings[i][OBJECT_ID] = listBuildings[i][0];
+		matrixBuildings[i][OBJECT_X] = listBuildings[i][1];
+		matrixBuildings[i][OBJECT_Y] = listBuildings[i][2];
+		matrixBuildings[i][OBJECT_TYPE] = listBuildings[i][3];
+    }
+	return matrixBuildings;
 }
 
 bool Player::isCurrentPlayer()
@@ -145,28 +191,38 @@ int Player::getCountNut()
 {
 	return countNut;
 }
-IntMatrix2 Player::getNewObjects()
+IntMatrix2* Player::getNewObjects()
 {
 	return mapModifications->getNewObjects();
 }
-IntMatrix1 Player::getDeletedObjects()
+IntMatrix1* Player::getDeletedObjects()
 {
 	return mapModifications->getDeletedObjects();
 }
-IntMatrix2 Player::getMovedFruits()
+IntMatrix2* Player::getMovedFruits()
 {
 	return mapModifications->getMovedFruits();
 }
-IntMatrix2 Player::getModifiedFruits()
+IntMatrix2* Player::getModifiedFruits()
 {
 	return mapModifications->getModifiedFruits();
 }
-IntMatrix2 Player::getModifiedSugarDrops()
+IntMatrix2* Player::getModifiedSugarDrops()
 {
 	return mapModifications->getModifiedSugarDrops();
 }
 Player::~Player()
 {
 	mapModifications->reset();
+	listBuildings.clear();
+	listFruits.clear();
+	if (matrixFruits != NULL)
+	{
+	  delete matrixFruits;
+	}
+	if (matrixBuildings != NULL)
+	{
+	  delete matrixBuildings;
+	}
 	//delete mapModifications;
 }

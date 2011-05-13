@@ -1,5 +1,20 @@
 #include"MapLoader.h"
 
+#include "Player.h"
+#include "Building.h"
+#include "OwnedBuilding.h"
+#include "Entity.h"
+#include "SugarDrop.h"
+#include "Equipment.h"
+#include "Weapon.h"
+#include "Loader.h"
+#include "Peeler.h"
+#include "Fruit.h"
+#include <time.h>
+#include <fstream>
+
+#include <iostream>
+
 MapLoader::MapLoader(Map *mapE, SpecificCommander *commanderE)
 {
     map = mapE;

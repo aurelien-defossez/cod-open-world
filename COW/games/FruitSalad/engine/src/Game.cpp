@@ -5,6 +5,15 @@
 #include "SpecificCommander.hpp"
 #include <iostream>
 #include <string>
+#include <stdlib.h>
+#include <algorithm>
+#include "MapLoader.h"
+#include "Fruit.h"
+#include "SugarDrop.h"
+#include "Equipment.h"
+#include "Weapon.h"
+#include "Loader.h"
+#include "Peeler.h"
 
 using namespace std;
 
@@ -59,16 +68,16 @@ void Game::play() {
 		int currentPlayer = 0;
 		int nbPlayers = map->getListPlayers().size();
 		
-		IntMatrix2 archi = map->getArchitecture();
+		IntMatrix2 *archi = map->getArchitecture();
 		int limitCherry = map->getLimitCherry();
 		int limitKiwi = map->getLimitKiwi();
 		int limitNut = map->getLimitNut();
-		/*
+		
 		for (currentPlayer=0; currentPlayer<nbPlayers; currentPlayer++)
 		{
-			IntMatrix2 fruits = map->getFruits(map->getListPlayers()[currentPlayer]);
-			IntMatrix2 buildings = map->getBuildings(map->getListPlayers()[currentPlayer]);
-			commander->initGame(currentPlayer, &archi, &fruits, &buildings, limitCherry, limitKiwi, limitNut);
+			IntMatrix2 *fruits = map->getListPlayers()[currentPlayer]->getMatrixFruits();
+			IntMatrix2 *buildings = map->getListPlayers()[currentPlayer]->getMatrixBuildings();
+			commander->initGame(currentPlayer, archi, fruits, buildings, limitCherry, limitKiwi, limitNut);
 		}
 
 		
@@ -80,17 +89,17 @@ void Game::play() {
 				map->getListPlayers()[currentPlayer]->setCurrentPlayer(true);
 				cout << "recuperation" << endl;
 				//On récupère les données à lui fournir
-				IntMatrix2 newObjects = map->getListPlayers()[currentPlayer]->getNewObjects();
-				IntMatrix1 deletedObjects = map->getListPlayers()[currentPlayer]->getDeletedObjects();
-				IntMatrix2 movedFruits = map->getListPlayers()[currentPlayer]->getMovedFruits();
-				IntMatrix2 modifiedFruits = map->getListPlayers()[currentPlayer]->getModifiedFruits();
-				IntMatrix2 modifiedSugarDrops = map->getListPlayers()[currentPlayer]->getModifiedSugarDrops();
+				IntMatrix2 *newObjects = map->getListPlayers()[currentPlayer]->getNewObjects();
+				IntMatrix1 *deletedObjects = map->getListPlayers()[currentPlayer]->getDeletedObjects();
+				IntMatrix2 *movedFruits = map->getListPlayers()[currentPlayer]->getMovedFruits();
+				IntMatrix2 *modifiedFruits = map->getListPlayers()[currentPlayer]->getModifiedFruits();
+				IntMatrix2 *modifiedSugarDrops = map->getListPlayers()[currentPlayer]->getModifiedSugarDrops();
 				cout << "resetModifs" << endl;
 				//On reset les modifications qu'on vient de lui envoyer
 				map->getListPlayers()[currentPlayer]->resetMapModifications();
 				cout << "playTurn" << endl;
 				//On le fait jouer
-				commander->playTurn(currentPlayer, &newObjects, &deletedObjects, &movedFruits, &modifiedFruits, &modifiedSugarDrops);
+				commander->playTurn(currentPlayer, newObjects, deletedObjects, movedFruits, modifiedFruits, modifiedSugarDrops);
 				cout << "player false" << endl;
 				//On remet le joueur en passif
 				map->getListPlayers()[currentPlayer]->setCurrentPlayer(false);
@@ -102,8 +111,8 @@ void Game::play() {
 			cout << "endTurn fait" << endl;
 			map->dropSugarRandomly();
 			cout << "dropSugar Fait" << endl;
-		}*/
-	
+		}
+	/*
 	map->getListPlayers()[0]->setCurrentPlayer(true);
 	//cout << move(8,2,2) << endl;
 	//commander->setFrame();
@@ -121,12 +130,13 @@ void Game::play() {
 	//fruit->resetAction();
 	//cout << dropEquipment(8,14,4,4) << endl;
 	//cout << fruit->printC() << endl;
-	cout << pickUpSugar(8,15) << endl;
-	cout << pickUpSugar(8,15) << endl;
-	map->printC();
-	fruit->resetAction();
-	cout << dropSugar(8,2,3,3) << endl;
-	cout << fruit->printC() << endl;
+	//cout << pickUpSugar(8,15) << endl;
+	//cout << pickUpSugar(8,15) << endl;
+	//map->printC();
+	//fruit->resetAction();
+	//cout << dropSugar(8,2,3,3) << endl;
+	//cout << fruit->printC() << endl;
+	cout << openChest(8,14) << endl;
 	map->printC();
 	commander->setFrame();
 	
@@ -135,6 +145,7 @@ void Game::play() {
 		map->getListPlayers()[currentPlayer]->resetMapModifications();
 
 	}
+	*/
 	}
 }
 
@@ -1050,20 +1061,21 @@ int Game::colorSquare(int x, int y, int color) {
 void Game::sendOpenedChest(Chest *chest)
 {
   int size = chest->getListEquipment().size();
-  IntMatrix2 equipments = IntMatrix2(size, 4);
-  int i=0;
-  std::vector<Equipment*>::iterator it;
-  for(it=chest->getListEquipment().begin(); it!=chest->getListEquipment().end();it++)
+  vector<Equipment*> liste = chest->getListEquipment();
+  IntMatrix2 equipments = IntMatrix2(size, 5);
+  for(int i=0; i<size;i++)
   {
-	commander->createEntity(((*it)->getType()+41),(*it)->getId());
-	commander->moveEntity((*it)->getId(), (*it)->getPosition().first, (*it)->getPosition().second);
-	equipments[i][OBJECT_ID] = (*it)->getId();
-	equipments[i][OBJECT_X] = (*it)->getPosition().first;
-	equipments[i][OBJECT_Y] = (*it)->getPosition().second;
-	equipments[i][OBJECT_TYPE] = (*it)->getType();
-	i++;
+	commander->createEntity((liste[i]->getType()+41),liste[i]->getId());
+	commander->moveEntity(liste[i]->getId(), liste[i]->getPosition().first, liste[i]->getPosition().second);
+	equipments[i][OBJECT_ID] = liste[i]->getId();
+	equipments[i][OBJECT_X] = liste[i]->getPosition().first;
+	equipments[i][OBJECT_Y] = liste[i]->getPosition().second;
+	equipments[i][OBJECT_TYPE] = liste[i]->getType();
+	equipments[i][OBJECT_INFO] = liste[i]->getAmmo();
   }
   commander->deleteEntity(chest->getId());
   commander->chestOpened(map->getCurrentPlayer(), chest->getId(), &equipments);
+  chest->clear();
+  delete chest;
 }
 

@@ -3,14 +3,15 @@
 MapModifications::MapModifications()
 {
     nbNewObjects = 0;
-
+	matrixNewObjects = NULL;
     nbDeletedObjects = 0;
-
+	matrixDeletedObjects = NULL;
     nbMovedFruits = 0;
-
+	matrixMovedFruits = NULL;
     nbModifiedFruits = 0;
-
+	matrixModifiedFruits = NULL;
     nbModifiedSugarDrops = 0;
+	matrixModifiedSugarDrops = NULL;
 }
 
 void MapModifications::addNewModification(int *newModif)
@@ -214,9 +215,13 @@ void MapModifications::addMovedModification(int *newModif)
     }
 }
 
-IntMatrix2 MapModifications::getNewObjects()
+IntMatrix2* MapModifications::getNewObjects()
 {
-	IntMatrix2 matrixNewObjects = IntMatrix2(nbNewObjects, 5);
+	if (matrixNewObjects != NULL)
+	{
+	  delete matrixNewObjects;
+	}
+	matrixNewObjects = new IntMatrix2(nbNewObjects, 5);
 	for (int i = 0; i < nbNewObjects; i++)
     {
 		matrixNewObjects[i][OBJECT_ID] = newObjects[i][0];
@@ -228,19 +233,27 @@ IntMatrix2 MapModifications::getNewObjects()
 	return matrixNewObjects;
 }
 
-IntMatrix1 MapModifications::getDeletedObjects()
+IntMatrix1* MapModifications::getDeletedObjects()
 {
-	IntMatrix1 arrayDeletedObjects = IntMatrix1(nbDeletedObjects);
+	if (matrixDeletedObjects != NULL)
+	{
+	  delete matrixDeletedObjects;
+	}
+	matrixDeletedObjects = new IntMatrix1(nbDeletedObjects);
 	for (int i = 0; i < nbDeletedObjects; i++)
     {
-		arrayDeletedObjects[i] = deletedObjects[i][0];
+		matrixDeletedObjects[i] = deletedObjects[i][0];
     }
-	return arrayDeletedObjects;
+	return matrixDeletedObjects;
 }
 
-IntMatrix2 MapModifications::getMovedFruits()
+IntMatrix2* MapModifications::getMovedFruits()
 {
-	IntMatrix2 matrixMovedFruits = IntMatrix2(nbMovedFruits, 5);
+	if (matrixMovedFruits != NULL)
+	{
+	  delete matrixMovedFruits;
+	}
+	matrixMovedFruits = new IntMatrix2(nbMovedFruits, 5);
 	for (int i = 0; i < nbMovedFruits; i++)
     {
 		matrixMovedFruits[i][OBJECT_ID] = movedFruits[i][0];
@@ -252,9 +265,13 @@ IntMatrix2 MapModifications::getMovedFruits()
 	return matrixMovedFruits;
 }
 
-IntMatrix2 MapModifications::getModifiedFruits()
+IntMatrix2* MapModifications::getModifiedFruits()
 {
-	IntMatrix2 matrixModifiedFruits = IntMatrix2(nbModifiedFruits, 3);
+	if (matrixModifiedFruits != NULL)
+	{
+	  delete matrixModifiedFruits;
+	}
+	matrixModifiedFruits = new IntMatrix2(nbModifiedFruits, 3);
 	for (int i = 0; i < nbModifiedFruits; i++)
     {
 		matrixModifiedFruits[i][OBJECT_ID] = modifiedFruits[i][0];
@@ -264,9 +281,13 @@ IntMatrix2 MapModifications::getModifiedFruits()
 	return matrixModifiedFruits;
 }
 
-IntMatrix2 MapModifications::getModifiedSugarDrops()
+IntMatrix2* MapModifications::getModifiedSugarDrops()
 {
-	IntMatrix2 matrixModifiedSugarDrops = IntMatrix2(nbModifiedSugarDrops, 2);
+	if (matrixModifiedSugarDrops != NULL)
+	{
+	  delete matrixModifiedSugarDrops;
+	}
+	matrixModifiedSugarDrops = new IntMatrix2(nbModifiedSugarDrops, 2);
 	for (int i = 0; i < nbModifiedSugarDrops; i++)
     {
 		matrixModifiedSugarDrops[i][OBJECT_ID] = modifiedSugarDrops[i][0];

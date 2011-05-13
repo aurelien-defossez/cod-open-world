@@ -2,8 +2,6 @@
 #define HEADER_ENTITY
 
 #include "Config.h"
-#include <stdlib.h>
-#include <algorithm>
 
 class Entity
 {

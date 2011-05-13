@@ -1,4 +1,6 @@
 #include "Entity.h"
+#include <stdlib.h>
+#include <algorithm>
 
 Entity::Entity(Position p, int idE, int typeE)
 {

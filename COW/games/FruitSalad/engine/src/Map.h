@@ -2,18 +2,11 @@
 #define HEADER_MAP
 
 #include "Player.h"
-#include "Building.h"
-#include "OwnedBuilding.h"
 #include "Entity.h"
-#include "SugarDrop.h"
 #include "Equipment.h"
 #include "Fruit.h"
 #include "Config.h"
 
-#include <time.h>
-#include <fstream>
-
-#include <iostream>
 
 class Map
 {
@@ -56,9 +49,7 @@ class Map
         std::vector<std::pair<int,int> > drawLine(int x0, int y0, int x1, int y1);
 		
 		void dropSugarRandomly();
-		IntMatrix2 getArchitecture();
-		IntMatrix2 getFruits(Player *owner);
-		IntMatrix2 getBuildings(Player *owner);
+		IntMatrix2* getArchitecture();
 		bool verifyNbFruit(int fruitType, Player *owner);
 		void setLimitCherry(int lim);
 		void setLimitKiwi(int lim);
@@ -84,6 +75,7 @@ class Map
         std::multimap<std::pair<int,int>, Entity* > mapPositions;
         std::map<int,Entity*> mapIds;
 		bool **mapWalls;
+		IntMatrix2 *architecture;
 
         int currentId;
         int nbSourceMiner;

@@ -2,7 +2,6 @@
 #define HEADER_WEAPON
 
 #include "Equipment.h"
-#include "Fruit.h"
 
 class Weapon : public Equipment
 {
