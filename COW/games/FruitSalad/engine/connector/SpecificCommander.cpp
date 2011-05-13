@@ -2,15 +2,20 @@
 
 void SpecificCommander::initGame(short aiId, IntMatrix2 *architecture,
 		IntMatrix2 *fruits, IntMatrix2 *buildings,
-		int limitCherry, int limitKiwi, int limitNut) {
-	Variant parameters[6];
+		int limitCherry, int limitKiwi, int limitNut,
+		int vitaminGoal, int nbMaxTurns) {
+	Variant parameters[8];
 	parameters[0] = architecture->toVariant();
 	parameters[1] = fruits->toVariant();
 	parameters[2] = buildings->toVariant();
 	parameters[3] = toVariant(limitCherry);
 	parameters[4] = toVariant(limitKiwi);
 	parameters[5] = toVariant(limitNut);
-	callAiFunction(aiId, __AI_API_FUNCTION_INIT_GAME__, 6, parameters);
+	parameters[4] = toVariant(limitKiwi);
+	parameters[5] = toVariant(limitNut);
+	parameters[6] = toVariant(vitaminGoal);
+	parameters[7] = toVariant(nbMaxTurns);
+	callAiFunction(aiId, __AI_API_FUNCTION_INIT_GAME__, 8, parameters);
 }
 
 

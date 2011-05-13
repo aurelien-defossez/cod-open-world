@@ -123,8 +123,7 @@ Variant SpecificCommunicator::performGameFunction(int functionId,
 			return toVariant(game->fructify(
 				intValue(parameters[0]),
 				intValue(parameters[1]),
-				intValue(parameters[2]),
-				intValue(parameters[3])
+				intValue(parameters[2])
 			));
 			break;
 		

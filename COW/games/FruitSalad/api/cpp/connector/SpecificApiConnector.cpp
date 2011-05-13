@@ -91,13 +91,12 @@ int SpecificApiConnector::drinkJuice(int fruitId) {
 	return intValue(callGameFunction(__GAME_API_FUNCTION_DRINK_JUICE__, 1, parameters));
 }
 
-int SpecificApiConnector::fructify(int fruitId, int fruitType, int x, int y) {
-	Variant parameters[4];
-	parameters[0] = toVariant(fruitId);
-	parameters[1] = toVariant(fruitType);
-	parameters[2] = toVariant(x);
-	parameters[3] = toVariant(y);
-	return intValue(callGameFunction(__GAME_API_FUNCTION_FRUCTIFY__, 4, parameters));
+int SpecificApiConnector::fructify(int fruitType, int x, int y) {
+	Variant parameters[3];
+	parameters[0] = toVariant(fruitType);
+	parameters[1] = toVariant(x);
+	parameters[2] = toVariant(y);
+	return intValue(callGameFunction(__GAME_API_FUNCTION_FRUCTIFY__, 3, parameters));
 }
 
 int SpecificApiConnector::drawVitamin(int fruitId) {
@@ -243,6 +242,8 @@ std::string SpecificApiConnector::decode(int code) {
 		return "OBSTACLE_PRESENT";
 	case SUGAR_WALLET_FULL:
 		return "SUGAR_WALLET_FULL";
+	case VITAMINS_WALLET_FULL:
+		return "VITAMINS_WALLET_FULL";
 	case SOURCE_FULL:
 		return "SOURCE_FULL";
 	case HEALTHY:

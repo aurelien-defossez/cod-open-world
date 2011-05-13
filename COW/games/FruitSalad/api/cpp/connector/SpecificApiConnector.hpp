@@ -45,7 +45,7 @@ public:
 	int sellEquipment(int fruitId, int equipmentId);
 	int buyEquipment(int fruitId, int equipmentType);
 	int drinkJuice(int fruitId);
-	int fructify(int fruitId, int fruitType, int x, int y);
+	int fructify(int fruitType, int x, int y);
 	int drawVitamin(int fruitId);
 	int drawLine(int x1, int y1, int x2, int y2, int color);
 	int drawCircle(int x, int y, int radius, int color);

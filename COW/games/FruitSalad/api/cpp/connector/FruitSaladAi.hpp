@@ -47,7 +47,7 @@
 #define COLOR_WHITE 46
 #define COLOR_YELLOW 47
 #define OK 1
-#define HIT 2
+#define HIT -1
 #define SPLATCHED 3
 #define SOME_SUGAR_TAKEN 4
 #define ALL_SUGAR_TAKEN 5
@@ -79,6 +79,7 @@
 #define HEALTHY -123
 #define NOT_VALID_COLOR -124
 #define NO_MORE_AMMO -125
+#define VITAMINS_WALLET_FULL -126
 
 // -------------------------------------------------------------------------
 // FruitSaladEngine interface
@@ -92,7 +93,8 @@ public:
 	// User-defined functions
 	virtual void initGame(IntMatrix2 architecture,
 		IntMatrix2 fruits, IntMatrix2 buildings,
-		int limitCherry, int limitKiwi, int limitNut) = 0;
+		int limitCherry, int limitKiwi, int limitNut,
+		int vitaminGoal, int maxNbTurns) = 0;
 	
 	virtual void playTurn(IntMatrix2 newObjects,
 		IntMatrix1 deletedObjects, IntMatrix2 movedFruits,

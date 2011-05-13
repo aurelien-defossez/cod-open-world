@@ -104,7 +104,7 @@ void Game::play() {
 				map->getListPlayers()[currentPlayer]->setCurrentPlayer(false);
 				if ((map->getListPlayers()[currentPlayer]->hasEnough(0,vitaminsGoal) == OK) || (stopping))
 				{
-				  return;
+					return;
 				}
 				
 			}

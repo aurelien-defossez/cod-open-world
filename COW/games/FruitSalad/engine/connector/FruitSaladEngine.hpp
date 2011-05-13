@@ -47,7 +47,7 @@
 #define COLOR_WHITE 46
 #define COLOR_YELLOW 47
 #define OK 1
-#define HIT 2
+#define HIT -1
 #define SPLATCHED 3
 #define SOME_SUGAR_TAKEN 4
 #define ALL_SUGAR_TAKEN 5
@@ -79,6 +79,7 @@
 #define HEALTHY -123
 #define NOT_VALID_COLOR -124
 #define NO_MORE_AMMO -125
+#define VITAMINS_WALLET_FULL -126
 
 // -------------------------------------------------------------------------
 // FruitSaladEngine interface
@@ -106,7 +107,7 @@ public:
 	virtual int sellEquipment(int fruitId, int equipmentId) = 0;
 	virtual int buyEquipment(int fruitId, int equipmentType) = 0;
 	virtual int drinkJuice(int fruitId) = 0;
-	virtual int fructify(int fruitId, int fruitType, int x, int y) = 0;
+	virtual int fructify(int fruitType, int x, int y) = 0;
 	virtual int drawVitamin(int fruitId) = 0;
 	virtual int drawLine(int x1, int y1, int x2, int y2, int color) = 0;
 	virtual int drawCircle(int x, int y, int radius, int color) = 0;

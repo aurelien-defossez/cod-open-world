@@ -75,7 +75,9 @@ public class AiCommunicator extends JavaAiCommunicator {
 				call.getParameter(2).getIntMatrix2Value(),
 				call.getParameter(3).getIntValue(),
 				call.getParameter(4).getIntValue(),
-				call.getParameter(5).getIntValue()
+				call.getParameter(5).getIntValue(),
+				call.getParameter(6).getIntValue(),
+				call.getParameter(7).getIntValue()
 			);
 			break;
 		}

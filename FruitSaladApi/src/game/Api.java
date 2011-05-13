@@ -74,7 +74,7 @@ public class Api extends JavaApi {
 	public static final int COLOR_WHITE = 46;
 	public static final int COLOR_YELLOW = 47;
 	public static final int OK = 1;
-	public static final int HIT = 2;
+	public static final int HIT = -1;
 	public static final int SPLATCHED = 3;
 	public static final int SOME_SUGAR_TAKEN = 4;
 	public static final int ALL_SUGAR_TAKEN = 5;
@@ -106,6 +106,7 @@ public class Api extends JavaApi {
 	public static final int HEALTHY = -123;
 	public static final int NOT_VALID_COLOR = -124;
 	public static final int NO_MORE_AMMO = -125;
+	public static final int VITAMINS_WALLET_FULL = -126;
 	
 	// -------------------------------------------------------------------------
 	// Attributes
@@ -273,6 +274,8 @@ public class Api extends JavaApi {
 			return "NOT_VALID_COLOR";
 		case NO_MORE_AMMO:
 			return "NO_MORE_AMMO";
+		case VITAMINS_WALLET_FULL:
+			return "VITAMINS_WALLET_FULL";
 		default:
 			return "Unknown code (" + code + ")";
 		}
@@ -366,9 +369,8 @@ public class Api extends JavaApi {
 		return callGameFunction(call).getIntValue();
 	}
 	
-	public static int fructify(int fruitId, int fruitType, int x, int y) {
-		ApiCall call = new ApiCall(__GAME_API_FUNCTION_FRUCTIFY__, 4);
-		call.add(new Variant(fruitId));
+	public static int fructify(int fruitType, int x, int y) {
+		ApiCall call = new ApiCall(__GAME_API_FUNCTION_FRUCTIFY__, 3);
 		call.add(new Variant(fruitType));
 		call.add(new Variant(x));
 		call.add(new Variant(y));

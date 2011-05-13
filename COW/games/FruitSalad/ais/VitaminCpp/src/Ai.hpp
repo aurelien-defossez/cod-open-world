@@ -21,7 +21,8 @@ public:
 	// User-defined functions
 	void initGame(IntMatrix2 architecture,
 		IntMatrix2 fruits, IntMatrix2 buildings,
-		int limitCherry, int limitKiwi, int limitNut);
+		int limitCherry, int limitKiwi, int limitNut,
+		int vitaminGoal, int maxNbTurns);
 	
 	void playTurn(IntMatrix2 newObjects,
 		IntMatrix1 deletedObjects, IntMatrix2 movedFruits,

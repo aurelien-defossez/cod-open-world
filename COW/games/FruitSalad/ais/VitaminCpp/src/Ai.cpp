@@ -23,8 +23,10 @@ void Ai::stop() {
 // User-defined functions
 void Ai::initGame(IntMatrix2 architecture,
 	IntMatrix2 fruits, IntMatrix2 buildings,
-	int limitCherry, int limitKiwi, int limitNut) {
+	int limitCherry, int limitKiwi, int limitNut,
+	int vitaminGoal, int maxNbTurns) {
 	cout << "VitaminCpp: Initialize..." << endl;
+	cout << "Goal = " << vitaminGoal << " ; Max turns = " << maxNbTurns << endl;
 	
 	// Display architecture
 	cout << "== Architecture ==" << endl;
@@ -174,7 +176,7 @@ void Ai::testGameApi() {
 	cout << "drinkJuice: " + api->decode(api->drinkJuice(1)) << endl;
 	
 	cout << "fructify: "
-		+ api->decode(api->fructify(1, FRUIT_CHERRY, 1, 4)) << endl;
+		+ api->decode(api->fructify(FRUIT_CHERRY, 1, 4)) << endl;
 	
 	cout << "drawVitamin: " + api->decode(api->drawVitamin(1)) << endl;
 	

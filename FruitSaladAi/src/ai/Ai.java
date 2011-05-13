@@ -15,8 +15,10 @@ public class Ai implements FruitSaladAi {
 	
 	@Override
 	public void initGame(int[][] architecture, int[][] fruits,
-		int[][] buildings, int limitCherry, int limitKiwi, int limitNut) {
+		int[][] buildings, int limitCherry, int limitKiwi, int limitNut,
+		int vitaminGoal, int maxNbTurns) {
 		System.out.println("AI: Initialize...");
+		System.out.println("Goal = " + vitaminGoal + " ; Nb Turns = " + maxNbTurns);
 		
 		// Display architecture
 		System.out.println("== Architecture ==");
@@ -177,7 +179,7 @@ public class Ai implements FruitSaladAi {
 		System.out.println("drinkJuice: " + Api.decode(Api.drinkJuice(1)));
 		
 		System.out.println("fructify: "
-			+ Api.decode(Api.fructify(1, Api.FRUIT_CHERRY, 1, 4)));
+			+ Api.decode(Api.fructify(Api.FRUIT_CHERRY, 1, 4)));
 		
 		System.out.println("drawVitamin: " + Api.decode(Api.drawVitamin(1)));
 		

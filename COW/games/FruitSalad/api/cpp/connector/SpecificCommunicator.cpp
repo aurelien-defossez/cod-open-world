@@ -35,7 +35,9 @@ void SpecificCommunicator::performAiFunction(int functionId,
 				IntMatrix2(parameters[2]),
 				intValue(parameters[3]),
 				intValue(parameters[4]),
-				intValue(parameters[5])
+				intValue(parameters[5]),
+				intValue(parameters[6]),
+				intValue(parameters[7])
 			);
 			break;
 	}
