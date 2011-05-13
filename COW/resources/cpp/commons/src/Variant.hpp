@@ -76,6 +76,10 @@ public:
 		return length;
 	}
 	
+	inline int& at(int index) {
+		return values[index];
+	}
+	
 	inline int& operator[] (int index) {
 		return values[index];
 	}
@@ -102,6 +106,10 @@ public:
 	
 	inline int size() {
 		return length[0];
+	}
+	
+	inline int& at(int i, int j) {
+		return values[i * length[1] + j];
 	}
 	
 	inline IntMatrix1 operator[] (int index) {

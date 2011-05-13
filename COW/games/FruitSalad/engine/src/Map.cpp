@@ -605,7 +605,6 @@ bool Map::canHit(Fruit* fruit, int range, Fruit* target)
 {
 	if (fruit->maximumOffset(target) > range)
 	{
-		std::cout << "maximumOffset" << std::endl;
 	  return false;
 	}
 	else
@@ -615,7 +614,6 @@ bool Map::canHit(Fruit* fruit, int range, Fruit* target)
                      target->getPosition().first, target->getPosition().second);
 		if (detectObstacle(positions))
 		{
-			std::cout << "detectObstacle" << std::endl;
 		  return false;
 		}
 	}
@@ -687,6 +685,8 @@ int Map::distanceBetween(Entity *entity, int x, int y, int maxDistance)
 	int sy = start.second;
 	PriorityQueue heap;
 	
+	cout << "distanceBetween " << start.first << ";" << start.second << " and " << x << ";" << y << endl;
+	
 	// Initialize matrices
 	for(int i = 0; i < height; i++)
 	{
@@ -726,7 +726,7 @@ int Map::distanceBetween(Entity *entity, int x, int y, int maxDistance)
 			{
 				for(int j = -1; j <= 1; j++)
 				{
-					if(i != 0 && j != 0)
+					if(!(i == 0 && j == 0))
 					{
 						int tx = cx + i;
 						int ty = cy + j;
