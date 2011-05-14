@@ -6,8 +6,8 @@ MapModifications::MapModifications()
 	matrixNewObjects = NULL;
     nbDeletedObjects = 0;
 	matrixDeletedObjects = NULL;
-    nbMovedFruits = 0;
-	matrixMovedFruits = NULL;
+    nbMovedObjects = 0;
+	matrixMovedObjects = NULL;
     nbModifiedFruits = 0;
 	matrixModifiedFruits = NULL;
     nbModifiedSugarDrops = 0;
@@ -24,9 +24,9 @@ MapModifications::~MapModifications()
 	{
 	  delete matrixDeletedObjects;
 	}
-	if (matrixMovedFruits != NULL)
+	if (matrixMovedObjects != NULL)
 	{
-	  delete matrixMovedFruits;
+	  delete matrixMovedObjects;
 	}
 	if (matrixModifiedFruits != NULL)
 	{
@@ -56,9 +56,9 @@ void MapModifications::addNewModification(int *newModif)
             moved[2] = y;
             moved[3] = newModif[1];
             moved[4] = newModif[2];
-            movedFruits.push_back(moved);
+            movedObjects.push_back(moved);
 			delete newModif;
-            nbMovedFruits++;
+            nbMovedObjects++;
             change = true;
             break;
         }
@@ -139,12 +139,12 @@ void MapModifications::addDeletedModification(int *newModif)
         return;
     }
     // Si delete alors que move : delete sur position initiale
-    for (int i = 0; i < nbMovedFruits; i++)
+    for (int i = 0; i < nbMovedObjects; i++)
     {
-        if ((movedFruits.at(i))[0] == newModif[0])
+        if ((movedObjects.at(i))[0] == newModif[0])
         {
-            int x = movedFruits.at(i)[1];
-            int y = movedFruits.at(i)[2];
+            int x = movedObjects.at(i)[1];
+            int y = movedObjects.at(i)[2];
             index = i;
             newModif[1] = x;
             newModif[2] = y;
@@ -156,8 +156,8 @@ void MapModifications::addDeletedModification(int *newModif)
     }
     if (change == true)
     {
-        movedFruits.erase(movedFruits.begin()+index-1);
-        nbMovedFruits--;
+        movedObjects.erase(movedObjects.begin()+index-1);
+        nbMovedObjects--;
         return;
     }
     // Si delete alors que updateFruit : delete
@@ -209,12 +209,12 @@ void MapModifications::addMovedModification(int *newModif)
     bool change = false;
 
     // Si move alors que move avant : move
-    for (int i = 0; i < nbMovedFruits; i++)
+    for (int i = 0; i < nbMovedObjects; i++)
     {
-        if ((movedFruits.at(i))[0] == newModif[0])
+        if ((movedObjects.at(i))[0] == newModif[0])
         {
-            movedFruits[i][3] = newModif[3];
-            movedFruits[i][4] = newModif[4];
+            movedObjects[i][3] = newModif[3];
+            movedObjects[i][4] = newModif[4];
             change = true;
             break;
         }
@@ -234,8 +234,8 @@ void MapModifications::addMovedModification(int *newModif)
 
     if (change == false)
     {
-        movedFruits.push_back(newModif);
-        nbMovedFruits++;
+        movedObjects.push_back(newModif);
+        nbMovedObjects++;
     }
 }
 
@@ -271,22 +271,22 @@ IntMatrix1* MapModifications::getDeletedObjects()
 	return matrixDeletedObjects;
 }
 
-IntMatrix2* MapModifications::getMovedFruits()
+IntMatrix2* MapModifications::getMovedObjects()
 {
-	if (matrixMovedFruits != NULL)
+	if (matrixMovedObjects != NULL)
 	{
-	  delete matrixMovedFruits;
+	  delete matrixMovedObjects;
 	}
-	matrixMovedFruits = new IntMatrix2(nbMovedFruits, 5);
-	for (int i = 0; i < nbMovedFruits; i++)
+	matrixMovedObjects = new IntMatrix2(nbMovedObjects, 5);
+	for (int i = 0; i < nbMovedObjects; i++)
     {
-		matrixMovedFruits->at(i,OBJECT_ID) = movedFruits[i][0];
-		matrixMovedFruits->at(i,OBJECT_X) = movedFruits[i][1];
-		matrixMovedFruits->at(i,OBJECT_Y) = movedFruits[i][2];
-		matrixMovedFruits->at(i,OBJECT_NEW_X) = movedFruits[i][3];
-		matrixMovedFruits->at(i,OBJECT_NEW_Y) = movedFruits[i][4];
+		matrixMovedObjects->at(i,OBJECT_ID) = movedObjects[i][0];
+		matrixMovedObjects->at(i,OBJECT_X) = movedObjects[i][1];
+		matrixMovedObjects->at(i,OBJECT_Y) = movedObjects[i][2];
+		matrixMovedObjects->at(i,OBJECT_NEW_X) = movedObjects[i][3];
+		matrixMovedObjects->at(i,OBJECT_NEW_Y) = movedObjects[i][4];
     }
-	return matrixMovedFruits;
+	return matrixMovedObjects;
 }
 
 IntMatrix2* MapModifications::getModifiedFruits()
@@ -342,7 +342,7 @@ void MapModifications::reset()
   {
 	delete[] *it;
   }*/
-  movedFruits.clear();
+  movedObjects.clear();
   /*for(it=deletedObjects.begin(); it!=deletedObjects.end(); it++)
   {
 	delete[] *it;
@@ -350,7 +350,7 @@ void MapModifications::reset()
   deletedObjects.clear();
   nbNewObjects = 0;
     nbDeletedObjects = 0;
-    nbMovedFruits = 0;
+    nbMovedObjects = 0;
     nbModifiedFruits = 0;
     nbModifiedSugarDrops = 0;
 }

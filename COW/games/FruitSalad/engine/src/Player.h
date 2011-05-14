@@ -38,7 +38,7 @@ class Player
 		
 		IntMatrix2* getNewObjects();
 		IntMatrix1* getDeletedObjects();
-		IntMatrix2* getMovedFruits();
+		IntMatrix2* getMovedObjects();
 		IntMatrix2* getModifiedFruits();
 		IntMatrix2* getModifiedSugarDrops();
 		IntMatrix2* getMatrixFruits();

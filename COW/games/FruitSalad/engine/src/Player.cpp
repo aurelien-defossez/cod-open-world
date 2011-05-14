@@ -199,9 +199,9 @@ IntMatrix1* Player::getDeletedObjects()
 {
 	return mapModifications->getDeletedObjects();
 }
-IntMatrix2* Player::getMovedFruits()
+IntMatrix2* Player::getMovedObjects()
 {
-	return mapModifications->getMovedFruits();
+	return mapModifications->getMovedObjects();
 }
 IntMatrix2* Player::getModifiedFruits()
 {

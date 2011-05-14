@@ -16,7 +16,7 @@ class MapModifications
 		void reset();
 		IntMatrix2* getNewObjects();
 		IntMatrix1* getDeletedObjects();
-		IntMatrix2* getMovedFruits();
+		IntMatrix2* getMovedObjects();
 		IntMatrix2* getModifiedFruits();
 		IntMatrix2* getModifiedSugarDrops();
 
@@ -29,9 +29,9 @@ class MapModifications
         int nbDeletedObjects;
         std::vector<int*> deletedObjects;
 		IntMatrix1 *matrixDeletedObjects;
-        int nbMovedFruits;
-        std::vector<int*> movedFruits;
-		IntMatrix2 *matrixMovedFruits;
+        int nbMovedObjects;
+        std::vector<int*> movedObjects;
+		IntMatrix2 *matrixMovedObjects;
         int nbModifiedFruits;
         std::vector<int*> modifiedFruits;
 		IntMatrix2 *matrixModifiedFruits;

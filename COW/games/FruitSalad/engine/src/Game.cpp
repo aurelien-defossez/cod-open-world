@@ -90,7 +90,7 @@ void Game::play() {
 				//On récupère les données à lui fournir
 				IntMatrix2 *newObjects = map->getListPlayers()[currentPlayer]->getNewObjects();
 				IntMatrix1 *deletedObjects = map->getListPlayers()[currentPlayer]->getDeletedObjects();
-				IntMatrix2 *movedFruits = map->getListPlayers()[currentPlayer]->getMovedFruits();
+				IntMatrix2 *movedFruits = map->getListPlayers()[currentPlayer]->getMovedObjects();
 				IntMatrix2 *modifiedFruits = map->getListPlayers()[currentPlayer]->getModifiedFruits();
 				IntMatrix2 *modifiedSugarDrops = map->getListPlayers()[currentPlayer]->getModifiedSugarDrops();
 				//On reset les modifications qu'on vient de lui envoyer
