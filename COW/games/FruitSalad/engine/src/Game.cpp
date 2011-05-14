@@ -71,7 +71,7 @@ void Game::play() {
 		int limitCherry = map->getLimitCherry();
 		int limitKiwi = map->getLimitKiwi();
 		int limitNut = map->getLimitNut();
-		
+		/*
 		for (currentPlayer=0; currentPlayer<nbPlayers; currentPlayer++)
 		{
 			IntMatrix2 *fruits = map->getListPlayers()[currentPlayer]->getMatrixFruits();
@@ -110,14 +110,16 @@ void Game::play() {
 			cout << "endTurn fait" << endl;
 			map->dropSugarRandomly();
 			cout << "dropSugar Fait" << endl;
-		}
-	/*
+		}*/
+	
 	map->getListPlayers()[0]->setCurrentPlayer(true);
-	//cout << move(8,2,2) << endl;
+	map->printC();
+	//cout << move(8,2,1) << endl;
 	//commander->setFrame();
+	cout << move(8,9,8) << endl;
+	commander->setFrame();
 	//cout << attack(9,11) << endl;
 	//commander->setFrame();
-	map->printC();
 	//cout << pickUpEquipment(8,14) << endl;
 	Fruit *fruit = (Fruit*) map->getEntity(8);
 	cout << fruit->printC() << endl;
@@ -127,15 +129,6 @@ void Game::play() {
 	//cout << fruit->printC() << endl;
 	//fruit = (Fruit*) map->getEntity(8);
 	//fruit->resetAction();
-	//cout << dropEquipment(8,14,4,4) << endl;
-	//cout << fruit->printC() << endl;
-	//cout << pickUpSugar(8,15) << endl;
-	//cout << pickUpSugar(8,15) << endl;
-	//map->printC();
-	//fruit->resetAction();
-	//cout << dropSugar(8,2,3,3) << endl;
-	//cout << fruit->printC() << endl;
-	cout << openChest(8,14) << endl;
 	map->printC();
 	commander->setFrame();
 	
@@ -144,7 +137,7 @@ void Game::play() {
 		map->getListPlayers()[currentPlayer]->resetMapModifications();
 
 	}
-	*/
+	
 	}
 }
 
@@ -194,7 +187,6 @@ int Game::move(int fruitId, int x, int y) {
 	
     // use action
 	fruit->useAction();
-	commander->setFrame();
 	
     //creation of modification for all players
 	int *modif = new int[5];
@@ -204,10 +196,12 @@ int Game::move(int fruitId, int x, int y) {
 	modif[3] = x;
 	modif[4] = y;
 	map->addMovedModification(modif);
-	
+
+    // move
 	map->moveEntity(fruit, x, y);
     fruit->move(x, y);
-    
+
+	commander->setFrame();
     return OK;
 }
 
@@ -255,7 +249,6 @@ int Game::attack(int fruitId, int targetFruitId) {
 
 	// use action
 	fruit->useAction();
-	commander->setFrame();
 
     // attack: hit
     if (fruit->attack(targetFruit) == false)
@@ -267,6 +260,7 @@ int Game::attack(int fruitId, int targetFruitId) {
         modif[2] = targetFruit->getDefense();
         map->addUpdatedModificationObject(modif);
         
+		commander->setFrame();
         return HIT;
     }
     // attack: splatch
@@ -281,6 +275,7 @@ int Game::attack(int fruitId, int targetFruitId) {
 
         map->removeEntity(targetFruit);
 
+		commander->setFrame();
         return SPLATCHED;
     }
 }
@@ -339,13 +334,13 @@ int Game::useEquipment(int fruitId, int equipmentId, int targetId) {
 
 	// use action
 	fruit->useAction();
-	commander->setFrame();
 
     // use equipment
     if (fruit->useEquipment(equipment, target) == false)
     {
         if (equipmentType == EQUIPMENT_RELOADER)
         {
+			commander->setFrame();
             return RELOADED;
         }
         else
@@ -358,6 +353,7 @@ int Game::useEquipment(int fruitId, int equipmentId, int targetId) {
             modif[2] = fruitTarget->getDefense();
             map->addUpdatedModificationObject(modif);
 
+			commander->setFrame();
             return HIT;
         }
     }
@@ -373,6 +369,7 @@ int Game::useEquipment(int fruitId, int equipmentId, int targetId) {
 
         map->removeEntity(target);
 
+		commander->setFrame();
         return SPLATCHED;
     }
 }
@@ -417,7 +414,6 @@ int Game::pickUpEquipment(int fruitId, int equipmentId) {
 
 	// use action
 	fruit->useAction();
-	commander->setFrame();
 
     // add equipment
     fruit->addEquipment(equipment);
@@ -431,6 +427,7 @@ int Game::pickUpEquipment(int fruitId, int equipmentId) {
     modif[3] = equipment->getType();
     map->addDeletedModification(modif);
 
+	commander->setFrame();
     return OK;
 }
 
@@ -481,7 +478,6 @@ int Game::dropEquipment(int fruitId, int equipmentId, int x, int y) {
 
 	// use action
 	fruit->useAction();
-	commander->setFrame();
 
     // drop
     fruit->removeEquipment(equipment);
@@ -499,6 +495,7 @@ int Game::dropEquipment(int fruitId, int equipmentId, int x, int y) {
 	modif[4] = equipment->getAmmo();
     map->addNewModification(modif);
 
+	commander->setFrame();
     return OK;
 }
 
@@ -544,7 +541,6 @@ int Game::pickUpSugar(int fruitId, int sugarDropId) {
     
 	// use action
 	fruit->useAction();
-	commander->setFrame();
 	
     // add sugar
     fruit->addSugar(sugarPickedUp);
@@ -554,6 +550,7 @@ int Game::pickUpSugar(int fruitId, int sugarDropId) {
 		modif[0] = sugarDrop->getId();
 		modif[1] = sugarDrop->getCapacity();
 		map->addUpdatedModificationSugar(modif);  
+		commander->setFrame();
 		return SOME_SUGAR_TAKEN;
     }
 
@@ -567,6 +564,7 @@ int Game::pickUpSugar(int fruitId, int sugarDropId) {
     map->removeEntity(sugarDrop);
 	delete sugarDrop;
 
+	commander->setFrame();
     return ALL_SUGAR_TAKEN;
 }
 
@@ -614,13 +612,13 @@ int Game::dropSugar(int fruitId, int quantity, int x, int y) {
     
 	// use action
 	fruit->useAction();
-	commander->setFrame();
 
     // drop
     fruit->removeSugar(quantity);
     //TODO: Stack with another sugar drop if it exists
 	int idSugar = map->addSugarDrop(x, y, quantity);
 
+	commander->setFrame();
     return OK;
 }
 
@@ -660,12 +658,12 @@ int Game::openChest(int fruitId, int chestId) {
 
 	// use action
 	fruit->useAction();
-	commander->setFrame();
 
     // add sugar
     chest->dropContent(map);
 	sendOpenedChest(chest);
 	
+	commander->setFrame();
     return OK;
 }
 
@@ -698,12 +696,12 @@ int Game::stockSugar(int fruitId) {
 
 	// use action
 	fruit->useAction();
-	commander->setFrame();
 
     // stock
 	map->addSugar(fruit->getOwner(), fruit->getSugar());
     fruit->removeSugar(fruit->getSugar());
     
+	commander->setFrame();
     return OK;
 }
 
@@ -742,16 +740,15 @@ int Game::sellEquipment(int fruitId, int equipmentId) {
 
 	// use action
 	fruit->useAction();
-	commander->setFrame();
 
     // drop
     fruit->removeEquipment(equipment);
 	map->addSugar(fruit->getOwner(), equipment->getSellValue());
 	delete equipment;
 	
+	commander->setFrame();
     return OK;
 }
-
 
 int Game::buyEquipment(int fruitId, int equipmentType) {
 	Entity *entity = map->getEntity(fruitId);
@@ -786,7 +783,7 @@ int Game::buyEquipment(int fruitId, int equipmentType) {
     Equipment *equipment = map->createEquipment(equipmentType, -1, -1);
     
     // not enough sugar
-    if (fruit->getOwner()->hasEnough(equipment->getCost(), 0) == false)
+    if (fruit->getOwner()->hasEnough(equipment->getCost(), 0) == NOT_ENOUGH_SUGAR)
     {
         delete equipment;
         return NOT_ENOUGH_SUGAR;
@@ -800,12 +797,12 @@ int Game::buyEquipment(int fruitId, int equipmentType) {
 
 	// use action
 	fruit->useAction();
-	commander->setFrame();
 
     // add equipment
     fruit->addEquipment(equipment);
     fruit->getOwner()->removeSugar(equipment->getCost());
     
+	commander->setFrame();
     return OK;
 }
 
@@ -842,17 +839,18 @@ int Game::drinkJuice(int fruitId) {
 
 	// use action
 	fruit->useAction();
-	commander->setFrame();
 
     // add equipment
     if (fruit->hasMaxHP())
     {
         fruit->addDefense(1);
+		commander->setFrame();
         return DEFENSE_GAINED;
     }
 	else
 	{
 		fruit->addHP(5);
+		commander->setFrame();
 		return LIFE_GAINED;
     }
 }
@@ -911,7 +909,6 @@ int Game::fructify(int fruitId, int fruitType, int x, int y) {
 
 	// use action
 	fruit->useAction();
-	commander->setFrame();
 
     // add fruit
     int idF = map->createFruit(fruitType, x, y, fruit->getOwner());
@@ -925,6 +922,7 @@ int Game::fructify(int fruitId, int fruitType, int x, int y) {
 	modif[4] = 0;
     map->addNewModification(modif);
 
+	commander->setFrame();
     return idF;
 }
 
@@ -957,10 +955,10 @@ int Game::drawVitamin(int fruitId) {
 
 	// use action
 	fruit->useAction();
-	commander->setFrame();
 
     // add sugar
     fruit->getOwner()->addVitamins(QUANTITY_VITAMINS_TAKEN);
+	commander->setFrame();
     return OK;
 }
 
@@ -993,14 +991,14 @@ void Game::sendOpenedChest(Chest *chest)
   {
 	commander->createEntity((liste[i]->getType()+41),liste[i]->getId());
 	commander->moveEntity(liste[i]->getId(), 2 * liste[i]->getPosition().first, 2 * liste[i]->getPosition().second);
-	equipments[i][OBJECT_ID] = liste[i]->getId();
-	equipments[i][OBJECT_X] = liste[i]->getPosition().first;
-	equipments[i][OBJECT_Y] = liste[i]->getPosition().second;
-	equipments[i][OBJECT_TYPE] = liste[i]->getType();
-	equipments[i][OBJECT_INFO] = liste[i]->getAmmo();
+	equipments->at(i,OBJECT_ID) = liste[i]->getId();
+	equipments->at(i,OBJECT_X) = liste[i]->getPosition().first;
+	equipments->at(i,OBJECT_Y) = liste[i]->getPosition().second;
+	equipments->at(i,OBJECT_TYPE) = liste[i]->getType();
+	equipments->at(i,OBJECT_INFO) = liste[i]->getAmmo();
   }
   commander->deleteEntity(chest->getId());
-  commander->chestOpened(map->getCurrentPlayer(), chest->getId(), equipments);
+  //commander->chestOpened(map->getCurrentPlayer(), chest->getId(), equipments);
   chest->clear();
   delete chest;
 }

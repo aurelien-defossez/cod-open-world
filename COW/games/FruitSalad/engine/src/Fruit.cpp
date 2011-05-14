@@ -324,7 +324,8 @@ std::string Fruit::printC()
 	std::cout << "Id - " << id << std::endl;
 	std::cout << "Life - " << life << std::endl;
 	std::cout << "Speed - " << speed << std::endl;
-	std::cout << "sugar - " << sugar << std::endl;
+	std::cout << "Sugar - " << sugar << std::endl;
+	std::cout << "Bag - " << listEquipment.size() << std::endl;
 
     return "";
 }

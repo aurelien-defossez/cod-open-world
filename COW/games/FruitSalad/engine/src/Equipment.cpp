@@ -117,12 +117,12 @@ bool Equipment::hasAmmoLeft()
 
 int Equipment::getWeight()
 {
-    return weight;
+    return weight-(maxAmmo-ammo)*ammoWeight;
 }
 
 int Equipment::getSellValue()
 {
-    return sellValue;
+    return sellValue-(maxAmmo-ammo)*ammoValue;
 }
 
 int Equipment::getCost()
