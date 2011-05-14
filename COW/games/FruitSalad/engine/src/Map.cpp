@@ -175,7 +175,7 @@ void Map::distributePossessions(int x, int y, Entity* entity)
 				chest->getListEquipment()[i]->setPosition(position.first, position.second);
 				addEntity(chest->getListEquipment()[i]);
 				commander->createEntity((liste[i]->getType()+41),liste[i]->getId());
-				commander->moveEntity(currentId, 2 * position.first, 2 * position.second);
+				commander->moveEntity(liste[i]->getId(), 2 * position.first, 2 * position.second);
 				int *newObject = new int[5];
 				newObject[0] = liste[i]->getId();
 				newObject[1] = liste[i]->getPosition().first;
@@ -201,7 +201,7 @@ void Map::distributePossessions(int x, int y, Entity* entity)
 				fruit->getListEquipment()[i]->setPosition(position.first, position.second);
 				addEntity(fruit->getListEquipment()[i]);
 				commander->createEntity((liste[i]->getType()+41),liste[i]->getId());
-				commander->moveEntity(currentId, 2 * position.first, 2 * position.second);
+				commander->moveEntity(liste[i]->getId(), 2 * position.first, 2 * position.second);
 				int *newObject = new int[5];
 				newObject[0] = liste[i]->getId();
 				newObject[1] = liste[i]->getPosition().first;

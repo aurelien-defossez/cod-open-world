@@ -133,7 +133,8 @@ void Game::play() {
 		cout << attack(9,11) << endl;
 		cout << attack(9,11) << endl;
 		map->endTurn();
-		commander->setFrame();*/
+		commander->setFrame();
+		*/
 		for (int currentTour=0; currentTour<nbTours; currentTour++)
 		{
 			for (currentPlayer=0; currentPlayer<nbPlayers; currentPlayer++)
