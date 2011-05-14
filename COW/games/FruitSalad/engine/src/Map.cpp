@@ -145,6 +145,32 @@ void Map::dropSugarRandomly()
 		}
     }
 }
+
+void Map::distributeSugar(int x, int y, int quantity)
+{
+	int count = (int)((double)rand() / ((double)RAND_MAX) * 4 +1);
+	int capacity; 
+	Entity *sugarTree = getEntity(idSugarTree);
+    for (int i=0; i<count; i++)
+    {
+        capacity = (int)((double)rand() / ((double)RAND_MAX) * (quantity+1));
+		Position position = getValidSquare(x, y, 1);
+		
+		if (position.first != -1)
+        {
+			if (i == count-1)
+			{
+			  addSugarDrop(position.first, position.second, quantity);
+			} else {
+			  addSugarDrop(position.first, position.second, capacity);
+			  quantity -= capacity;
+			}
+        } else {
+			break;
+		}
+    }
+}
+
 IntMatrix2* Map::getArchitecture()
 {
 	architecture = new IntMatrix2(width, height);

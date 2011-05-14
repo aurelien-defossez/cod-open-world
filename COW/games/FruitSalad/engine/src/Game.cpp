@@ -71,7 +71,7 @@ void Game::play() {
 		int limitCherry = map->getLimitCherry();
 		int limitKiwi = map->getLimitKiwi();
 		int limitNut = map->getLimitNut();
-		
+		/*
 		for (currentPlayer=0; currentPlayer<nbPlayers; currentPlayer++)
 		{
 			IntMatrix2 *fruits = map->getListPlayers()[currentPlayer]->getMatrixFruits();
@@ -110,18 +110,37 @@ void Game::play() {
 			cout << "endTurn fait" << endl;
 			map->dropSugarRandomly();
 			cout << "dropSugar Fait" << endl;
-		}
-	/*
+		}*/
+	
 	map->getListPlayers()[0]->setCurrentPlayer(true);
 	map->printC();
 	//cout << move(8,2,1) << endl;
 	//commander->setFrame();
-	cout << move(8,42,5) << endl;
+	Fruit *fruit = (Fruit*) map->getEntity(9);
+	cout << attack(9,11) << endl;
+	commander->setFrame();
+	cout << attack(9,11) << endl;
+	commander->setFrame();
+	fruit->resetAction();
+	cout << attack(9,11) << endl;
+	commander->setFrame();
+	cout << attack(9,11) << endl;
+	commander->setFrame();
+	fruit->resetAction();
+	cout << attack(9,11) << endl;
+	commander->setFrame();
+	cout << attack(9,11) << endl;
+	commander->setFrame();
+	fruit->resetAction();
+	cout << attack(9,11) << endl;
+	commander->setFrame();
+	cout << attack(9,11) << endl;
 	commander->setFrame();
 	//cout << attack(9,11) << endl;
 	//commander->setFrame();
 	//cout << pickUpEquipment(8,14) << endl;
-	Fruit *fruit = (Fruit*) map->getEntity(8);
+	
+	cout << fruit->getOwner()->hasEnough(0,10) << endl;
 	cout << fruit->printC() << endl;
 	//cout << useEquipment(8,14,11) << endl;
 	//cout << fruit->printC() << endl;
@@ -137,7 +156,7 @@ void Game::play() {
 		map->getListPlayers()[currentPlayer]->resetMapModifications();
 
 	}
-	*/
+	
 	}
 }
 
@@ -274,6 +293,8 @@ int Game::attack(int fruitId, int targetFruitId) {
         map->addDeletedModification(modif);
 
         map->removeEntity(targetFruit);
+		fruit->getOwner()->addVitamins(QUANTITY_VITAMINS_WHEN_SPLATCHED);
+		map->distributeSugar(targetFruit->getPosition().first, targetFruit->getPosition().second, targetFruit->getSugar());
 
 		commander->setFrame();
         return SPLATCHED;
@@ -368,6 +389,7 @@ int Game::useEquipment(int fruitId, int equipmentId, int targetId) {
         map->addDeletedModification(modif);
 
         map->removeEntity(target);
+		fruit->getOwner()->addVitamins(QUANTITY_VITAMINS_WHEN_SPLATCHED);
 
 		commander->setFrame();
         return SPLATCHED;

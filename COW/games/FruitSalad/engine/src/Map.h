@@ -49,6 +49,7 @@ class Map
         std::vector<std::pair<int,int> > drawLine(int x0, int y0, int x1, int y1);
 		
 		void dropSugarRandomly();
+		void distributeSugar(int x, int y, int quantity);
 		IntMatrix2* getArchitecture();
 		bool verifyNbFruit(int fruitType, Player *owner);
 		void setLimitCherry(int lim);
