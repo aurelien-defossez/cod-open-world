@@ -75,10 +75,12 @@ Map::~Map()
 	{
 	  delete sugarUpdated;
 	}
+	sugarUpdatedVector.clear();
 	if (objectsDropped != NULL)
 	{
 	  delete objectsDropped;
 	}
+	objectsDroppedVector.clear();
 	// Delete Pathfinding matrices
 	if(aStarInitialized)
 	{
@@ -147,7 +149,6 @@ void Map::dropSugarRandomly()
     while (count < COUNT_NEW_SUGAR_DROP)
     {
         Position position = getValidSquare(sugarTree->getPosition().first, sugarTree->getPosition().second, DISTANCE_OF_EJECTION);
-		
 		if (position.first != -1)
         {
             addSugarDrop(position.first, position.second, sugarEjected);
@@ -183,6 +184,7 @@ void Map::distributePossessions(int x, int y, Entity* entity)
 				newObject[3] = liste[i]->getType();
 				newObject[4] = liste[i]->getAmmo();
 				objectsDroppedVector.push_back(newObject);
+				delete chest;
 			} else {
 				break;
 			}
@@ -209,6 +211,7 @@ void Map::distributePossessions(int x, int y, Entity* entity)
 				newObject[3] = liste[i]->getType();
 				newObject[4] = liste[i]->getAmmo();
 				objectsDroppedVector.push_back(newObject);
+				delete fruit;
 			} else {
 				break;
 			}
@@ -763,7 +766,7 @@ bool Map::detectObstacle(std::vector<Position> positions)
 bool Map::checkObstacle(int x, int y)
 {
 	// Outside map
-	if(x < 0 || x >= height || y < 0 || y >= width)
+	if(x < 0 || x >= width || y < 0 || y >= height)
 	{
 		return true;
 	}

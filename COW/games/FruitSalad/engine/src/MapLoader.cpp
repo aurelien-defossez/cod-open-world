@@ -26,7 +26,6 @@ MapLoader::MapLoader(Map *mapE, SpecificCommander *commanderE)
 void MapLoader::loadMap(const char *fic)
 {
     std::ifstream fichier(fic, std::ios::in);  // on ouvre en lecture
-	std::cout << fic << std::endl;
         if(fichier)  // si l'ouverture a fonctionné
         {
                 std::string height;
@@ -311,7 +310,6 @@ void MapLoader::loadMap(const char *fic)
                 }
 
                 fichier.close();
-				std::cout << "close" << std::endl;
                 map->setCurrentId(currentId);
         }
         else
