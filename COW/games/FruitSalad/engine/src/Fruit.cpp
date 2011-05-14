@@ -120,49 +120,29 @@ void Fruit::removeDefense(int nbDefense)
 
 bool Fruit::hasMaxHP()
 {
-    if (life == maxLife)
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
+    return (life == maxLife);
 }
 
 bool Fruit::isHealthy()
 {
-    if ((hasMaxHP()) && (defense == maxDefense))
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
+    return ((hasMaxHP()) && (defense == maxDefense));
 }
 
 void Fruit::addHP(int nbHP)
 {
-    if (life < maxLife)
+    life += nbHP;
+    if (life > maxLife)
     {
-        life += nbHP;
-        if (life > maxLife)
-        {
-            life = maxLife;
-        }
+        life = maxLife;
     }
 }
 
 void Fruit::addDefense(int nbDefense)
 {
-    if (defense < maxDefense)
+    defense += nbDefense;
+    if (defense > maxDefense)
     {
-        defense += nbDefense;
-        if (defense > maxDefense)
-        {
-            defense = maxDefense;
-        }
+        defense = maxDefense;
     }
 }
 
@@ -182,14 +162,7 @@ void Fruit::removeSugar(int quantity)
 
 bool Fruit::hasSugarFull()
 {
-    if (sugar == sugarWallet)
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
+    return (sugar == sugarWallet);
 }
 
 void Fruit::resetAction()
@@ -253,30 +226,12 @@ void Fruit::updateSpeed()
 
 bool Fruit::hasActionLeft()
 {
-    if (counterAction == 2)
-    {
-        return false;
-    }
-    else
-    {
-        return true;
-    }
+    return (counterAction < 2);
 }
 
 bool Fruit::hasAmmoLeft()
 {
-    if (maxAmmo == -1)
-    {
-        return true;
-    }
-    else if (ammo > 0)
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
+    return (maxAmmo == -1 || ammo > 0);
 }
 
 bool Fruit::hasEquipment(int id)
@@ -288,6 +243,7 @@ bool Fruit::hasEquipment(int id)
             return true;
         }
     }
+    
     return false;
 }
 
@@ -300,6 +256,7 @@ Equipment* Fruit::getEquipment(int id)
             return listEquipment[i];
         }
     }
+    
     return NULL;
 }
 
@@ -320,6 +277,7 @@ bool Fruit::useEquipment(Equipment *equipment, Entity *target)
         Loader *loader = (Loader*)equipment;
         return loader->use(target);
     }
+    
     return false;
 }
 

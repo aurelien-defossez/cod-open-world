@@ -58,8 +58,6 @@ class Map
 		int getLimitKiwi();
 		int getLimitNut();
 
-        void addSourceMiner();
-        void resetSourceMiner();
         void setDimensions(int h, int w);
 		int getWidth();
         int getHeight();
@@ -78,7 +76,6 @@ class Map
 		IntMatrix2 *architecture;
 
         int currentId;
-        int nbSourceMiner;
         int width;
         int height;
 		

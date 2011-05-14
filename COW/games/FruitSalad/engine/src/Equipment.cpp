@@ -112,18 +112,7 @@ bool Equipment::use(Entity *target)
 
 bool Equipment::hasAmmoLeft()
 {
-    if (maxAmmo == -1)
-    {
-        return true;
-    }
-    else if (ammo > 0)
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
+    return (maxAmmo == -1 || ammo > 0);
 }
 
 int Equipment::getWeight()

@@ -213,6 +213,8 @@ std::string SpecificApiConnector::decode(int code) {
 		return "LIFE_GAINED";
 	case DEFENSE_GAINED:
 		return "DEFENSE_GAINED";
+	case RELOADED:
+		return "RELOADED";
 	case UNKNOWN_OBJECT:
 		return "UNKNOWN_OBJECT";
 	case NOT_FRUIT:
@@ -261,6 +263,8 @@ std::string SpecificApiConnector::decode(int code) {
 		return "HEALTHY";
 	case NOT_VALID_COLOR:
 		return "NOT_VALID_COLOR";
+	case NO_MORE_AMMO:
+		return "NO_MORE_AMMO";
 	default:
 		return "Unkown code: " +code;
 	}

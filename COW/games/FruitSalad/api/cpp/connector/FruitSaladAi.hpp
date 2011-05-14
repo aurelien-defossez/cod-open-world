@@ -53,6 +53,7 @@
 #define ALL_SUGAR_TAKEN 5
 #define LIFE_GAINED 6
 #define DEFENSE_GAINED 7
+#define RELOADED 8
 #define UNKNOWN_OBJECT -101
 #define NOT_FRUIT -102
 #define NOT_EQUIPMENT -103
@@ -77,6 +78,7 @@
 #define SOURCE_FULL -122
 #define HEALTHY -123
 #define NOT_VALID_COLOR -124
+#define NO_MORE_AMMO -125
 
 // -------------------------------------------------------------------------
 // FruitSaladEngine interface

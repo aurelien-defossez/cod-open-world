@@ -46,7 +46,6 @@ typedef priority_queue<AStarNode, vector<AStarNode>, greater<AStarNode> >
 Map::Map(SpecificCommander *commanderE)
 {
 	currentId = 0;
-    nbSourceMiner = 0;
 	commander = commanderE;
 	countFruits = 0;
 	aStarInitialized = false;
@@ -154,16 +153,10 @@ IntMatrix2* Map::getArchitecture()
 	{
 		for (int j=0; j<height; j++)
 		{
-			if (mapWalls[i,j])
-			{
-				architecture->at(i,j) = WALL;
-			}
-			else
-			{
-				architecture->at(i,j)  = NOTHING;
-			}
+			architecture->at(i, j) = (mapWalls[i][j]) ? WALL : NOTHING;
 		}
 	}
+	
 	Entity *building;
 	int x;
 	int y;
@@ -173,25 +166,29 @@ IntMatrix2* Map::getArchitecture()
         building = getEntity(listPlayers[i]->getIdFructificationTank());
 		x = building->getPosition().first;
 		y = building->getPosition().second;
-		architecture->at(x,y)  = BUILDING_FRUCTIFICATION_TANK;
+		architecture->at(x, y) = BUILDING_FRUCTIFICATION_TANK;
+		
 		building = getEntity(listPlayers[i]->getIdSugarBowl());
 		x = building->getPosition().first;
 		y = building->getPosition().second;
-		architecture->at(x,y) = BUILDING_SUGAR_BOWL;
+		architecture->at(x, y) = BUILDING_SUGAR_BOWL;
+		
 		building = getEntity(listPlayers[i]->getIdJuiceBarrel());
 		x = building->getPosition().first;
 		y = building->getPosition().second;
-		architecture->at(x,y) = BUILDING_JUICE_BARREL;
+		architecture->at(x, y) = BUILDING_JUICE_BARREL;
     }
 	//ajout des neutral buildings
 	building = getEntity(idVitaminSource);
 	x = building->getPosition().first;
 	y = building->getPosition().second;
-	architecture->at(x,y) = BUILDING_VITAMIN_SOURCE;
+	architecture->at(x, y) = BUILDING_VITAMIN_SOURCE;
+	
 	building = getEntity(idSugarTree);
 	x = building->getPosition().first;
 	y = building->getPosition().second;
-	architecture->at(x,y) = BUILDING_SUGAR_TREE;
+	architecture->at(x, y) = BUILDING_SUGAR_TREE;
+	
 	return architecture;
 }
 
@@ -284,7 +281,6 @@ int Map::addSugarDrop(int x, int y, int quantity)
 	modif[3] = SUGAR_DROP;
 	modif[4] = quantity;
     addNewModification(modif);
-	commander->setFrame();
     return sugarDrop->getId();
 }
 
@@ -410,6 +406,7 @@ void Map::setDimensions(int h, int w)
 			mapWalls[i][j] = false;
 		}
 	}
+	cout << "mapWalls created" << endl;
 }
 
 int Map::getWidth()
@@ -506,7 +503,8 @@ bool  Map::verifyPosition(int x, int y)
 
 Entity* Map::getEntity(int id)
 {
-    return (mapIds[id]);
+	std::map<int, Entity*>::iterator it = mapIds.find(id);
+	return (it == mapIds.end()) ? NULL : it->second;
 }
 
 bool Map::verifyBuilding(Fruit *fruit, int buildingType)
@@ -553,28 +551,6 @@ int Map::createFruit(int fruitType, int x, int y, Player *owner)
 	commander->createEntity((fruitType-6+10*(owner->getId())),fruit->getId());
 	commander->moveEntity(fruit->getId(), 2 * x, 2 * y);
     return fruit->getId();
-}
-
-bool Map::verifySource()
-{
-    if (nbSourceMiner == 3)
-    {
-        return false;
-    }
-    else
-    {
-        return true;
-    }
-}
-
-void Map::addSourceMiner()
-{
-    nbSourceMiner++;
-}
-
-void Map::resetSourceMiner()
-{
-    nbSourceMiner = 0;
 }
 
 bool Map::canHit(Fruit* fruit, int range, Fruit* target)
@@ -785,7 +761,6 @@ int Map::getCurrentPlayer()
 
 void Map::endTurn()
 {
-  resetSourceMiner();
   std::map<int,Entity* >::iterator it;
   for(it = mapIds.begin(); it != mapIds.end(); ++it)
   {

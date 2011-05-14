@@ -82,6 +82,7 @@ public class Api extends JavaApi {
 	public static final int ALL_SUGAR_TAKEN = 5;
 	public static final int LIFE_GAINED = 6;
 	public static final int DEFENSE_GAINED = 7;
+	public static final int RELOADED = 8;
 	public static final int UNKNOWN_OBJECT = -101;
 	public static final int NOT_FRUIT = -102;
 	public static final int NOT_EQUIPMENT = -103;
@@ -106,6 +107,7 @@ public class Api extends JavaApi {
 	public static final int SOURCE_FULL = -122;
 	public static final int HEALTHY = -123;
 	public static final int NOT_VALID_COLOR = -124;
+	public static final int NO_MORE_AMMO = -125;
 	
 	// -------------------------------------------------------------------------
 	// Attributes
@@ -221,6 +223,8 @@ public class Api extends JavaApi {
 			return "LIFE_GAINED";
 		case DEFENSE_GAINED:
 			return "DEFENSE_GAINED";
+		case RELOADED:
+			return "RELOADED";
 		case UNKNOWN_OBJECT:
 			return "UNKNOWN_OBJECT";
 		case NOT_FRUIT:
@@ -269,6 +273,8 @@ public class Api extends JavaApi {
 			return "HEALTHY";
 		case NOT_VALID_COLOR:
 			return "NOT_VALID_COLOR";
+		case NO_MORE_AMMO:
+			return "NO_MORE_AMMO";
 		default:
 			return "Unknown code (" + code + ")";
 		}
