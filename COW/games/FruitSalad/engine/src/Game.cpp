@@ -64,7 +64,7 @@ void Game::play() {
 	{
 		
 		int nbTours = map->getNbTours();
-		int maxVitamins = map->getMaxVitamins();
+		int vitaminsGoal = map->getMaxVitamins();
 		int currentPlayer = 0;
 		int nbPlayers = map->getListPlayers().size();
 		
@@ -77,7 +77,7 @@ void Game::play() {
 		{
 			IntMatrix2 *fruits = map->getListPlayers()[currentPlayer]->getMatrixFruits();
 			IntMatrix2 *buildings = map->getListPlayers()[currentPlayer]->getMatrixBuildings();
-			commander->initGame(currentPlayer, archi, fruits, buildings, limitCherry, limitKiwi, limitNut);
+			commander->initGame(currentPlayer, archi, fruits, buildings, limitCherry, limitKiwi, limitNut, vitaminsGoal, nbTours);
 		}
 		for (int currentTour=0; currentTour<nbTours; currentTour++)
 		{
@@ -85,6 +85,7 @@ void Game::play() {
 			{
 				//On passe le joueur à joueur actif
 				map->getListPlayers()[currentPlayer]->setCurrentPlayer(true);
+				map->getListPlayers()[currentPlayer]->addVitamins(1);
 				//On récupère les données à lui fournir
 				IntMatrix2 *newObjects = map->getListPlayers()[currentPlayer]->getNewObjects();
 				IntMatrix1 *deletedObjects = map->getListPlayers()[currentPlayer]->getDeletedObjects();
@@ -97,7 +98,7 @@ void Game::play() {
 				commander->playTurn(currentPlayer, newObjects, deletedObjects, movedFruits, modifiedFruits, modifiedSugarDrops);
 				//On remet le joueur en passif
 				map->getListPlayers()[currentPlayer]->setCurrentPlayer(false);
-				if (map->getListPlayers()[currentPlayer]->hasEnough(0,maxVitamins) == OK) 
+				if (map->getListPlayers()[currentPlayer]->hasEnough(0,vitaminsGoal) == OK) 
 				{
 				  return;
 				}
@@ -242,12 +243,12 @@ int Game::attack(int fruitId, int targetFruitId) {
         map->addDeletedModification(modif);
 
         map->removeEntity(targetFruit);
-		fruit->getOwner()->addVitamins(QUANTITY_VITAMINS_WHEN_SPLATCHED);
 		map->distributePossessions(targetFruit->getPosition().first, targetFruit->getPosition().second, targetFruit);
+		fruit->addVitamins(targetFruit->getVitamins());
 
         commander->mapUpdate(map->getCurrentPlayer(), map->getObjectsDropped(), map->getSugarUpdated());
 		commander->setFrame();
-        return SPLATCHED;
+        return targetFruit->getVitamins();
     }
 }
 
@@ -341,11 +342,12 @@ int Game::useEquipment(int fruitId, int equipmentId, int targetId) {
 		map->distributePossessions(target->getPosition().first, target->getPosition().second, target);
 
         map->removeEntity(target);
-		fruit->getOwner()->addVitamins(QUANTITY_VITAMINS_WHEN_SPLATCHED);
+		Fruit *targetF = (Fruit*)target;
+		fruit->addVitamins(targetF->getVitamins());
         commander->mapUpdate(map->getCurrentPlayer(), map->getObjectsDropped(), map->getSugarUpdated());
 
 		commander->setFrame();
-        return SPLATCHED;
+        return targetF->getVitamins();
     }
 }
 
@@ -674,7 +676,9 @@ int Game::stockSugar(int fruitId) {
 
     // stock
 	map->addSugar(fruit->getOwner(), fruit->getSugar());
+	fruit->getOwner()->addVitamins(fruit->getVitamins());
     fruit->removeSugar(fruit->getSugar());
+    fruit->removeVitamins(fruit->getVitamins());
     
 	commander->setFrame();
     return OK;
@@ -830,30 +834,14 @@ int Game::drinkJuice(int fruitId) {
     }
 }
 
-int Game::fructify(int fruitId, int fruitType, int x, int y) {
-	Entity *entity = map->getEntity(fruitId);
+int Game::fructify(int fruitType, int x, int y) {
     
-	// entity non defined
-    if (entity == NULL)
-        return UNKNOWN_OBJECT;
-    
-    int entityType = entity->getType();
-    
-    // entity is not a fruit
-    if (entityType != FRUIT_CHERRY && entityType != FRUIT_KIWI && entityType != FRUIT_NUT)
-        return NOT_FRUIT;
-    
-    Fruit *fruit = (Fruit*)entity;
-    
-    // not a fruit type
+	Player *player = map->getListPlayers()[map->getCurrentPlayer()];
+  // not a fruit type
     if ((fruitType < FRUIT_CHERRY) || (fruitType > FRUIT_NUT))
         return INVALID_TYPE;
     
-    // fruit is not yours
-    if (fruit->getOwner()->isCurrentPlayer() == false)
-        return NOT_OWNER;
-    
-    if (map->verifyNbFruit(fruitType, fruit->getOwner()) == false)
+    if (map->verifyNbFruit(fruitType, player) == false)
         return LIMIT_REACHED;
     
     // position not in the map
@@ -864,29 +852,14 @@ int Game::fructify(int fruitId, int fruitType, int x, int y) {
     if (map->verifyPosition(x,y) == false)
         return NOT_VALID_DESTINATION;
     
-    // fruit has used his 2 actions
-    if (fruit->hasActionLeft() == false)
-        return NO_MORE_ACTIONS;
-    
-    // target not in range
-    if (map->verifyBuilding(fruit, BUILDING_FRUCTIFICATION_TANK) == false)
-        return TOO_FAR;
-    
-    // not enough sugar
-    if (fruit->getOwner()->hasEnough(FRUCTIFICATION_SUGAR_QUANTITY, FRUCTIFICATION_VITAMINS_QUANTITY) == NOT_ENOUGH_SUGAR)
-        return NOT_ENOUGH_SUGAR;
-    
     // not enough vitamins
-    if (fruit->getOwner()->hasEnough(FRUCTIFICATION_SUGAR_QUANTITY, FRUCTIFICATION_VITAMINS_QUANTITY) == NOT_ENOUGH_VITAMIN)
+    if (player->hasEnough(FRUCTIFICATION_SUGAR_QUANTITY, FRUCTIFICATION_VITAMINS_QUANTITY) == NOT_ENOUGH_VITAMIN)
     {
         return NOT_ENOUGH_VITAMIN;
     }
 
-	// use action
-	fruit->useAction();
-
     // add fruit
-    int idF = map->createFruit(fruitType, x, y, fruit->getOwner());
+    int idF = map->createFruit(fruitType, x, y, player);
 
     //creation of modification for all players
     int *modif = new int[5];
@@ -927,11 +900,15 @@ int Game::drawVitamin(int fruitId) {
     // target not in range
     if (map->verifyBuilding(fruit, BUILDING_VITAMIN_SOURCE) == false)
         return TOO_FAR;
+	
+	// fruit is full of vitamins
+    if (fruit->hasVitaminsFull())
+        return VITAMINS_WALLET_FULL;
 
 	// use action
 	fruit->useAction();
 
-    // add sugar
+    // add vitamins
     fruit->getOwner()->addVitamins(QUANTITY_VITAMINS_TAKEN);
 	commander->setFrame();
     return OK;

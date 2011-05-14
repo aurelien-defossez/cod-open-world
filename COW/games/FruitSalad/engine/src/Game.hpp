@@ -40,7 +40,7 @@ public:
 	int sellEquipment(int fruitId, int equipmentId);
 	int buyEquipment(int fruitId, int equipmentType);
 	int drinkJuice(int fruitId);
-	int fructify(int fruitId, int fruitType, int x, int y);
+	int fructify(int fruitType, int x, int y);
 	int drawVitamin(int fruitId);
 	int writeText(char *text);
 	int writeTextAt(char *text, int x, int y);

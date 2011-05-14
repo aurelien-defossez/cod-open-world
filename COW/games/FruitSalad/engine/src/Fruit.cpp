@@ -17,12 +17,14 @@ OwnedEntity(positionE, idE, typeFruitE, ownerE)
         ammo = -1;
         capacity = 45;
         sugar = 0;
+		vitamins = 0;
         speed = 6;
 
         maxLife = 15;
         maxDefense = 0;
         maxAmmo = -1;
         sugarWallet = 90;
+		vitaminsWallet = 10;
     }
     else if (typeFruitE == FRUIT_KIWI)
     {
@@ -33,12 +35,14 @@ OwnedEntity(positionE, idE, typeFruitE, ownerE)
         ammo = 42;
         capacity = 55;
         sugar = 0;
+		vitamins = 0;
         speed = 4;
 
         maxLife = 20;
         maxDefense = 1;
         maxAmmo = 42;
         sugarWallet = 120;
+		vitaminsWallet = 15;
     }
     else if (typeFruitE == FRUIT_NUT)
     {
@@ -49,12 +53,14 @@ OwnedEntity(positionE, idE, typeFruitE, ownerE)
         ammo = -1;
         capacity = 65;
         sugar = 0;
+		vitamins = 0;
         speed = 2;
 
         maxLife = 25;
         maxDefense = 2;
         maxAmmo = -1;
         sugarWallet = 60;
+		vitaminsWallet = 20;
     }
     else
     {
@@ -155,14 +161,33 @@ void Fruit::addSugar(int quantity)
     }
 }
 
+void Fruit::addVitamins(int quantity)
+{
+    vitamins += quantity;
+    if (vitamins > vitaminsWallet)
+    {
+        vitamins = vitaminsWallet;
+    }
+}
+
 void Fruit::removeSugar(int quantity)
 {
     sugar -= quantity;
 }
 
+void Fruit::removeVitamins(int quantity)
+{
+    vitamins -= quantity;
+}
+
 bool Fruit::hasSugarFull()
 {
     return (sugar == sugarWallet);
+}
+
+bool Fruit::hasVitaminsFull()
+{
+  return (vitamins == vitaminsWallet);
 }
 
 void Fruit::resetAction()
@@ -299,6 +324,11 @@ int Fruit::hasPlaceLeft()
 int Fruit::getSugar()
 {
     return sugar;
+}
+
+int Fruit::getVitamins()
+{
+  return vitamins;
 }
 
 int Fruit::getLife()

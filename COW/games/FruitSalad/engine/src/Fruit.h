@@ -17,6 +17,8 @@ class Fruit : public OwnedEntity
         void removeEquipment(Equipment *equipment);
         void addSugar(int quantity);
         void removeSugar(int quantity);
+        void addVitamins(int quantity);
+        void removeVitamins(int quantity);
         void useAction();
         void addHP(int nbHP);
         bool removeHP(int nbHP);
@@ -29,6 +31,7 @@ class Fruit : public OwnedEntity
         bool hasMaxHP();
         bool isHealthy();
         bool hasSugarFull();
+        bool hasVitaminsFull();
         bool hasActionLeft();
         bool hasAmmoLeft();
         bool hasEquipment(int id);
@@ -36,6 +39,7 @@ class Fruit : public OwnedEntity
         std::vector<Equipment*> getListEquipment();
         int hasPlaceLeft();
         int getSugar();
+        int getVitamins();
         int getLife();
         int getDefense();
         int getSpeed();
@@ -51,12 +55,14 @@ class Fruit : public OwnedEntity
         int ammo;
         int capacity;
         int sugar;
+		int vitamins;
         int speed;
 
         int maxLife;
         int maxDefense;
         int maxAmmo;
         int sugarWallet;
+		int vitaminsWallet;
         int counterAction;
 
         std::vector<Equipment*> listEquipment;
