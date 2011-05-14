@@ -838,7 +838,7 @@ std::string Map::printC()
     out << mapPositions.size();
     str += "\nmapPosSize - "+out.str();
     out.str("");
-  */
+  
     std::map<int,Entity* >::iterator it;
     for(it = mapIds.begin(); it != mapIds.end(); ++it)
     {
@@ -858,6 +858,6 @@ std::string Map::printC()
         std::cout << "/";
         std::cout << it2->second->getPosition().second;
     }
-	
+	*/
     return str;
 }

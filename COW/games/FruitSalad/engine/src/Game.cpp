@@ -87,20 +87,16 @@ void Game::play() {
 			{
 				//On passe le joueur à joueur actif
 				map->getListPlayers()[currentPlayer]->setCurrentPlayer(true);
-				cout << "recuperation" << endl;
 				//On récupère les données à lui fournir
 				IntMatrix2 *newObjects = map->getListPlayers()[currentPlayer]->getNewObjects();
 				IntMatrix1 *deletedObjects = map->getListPlayers()[currentPlayer]->getDeletedObjects();
 				IntMatrix2 *movedFruits = map->getListPlayers()[currentPlayer]->getMovedFruits();
 				IntMatrix2 *modifiedFruits = map->getListPlayers()[currentPlayer]->getModifiedFruits();
 				IntMatrix2 *modifiedSugarDrops = map->getListPlayers()[currentPlayer]->getModifiedSugarDrops();
-				cout << "resetModifs" << endl;
 				//On reset les modifications qu'on vient de lui envoyer
 				map->getListPlayers()[currentPlayer]->resetMapModifications();
-				cout << "playTurn" << endl;
 				//On le fait jouer
 				commander->playTurn(currentPlayer, newObjects, deletedObjects, movedFruits, modifiedFruits, modifiedSugarDrops);
-				cout << "player false" << endl;
 				//On remet le joueur en passif
 				map->getListPlayers()[currentPlayer]->setCurrentPlayer(false);
 				if (map->getListPlayers()[currentPlayer]->hasEnough(0,maxVitamins) == OK) 
@@ -109,59 +105,10 @@ void Game::play() {
 				}
 				
 			}
-			cout << "Fin boucle playTurn" << endl;
 			//On remet le compteur d'action de tous les fruits à 0
 			map->endTurn();
-			cout << "endTurn fait" << endl;
 			map->dropSugarRandomly();
-			cout << "dropSugar Fait" << endl;
 		}
-	/*
-	map->getListPlayers()[0]->setCurrentPlayer(true);
-	map->printC();
-	//cout << move(8,2,1) << endl;
-	//commander->setFrame();
-	Fruit *fruit = (Fruit*) map->getEntity(9);
-	cout << attack(9,11) << endl;
-	commander->setFrame();
-	cout << attack(9,11) << endl;
-	commander->setFrame();
-	fruit->resetAction();
-	cout << attack(9,11) << endl;
-	commander->setFrame();
-	cout << attack(9,11) << endl;
-	commander->setFrame();
-	fruit->resetAction();
-	cout << attack(9,11) << endl;
-	commander->setFrame();
-	cout << attack(9,11) << endl;
-	commander->setFrame();
-	fruit->resetAction();
-	cout << attack(9,11) << endl;
-	commander->setFrame();
-	cout << attack(9,11) << endl;
-	commander->setFrame();
-	//cout << attack(9,11) << endl;
-	//commander->setFrame();
-	//cout << pickUpEquipment(8,14) << endl;
-	
-	cout << fruit->getOwner()->hasEnough(0,10) << endl;
-	cout << fruit->printC() << endl;
-	//cout << useEquipment(8,14,11) << endl;
-	//cout << fruit->printC() << endl;
-	//fruit = (Fruit*) map->getEntity(11);
-	//cout << fruit->printC() << endl;
-	//fruit = (Fruit*) map->getEntity(8);
-	//fruit->resetAction();
-	map->printC();
-	commander->setFrame();
-	
-	for (currentPlayer=0; currentPlayer<nbPlayers; currentPlayer++)
-	{
-		map->getListPlayers()[currentPlayer]->resetMapModifications();
-
-	}
-	*/
 	}
 }
 
