@@ -45,6 +45,7 @@ void Game::init(int nbParameters, char *parameters[]) {
 		mapLoader.loadMap(mapPath.c_str());
 		mapLoaded = true;
 		stopping = false;
+		nbIA = 0;
 	}
 }
 
@@ -52,6 +53,7 @@ void Game::addAi(short aiId, char *aiName, char *playerName) {
 	if(mapLoaded)
 	{
 		map->getListPlayers()[(int) aiId]->setInfos(aiId, aiName, playerName);
+		nbIA++;
 	}
 }
 
@@ -74,7 +76,7 @@ void Game::play() {
 		int limitKiwi = map->getLimitKiwi();
 		int limitNut = map->getLimitNut();
 		
-		for (currentPlayer=0; currentPlayer<nbPlayers; currentPlayer++)
+		for (currentPlayer=0; currentPlayer<nbIA; currentPlayer++)
 		{
 			IntMatrix2 *fruits = map->getListPlayers()[currentPlayer]->getMatrixFruits();
 			IntMatrix2 *buildings = map->getListPlayers()[currentPlayer]->getMatrixBuildings();
@@ -82,12 +84,12 @@ void Game::play() {
 		}
 		for (int currentTour=0; currentTour<nbTours; currentTour++)
 		{
-			for (currentPlayer=0; currentPlayer<nbPlayers; currentPlayer++)
+			for (currentPlayer=0; currentPlayer<nbIA; currentPlayer++)
 			{
 				//On passe le joueur à joueur actif
 				map->getListPlayers()[currentPlayer]->setCurrentPlayer(true);
 				map->getListPlayers()[currentPlayer]->addVitamins(1);
-				commander->setScore(map->getCurrentPlayer(), map->getListPlayers()[currentPlayer]->getVitamins());
+				commander->setScore(currentPlayer, map->getListPlayers()[currentPlayer]->getVitamins());
 				//On récupère les données à lui fournir
 				IntMatrix2 *newObjects = map->getListPlayers()[currentPlayer]->getNewObjects();
 				IntMatrix1 *deletedObjects = map->getListPlayers()[currentPlayer]->getDeletedObjects();

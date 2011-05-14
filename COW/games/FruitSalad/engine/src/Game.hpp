@@ -51,6 +51,7 @@ public:
 private:
 	int getRGBColor(int color);
 	bool stopping;
+	int nbIA;
 };
 
 #endif
