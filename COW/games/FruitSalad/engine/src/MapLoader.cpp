@@ -361,6 +361,14 @@ Entity* MapLoader::createFruit(std::string typeE, int numPlayer, int x0, int y0)
 	commander->createEntity((typeFruit-6+10*(numPlayer)),currentId);
 	commander->moveEntity(currentId, 2 * x0, 2 * y0);
     currentId++;
+	int *info = new int[5];
+	info[0] = currentId-1;
+	info[1] = x0;
+	info[2] = y0;
+	info[3] = typeFruit;
+	info[4] = 0;
+	map->addNewModification(info);
+	
     return fruit;
 }
 
@@ -384,6 +392,13 @@ Entity* MapLoader::createEquipment(std::string typeE, int x0, int y0)
 		commander->createEntity((typeEquipment+41),currentId);
 	commander->moveEntity(currentId, 2 * x0, 2 * y0);
         currentId++;
+		int *info = new int[5];
+		info[0] = currentId-1;
+		info[1] = x0;
+		info[2] = y0;
+		info[3] = typeEquipment;
+		info[4] = equipment->getAmmo();
+		map->addNewModification(info);
         return equipment;
     }
     else if (type2 == 1)
@@ -392,6 +407,13 @@ Entity* MapLoader::createEquipment(std::string typeE, int x0, int y0)
 		commander->createEntity((typeEquipment+41),currentId);
 	commander->moveEntity(currentId, 2 * x0, 2 * y0);
         currentId++;
+		int *info = new int[5];
+		info[0] = currentId-1;
+		info[1] = x0;
+		info[2] = y0;
+		info[3] = typeEquipment;
+		info[4] = equipment->getAmmo();
+		map->addNewModification(info);
         return equipment;
     }
     else
@@ -400,6 +422,13 @@ Entity* MapLoader::createEquipment(std::string typeE, int x0, int y0)
 		commander->createEntity((typeEquipment+41),currentId);
 	commander->moveEntity(currentId, 2 * x0, 2 * y0);
         currentId++;
+		int *info = new int[5];
+		info[0] = currentId-1;
+		info[1] = x0;
+		info[2] = y0;
+		info[3] = typeEquipment;
+		info[4] = equipment->getAmmo();
+		map->addNewModification(info);
         return equipment;
     }
 }
@@ -442,5 +471,12 @@ Entity* MapLoader::createChest(int x0, int y0)
 	commander->createEntity(72,currentId);
 	commander->moveEntity(currentId, 2 * x0, 2 * y0);
     currentId++;
+	int *info = new int[5];
+	info[0] = currentId-1;
+	info[1] = x0;
+	info[2] = y0;
+	info[3] = CHEST;
+	info[4] = 0;
+	map->addNewModification(info);
     return chest;
 }
