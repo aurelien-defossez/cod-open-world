@@ -7,6 +7,7 @@ class MapModifications
 {
 	public:
 		MapModifications();
+		~MapModifications();
         void addNewModification(int *newModif);
         void addUpdatedModificationObject(int *newModif);
         void addUpdatedModificationSugar(int *newModif);

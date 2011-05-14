@@ -36,11 +36,11 @@ IntMatrix2* Player::getMatrixFruits()
 	matrixFruits = new IntMatrix2(listFruits.size(), 5);
 	for (int i = 0; i < listFruits.size(); i++)
     {
-		matrixFruits[i][OBJECT_ID] = listFruits[i][0];
-		matrixFruits[i][OBJECT_X] = listFruits[i][1];
-		matrixFruits[i][OBJECT_Y] = listFruits[i][2];
-		matrixFruits[i][OBJECT_TYPE] = listFruits[i][3];
-		matrixFruits[i][OBJECT_INFO] = listFruits[i][4];
+		matrixFruits->at(i,OBJECT_ID) = listFruits[i][0];
+		matrixFruits->at(i,OBJECT_X) = listFruits[i][1];
+		matrixFruits->at(i,OBJECT_Y) = listFruits[i][2];
+		matrixFruits->at(i,OBJECT_TYPE) = listFruits[i][3];
+		matrixFruits->at(i,OBJECT_INFO) = listFruits[i][4];
     }
 	return matrixFruits;
 }
@@ -54,10 +54,10 @@ IntMatrix2* Player::getMatrixBuildings()
 	matrixBuildings = new IntMatrix2(listBuildings.size(), 4);
 	for (int i = 0; i < listBuildings.size(); i++)
     {
-		matrixBuildings[i][OBJECT_ID] = listBuildings[i][0];
-		matrixBuildings[i][OBJECT_X] = listBuildings[i][1];
-		matrixBuildings[i][OBJECT_Y] = listBuildings[i][2];
-		matrixBuildings[i][OBJECT_TYPE] = listBuildings[i][3];
+		matrixBuildings->at(i,OBJECT_ID) = listBuildings[i][0];
+		matrixBuildings->at(i,OBJECT_X) = listBuildings[i][1];
+		matrixBuildings->at(i,OBJECT_Y) = listBuildings[i][2];
+		matrixBuildings->at(i,OBJECT_TYPE) = listBuildings[i][3];
     }
 	return matrixBuildings;
 }
@@ -224,5 +224,5 @@ Player::~Player()
 	{
 	  delete matrixBuildings;
 	}
-	//delete mapModifications;
+	delete mapModifications;
 }

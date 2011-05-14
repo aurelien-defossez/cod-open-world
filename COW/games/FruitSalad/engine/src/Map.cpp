@@ -45,7 +45,6 @@ typedef priority_queue<AStarNode, vector<AStarNode>, greater<AStarNode> >
 
 Map::Map(SpecificCommander *commanderE)
 {
-    architecture = NULL;
 	currentId = 0;
     nbSourceMiner = 0;
 	commander = commanderE;
@@ -65,7 +64,10 @@ Map::~Map()
 	{
 		delete listPlayers[i];
 	}
-	
+	if (architecture != NULL)
+	{
+	  delete architecture;
+	}
 	// Delete Pathfinding matrices
 	if(aStarInitialized)
 	{
@@ -146,10 +148,6 @@ void Map::dropSugarRandomly()
 }
 IntMatrix2* Map::getArchitecture()
 {
-	if (architecture != NULL)
-	{
-	  delete architecture;
-	}
 	architecture = new IntMatrix2(width, height);
 	//Ajout des murs et des vides
 	for (int i=0; i<width; i++)
@@ -158,11 +156,11 @@ IntMatrix2* Map::getArchitecture()
 		{
 			if (mapWalls[i,j])
 			{
-				architecture[i][j] = WALL;
+				architecture->at(i,j) = WALL;
 			}
 			else
 			{
-				architecture[i][j] = NOTHING;
+				architecture->at(i,j)  = NOTHING;
 			}
 		}
 	}
@@ -175,25 +173,25 @@ IntMatrix2* Map::getArchitecture()
         building = getEntity(listPlayers[i]->getIdFructificationTank());
 		x = building->getPosition().first;
 		y = building->getPosition().second;
-		architecture[x][y] = BUILDING_FRUCTIFICATION_TANK;
+		architecture->at(x,y)  = BUILDING_FRUCTIFICATION_TANK;
 		building = getEntity(listPlayers[i]->getIdSugarBowl());
 		x = building->getPosition().first;
 		y = building->getPosition().second;
-		architecture[x][y] = BUILDING_SUGAR_BOWL;
+		architecture->at(x,y) = BUILDING_SUGAR_BOWL;
 		building = getEntity(listPlayers[i]->getIdJuiceBarrel());
 		x = building->getPosition().first;
 		y = building->getPosition().second;
-		architecture[x][y] = BUILDING_JUICE_BARREL;
+		architecture->at(x,y) = BUILDING_JUICE_BARREL;
     }
 	//ajout des neutral buildings
 	building = getEntity(idVitaminSource);
 	x = building->getPosition().first;
 	y = building->getPosition().second;
-	architecture[x][y] = BUILDING_VITAMIN_SOURCE;
+	architecture->at(x,y) = BUILDING_VITAMIN_SOURCE;
 	building = getEntity(idSugarTree);
 	x = building->getPosition().first;
 	y = building->getPosition().second;
-	architecture[x][y] = BUILDING_SUGAR_TREE;
+	architecture->at(x,y) = BUILDING_SUGAR_TREE;
 	return architecture;
 }
 

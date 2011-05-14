@@ -1060,7 +1060,7 @@ void Game::sendOpenedChest(Chest *chest)
 {
   int size = chest->getListEquipment().size();
   vector<Equipment*> liste = chest->getListEquipment();
-  IntMatrix2 equipments = IntMatrix2(size, 5);
+  IntMatrix2 *equipments = new IntMatrix2(size, 5);
   for(int i=0; i<size;i++)
   {
 	commander->createEntity((liste[i]->getType()+41),liste[i]->getId());
@@ -1072,7 +1072,7 @@ void Game::sendOpenedChest(Chest *chest)
 	equipments[i][OBJECT_INFO] = liste[i]->getAmmo();
   }
   commander->deleteEntity(chest->getId());
-  commander->chestOpened(map->getCurrentPlayer(), chest->getId(), &equipments);
+  commander->chestOpened(map->getCurrentPlayer(), chest->getId(), equipments);
   chest->clear();
   delete chest;
 }
