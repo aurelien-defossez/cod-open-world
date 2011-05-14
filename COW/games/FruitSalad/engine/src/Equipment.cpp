@@ -1,4 +1,5 @@
 #include "Equipment.h"
+#include <cmath>
 
 Equipment::Equipment(std::pair<int,int> positionE, int idE, int typeEquipmentE) :
 Entity(positionE, idE, typeEquipmentE)
@@ -117,12 +118,12 @@ bool Equipment::hasAmmoLeft()
 
 int Equipment::getWeight()
 {
-    return weight-(maxAmmo-ammo)*ammoWeight;
+    return floor(weight-(maxAmmo-ammo)*ammoWeight);
 }
 
 int Equipment::getSellValue()
 {
-    return sellValue-(maxAmmo-ammo)*ammoValue;
+    return floor(sellValue-(maxAmmo-ammo)*ammoValue);
 }
 
 int Equipment::getCost()
