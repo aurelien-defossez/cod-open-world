@@ -260,6 +260,11 @@ Equipment* Fruit::getEquipment(int id)
     return NULL;
 }
 
+std::vector<Equipment*> Fruit::getListEquipment()
+{
+  return listEquipment;
+}
+
 bool Fruit::useEquipment(Equipment *equipment, Entity *target)
 {
     if (((equipment->getType() >= EQUIPMENT_TEA_SPOON) && (equipment->getType() <= EQUIPMENT_SALT_SNIPER)) || ((equipment->getType() == EQUIPMENT_JUICE_NEEDLE)))

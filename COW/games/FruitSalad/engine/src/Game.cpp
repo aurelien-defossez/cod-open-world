@@ -79,8 +79,60 @@ void Game::play() {
 			IntMatrix2 *buildings = map->getListPlayers()[currentPlayer]->getMatrixBuildings();
 			commander->initGame(currentPlayer, archi, fruits, buildings, limitCherry, limitKiwi, limitNut);
 		}
-
-		
+		map->getListPlayers()[1]->setCurrentPlayer(true);
+		cout << pickUpEquipment(11,14) << endl;
+		cout << pickUpSugar(11,15) << endl;
+		map->getListPlayers()[1]->setCurrentPlayer(false);
+		map->getListPlayers()[0]->setCurrentPlayer(true);
+		cout << attack(9,11) << endl;
+		cout << attack(9,11) << endl;
+		map->endTurn();
+		cout << attack(9,11) << endl;
+		cout << attack(9,11) << endl;
+		map->endTurn();
+		cout << attack(9,11) << endl;
+		cout << attack(9,11) << endl;
+		map->endTurn();
+		cout << attack(9,11) << endl;
+		cout << attack(9,11) << endl;
+		map->endTurn();
+		cout << attack(9,11) << endl;
+		cout << attack(9,11) << endl;
+		map->endTurn();
+		cout << attack(9,11) << endl;
+		cout << attack(9,11) << endl;
+		map->endTurn();
+		cout << attack(9,11) << endl;
+		cout << attack(9,11) << endl;
+		map->endTurn();
+		cout << attack(9,11) << endl;
+		cout << attack(9,11) << endl;
+		map->endTurn();
+		cout << attack(9,11) << endl;
+		cout << attack(9,11) << endl;
+		map->endTurn();
+		cout << attack(9,11) << endl;
+		cout << attack(9,11) << endl;
+		map->endTurn();
+		cout << attack(9,11) << endl;
+		cout << attack(9,11) << endl;
+		map->endTurn();
+		cout << attack(9,11) << endl;
+		cout << attack(9,11) << endl;
+		map->endTurn();
+		cout << attack(9,11) << endl;
+		cout << attack(9,11) << endl;
+		map->endTurn();
+		cout << attack(9,11) << endl;
+		cout << attack(9,11) << endl;
+		map->endTurn();
+		cout << attack(9,11) << endl;
+		cout << attack(9,11) << endl;
+		map->endTurn();
+		cout << attack(9,11) << endl;
+		cout << attack(9,11) << endl;
+		map->endTurn();
+		commander->setFrame();
 		for (int currentTour=0; currentTour<nbTours; currentTour++)
 		{
 			for (currentPlayer=0; currentPlayer<nbPlayers; currentPlayer++)
@@ -230,7 +282,6 @@ int Game::attack(int fruitId, int targetFruitId) {
         modif[1] = targetFruit->getLife();
         modif[2] = targetFruit->getDefense();
         map->addUpdatedModificationObject(modif);
-        
 		commander->setFrame();
         return HIT;
     }
@@ -246,8 +297,9 @@ int Game::attack(int fruitId, int targetFruitId) {
 
         map->removeEntity(targetFruit);
 		fruit->getOwner()->addVitamins(QUANTITY_VITAMINS_WHEN_SPLATCHED);
-		map->distributeSugar(targetFruit->getPosition().first, targetFruit->getPosition().second, targetFruit->getSugar());
+		map->distributePossessions(targetFruit->getPosition().first, targetFruit->getPosition().second, targetFruit);
 
+        commander->mapUpdate(map->getCurrentPlayer(), map->getObjectsDropped(), map->getSugarUpdated());
 		commander->setFrame();
         return SPLATCHED;
     }
@@ -339,9 +391,12 @@ int Game::useEquipment(int fruitId, int equipmentId, int targetId) {
         modif[1] = target->getPosition().first;
         modif[2] = target->getPosition().second;
         map->addDeletedModification(modif);
+		
+		map->distributePossessions(target->getPosition().first, target->getPosition().second, target);
 
         map->removeEntity(target);
 		fruit->getOwner()->addVitamins(QUANTITY_VITAMINS_WHEN_SPLATCHED);
+        commander->mapUpdate(map->getCurrentPlayer(), map->getObjectsDropped(), map->getSugarUpdated());
 
 		commander->setFrame();
         return SPLATCHED;
@@ -634,8 +689,8 @@ int Game::openChest(int fruitId, int chestId) {
 	fruit->useAction();
 
     // add sugar
-    chest->dropContent(map);
-	sendOpenedChest(chest);
+    map->distributePossessions(chest->getPosition().first, chest->getPosition().second, chest);
+    commander->mapUpdate(map->getCurrentPlayer(), map->getObjectsDropped(), map->getSugarUpdated());
 	
 	commander->setFrame();
     return OK;
@@ -954,27 +1009,6 @@ int Game::drawLine(int x1, int y1, int x2, int y2, int color) {
 int Game::drawCircle(int x, int y, int radius, int color) {
 	commander->drawCircle(2 * x + 1, 2 * y + 1, radius, 16, getRGBColor(color), true);
 	return OK;
-}
-
-void Game::sendOpenedChest(Chest *chest)
-{
-  int size = chest->getListEquipment().size();
-  vector<Equipment*> liste = chest->getListEquipment();
-  IntMatrix2 *equipments = new IntMatrix2(size, 5);
-  for(int i=0; i<size;i++)
-  {
-	commander->createEntity((liste[i]->getType()+41),liste[i]->getId());
-	commander->moveEntity(liste[i]->getId(), 2 * liste[i]->getPosition().first, 2 * liste[i]->getPosition().second);
-	equipments->at(i,OBJECT_ID) = liste[i]->getId();
-	equipments->at(i,OBJECT_X) = liste[i]->getPosition().first;
-	equipments->at(i,OBJECT_Y) = liste[i]->getPosition().second;
-	equipments->at(i,OBJECT_TYPE) = liste[i]->getType();
-	equipments->at(i,OBJECT_INFO) = liste[i]->getAmmo();
-  }
-  commander->deleteEntity(chest->getId());
-  //commander->chestOpened(map->getCurrentPlayer(), chest->getId(), equipments);
-  chest->clear();
-  delete chest;
 }
 
 int Game::getRGBColor(int color)

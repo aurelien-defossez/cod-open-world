@@ -47,7 +47,6 @@ public:
 	int drawLine(int x1, int y1, int x2, int y2, int color);
 	int drawCircle(int x, int y, int radius, int color);
 	
-	void sendOpenedChest(Chest *chest);
 
 private:
 	int getRGBColor(int color);

@@ -33,6 +33,7 @@ class Fruit : public OwnedEntity
         bool hasAmmoLeft();
         bool hasEquipment(int id);
 		Equipment* getEquipment(int id);
+        std::vector<Equipment*> getListEquipment();
         int hasPlaceLeft();
         int getSugar();
         int getLife();

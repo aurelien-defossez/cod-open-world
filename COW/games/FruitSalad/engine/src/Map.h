@@ -49,8 +49,10 @@ class Map
         std::vector<std::pair<int,int> > drawLine(int x0, int y0, int x1, int y1);
 		
 		void dropSugarRandomly();
-		void distributeSugar(int x, int y, int quantity);
+		void distributePossessions(int x, int y, Entity* entity);
 		IntMatrix2* getArchitecture();
+		IntMatrix2* getObjectsDropped();
+		IntMatrix2* getSugarUpdated();
 		bool verifyNbFruit(int fruitType, Player *owner);
 		void setLimitCherry(int lim);
 		void setLimitKiwi(int lim);
@@ -78,8 +80,13 @@ class Map
         std::map<int,Entity*> mapIds;
 		bool **mapWalls;
 		IntMatrix2 *architecture;
+		IntMatrix2 *objectsDropped;
+		IntMatrix2 *sugarUpdated;
+		std::vector<int*> objectsDroppedVector;
+		std::vector<int*> sugarUpdatedVector;
 
         int currentId;
+		bool dropping;
         int width;
         int height;
 		int maxVitamins;

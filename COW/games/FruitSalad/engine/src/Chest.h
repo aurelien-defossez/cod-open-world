@@ -3,7 +3,6 @@
 
 #include "Equipment.h"
 #include "Entity.h"
-#include "Map.h"
 
 class Chest : public Entity
 {
@@ -11,7 +10,6 @@ class Chest : public Entity
 		Chest(std::pair<int,int> positionE, int idE, int typeE);
 		~Chest();
 		
-        void dropContent(Map *map);
         void addEquipment(Equipment *equipment);
 		std::vector<Equipment*> getListEquipment();
 		void clear();

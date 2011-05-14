@@ -15,22 +15,6 @@ Chest::~Chest()
     }
 }
 
-void Chest::dropContent(Map *map)
-{
-    int count = 0;
-    map->removeEntity(this);
-    while (count < listEquipment.size())
-    {
-	  Position validPos = map->getValidSquare(position.first, position.second, 1);
-        if ((validPos.first == -1) && (validPos.second == -1))
-        {
-            break;
-        }
-        listEquipment[count]->setPosition(validPos.first, validPos.second);
-        map->addEntity(listEquipment[count]);
-		count++;
-    }
-}
 
 void Chest::addEquipment(Equipment *equipment)
 {

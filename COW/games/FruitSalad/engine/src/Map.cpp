@@ -9,6 +9,7 @@
 #include <iostream>
 #include <time.h>
 #include <fstream>
+#include "Chest.h"
 
 using namespace std;
 
@@ -46,9 +47,12 @@ typedef priority_queue<AStarNode, vector<AStarNode>, greater<AStarNode> >
 Map::Map(SpecificCommander *commanderE)
 {
 	currentId = 0;
+	dropping = false;
 	commander = commanderE;
 	countFruits = 0;
 	aStarInitialized = false;
+	objectsDropped = NULL;
+	sugarUpdated = NULL;
 }
 
 Map::~Map()
@@ -66,6 +70,14 @@ Map::~Map()
 	if (architecture != NULL)
 	{
 	  delete architecture;
+	}
+	if (sugarUpdated != NULL)
+	{
+	  delete sugarUpdated;
+	}
+	if (objectsDropped != NULL)
+	{
+	  delete objectsDropped;
 	}
 	// Delete Pathfinding matrices
 	if(aStarInitialized)
@@ -146,34 +158,124 @@ void Map::dropSugarRandomly()
     }
 }
 
-void Map::distributeSugar(int x, int y, int quantity)
+void Map::distributePossessions(int x, int y, Entity* entity)
 {
-	int count = (int)((double)rand() / ((double)RAND_MAX) * 4 +1);
-	int capacity; 
-	Entity *sugarTree = getEntity(idSugarTree);
-    for (int i=0; i<count; i++)
-    {
-        if (quantity == 0)
+	objectsDroppedVector.clear();
+	if (entity->getType() == CHEST)
+	{
+		Chest *chest = (Chest*) entity;
+		
+		for (int i=0; i<chest->getListEquipment().size(); i++)
 		{
-		  break;
-		}
-		capacity = (int)((double)rand() / ((double)RAND_MAX) * quantity+1);
-		
-		Position position = getValidSquare(x, y, 1);
-		
-		if (position.first != -1)
-        {
-			if (i == count-1)
+			Position position = getValidSquare(x, y, 1);
+			
+			std::vector<Equipment*> liste = chest->getListEquipment();
+			if (position.first != -1)
 			{
-			  addSugarDrop(position.first, position.second, quantity);
+				chest->getListEquipment()[i]->setPosition(position.first, position.second);
+				addEntity(chest->getListEquipment()[i]);
+				commander->createEntity((liste[i]->getType()+41),liste[i]->getId());
+				commander->moveEntity(currentId, 2 * position.first, 2 * position.second);
+				int *newObject = new int[5];
+				newObject[0] = liste[i]->getId();
+				newObject[1] = liste[i]->getPosition().first;
+				newObject[2] = liste[i]->getPosition().second;
+				newObject[3] = liste[i]->getType();
+				newObject[4] = liste[i]->getAmmo();
+				objectsDroppedVector.push_back(newObject);
 			} else {
-			  addSugarDrop(position.first, position.second, capacity);
-			  quantity -= capacity;
+				break;
 			}
-        } else {
-			break;
 		}
+	}
+	else //fruit
+	{
+		Fruit* fruit = (Fruit*) entity;
+		for (int i=0; i<fruit->getListEquipment().size(); i++)
+		{
+			Position position = getValidSquare(x, y, 1);
+			
+			std::vector<Equipment*> liste = fruit->getListEquipment();
+			if (position.first != -1)
+			{
+				fruit->getListEquipment()[i]->setPosition(position.first, position.second);
+				addEntity(fruit->getListEquipment()[i]);
+				commander->createEntity((liste[i]->getType()+41),liste[i]->getId());
+				commander->moveEntity(currentId, 2 * position.first, 2 * position.second);
+				int *newObject = new int[5];
+				newObject[0] = liste[i]->getId();
+				newObject[1] = liste[i]->getPosition().first;
+				newObject[2] = liste[i]->getPosition().second;
+				newObject[3] = liste[i]->getType();
+				newObject[4] = liste[i]->getAmmo();
+				objectsDroppedVector.push_back(newObject);
+			} else {
+				break;
+			}
+		}
+		int quantity = fruit->getSugar();
+		int count = (int)((double)rand() / ((double)RAND_MAX) * 4 +1);
+		int capacity; 
+		dropping = true;
+		sugarUpdatedVector.clear();
+		for (int i=0; i<count; i++)
+		{
+			if (quantity == 0)
+			{
+			  break;
+			}
+			capacity = (int)((double)rand() / ((double)RAND_MAX) * quantity+1);
+			
+			Position position = getValidSquare(x, y, 1);
+			
+			if (position.first != -1)
+			{
+				if (i == count-1)
+				{
+				  addSugarDrop(position.first, position.second, quantity);
+				} else {
+				  addSugarDrop(position.first, position.second, capacity);
+				  quantity -= capacity;
+				}
+			} else {
+				break;
+			}
+		}
+		dropping = false;
+	}
+}
+
+IntMatrix2* Map::getObjectsDropped()
+{
+	if (objectsDropped != NULL)
+	{
+	  delete objectsDropped;
+	}
+	objectsDropped = new IntMatrix2(objectsDroppedVector.size(), 5);
+	for (int i = 0; i < objectsDroppedVector.size(); i++)
+    {
+		objectsDropped->at(i,OBJECT_ID) = objectsDroppedVector[i][0];
+		objectsDropped->at(i,OBJECT_X) = objectsDroppedVector[i][1];
+		objectsDropped->at(i,OBJECT_Y) = objectsDroppedVector[i][2];
+		objectsDropped->at(i,OBJECT_TYPE) = objectsDroppedVector[i][3];
+		objectsDropped->at(i,OBJECT_INFO) = objectsDroppedVector[i][4];
     }
+	return objectsDropped;
+}
+
+IntMatrix2* Map::getSugarUpdated()
+{
+	if (sugarUpdated != NULL)
+	{
+	  delete sugarUpdated;
+	}
+	sugarUpdated = new IntMatrix2(sugarUpdatedVector.size(), 2);
+	for (int i = 0; i < sugarUpdatedVector.size(); i++)
+    {
+		sugarUpdated->at(i,OBJECT_ID) = sugarUpdatedVector[i][0];
+		sugarUpdated->at(i,OBJECT_SUGAR) = sugarUpdatedVector[i][1];
+    }
+	return sugarUpdated;
 }
 
 IntMatrix2* Map::getArchitecture()
@@ -289,6 +391,7 @@ int Map::addSugarDrop(int x, int y, int quantity)
     Position pos;
     pos.first = x;
     pos.second = y;
+
 	
     std::multimap<std::pair<int,int>, Entity* >::iterator it;
 	std::pair<std::multimap<std::pair<int,int>, Entity* >::iterator,std::multimap<std::pair<int,int>, Entity* >::iterator> range;
@@ -303,6 +406,10 @@ int Map::addSugarDrop(int x, int y, int quantity)
 		  modif[0] = sugarDrop->getId();
 		  modif[1] = sugarDrop->getCapacity();
 		  addUpdatedModificationSugar(modif);
+		  if (dropping)
+		  {
+			  sugarUpdatedVector.push_back(modif);
+		  }
 		  return sugarDrop->getId();
         }
     }
@@ -320,6 +427,10 @@ int Map::addSugarDrop(int x, int y, int quantity)
 	modif[3] = SUGAR_DROP;
 	modif[4] = quantity;
     addNewModification(modif);
+	if (dropping)
+	{
+		objectsDroppedVector.push_back(modif);
+	}
     return sugarDrop->getId();
 }
 
