@@ -356,7 +356,8 @@ Entity* MapLoader::createFruit(std::string typeE, int numPlayer, int x0, int y0)
     else if (typeE=="N") {typeFruit = FRUIT_NUT;}
 
     Player *owner = map->getListPlayers()[numPlayer];
-
+	//Pour permettre l'ajout de modif uniquement aux bons joueurs
+	owner->setCurrentPlayer(true); 
     Fruit *fruit = new Fruit(std::pair<int,int>(x0,y0), currentId, typeFruit, owner);
 	commander->createEntity((typeFruit-6+10*(numPlayer)),currentId);
 	commander->moveEntity(currentId, 2 * x0, 2 * y0);
@@ -368,7 +369,8 @@ Entity* MapLoader::createFruit(std::string typeE, int numPlayer, int x0, int y0)
 	info[3] = typeFruit;
 	info[4] = 0;
 	map->addNewModification(info);
-	
+	//et on le remet inactif
+	owner->setCurrentPlayer(false);
     return fruit;
 }
 
@@ -390,7 +392,7 @@ Entity* MapLoader::createEquipment(std::string typeE, int x0, int y0)
     {
         Weapon *equipment = new Weapon(std::pair<int,int>(x0,y0), currentId, typeEquipment);
 		commander->createEntity((typeEquipment+41),currentId);
-	commander->moveEntity(currentId, 2 * x0, 2 * y0);
+		commander->moveEntity(currentId, 2 * x0, 2 * y0);
         currentId++;
 		int *info = new int[5];
 		info[0] = currentId-1;
@@ -405,7 +407,7 @@ Entity* MapLoader::createEquipment(std::string typeE, int x0, int y0)
     {
         Peeler *equipment = new Peeler(std::pair<int,int>(x0,y0), currentId, typeEquipment);
 		commander->createEntity((typeEquipment+41),currentId);
-	commander->moveEntity(currentId, 2 * x0, 2 * y0);
+		commander->moveEntity(currentId, 2 * x0, 2 * y0);
         currentId++;
 		int *info = new int[5];
 		info[0] = currentId-1;
