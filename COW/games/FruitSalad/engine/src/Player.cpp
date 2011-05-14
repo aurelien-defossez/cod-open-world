@@ -224,5 +224,5 @@ Player::~Player()
 	{
 	  delete matrixBuildings;
 	}
-	delete mapModifications;
+	//delete mapModifications;
 }
