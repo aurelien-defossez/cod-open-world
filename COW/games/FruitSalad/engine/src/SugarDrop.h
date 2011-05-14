@@ -9,6 +9,7 @@ class SugarDrop : public Entity
 		SugarDrop(std::pair<int,int> positionE, int idE, int typeE, int capacityE);
         bool removeSugar(int quantity);
         int getCapacity();
+		int addSugar(int quantity);
         std::string printC();
 
 	protected:

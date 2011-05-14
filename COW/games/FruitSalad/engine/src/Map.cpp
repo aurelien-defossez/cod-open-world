@@ -258,22 +258,30 @@ int Map::addSugarDrop(int x, int y, int quantity)
     Position pos;
     pos.first = x;
     pos.second = y;
-	/*
-	if (mapPositions.find(pos) != mapPositions.end())
-	{
-	  int size = mapPositions.count(pos);
-	  for (int i=0; i<size; i++)
-	  {
-		
-	  }
-	}
-	*/
+	
+    std::multimap<std::pair<int,int>, Entity* >::iterator it;
+	std::pair<std::multimap<std::pair<int,int>, Entity* >::iterator,std::multimap<std::pair<int,int>, Entity* >::iterator> range;
+    range = mapPositions.equal_range(pos);
+    for(it = range.first; it != range.second; ++it)
+    {
+        if (it->second->getType() == SUGAR_DROP)
+        {
+          SugarDrop *sugarDrop = (SugarDrop*)(it->second);
+		  sugarDrop->addSugar(quantity);
+		  int *modif = new int[2];
+		  modif[0] = sugarDrop->getId();
+		  modif[1] = sugarDrop->getCapacity();
+		  addUpdatedModificationSugar(modif);
+		  return sugarDrop->getId();
+        }
+    }
+    
     SugarDrop *sugarDrop = new SugarDrop(pos, currentId, SUGAR_DROP, quantity);
 	commander->createEntity(73, currentId);
 	commander->moveEntity(currentId, 2 * x, 2 * y);
     currentId++;
     addEntity(sugarDrop);
-	/* TODO: envoyer une modification QUE si ya deja un tas de sucre, sinon c'est une nouvelle entité */
+	
 	int *modif = new int[5];
     modif[0] = currentId-1;
     modif[1] = x;

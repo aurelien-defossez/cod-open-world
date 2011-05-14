@@ -24,6 +24,11 @@ int SugarDrop::getCapacity()
     return capacity;
 }
 
+int SugarDrop::addSugar(int quantity)
+{
+    capacity += quantity;
+}
+
 std::string SugarDrop::printC()
 {
     std::string str;
