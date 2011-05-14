@@ -44,6 +44,7 @@ void Game::init(int nbParameters, char *parameters[]) {
 		mapPath.append(parameters[0]);
 		mapLoader.loadMap(mapPath.c_str());
 		mapLoaded = true;
+		stopping = false;
 	}
 }
 
@@ -86,6 +87,7 @@ void Game::play() {
 				//On passe le joueur à joueur actif
 				map->getListPlayers()[currentPlayer]->setCurrentPlayer(true);
 				map->getListPlayers()[currentPlayer]->addVitamins(1);
+				commander->setScore(map->getCurrentPlayer(), map->getListPlayers()[currentPlayer]->getVitamins());
 				//On récupère les données à lui fournir
 				IntMatrix2 *newObjects = map->getListPlayers()[currentPlayer]->getNewObjects();
 				IntMatrix1 *deletedObjects = map->getListPlayers()[currentPlayer]->getDeletedObjects();
@@ -98,7 +100,7 @@ void Game::play() {
 				commander->playTurn(currentPlayer, newObjects, deletedObjects, movedFruits, modifiedFruits, modifiedSugarDrops);
 				//On remet le joueur en passif
 				map->getListPlayers()[currentPlayer]->setCurrentPlayer(false);
-				if (map->getListPlayers()[currentPlayer]->hasEnough(0,vitaminsGoal) == OK) 
+				if ((map->getListPlayers()[currentPlayer]->hasEnough(0,vitaminsGoal) == OK) || (stopping))
 				{
 				  return;
 				}
@@ -113,6 +115,7 @@ void Game::play() {
 
 void Game::endGame() {
 	cout << "End game order received." << endl;
+	stopping = true;
 }
 
 void Game::disqualifyAi(char *aiName, char *reason) {
@@ -679,6 +682,7 @@ int Game::stockSugar(int fruitId) {
 	fruit->getOwner()->addVitamins(fruit->getVitamins());
     fruit->removeSugar(fruit->getSugar());
     fruit->removeVitamins(fruit->getVitamins());
+	commander->setScore(map->getCurrentPlayer(), fruit->getOwner()->getVitamins());
     
 	commander->setFrame();
     return OK;
@@ -860,6 +864,8 @@ int Game::fructify(int fruitType, int x, int y) {
 
     // add fruit
     int idF = map->createFruit(fruitType, x, y, player);
+	player->removeVitamins(FRUCTIFICATION_VITAMINS_QUANTITY);
+	commander->setScore(map->getCurrentPlayer(), player->getVitamins());
 
     //creation of modification for all players
     int *modif = new int[5];

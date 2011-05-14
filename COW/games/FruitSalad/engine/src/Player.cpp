@@ -191,6 +191,10 @@ int Player::getCountNut()
 {
 	return countNut;
 }
+int Player::getVitamins()
+{
+  return vitaminsQuantity;
+}
 IntMatrix2* Player::getNewObjects()
 {
 	return mapModifications->getNewObjects();

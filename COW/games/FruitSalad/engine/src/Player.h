@@ -49,6 +49,7 @@ class Player
 		int getCountCherry();
 		int getCountKiwi();
 		int getCountNut();
+        int getVitamins();
 
 	protected:
         MapModifications *mapModifications;

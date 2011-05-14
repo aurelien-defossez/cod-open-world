@@ -50,6 +50,7 @@ public:
 
 private:
 	int getRGBColor(int color);
+	bool stopping;
 };
 
 #endif
