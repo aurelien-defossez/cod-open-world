@@ -79,6 +79,7 @@ void Game::play() {
 			IntMatrix2 *buildings = map->getListPlayers()[currentPlayer]->getMatrixBuildings();
 			commander->initGame(currentPlayer, archi, fruits, buildings, limitCherry, limitKiwi, limitNut);
 		}
+		/*
 		map->getListPlayers()[1]->setCurrentPlayer(true);
 		cout << pickUpEquipment(11,14) << endl;
 		cout << pickUpSugar(11,15) << endl;
@@ -132,7 +133,7 @@ void Game::play() {
 		cout << attack(9,11) << endl;
 		cout << attack(9,11) << endl;
 		map->endTurn();
-		commander->setFrame();
+		commander->setFrame();*/
 		for (int currentTour=0; currentTour<nbTours; currentTour++)
 		{
 			for (currentPlayer=0; currentPlayer<nbPlayers; currentPlayer++)
