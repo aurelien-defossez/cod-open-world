@@ -153,7 +153,12 @@ void Map::distributeSugar(int x, int y, int quantity)
 	Entity *sugarTree = getEntity(idSugarTree);
     for (int i=0; i<count; i++)
     {
-        capacity = (int)((double)rand() / ((double)RAND_MAX) * (quantity+1));
+        if (quantity == 0)
+		{
+		  break;
+		}
+		capacity = (int)((double)rand() / ((double)RAND_MAX) * quantity+1);
+		
 		Position position = getValidSquare(x, y, 1);
 		
 		if (position.first != -1)
