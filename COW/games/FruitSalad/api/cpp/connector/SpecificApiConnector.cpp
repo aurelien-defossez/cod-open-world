@@ -3,7 +3,11 @@
 
 #include <string>
 
+#include <iostream>
+using namespace std;
+
 int SpecificApiConnector::move(int fruitId, int x, int y) {
+	cout << "move(" << fruitId << ")" << endl;
 	Variant parameters[3];
 	parameters[0] = toVariant(fruitId);
 	parameters[1] = toVariant(x);
@@ -12,9 +16,11 @@ int SpecificApiConnector::move(int fruitId, int x, int y) {
 }
 
 int SpecificApiConnector::attack(int fruitId, int targetFruitId) {
+	cout << "attack(" << fruitId << ", " << targetFruitId << ")" << endl;
 	Variant parameters[2];
 	parameters[0] = toVariant(fruitId);
 	parameters[1] = toVariant(targetFruitId);
+	cout << "variant types = " << ((int)parameters[0].type) << ", " <<  ((int)parameters[1].type) << endl;
 	return intValue(callGameFunction(__GAME_API_FUNCTION_ATTACK__, 2, parameters));
 }
 

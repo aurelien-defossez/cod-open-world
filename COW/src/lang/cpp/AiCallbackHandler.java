@@ -39,9 +39,7 @@ public class AiCallbackHandler implements CallbackHandler {
 	}
 	
 	public void makeCall() {
-		// Call Game API function
-		// TODO: return variant
-		connector.callGameFunction(call);
+		// Do nothing
 	}
 	
 	public int makeReturnCall() {

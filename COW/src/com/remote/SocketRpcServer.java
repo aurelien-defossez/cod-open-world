@@ -245,7 +245,7 @@ public class SocketRpcServer implements RpcServer {
 				Variant returnVariant = ai.callGameFunction(call);
 				
 				if (logger.isTraceEnabled())
-					logger.trace("API call return=" + returnVariant.getValue());
+					logger.trace("API call return=" + returnVariant);
 				
 				// Send return value
 				returnVariant.serialize(out);
@@ -257,7 +257,7 @@ public class SocketRpcServer implements RpcServer {
 				throw new CowException("AI connection error: TODO");
 				
 			}
-		} while (command != RpcValues.ACK);
+		} while (!stopping && command != RpcValues.ACK);
 		
 		// Pause WatchDog
 		watchdog.stop();

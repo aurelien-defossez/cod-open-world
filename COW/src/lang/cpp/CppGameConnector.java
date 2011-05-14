@@ -2,6 +2,8 @@
 package lang.cpp;
 
 import java.util.Collection;
+
+import lang.cpp.VariantStruct.ByValue;
 import main.CowException;
 import org.apache.log4j.Logger;
 import com.ApiCall;
@@ -106,7 +108,7 @@ public class CppGameConnector extends GameConnector {
 	public Variant performGameFunction(ApiCall call, Ai ai) {
 		// TODO: set AI
 		return new Variant(gameLib.performGameFunction(
-			call.getFunctionId(), call.getParameters().length,
-			VariantStruct.createArray(call.getParameters())));
+				call.getFunctionId(), call.getParameters().length,
+				VariantStruct.createArray(call.getParameters())));
 	}
 }

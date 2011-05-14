@@ -58,14 +58,8 @@ void Game::addAi(short aiId, char *aiName, char *playerName) {
 }
 
 void Game::play() {
-	cout << "Play..." << endl;
-	
-	cout << "setFrame" << endl;
-	commander->setFrame();
-	
 	if(mapLoaded)
 	{
-		
 		int nbTours = map->getNbTours();
 		int vitaminsGoal = map->getMaxVitamins();
 		int currentPlayer = 0;
@@ -82,12 +76,14 @@ void Game::play() {
 			IntMatrix2 *buildings = map->getListPlayers()[currentPlayer]->getMatrixBuildings();
 			commander->initGame(currentPlayer, archi, fruits, buildings, limitCherry, limitKiwi, limitNut, vitaminsGoal, nbTours);
 		}
+		
 		for (int currentTour=0; currentTour<nbTours; currentTour++)
 		{
 			for (currentPlayer=0; currentPlayer<nbIA; currentPlayer++)
 			{
 				if (!(map->getListPlayers()[currentPlayer]->isDead()))
 				{
+				  cout << "[Play Turn " << currentTour << ", AI #" << currentPlayer << "]" << endl;
 				  //On passe le joueur à joueur actif
 				  map->getListPlayers()[currentPlayer]->setCurrentPlayer(true);
 				  map->getListPlayers()[currentPlayer]->addVitamins(1);
@@ -108,14 +104,16 @@ void Game::play() {
 				  {
 					  return;
 				  }
+				  map->dropSugarRandomly();
 				}
 				
 			}
 			//On remet le compteur d'action de tous les fruits à 0
 			map->endTurn();
-			map->dropSugarRandomly();
 		}
 	}
+	
+	cout << "Game ended" << endl;
 }
 
 void Game::endGame() {
@@ -132,6 +130,7 @@ void Game::disqualifyAi(char *aiName, char *reason) {
 		  map->getListPlayers()[i]->setDead(true);
 		}
 	}
+	cout << "Ai disqualified" << endl;
 }
 
 // User-defined functions
@@ -269,7 +268,7 @@ int Game::attack(int fruitId, int targetFruitId) {
 		int currentVitamins = fruit->getVitamins();
 		fruit->addVitamins(targetFruit->getVitamins());
 
-        commander->mapUpdate(map->getCurrentPlayer(), map->getObjectsDropped(), map->getSugarUpdated());
+        //commander->mapUpdate(map->getCurrentPlayer(), map->getObjectsDropped(), map->getSugarUpdated());
 		commander->setFrame();
         return (fruit->getVitamins()-currentVitamins);
     }

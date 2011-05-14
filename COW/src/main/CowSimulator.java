@@ -98,14 +98,13 @@ public class CowSimulator {
 		String[] parameters = new String[0];
 		String gameName = null;
 		String loadReplayName = null;
+		String resultFile = null;
 		double gameSpeed = DEFAULT_SPEED;
 		boolean displayHelp = false;
 		boolean autoStart = false;
 		boolean testMode = false;
 		boolean useView = true;
 		boolean quiet = false;
-		
-		System.out.println("path="+System.getProperty("java.library.path"));
 		
 		// Stop JME flooding (log4j)
 		System.setProperty("java.util.logging.config.file", "");
@@ -119,6 +118,11 @@ public class CowSimulator {
 				if (option.equals("-a") || option.equals("--ai")) {
 					String aiName = args[i++];
 					ais.add(aiName);
+				}
+				
+				// -f, --resultFile
+				else if (option.equals("-f") || option.equals("--resultFile")) {
+					resultFile = args[i++];
 				}
 
 				// -g, --game: Determine game
@@ -262,7 +266,7 @@ public class CowSimulator {
 				// Set game
 				if (loadReplayName == null) {
 					simulator =
-						scheduler.loadGame(gameName, parameters, testMode);
+						scheduler.loadGame(gameName, parameters, testMode, resultFile);
 				} else {
 					simulator = scheduler.loadReplay(gameName, loadReplayName);
 				}

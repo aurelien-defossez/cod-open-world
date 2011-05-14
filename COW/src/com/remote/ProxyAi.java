@@ -132,13 +132,13 @@ public class ProxyAi extends Ai {
 	public void stop() {
 		rpcServer.stopAi();
 		processReader.stopReading();
-		
+		/*
 		try {
 			aiProcess.waitFor();
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 	}
 	
 	/**

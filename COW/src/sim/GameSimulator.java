@@ -5,16 +5,31 @@
 
 package sim;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
+
+import org.apache.log4j.Logger;
+
 import view.View.ViewType;
 import com.ApiCall;
 import com.GameListener;
 import com.ai.Ai;
 
 public abstract class GameSimulator implements Simulator {
+	// -------------------------------------------------------------------------
+	// Class attributes
+	// -------------------------------------------------------------------------
+	
+	/**
+	 * The log4j logger.
+	 */
+	private Logger logger = Logger.getLogger(GameSimulator.class);
+	
 	// -------------------------------------------------------------------------
 	// Attributes
 	// -------------------------------------------------------------------------
@@ -44,6 +59,11 @@ public abstract class GameSimulator implements Simulator {
 	 */
 	private String[] parameters;
 	
+	/**
+	 * The file to save the match result in.
+	 */
+	private String resultFile;
+	
 	// -------------------------------------------------------------------------
 	// Constructor
 	// -------------------------------------------------------------------------
@@ -54,14 +74,16 @@ public abstract class GameSimulator implements Simulator {
 	 * @param scheduler the game scheduler.
 	 * @param gameName the game name.
 	 * @param parameters the game parameters.
+	 * @param resultFile the file to save the match result in.
 	 */
 	public GameSimulator(Scheduler scheduler, String gameName,
-		String[] parameters) {
+		String[] parameters, String resultFile) {
 		this.scheduler = scheduler;
 		this.gameName = gameName;
 		this.listeners = new Vector<GameListener>();
 		this.ais = new HashMap<Short, Ai>();
 		this.parameters = parameters;
+		this.resultFile = resultFile;
 	}
 	
 	// -------------------------------------------------------------------------
@@ -115,8 +137,14 @@ public abstract class GameSimulator implements Simulator {
 	 * @param score the new score.
 	 */
 	public void setScore(short aiId, int score) {
-		getAi(aiId).setScore(score);
-		updateScore();
+		Ai ai = getAi(aiId);
+		
+		if(ai != null) {
+			ai.setScore(score);
+			updateScore();
+		} else {
+			logger.error("Can't set score for AI #" + aiId + ", does not exist.");
+		}
 	}
 	
 	/**
@@ -165,10 +193,18 @@ public abstract class GameSimulator implements Simulator {
 	 * order of the initial AI order in the parameter list.
 	 */
 	public final void printScores() {
-		for(Ai ai : ais.values()) {
-			System.out.print(ai.getScore() + " ");
+		if(resultFile != null) {
+			try {
+				BufferedWriter result = new BufferedWriter(new FileWriter(resultFile));
+				
+				for(Ai ai : ais.values()) {
+					result.write(Integer.toString(ai.getScore()) + " ");
+				}
+				result.close();
+			} catch (IOException e) {
+				logger.error("Can't save results in file '"+resultFile+"': "+e.getMessage());
+			}
 		}
-		System.out.println();
 	}
 	
 	// -------------------------------------------------------------------------

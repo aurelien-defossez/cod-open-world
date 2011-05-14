@@ -255,7 +255,7 @@ public class Variant {
 			break;
 		
 		case INT:
-			this.value = variant.values.intValue;
+			this.value = new Integer(variant.values.intValue);
 			break;
 			
 		case DOUBLE:

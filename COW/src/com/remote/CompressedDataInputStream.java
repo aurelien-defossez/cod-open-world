@@ -388,10 +388,14 @@ public class CompressedDataInputStream extends DataInputStream {
 			return new Variant(readBoolean());
 			
 		case INT:
-			return new Variant(readVarint());
+			int value = readVarint();
+			Variant v = new Variant(value);
+			return v;
 			
 		case DOUBLE:
-			return new Variant(readDouble());
+			double dvalue = readDouble();
+			Variant dv = new Variant(dvalue);
+			return dv;
 			
 		case STRING:
 			return new Variant(readUTF());
