@@ -1,5 +1,5 @@
-# Width=29 ; Height=13
-29,13
+# Map size
+13, 29
 # NbPlayers = 2
 2
 #limites

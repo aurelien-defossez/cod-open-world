@@ -70,7 +70,7 @@ Map::~Map()
 	// Delete Pathfinding matrices
 	if(aStarInitialized)
 	{
-		for(int i = 0; i < height; i++)
+		for(int i = 0; i < width; i++)
 		{
 			delete[] distances[i];
 			delete[] visited[i];
@@ -393,20 +393,19 @@ void Map::setDimensions(int h, int w)
 	
 	// Initialise l'algo de Pathfinding
 	aStarInitialized = true;
-	distances = new int*[height];
-	visited = new bool*[height];
-	mapWalls = new bool*[height];
-	for(int i = 0; i < height; i++)
+	distances = new int*[width];
+	visited = new bool*[width];
+	mapWalls = new bool*[width];
+	for(int i = 0; i < width; i++)
 	{
-		distances[i] = new int[width];
-		visited[i] = new bool[width];
-		mapWalls[i] = new bool[width];
+		distances[i] = new int[height];
+		visited[i] = new bool[height];
+		mapWalls[i] = new bool[height];
 		
-		for(int j = 0; j < width; j++) {
+		for(int j = 0; j < height; j++) {
 			mapWalls[i][j] = false;
 		}
 	}
-	cout << "mapWalls created" << endl;
 }
 
 int Map::getWidth()
@@ -640,9 +639,9 @@ int Map::distanceBetween(Entity *entity, int x, int y, int maxDistance)
 	cout << "distanceBetween " << start.first << ";" << start.second << " and " << x << ";" << y << endl;
 	
 	// Initialize matrices
-	for(int i = 0; i < height; i++)
+	for(int i = 0; i < width; i++)
 	{
-		for(int j = 0; j < width; j++)
+		for(int j = 0; j < height; j++)
 		{
 			distances[i][j] = -1;
 			visited[i][j] = false;

@@ -70,7 +70,7 @@ void MapLoader::loadMap(const char *fic)
                 variable >> heightint;
                 map->setDimensions(heightint, widthint);
 				
-				commander->displayGrid(0, 0, 2 * map->getHeight(), 2 * map->getWidth(), 2, 2, 0x303030, false);
+				commander->displayGrid(0, 0, 2 * map->getWidth(), 2 * map->getHeight(), 2, 2, 0x303030, false);
 				
                 std::getline(fichier, contenu);
                 std::getline(fichier, contenu); //get NbPlayers
