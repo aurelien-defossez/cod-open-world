@@ -36,6 +36,14 @@ void MapLoader::loadMap(const char *fic)
 				std::string limitFruit;
 				int limitFruitint;
                 int nbPlayers;
+				
+				std::string maxVitamins;
+                int maxVitaminsint;
+                std::string nbTours;
+                int nbToursint;
+				std::string sugarEjected;
+				int sugarEjectedint;
+				
                 std::string letter;     //letter defining entity
                 std::string x0;         //position X
                 int x0int;
@@ -78,6 +86,7 @@ void MapLoader::loadMap(const char *fic)
                 variable.str(contenu);
                 variable >> nbPlayers;
                 map->createPlayers(nbPlayers);
+				
 				std::getline(fichier, contenu);
 				std::getline(fichier, contenu); //get Limits
 				//LimitCherry
@@ -102,6 +111,26 @@ void MapLoader::loadMap(const char *fic)
 				variable.str(limitFruit);
 				variable >> limitFruitint;
 				map->setLimitNut(limitFruitint);
+				
+				std::getline(fichier, contenu);
+                std::getline(fichier, contenu); //get config
+                positionComma = contenu.find_first_of(',');
+                maxVitamins = contenu.substr(0, positionComma);
+				contenu = contenu.substr(positionComma+1);
+                positionComma = contenu.find_first_of(',');
+                sugarEjected = contenu.substr(0,positionComma);
+				nbTours = contenu.substr(positionComma+1);
+                variable.clear();
+                variable.str(maxVitamins);
+                variable >> maxVitaminsint;
+                variable.clear();
+                variable.str(sugarEjected);
+                variable >> sugarEjectedint;
+                variable.clear();
+                variable.str(nbTours);
+                variable >> nbToursint;
+                map->setConfig(maxVitaminsint, sugarEjectedint, nbToursint);
+				
                 while (std::getline(fichier, contenu))
                 {  
 				  

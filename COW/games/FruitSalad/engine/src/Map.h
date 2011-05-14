@@ -60,8 +60,11 @@ class Map
 		int getLimitNut();
 
         void setDimensions(int h, int w);
+		void setConfig(int maxVitaminsE, int sugarEjectedE, int nbToursE);
 		int getWidth();
         int getHeight();
+		int getMaxVitamins();
+        int getNbTours();
         void setCurrentId(int id);
         std::vector<Player*> getListPlayers();
 		int getCurrentPlayer();
@@ -79,6 +82,9 @@ class Map
         int currentId;
         int width;
         int height;
+		int maxVitamins;
+		int sugarEjected;
+		int nbTours;
 		
 		int countFruits;
 		int limitCherry;

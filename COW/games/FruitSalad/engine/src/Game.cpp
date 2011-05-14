@@ -63,7 +63,8 @@ void Game::play() {
 	if(mapLoaded)
 	{
 		
-		int nbTours = 10;
+		int nbTours = map->getNbTours();
+		int maxVitamins = map->getMaxVitamins();
 		int currentPlayer = 0;
 		int nbPlayers = map->getListPlayers().size();
 		
@@ -71,7 +72,7 @@ void Game::play() {
 		int limitCherry = map->getLimitCherry();
 		int limitKiwi = map->getLimitKiwi();
 		int limitNut = map->getLimitNut();
-		/*
+		
 		for (currentPlayer=0; currentPlayer<nbPlayers; currentPlayer++)
 		{
 			IntMatrix2 *fruits = map->getListPlayers()[currentPlayer]->getMatrixFruits();
@@ -102,6 +103,10 @@ void Game::play() {
 				cout << "player false" << endl;
 				//On remet le joueur en passif
 				map->getListPlayers()[currentPlayer]->setCurrentPlayer(false);
+				if (map->getListPlayers()[currentPlayer]->hasEnough(0,maxVitamins) == OK) 
+				{
+				  return;
+				}
 				
 			}
 			cout << "Fin boucle playTurn" << endl;
@@ -110,8 +115,8 @@ void Game::play() {
 			cout << "endTurn fait" << endl;
 			map->dropSugarRandomly();
 			cout << "dropSugar Fait" << endl;
-		}*/
-	
+		}
+	/*
 	map->getListPlayers()[0]->setCurrentPlayer(true);
 	map->printC();
 	//cout << move(8,2,1) << endl;
@@ -156,7 +161,7 @@ void Game::play() {
 		map->getListPlayers()[currentPlayer]->resetMapModifications();
 
 	}
-	
+	*/
 	}
 }
 

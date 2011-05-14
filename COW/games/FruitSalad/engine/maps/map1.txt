@@ -4,6 +4,8 @@
 2
 # Limites
 4,4,4
+#config
+20,3,100
 # Defines a wall between 0;0 and 0;18
 W,0,0,0,18
 W,0,0,20,0

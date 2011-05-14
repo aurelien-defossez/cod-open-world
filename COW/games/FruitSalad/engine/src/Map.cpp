@@ -138,7 +138,7 @@ void Map::dropSugarRandomly()
 		
 		if (position.first != -1)
         {
-            addSugarDrop(position.first, position.second, QUANTITY_SUGAR_EJECTED);
+            addSugarDrop(position.first, position.second, sugarEjected);
 			count++;
         } else {
 			break;
@@ -447,6 +447,13 @@ void Map::setDimensions(int h, int w)
 	}
 }
 
+void Map::setConfig(int maxVitaminsE, int sugarEjectedE, int nbToursE)
+{
+	maxVitamins = maxVitaminsE;
+	sugarEjected = sugarEjectedE;
+	nbTours = nbToursE;
+}
+
 int Map::getWidth()
 {
   return width;
@@ -455,6 +462,16 @@ int Map::getWidth()
 int Map::getHeight()
 {
   return height;
+}
+
+int Map::getMaxVitamins()
+{
+  return maxVitamins;
+}
+
+int Map::getNbTours()
+{
+  return nbTours;
 }
 
 void Map::setCurrentId(int id)
