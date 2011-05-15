@@ -952,6 +952,8 @@ int Game::drawVitamin(int fruitId) {
 
 	// use action
 	fruit->useAction();
+	
+	fruit->addVitamins(1);
 
     // add vitamins
 	commander->setFrame();
