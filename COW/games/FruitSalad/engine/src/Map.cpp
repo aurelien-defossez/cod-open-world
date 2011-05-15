@@ -170,19 +170,21 @@ void Map::distributePossessions(int x, int y, Entity* entity)
 		{
 			Position position = getValidSquare(x, y, 1);
 			
-			std::vector<Equipment*> liste = chest->getListEquipment();
 			if (position.first != -1)
 			{
-				chest->getListEquipment()[i]->setPosition(position.first, position.second);
-				addEntity(chest->getListEquipment()[i]);
-				commander->createEntity((liste[i]->getType()+41),liste[i]->getId());
-				commander->moveEntity(liste[i]->getId(), 2 * position.first, 2 * position.second);
+				Equipment *eq = chest->getListEquipment()[i];
+			  
+				eq->setPosition(position.first, position.second);
+				addEntity(eq);
+				
+				commander->createEntity(eq->getType()+41,eq->getId());
+				commander->moveEntity(eq->getId(), 2 * position.first, 2 * position.second);
 				int *newObject = new int[5];
-				newObject[0] = liste[i]->getId();
-				newObject[1] = liste[i]->getPosition().first;
-				newObject[2] = liste[i]->getPosition().second;
-				newObject[3] = liste[i]->getType();
-				newObject[4] = liste[i]->getAmmo();
+				newObject[0] = eq->getId();
+				newObject[1] = eq->getPosition().first;
+				newObject[2] = eq->getPosition().second;
+				newObject[3] = eq->getType();
+				newObject[4] = eq->getAmmo();
 				objectsDroppedVector.push_back(newObject);
 			} else {
 				break;
@@ -197,19 +199,20 @@ void Map::distributePossessions(int x, int y, Entity* entity)
 		{
 			Position position = getValidSquare(x, y, 1);
 			
-			std::vector<Equipment*> liste = fruit->getListEquipment();
 			if (position.first != -1)
 			{
-				fruit->getListEquipment()[i]->setPosition(position.first, position.second);
-				addEntity(fruit->getListEquipment()[i]);
-				commander->createEntity((liste[i]->getType()+41),liste[i]->getId());
-				commander->moveEntity(liste[i]->getId(), 2 * position.first, 2 * position.second);
+				Equipment *eq = fruit->getListEquipment()[i];
+				
+				eq->setPosition(position.first, position.second);
+				addEntity(eq);
+				commander->createEntity(eq->getType()+41,eq->getId());
+				commander->moveEntity(eq->getId(), 2 * position.first, 2 * position.second);
 				int *newObject = new int[5];
-				newObject[0] = liste[i]->getId();
-				newObject[1] = liste[i]->getPosition().first;
-				newObject[2] = liste[i]->getPosition().second;
-				newObject[3] = liste[i]->getType();
-				newObject[4] = liste[i]->getAmmo();
+				newObject[0] = eq->getId();
+				newObject[1] = eq->getPosition().first;
+				newObject[2] = eq->getPosition().second;
+				newObject[3] = eq->getType();
+				newObject[4] = eq->getAmmo();
 				objectsDroppedVector.push_back(newObject);
 			} else {
 				break;

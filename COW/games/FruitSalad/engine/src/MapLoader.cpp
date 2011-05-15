@@ -298,7 +298,7 @@ void MapLoader::loadMap(const char *fic)
                             {
                                 std::getline(fichier, contenu);
                                 positionComma = contenu.find_first_of(',');
-                                typeE = contenu.substr(0, positionComma);
+                                typeE = contenu[0];
                                 contenu = contenu.substr(positionComma+1);
                                 createChestEquipment(typeE, chest);
                             }
@@ -387,6 +387,7 @@ Entity* MapLoader::createEquipment(std::string typeE, int x0, int y0)
     else if (typeE=="P") {typeEquipment = EQUIPMENT_PEELER; type2=1;}
     else if (typeE=="J") {typeEquipment = EQUIPMENT_JUICE_NEEDLE; type2=0;}
     else if (typeE=="R") {typeEquipment = EQUIPMENT_RELOADER; type2=2;}
+    else std::cout << "Unknown equipment type " << typeE << std::endl;
 
     if (type2 == 0)
     {
@@ -448,22 +449,23 @@ void MapLoader::createChestEquipment(std::string typeE, Chest* chest)
     else if (typeE=="P") {typeEquipment = EQUIPMENT_PEELER; type2=1;}
     else if (typeE=="J") {typeEquipment = EQUIPMENT_JUICE_NEEDLE; type2=0;}
     else if (typeE=="R") {typeEquipment = EQUIPMENT_RELOADER; type2=2;}
+    else std::cout << "Unknown chest equipment type '" << typeE << "'" << std::endl;
 
+	Equipment *newEquipment;
     if (type2 == 0)
     {
-        Weapon *equipment = new Weapon(std::pair<int,int>(-1,-1), currentId, typeEquipment);
-        chest->addEquipment(equipment);
+        newEquipment = new Weapon(std::pair<int,int>(-1,-1), currentId, typeEquipment);
     }
     else if (type2 == 1)
     {
-        Peeler *equipment = new Peeler(std::pair<int,int>(-1,-1), currentId, typeEquipment);
-        chest->addEquipment(equipment);
+        newEquipment = new Peeler(std::pair<int,int>(-1,-1), currentId, typeEquipment);
     }
     else
     {
-        Loader *equipment = new Loader(std::pair<int,int>(-1,-1), currentId, typeEquipment);
-        chest->addEquipment(equipment);
+        newEquipment = new Loader(std::pair<int,int>(-1,-1), currentId, typeEquipment);
     }
+    
+    chest->addEquipment(newEquipment);
     currentId++;
 }
 

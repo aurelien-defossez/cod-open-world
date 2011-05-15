@@ -5,6 +5,9 @@ Player::Player()
     mapModifications = new MapModifications();
 	matrixFruits = NULL;
 	matrixBuildings = NULL;
+	countCherry = 0;
+	countKiwi = 0;
+	countNut = 0;
     sugarQuantity = 0;
     vitaminsQuantity = 0;
     isCurrent = false;
@@ -20,6 +23,12 @@ void Player::setInfos(short aiId, char *aiName, char *playerName)
 void Player::addToListFruits(int *infos)
 {
   listFruits.push_back(infos);
+  if (infos[4] == FRUIT_CHERRY)
+	countCherry++;
+  if (infos[4] == FRUIT_KIWI)
+	countCherry++;
+  if (infos[4] == FRUIT_NUT)
+	countCherry++;
 }
 
 void Player::addToListBuildings(int *infos)

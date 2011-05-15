@@ -1,5 +1,6 @@
 #include "Equipment.h"
 #include <cmath>
+#include <iostream>
 
 Equipment::Equipment(std::pair<int,int> positionE, int idE, int typeEquipmentE) :
 Entity(positionE, idE, typeEquipmentE)
@@ -104,6 +105,10 @@ Entity(positionE, idE, typeEquipmentE)
         ammoWeight = 10;
         maxAmmo = 1;
     }
+    else
+	{
+		std::cout << "Equipment type error: equipment#" <<  getId() << " has type " << getType() << std::endl;
+	}
 }
 
 bool Equipment::use(Entity *target)
