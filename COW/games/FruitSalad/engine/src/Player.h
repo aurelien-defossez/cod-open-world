@@ -53,6 +53,9 @@ class Player
 		void setCountKiwi(int nb);
 		void setCountNut(int nb);
         int getVitamins();
+		char *getName();
+		void setDead(bool state);
+		bool isDead();
 
 	protected:
         MapModifications *mapModifications;
@@ -64,6 +67,7 @@ class Player
         int sugarQuantity;
         int vitaminsQuantity;
         bool isCurrent;
+		bool dead;
 		char* namePlayer;
 		char* nameIA;
 		short idIA;

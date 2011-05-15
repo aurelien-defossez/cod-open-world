@@ -11,6 +11,7 @@ Player::Player()
     sugarQuantity = 0;
     vitaminsQuantity = 0;
     isCurrent = false;
+	dead = false;
 }
 
 void Player::setInfos(short aiId, char *aiName, char *playerName)
@@ -18,6 +19,21 @@ void Player::setInfos(short aiId, char *aiName, char *playerName)
   namePlayer = playerName;
   nameIA = aiName;
   idIA = aiId;
+}
+
+char* Player::getName()
+{
+  return nameIA;
+}
+
+void Player::setDead(bool state)
+{
+  dead = state;
+}
+
+bool Player::isDead()
+{
+  return dead;
 }
 
 void Player::addToListFruits(int *infos)

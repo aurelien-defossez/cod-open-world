@@ -86,25 +86,28 @@ void Game::play() {
 		{
 			for (currentPlayer=0; currentPlayer<nbIA; currentPlayer++)
 			{
-				//On passe le joueur à joueur actif
-				map->getListPlayers()[currentPlayer]->setCurrentPlayer(true);
-				map->getListPlayers()[currentPlayer]->addVitamins(1);
-				commander->setScore(currentPlayer, map->getListPlayers()[currentPlayer]->getVitamins());
-				//On récupère les données à lui fournir
-				IntMatrix2 *newObjects = map->getListPlayers()[currentPlayer]->getNewObjects();
-				IntMatrix1 *deletedObjects = map->getListPlayers()[currentPlayer]->getDeletedObjects();
-				IntMatrix2 *movedFruits = map->getListPlayers()[currentPlayer]->getMovedObjects();
-				IntMatrix2 *modifiedFruits = map->getListPlayers()[currentPlayer]->getModifiedFruits();
-				IntMatrix2 *modifiedSugarDrops = map->getListPlayers()[currentPlayer]->getModifiedSugarDrops();
-				//On reset les modifications qu'on vient de lui envoyer
-				map->getListPlayers()[currentPlayer]->resetMapModifications();
-				//On le fait jouer
-				commander->playTurn(currentPlayer, newObjects, deletedObjects, movedFruits, modifiedFruits, modifiedSugarDrops);
-				//On remet le joueur en passif
-				map->getListPlayers()[currentPlayer]->setCurrentPlayer(false);
-				if ((map->getListPlayers()[currentPlayer]->hasEnough(0,vitaminsGoal) == OK) || (stopping))
+				if (!(map->getListPlayers()[currentPlayer]->isDead()))
 				{
-					return;
+				  //On passe le joueur à joueur actif
+				  map->getListPlayers()[currentPlayer]->setCurrentPlayer(true);
+				  map->getListPlayers()[currentPlayer]->addVitamins(1);
+				  commander->setScore(currentPlayer, map->getListPlayers()[currentPlayer]->getVitamins());
+				  //On récupère les données à lui fournir
+				  IntMatrix2 *newObjects = map->getListPlayers()[currentPlayer]->getNewObjects();
+				  IntMatrix1 *deletedObjects = map->getListPlayers()[currentPlayer]->getDeletedObjects();
+				  IntMatrix2 *movedFruits = map->getListPlayers()[currentPlayer]->getMovedObjects();
+				  IntMatrix2 *modifiedFruits = map->getListPlayers()[currentPlayer]->getModifiedFruits();
+				  IntMatrix2 *modifiedSugarDrops = map->getListPlayers()[currentPlayer]->getModifiedSugarDrops();
+				  //On reset les modifications qu'on vient de lui envoyer
+				  map->getListPlayers()[currentPlayer]->resetMapModifications();
+				  //On le fait jouer
+				  commander->playTurn(currentPlayer, newObjects, deletedObjects, movedFruits, modifiedFruits, modifiedSugarDrops);
+				  //On remet le joueur en passif
+				  map->getListPlayers()[currentPlayer]->setCurrentPlayer(false);
+				  if ((map->getListPlayers()[currentPlayer]->hasEnough(0,vitaminsGoal) == OK) || (stopping))
+				  {
+					  return;
+				  }
 				}
 				
 			}
@@ -122,6 +125,13 @@ void Game::endGame() {
 
 void Game::disqualifyAi(char *aiName, char *reason) {
 	cout << "Disqualifying AI " << aiName << " because of " << reason << endl;
+	for (int i=0; i<nbIA; i++)
+	{
+		if (map->getListPlayers()[i]->getName() == aiName)
+		{
+		  map->getListPlayers()[i]->setDead(true);
+		}
+	}
 }
 
 // User-defined functions
