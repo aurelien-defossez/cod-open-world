@@ -1,0 +1,47 @@
+# Height=11 ; Width=11
+11,11
+# NbPlayers = 2
+2
+#limites
+1,1,1
+#config
+500,3,500
+
+#Les 4 bords
+W,10,0,10,10
+W,0,0,0,10
+W,0,0,10,0
+W,0,10,10,10
+#plop
+W,4,1,4,1
+W,4,9,4,9
+W,6,1,6,1
+W,6,9,6,9
+W,9,4,9,4
+W,9,6,9,6
+
+# Player 0 buildings
+B,S,0,1,1
+B,J,0,5,1
+B,F,0,9,1
+
+# Player 1 buildings
+B,S,1,1,9
+B,J,1,5,9
+B,F,1,9,9
+
+# Neutral buildings
+N,V,9,5
+N,S,2,5
+
+# Player 0 fruits
+F,C,0,4,3
+F,K,0,5,3
+F,N,0,6,3
+
+
+# Player 1 fruits
+F,C,1,4,7
+F,K,1,5,7
+F,N,1,6,7
+
