@@ -797,7 +797,7 @@ int Game::buyEquipment(int fruitId, int equipmentType) {
     fruit->getOwner()->removeSugar(equipment->getCost());
     
 	commander->setFrame();
-    return OK;
+    return equipment->getId();
 }
 
 int Game::drinkJuice(int fruitId) {
