@@ -944,7 +944,6 @@ int Game::drawVitamin(int fruitId) {
 	fruit->useAction();
 
     // add vitamins
-    fruit->getOwner()->addVitamins(QUANTITY_VITAMINS_TAKEN);
 	commander->setFrame();
     return OK;
 }
