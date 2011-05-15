@@ -596,7 +596,10 @@ int Game::dropSugar(int fruitId, int quantity, int x, int y) {
     
 	// use action
 	fruit->useAction();
-
+	if (quantity > fruit->getSugar())
+	{
+	  quantity = fruit->getSugar();
+	}
     // drop
     fruit->removeSugar(quantity);
     //TODO: Stack with another sugar drop if it exists
