@@ -184,11 +184,11 @@ void Map::distributePossessions(int x, int y, Entity* entity)
 				newObject[3] = liste[i]->getType();
 				newObject[4] = liste[i]->getAmmo();
 				objectsDroppedVector.push_back(newObject);
-				delete chest;
 			} else {
 				break;
 			}
 		}
+		delete chest;
 	}
 	else //fruit
 	{
@@ -211,11 +211,11 @@ void Map::distributePossessions(int x, int y, Entity* entity)
 				newObject[3] = liste[i]->getType();
 				newObject[4] = liste[i]->getAmmo();
 				objectsDroppedVector.push_back(newObject);
-				delete fruit;
 			} else {
 				break;
 			}
 		}
+		delete fruit;
 		int quantity = fruit->getSugar();
 		int count = (int)((double)rand() / ((double)RAND_MAX) * 4 +1);
 		int capacity; 

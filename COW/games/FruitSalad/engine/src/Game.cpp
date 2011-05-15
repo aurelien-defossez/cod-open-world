@@ -645,7 +645,11 @@ int Game::openChest(int fruitId, int chestId) {
 
 	// use action
 	fruit->useAction();
-
+	int *modif = new int[3];
+	modif[0] = chest->getId();
+	modif[1] = chest->getPosition().first;
+	modif[2] = chest->getPosition().second;
+	map->addDeletedModification(modif);
     // add sugar
     map->distributePossessions(chest->getPosition().first, chest->getPosition().second, chest);
     commander->mapUpdate(map->getCurrentPlayer(), map->getObjectsDropped(), map->getSugarUpdated());
