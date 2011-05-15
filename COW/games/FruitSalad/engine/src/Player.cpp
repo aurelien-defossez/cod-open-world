@@ -204,6 +204,19 @@ int Player::getVitamins()
 {
   return vitaminsQuantity;
 }
+
+void Player::setCountCherry(int nb)
+{
+  countCherry = nb;
+}
+void Player::setCountKiwi(int nb)
+{
+  countKiwi = nb;
+}
+void Player::setCountNut(int nb)
+{
+  countNut = nb;
+}
 IntMatrix2* Player::getNewObjects()
 {
 	return mapModifications->getNewObjects();

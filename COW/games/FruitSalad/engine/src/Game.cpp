@@ -249,6 +249,13 @@ int Game::attack(int fruitId, int targetFruitId) {
 
         map->removeEntity(targetFruit);
 		map->distributePossessions(targetFruit->getPosition().first, targetFruit->getPosition().second, targetFruit);
+		int type = targetFruit->getType();
+		if (type == FRUIT_CHERRY)
+		  targetFruit->getOwner()->setCountCherry(targetFruit->getOwner()->getCountCherry()-1);
+		if (type == FRUIT_KIWI)
+		  targetFruit->getOwner()->setCountKiwi(targetFruit->getOwner()->getCountKiwi()-1);
+		if (type == FRUIT_NUT)
+		  targetFruit->getOwner()->setCountNut(targetFruit->getOwner()->getCountNut()-1);
 		int currentVitamins = fruit->getVitamins();
 		fruit->addVitamins(targetFruit->getVitamins());
 
@@ -349,6 +356,13 @@ int Game::useEquipment(int fruitId, int equipmentId, int targetId) {
 
         map->removeEntity(target);
 		Fruit *targetF = (Fruit*)target;
+		int type = targetF->getType();
+		if (type == FRUIT_CHERRY)
+		  targetF->getOwner()->setCountCherry(targetF->getOwner()->getCountCherry()-1);
+		if (type == FRUIT_KIWI)
+		  targetF->getOwner()->setCountKiwi(targetF->getOwner()->getCountKiwi()-1);
+		if (type == FRUIT_NUT)
+		  targetF->getOwner()->setCountNut(targetF->getOwner()->getCountNut()-1);
 		int currentVitamins = fruit->getVitamins();
 		fruit->addVitamins(targetF->getVitamins());
         commander->mapUpdate(map->getCurrentPlayer(), map->getObjectsDropped(), map->getSugarUpdated());

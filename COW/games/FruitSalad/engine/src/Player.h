@@ -49,6 +49,9 @@ class Player
 		int getCountCherry();
 		int getCountKiwi();
 		int getCountNut();
+		void setCountCherry(int nb);
+		void setCountKiwi(int nb);
+		void setCountNut(int nb);
         int getVitamins();
 
 	protected:
