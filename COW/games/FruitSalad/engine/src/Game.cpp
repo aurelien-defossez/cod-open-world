@@ -249,11 +249,12 @@ int Game::attack(int fruitId, int targetFruitId) {
 
         map->removeEntity(targetFruit);
 		map->distributePossessions(targetFruit->getPosition().first, targetFruit->getPosition().second, targetFruit);
+		int currentVitamins = fruit->getVitamins();
 		fruit->addVitamins(targetFruit->getVitamins());
 
         commander->mapUpdate(map->getCurrentPlayer(), map->getObjectsDropped(), map->getSugarUpdated());
 		commander->setFrame();
-        return targetFruit->getVitamins();
+        return (fruit->getVitamins()-currentVitamins);
     }
 }
 
@@ -348,11 +349,12 @@ int Game::useEquipment(int fruitId, int equipmentId, int targetId) {
 
         map->removeEntity(target);
 		Fruit *targetF = (Fruit*)target;
+		int currentVitamins = fruit->getVitamins();
 		fruit->addVitamins(targetF->getVitamins());
         commander->mapUpdate(map->getCurrentPlayer(), map->getObjectsDropped(), map->getSugarUpdated());
 
 		commander->setFrame();
-        return targetF->getVitamins();
+        return (fruit->getVitamins()-currentVitamins);
     }
 }
 
