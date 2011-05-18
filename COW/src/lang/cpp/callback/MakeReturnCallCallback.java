@@ -1,4 +1,4 @@
-package lang.cpp;
+package lang.cpp.callback;
 
 import com.sun.jna.win32.StdCallLibrary.StdCallCallback;
 

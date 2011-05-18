@@ -46,6 +46,11 @@ public class SocketRpcClient implements RpcClient {
 	 */
 	private CompressedDataOutputStream out;
 	
+	/**
+	 * True while the socket is listening.
+	 */
+	private boolean listening;
+	
 	// -------------------------------------------------------------------------
 	// Constructor
 	// -------------------------------------------------------------------------
@@ -69,6 +74,7 @@ public class SocketRpcClient implements RpcClient {
 			socket = new Socket(address, port);
 			in = new CompressedDataInputStream(socket.getInputStream());
 			out = new CompressedDataOutputStream(socket.getOutputStream());
+			listening = true;
 			
 			if (logger.isDebugEnabled())
 				logger.debug("Remote AI connected to port " + port);
@@ -128,7 +134,7 @@ public class SocketRpcClient implements RpcClient {
 			// Send Ack
 			ack();
 			
-			while (waitForCommand()) {
+			while (listening && waitForCommand()) {
 				// Play while not ordered otherwise
 			}
 		} catch (IOException e) {
@@ -192,5 +198,12 @@ public class SocketRpcClient implements RpcClient {
 	public void ack() throws IOException {
 		out.writeByte(RpcValues.ACK);
 		out.flush();
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public void close() {
+		listening = false;
 	}
 }

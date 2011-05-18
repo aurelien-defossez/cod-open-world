@@ -1,7 +1,6 @@
 
 package view.v2d;
 
-import org.apache.log4j.Logger;
 import com.jme.bounding.BoundingBox;
 import com.jme.image.Texture;
 import com.jme.math.Vector3f;
@@ -10,12 +9,6 @@ import com.jme.scene.shape.Quad;
 import com.jme.scene.state.TextureState;
 
 public class SpriteMaker {
-	// -------------------------------------------------------------------------
-	// Class attributes
-	// -------------------------------------------------------------------------
-	
-	private static Logger logger = Logger.getLogger(SpriteMaker.class);
-	
 	// -------------------------------------------------------------------------
 	// Enumeration
 	// -------------------------------------------------------------------------

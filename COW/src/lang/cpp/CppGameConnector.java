@@ -3,7 +3,6 @@ package lang.cpp;
 
 import java.util.Collection;
 
-import lang.cpp.VariantStruct.ByValue;
 import main.CowException;
 import org.apache.log4j.Logger;
 import com.ApiCall;

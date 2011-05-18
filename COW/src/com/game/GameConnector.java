@@ -90,4 +90,12 @@ public abstract class GameConnector implements GameInterface {
 	public void callViewFunction(ApiCall call) {
 		game.callViewFunction(call);
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String toString() {
+		return game.toString();
+	}
 }

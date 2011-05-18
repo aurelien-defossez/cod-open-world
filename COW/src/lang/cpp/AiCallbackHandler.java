@@ -1,6 +1,9 @@
 
 package lang.cpp;
 
+import lang.cpp.callback.AddParameterCallbackImpl;
+import lang.cpp.callback.MakeReturnCallCallbackImpl;
+import lang.cpp.callback.PrepareCallCallbackImpl;
 import com.ApiCall;
 import com.Variant;
 

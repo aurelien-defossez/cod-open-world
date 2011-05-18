@@ -107,4 +107,12 @@ public class LocalGame extends Game {
 	public void endGame() {
 		connector.endGame();
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String toString() {
+		return connector.toString();
+	}
 }

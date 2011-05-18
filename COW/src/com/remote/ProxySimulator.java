@@ -80,5 +80,6 @@ public class ProxySimulator implements Simulator {
 	 */
 	public void stopAi() {
 		ai.stop();
+		rpcClient.close();
 	}
 }

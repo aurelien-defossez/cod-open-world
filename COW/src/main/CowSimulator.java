@@ -300,6 +300,11 @@ public class CowSimulator {
 				// Initialize game
 				simulator.initGame();
 				
+				// Enable view buttons
+				if (useView) {
+					gui.enableControlPanel(true);
+				}
+				
 				// Auto start
 				if (autoStart) {
 					// Auto-start

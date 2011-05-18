@@ -42,7 +42,20 @@ public abstract class AiConnector implements AiInterface {
 		return ai.callGameFunction(call);
 	}
 	
+	/**
+	 * Returns the AI id.
+	 * 
+	 * @return the AI id.
+	 */
 	public int getId() {
 		return ai.getId();
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String toString() {
+		return ai.toString();
 	}
 }

@@ -66,6 +66,8 @@ public class ControlPanel extends JPanel implements KeyboardListener {
 		add(nextStep);
 		add(stop);
 		add(timeSlider);
+		
+		setEnabled(false);
 	}
 	
 	// -------------------------------------------------------------------------

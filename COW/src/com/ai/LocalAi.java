@@ -80,4 +80,12 @@ public class LocalAi extends Ai {
 	public void stop() {
 		connector.stop();
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String toString() {
+		return connector.toString();
+	}
 }

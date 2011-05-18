@@ -74,9 +74,9 @@ public class SocketRpcServer implements RpcServer {
 	private int port;
 	
 	/**
-	 * True if the RPC server is stopping.
+	 * True while the server is working.
 	 */
-	private boolean stopping;
+	private boolean listening;
 	
 	// -------------------------------------------------------------------------
 	// Constructor
@@ -92,6 +92,7 @@ public class SocketRpcServer implements RpcServer {
 	public SocketRpcServer(ProxyAi ai, Watchdog watchdog) throws IOException {
 		this.ai = ai;
 		this.watchdog = watchdog;
+		this.listening = true;
 		
 		// Create server socket
 		serverSocket = new ServerSocket(0);
@@ -156,7 +157,7 @@ public class SocketRpcServer implements RpcServer {
 			// Read AI stream
 			waitForCommand();
 		} catch (IOException e) {
-			if (!stopping) {
+			if (!listening) {
 				logger.error(e.getMessage(), e);
 			}
 		}
@@ -178,7 +179,7 @@ public class SocketRpcServer implements RpcServer {
 			// Close socket
 			close();
 		} catch (IOException e) {
-			if (!stopping) {
+			if (!listening) {
 				logger.error(e.getMessage(), e);
 			}
 		}
@@ -189,7 +190,7 @@ public class SocketRpcServer implements RpcServer {
 	 */
 	@Override
 	public void close() {
-		stopping = true;
+		listening = true;
 		
 		try {
 			// Close socket
@@ -257,7 +258,7 @@ public class SocketRpcServer implements RpcServer {
 				throw new CowException("AI connection error: TODO");
 				
 			}
-		} while (!stopping && command != RpcValues.ACK);
+		} while (listening && command != RpcValues.ACK);
 		
 		// Pause WatchDog
 		watchdog.stop();

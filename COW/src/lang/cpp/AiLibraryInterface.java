@@ -1,6 +1,9 @@
 
 package lang.cpp;
 
+import lang.cpp.callback.AddParameterCallback;
+import lang.cpp.callback.MakeReturnCallCallbackImpl;
+import lang.cpp.callback.PrepareCallCallback;
 import com.sun.jna.Library;
 
 public interface AiLibraryInterface extends Library {

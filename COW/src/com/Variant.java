@@ -246,7 +246,7 @@ public class Variant {
 	public Variant(VariantStruct variant) {
 		this.type = VariantType.valueOf(variant.type);
 		
-		switch(type) {
+		switch (type) {
 		case VOID:
 			break;
 		
@@ -257,61 +257,61 @@ public class Variant {
 		case INT:
 			this.value = new Integer(variant.values.intValue);
 			break;
-			
+		
 		case DOUBLE:
 			this.value = variant.values.doubleValue;
 			break;
-			
+		
 		case STRING:
 			this.value = variant.values.stringValue;
 			break;
-			
+		
 		case BOOL_MATRIX1:
-			//this.value = variant.values.;
+			// this.value = variant.values.;
 			break;
-			
+		
 		case BOOL_MATRIX2:
-			//this.value = variant.values.;
+			// this.value = variant.values.;
 			break;
 		
 		case BOOL_MATRIX3:
-			//this.value = variant.values.;
+			// this.value = variant.values.;
 			break;
 		
 		case INT_MATRIX1:
 			this.value = variant.getIntMatrix1();
 			break;
-			
+		
 		case INT_MATRIX2:
 			this.value = variant.getIntMatrix2();
 			break;
-			
+		
 		case INT_MATRIX3:
-			//this.value = variant.values.;
+			// this.value = variant.values.;
 			break;
-			
+		
 		case DOUBLE_MATRIX1:
-			//this.value = variant.values.;
+			// this.value = variant.values.;
 			break;
-			
+		
 		case DOUBLE_MATRIX2:
-			//this.value = variant.values.;
+			// this.value = variant.values.;
 			break;
-			
+		
 		case DOUBLE_MATRIX3:
-			//this.value = variant.values.;
+			// this.value = variant.values.;
 			break;
-			
+		
 		case STRING_MATRIX1:
-			//this.value = variant.values.;
+			// this.value = variant.values.;
 			break;
-			
+		
 		case STRING_MATRIX2:
-			//this.value = variant.values.;
+			// this.value = variant.values.;
 			break;
-			
+		
 		case STRING_MATRIX3:
-			//this.value = variant.values.;
+			// this.value = variant.values.;
 			break;
 		}
 	}
@@ -347,28 +347,224 @@ public class Variant {
 		return value;
 	}
 	
+	/**
+	 * Returns the variant boolean value.
+	 * 
+	 * @return the variant boolean value.
+	 */
 	public Boolean getBoolValue() {
 		return (Boolean) value;
 	}
 	
+	/**
+	 * Returns the variant integer value.
+	 * 
+	 * @return the variant integer value.
+	 */
 	public Integer getIntValue() {
 		return (Integer) value;
 	}
 	
+	/**
+	 * Returns the variant double value.
+	 * 
+	 * @return the variant double value.
+	 */
 	public Double getDoubleValue() {
 		return (Double) value;
 	}
 	
+	/**
+	 * Returns the variant string value.
+	 * 
+	 * @return the variant string value.
+	 */
 	public String getStringValue() {
 		return (String) value;
 	}
-
+	
+	/**
+	 * Returns the variant 1D boolean matrix.
+	 * 
+	 * @return the variant 1D boolean matrix.
+	 */
+	public boolean[] getBoolMatrix1Value() {
+		return (boolean[]) value;
+	}
+	
+	/**
+	 * Returns the variant 2D boolean matrix.
+	 * 
+	 * @return the variant 2D boolean matrix.
+	 */
+	public boolean[][] getBoolMatrix2Value() {
+		return (boolean[][]) value;
+	}
+	
+	/**
+	 * Returns the variant 3D boolean matrix.
+	 * 
+	 * @return the variant 3D boolean matrix.
+	 */
+	public boolean[][][] getBoolMatrix3Value() {
+		return (boolean[][][]) value;
+	}
+	
+	/**
+	 * Returns the variant 1D integer matrix.
+	 * 
+	 * @return the variant 1D integer matrix.
+	 */
 	public int[] getIntMatrix1Value() {
 		return (int[]) value;
 	}
 	
+	/**
+	 * Returns the variant 2D integer matrix.
+	 * 
+	 * @return the variant 2D integer matrix.
+	 */
 	public int[][] getIntMatrix2Value() {
 		return (int[][]) value;
+	}
+	
+	/**
+	 * Returns the variant 3D integer matrix.
+	 * 
+	 * @return the variant 3D integer matrix.
+	 */
+	public int[][][] getIntMatrix3Value() {
+		return (int[][][]) value;
+	}
+	
+	/**
+	 * Returns the variant 1D double matrix.
+	 * 
+	 * @return the variant 1D double matrix.
+	 */
+	public double[] getDoubleMatrix1Value() {
+		return (double[]) value;
+	}
+	
+	/**
+	 * Returns the variant 2D double matrix.
+	 * 
+	 * @return the variant 2D double matrix.
+	 */
+	public double[][] getDoubleMatrix2Value() {
+		return (double[][]) value;
+	}
+	
+	/**
+	 * Returns the variant 3D double matrix.
+	 * 
+	 * @return the variant 3D double matrix.
+	 */
+	public double[][][] getDoubleMatrix3Value() {
+		return (double[][][]) value;
+	}
+	
+	/**
+	 * Returns the variant 1D string matrix.
+	 * 
+	 * @return the variant 1D string matrix.
+	 */
+	public String[] getStringMatrix1Value() {
+		return (String[]) value;
+	}
+	
+	/**
+	 * Returns the variant 2D string matrix.
+	 * 
+	 * @return the variant 2D string matrix.
+	 */
+	public String[][] getStringMatrix2Value() {
+		return (String[][]) value;
+	}
+	
+	/**
+	 * Returns the variant 3D string matrix.
+	 * 
+	 * @return the variant 3D string matrix.
+	 */
+	public String[][][] getStringMatrix3Value() {
+		return (String[][][]) value;
+	}
+	
+	/**
+	 * Returns the matrix cardinalities.
+	 * 
+	 * @return an array of 1 to 3 cardinalities, depending on the matrix size.
+	 */
+	public int[] getMatrixCardinalities() {
+		switch (type) {
+		case BOOL_MATRIX1:
+			boolean[] boolMatrix1 = (boolean[]) value;
+			return new int[] { boolMatrix1.length };
+			
+		case BOOL_MATRIX2:
+			boolean[][] boolMatrix2 = (boolean[][]) value;
+			return new int[] { boolMatrix2.length,
+				(boolMatrix2.length == 0) ? 0 : boolMatrix2[0].length };
+			
+		case BOOL_MATRIX3:
+			boolean[][][] boolMatrix3 = (boolean[][][]) value;
+			return new int[] {
+				boolMatrix3.length,
+				(boolMatrix3.length == 0) ? 0 : boolMatrix3[0].length,
+				(boolMatrix3.length == 0 && boolMatrix3[0].length == 0) ? 0
+					: boolMatrix3[0][0].length };
+			
+		case INT_MATRIX1:
+			int[] intMatrix1 = (int[]) value;
+			return new int[] { intMatrix1.length };
+			
+		case INT_MATRIX2:
+			int[][] intMatrix2 = (int[][]) value;
+			return new int[] { intMatrix2.length,
+				(intMatrix2.length == 0) ? 0 : intMatrix2[0].length };
+			
+		case INT_MATRIX3:
+			int[][][] intMatrix3 = (int[][][]) value;
+			return new int[] { intMatrix3.length,
+				(intMatrix3.length == 0) ? 0 : intMatrix3[0].length,
+				(intMatrix3.length == 0 && intMatrix3[0].length == 0) ? 0
+					: intMatrix3[0][0].length };
+			
+		case DOUBLE_MATRIX1:
+			double[] doubleMatrix1 = (double[]) value;
+			return new int[] { doubleMatrix1.length };
+			
+		case DOUBLE_MATRIX2:
+			double[][] doubleMatrix2 = (double[][]) value;
+			return new int[] { doubleMatrix2.length,
+				(doubleMatrix2.length == 0) ? 0 : doubleMatrix2[0].length };
+			
+		case DOUBLE_MATRIX3:
+			double[][][] doubleMatrix3 = (double[][][]) value;
+			return new int[] { doubleMatrix3.length,
+				(doubleMatrix3.length == 0) ? 0 : doubleMatrix3[0].length,
+				(doubleMatrix3.length == 0 && doubleMatrix3[0].length == 0) ? 0
+					: doubleMatrix3[0][0].length };
+			
+		case STRING_MATRIX1:
+			String[] stringMatrix1 = (String[]) value;
+			return new int[] { stringMatrix1.length };
+			
+		case STRING_MATRIX2:
+			String[][] stringMatrix2 = (String[][]) value;
+			return new int[] { stringMatrix2.length,
+				(stringMatrix2.length == 0) ? 0 : stringMatrix2[0].length };
+			
+		case STRING_MATRIX3:
+			String[][][] stringMatrix3 = (String[][][]) value;
+			return new int[] { stringMatrix3.length,
+				(stringMatrix3.length == 0) ? 0 : stringMatrix3[0].length,
+				(stringMatrix3.length == 0 && stringMatrix3[0].length == 0) ? 0
+					: stringMatrix3[0][0].length };
+		}
+		
+		return new int[] { 0 };
 	}
 	
 	/**
@@ -386,7 +582,47 @@ public class Variant {
 	 */
 	@Override
 	public String toString() {
-		return type.name() + "(" + getValue() + ")";
+		String strValue;
+		
+		switch (type) {
+		case BOOL:
+		case INT:
+		case DOUBLE:
+		case STRING:
+			strValue = "=" + value;
+			break;
+		
+		case BOOL_MATRIX1:
+		case INT_MATRIX1:
+		case DOUBLE_MATRIX1:
+		case STRING_MATRIX1:
+			int[] card1 = getMatrixCardinalities();
+			strValue = "[" + card1[0] + "]";
+			break;
+		
+		case BOOL_MATRIX2:
+		case INT_MATRIX2:
+		case DOUBLE_MATRIX2:
+		case STRING_MATRIX2:
+			int[] card2 = getMatrixCardinalities();
+			strValue = "[" + card2[0] + "][" + card2[1] + "]";
+			break;
+		
+		case BOOL_MATRIX3:
+		case INT_MATRIX3:
+		case DOUBLE_MATRIX3:
+		case STRING_MATRIX3:
+			int[] card3 = getMatrixCardinalities();
+			strValue = "[" + card3[0] + "][" + card3[1] + "][" + card3[2] + "]";
+			break;
+		
+		case VOID:
+		default:
+			strValue = "";
+			break;
+		}
+		
+		return "Variant(" + type.name() + strValue + ")";
 	}
 	
 	// -------------------------------------------------------------------------

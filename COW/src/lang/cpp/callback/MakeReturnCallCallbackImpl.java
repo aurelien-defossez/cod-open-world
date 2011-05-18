@@ -1,4 +1,6 @@
-package lang.cpp;
+package lang.cpp.callback;
+
+import lang.cpp.CallbackHandler;
 
 public class MakeReturnCallCallbackImpl implements MakeReturnCallCallback {
 	private CallbackHandler callbackHandler;

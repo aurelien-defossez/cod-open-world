@@ -25,4 +25,9 @@ public interface RpcClient {
 	 * Synchronizes the RPC client and starts listening.
 	 */
 	public void start();
+	
+	/**
+	 * Stops the socket from listening.
+	 */
+	public void close();
 }

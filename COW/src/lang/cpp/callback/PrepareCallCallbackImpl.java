@@ -1,5 +1,7 @@
 
-package lang.cpp;
+package lang.cpp.callback;
+
+import lang.cpp.CallbackHandler;
 
 public class PrepareCallCallbackImpl implements PrepareCallCallback {
 	private CallbackHandler callbackHandler;

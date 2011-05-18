@@ -173,4 +173,13 @@ public abstract class Ai implements AiInterface {
 	public final Variant callGameFunction(ApiCall call) {
 		return simulator.callGameFunction(call, this);
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String toString() {
+		return "Ai." + language + "(#" + id + ": " + name + " (" + playerName
+			+ "), " + score + "pts)";
+	}
 }

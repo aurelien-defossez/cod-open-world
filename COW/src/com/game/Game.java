@@ -178,4 +178,12 @@ public abstract class Game implements GameInterface {
 	public void callViewFunction(ApiCall call) {
 		simulator.callViewApi(call);
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String toString() {
+		return "Game." + language + "(" + name + ")";
+	}
 }

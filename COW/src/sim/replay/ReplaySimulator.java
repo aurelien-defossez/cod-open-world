@@ -139,18 +139,8 @@ public class ReplaySimulator extends GameSimulator {
 					updateScore();
 					break;
 				
-				case View.PRINT_TEXT:
-					call = new ApiCall((short) function, 1);
-					call.add(new Variant(in.readUTF()));
-					callViewApi(call);
-					break;
-				
-				case View.DISPLAY_GRID:
-					call = new ApiCall((short) function, 7);
-					call.add(in.readVariantValue(VariantType.INT));
-					call.add(in.readVariantValue(VariantType.INT));
-					call.add(in.readVariantValue(VariantType.INT));
-					call.add(in.readVariantValue(VariantType.INT));
+				case View.MOVE_ENTITY:
+					call = new ApiCall((short) function, 3);
 					call.add(in.readVariantValue(VariantType.INT));
 					call.add(in.readVariantValue(VariantType.INT));
 					call.add(in.readVariantValue(VariantType.INT));
@@ -170,16 +160,26 @@ public class ReplaySimulator extends GameSimulator {
 					callViewApi(call);
 					break;
 				
-				case View.MOVE_ENTITY:
-					call = new ApiCall((short) function, 3);
-					call.add(in.readVariantValue(VariantType.INT));
+				case View.ROTATE_ENTITY:
+					call = new ApiCall((short) function, 2);
 					call.add(in.readVariantValue(VariantType.INT));
 					call.add(in.readVariantValue(VariantType.INT));
 					callViewApi(call);
 					break;
 				
-				case View.ROTATE_ENTITY:
-					call = new ApiCall((short) function, 2);
+				case View.PRINT_TEXT:
+					call = new ApiCall((short) function, 1);
+					call.add(new Variant(in.readUTF()));
+					callViewApi(call);
+					break;
+				
+				case View.DISPLAY_GRID:
+					call = new ApiCall((short) function, 7);
+					call.add(in.readVariantValue(VariantType.INT));
+					call.add(in.readVariantValue(VariantType.INT));
+					call.add(in.readVariantValue(VariantType.INT));
+					call.add(in.readVariantValue(VariantType.INT));
+					call.add(in.readVariantValue(VariantType.INT));
 					call.add(in.readVariantValue(VariantType.INT));
 					call.add(in.readVariantValue(VariantType.INT));
 					callViewApi(call);

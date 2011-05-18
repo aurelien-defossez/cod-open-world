@@ -131,8 +131,8 @@ public class Gui extends Ui {
 		return view;
 	}
 	
-	public void enableControlPanel() {
-		controlPanel.setEnabled(true);
+	public void enableControlPanel(boolean enabled) {
+		controlPanel.setEnabled(enabled);
 	}
 	
 	@Override
@@ -142,7 +142,7 @@ public class Gui extends Ui {
 	
 	@Override
 	public void endGame() {
-		controlPanel.setEnabled(false);
+		enableControlPanel(false);
 	}
 	
 	@Override
