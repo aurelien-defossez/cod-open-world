@@ -34,7 +34,6 @@ public class LocalGame extends Game {
 	 * 
 	 * @param simulator the game simulator.
 	 * @param gameName the game name.
-	 * @param parameters the game parameters.
 	 * @throws CowException if the game cannot be loaded.
 	 */
 	public LocalGame(LiveSimulator simulator, String gameName) {

@@ -92,9 +92,6 @@ public class WatchdogTimer extends Thread {
 	 * Initializes the watchdog timer, in a pause state.
 	 * 
 	 * @param watchdog the watchdog.
-	 * @param refreshTime the time between each time check, in milliseconds.
-	 * @param maxTimeOut the maximum time allowed for each AI execution, in
-	 *            milliseconds.
 	 */
 	public WatchdogTimer(Watchdog watchdog) {
 		super("Watchdog");

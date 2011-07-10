@@ -4,6 +4,8 @@ com.game
 com.remote
 data
 debug
+lang.cpp
+lang.cpp.callback
 lang.java
 lang.python
 main
