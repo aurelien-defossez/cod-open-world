@@ -67,10 +67,10 @@ public class JavaGameConnector extends GameConnector {
 			// Load communicator and commander
 			gameCommunicator =
 				(JavaGameCommunicator) classLoader.loadClass(
-					game.getName() + ".GameCommunicator").newInstance();
+					"gameConn.GameCommunicator").newInstance();
 			JavaGameCommander commander =
 				(JavaGameCommander) classLoader.loadClass(
-					game.getName() + ".GameCommander").newInstance();
+					"gameConn.GameCommander").newInstance();
 			
 			if (logger.isDebugEnabled())
 				logger.debug("Game communicator and commander loaded.");
@@ -111,12 +111,12 @@ public class JavaGameConnector extends GameConnector {
 	 */
 	@Override
 	public void initGame(Collection<Ai> ais, String[] parameters) {
-		gameCommunicator.init(parameters);
-		
 		for (Ai ai : ais) {
-			gameCommunicator
-				.addAi(ai.getId(), ai.getName(), ai.getPlayerName());
+			gameCommunicator.addAi(ai.getId(), ai.getName(),
+				ai.getPlayerName());
 		}
+		
+		gameCommunicator.init(parameters);
 	}
 	
 	/**

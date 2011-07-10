@@ -2,7 +2,7 @@
  * Unit Testing Engine - This interface represents an instance of a game engine.
  */
 
-package unitTesting;
+package gameConn;
 
 public interface UnitTestingEngine {
 	// -------------------------------------------------------------------------

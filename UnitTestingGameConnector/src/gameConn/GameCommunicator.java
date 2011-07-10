@@ -3,7 +3,7 @@
  * game can communicate with the platform.
  */
 
-package unitTesting;
+package gameConn;
 
 import com.ApiCall;
 import com.Variant;

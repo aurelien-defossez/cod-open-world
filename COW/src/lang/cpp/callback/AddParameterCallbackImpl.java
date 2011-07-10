@@ -2,7 +2,6 @@ package lang.cpp.callback;
 
 import lang.cpp.CallbackHandler;
 import lang.cpp.VariantStruct;
-import lang.cpp.VariantStruct.ByValue;
 
 public class AddParameterCallbackImpl implements AddParameterCallback {
 	private CallbackHandler callbackHandler;

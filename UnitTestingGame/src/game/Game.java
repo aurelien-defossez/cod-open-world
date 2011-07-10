@@ -6,8 +6,8 @@ package game;
 
 import java.util.HashMap;
 import java.util.Map;
-import unitTesting.GameCommander;
-import unitTesting.UnitTestingEngine;
+import gameConn.GameCommander;
+import gameConn.UnitTestingEngine;
 
 public class Game implements UnitTestingEngine {
 	// -------------------------------------------------------------------------

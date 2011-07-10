@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<project default="makeJar">
+	<target name="makeJar" description="Make jar in engine directory">
+		<jar destfile="../COW/games/Tarot/engine/engine.jar"
+    		basedir="bin"
+    		includes="**/*.class"
+    		update="true" />
+	</target>
+</project>

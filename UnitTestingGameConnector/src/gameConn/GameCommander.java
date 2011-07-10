@@ -3,7 +3,7 @@
  * game can issue commands on the AIs and on the platform.
  */
 
-package unitTesting;
+package gameConn;
 
 import com.ApiCall;
 import com.Variant;
