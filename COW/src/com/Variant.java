@@ -512,7 +512,7 @@ public class Variant {
 			return new int[] {
 				boolMatrix3.length,
 				(boolMatrix3.length == 0) ? 0 : boolMatrix3[0].length,
-				(boolMatrix3.length == 0 && boolMatrix3[0].length == 0) ? 0
+				(boolMatrix3.length == 0 || boolMatrix3[0].length == 0) ? 0
 					: boolMatrix3[0][0].length };
 			
 		case INT_MATRIX1:
@@ -528,7 +528,7 @@ public class Variant {
 			int[][][] intMatrix3 = (int[][][]) value;
 			return new int[] { intMatrix3.length,
 				(intMatrix3.length == 0) ? 0 : intMatrix3[0].length,
-				(intMatrix3.length == 0 && intMatrix3[0].length == 0) ? 0
+				(intMatrix3.length == 0 || intMatrix3[0].length == 0) ? 0
 					: intMatrix3[0][0].length };
 			
 		case DOUBLE_MATRIX1:
@@ -544,7 +544,7 @@ public class Variant {
 			double[][][] doubleMatrix3 = (double[][][]) value;
 			return new int[] { doubleMatrix3.length,
 				(doubleMatrix3.length == 0) ? 0 : doubleMatrix3[0].length,
-				(doubleMatrix3.length == 0 && doubleMatrix3[0].length == 0) ? 0
+				(doubleMatrix3.length == 0 || doubleMatrix3[0].length == 0) ? 0
 					: doubleMatrix3[0][0].length };
 			
 		case STRING_MATRIX1:
@@ -560,11 +560,12 @@ public class Variant {
 			String[][][] stringMatrix3 = (String[][][]) value;
 			return new int[] { stringMatrix3.length,
 				(stringMatrix3.length == 0) ? 0 : stringMatrix3[0].length,
-				(stringMatrix3.length == 0 && stringMatrix3[0].length == 0) ? 0
+				(stringMatrix3.length == 0 || stringMatrix3[0].length == 0) ? 0
 					: stringMatrix3[0][0].length };
-		}
 		
-		return new int[] { 0 };
+		default:
+			return new int[] { 0 };
+		}
 	}
 	
 	/**

@@ -16,7 +16,6 @@ import sim.GameSimulator;
 import sim.Scheduler;
 import sim.replay.ReplayWriter;
 import ui.gui.Gui;
-import view.View.ViewType;
 
 public class CowSimulator {
 	// -------------------------------------------------------------------------
@@ -105,6 +104,7 @@ public class CowSimulator {
 		boolean testMode = false;
 		boolean useView = true;
 		boolean quiet = false;
+		Gui gui = null;
 		
 		// Stop JME flooding (log4j)
 		System.setProperty("java.util.logging.config.file", "");
@@ -283,15 +283,12 @@ public class CowSimulator {
 				}
 				
 				// Create GUI
-				Gui gui = null;
 				if (useView) {
-					gui = new Gui(scheduler, ViewType.V2D);
+					gui = new Gui(scheduler, simulator.getViewType());
 					simulator.addGameListener(gui);
 					simulator.addGameListener(gui.getView());
-				}
-				
-				// Wait for view to be ready
-				if (useView) {
+					
+					// Wait for view to be ready
 					while (!gui.getView().isReady()) {
 						Thread.sleep(1);
 					}
@@ -307,18 +304,32 @@ public class CowSimulator {
 				
 				// Auto start
 				if (autoStart) {
-					// Auto-start
 					scheduler.play();
 				}
 			}
 			// Cow exception
 			catch (CowException e) {
-				logger.fatal(e.getMessage(), e);
+				logger.fatal("COW error: " + e.getMessage(), e);
+				
+				if (gui != null) {
+					gui.displayError("COW error", e.getMessage());
+				}
+			}
+			// Game exception
+			catch (GameException e) {
+				logger.fatal("Game error: " + e.getMessage(), e);
+				
+				if (gui != null) {
+					gui.displayError("Game error", e.getMessage());
+				}
 			}
 			// Unexpected exception
 			catch (Exception e) {
-				logger.fatal(e.getMessage(), e);
-				// TODO: handle not catched exception
+				logger.fatal("Unexpected error: " + e.getMessage(), e);
+				
+				if (gui != null) {
+					gui.displayError("Unexpected error", e.getMessage());
+				}
 			}
 		}
 	}

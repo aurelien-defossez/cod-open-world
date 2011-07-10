@@ -17,7 +17,7 @@ public class Game implements UnitTestingEngine {
 	/**
 	 * The number of tests in this unit.
 	 */
-	private static final int nbTests = 17;
+	private static final int nbTests = 18;
 	
 	// -------------------------------------------------------------------------
 	// Attributes
@@ -258,6 +258,10 @@ public class Game implements UnitTestingEngine {
 		}
 		
 		return result;
+	}
+	
+	public void testCallback(int aiId) {
+		GameCommander.callback((short) aiId);
 	}
 	
 	// -------------------------------------------------------------------------

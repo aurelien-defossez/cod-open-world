@@ -16,11 +16,12 @@ public class GameCommander extends JavaGameCommander {
 	
 	// Phases
 	private static final byte PHASE_PERFORM_TEST = 1;
+	private static final byte PHASE_CALLBACK = 2;
 	
 	// -------------------------------------------------------------------------
 	// Public methods
 	// -------------------------------------------------------------------------
-	
+
 	/**
 	 * Tells the AI to perform the test corresponding to the given number.
 	 * 
@@ -30,6 +31,16 @@ public class GameCommander extends JavaGameCommander {
 	public static void performTest(short aiId, int testId) {
 		ApiCall call = new ApiCall(PHASE_PERFORM_TEST, 1);
 		call.add(new Variant(testId));
+		callAiFunction(aiId, call);
+	}
+	
+	/**
+	 * Calls back an AI.
+	 * 
+	 * @param aiId the AI to call back.
+	 */
+	public static void callback(short aiId) {
+		ApiCall call = new ApiCall(PHASE_CALLBACK, 0);
 		callAiFunction(aiId, call);
 	}
 }

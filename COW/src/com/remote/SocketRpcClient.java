@@ -8,6 +8,7 @@ package com.remote;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import main.CowException;
 import org.apache.log4j.Logger;
 import com.ApiCall;
 import com.Variant;
@@ -106,15 +107,26 @@ public class SocketRpcClient implements RpcClient {
 			// Write call API command
 			out.writeByte(RpcValues.CMD_GAME_CALL_API);
 			
-			// Serialize and sendcall
+			// Serialize and send call
 			call.serialize(out);
 			out.flush();
 			
-			// Read return value
+			// Read return command
+			byte command;
+			do {
+				command = in.readByte();
+				
+				// Execute callback command
+				if (command != RpcValues.CALL_API_RESULT) {
+					doCommand(command);
+				}
+			} while (command != RpcValues.CALL_API_RESULT);
+			
+			// Read return variant
 			Variant returnVariant = Variant.deserialize(in);
 			
 			if (logger.isTraceEnabled())
-				logger.trace("API call return=" + returnVariant.getValue());
+				logger.trace("API call return=" + returnVariant);
 			
 			return returnVariant;
 		} catch (IOException e) {
@@ -166,14 +178,20 @@ public class SocketRpcClient implements RpcClient {
 		if (logger.isTraceEnabled())
 			logger.trace("Wait for command...");
 		
-		// Read command type
-		byte command = (byte) in.read();
-		
+		return doCommand(in.readByte());
+	}
+	
+	/**
+	 * Executes the given command from the socket reader.
+	 * 
+	 * @return false if the command received is "stop".
+	 */
+	private boolean doCommand(byte command) throws CowException, IOException {
 		if (logger.isTraceEnabled())
 			logger.trace("Command: " + RpcValues.getConstantName(command));
 		
 		switch (command) {
-		// Executes an AI
+		// Executes an AI function
 		case RpcValues.CMD_AI_EXE:
 			ApiCall call = ApiCall.deserialize(in);
 			simulator.callAiFunction(call);

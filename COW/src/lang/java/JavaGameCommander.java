@@ -46,6 +46,10 @@ public abstract class JavaGameCommander {
 		gameCommunicator.incrementScore(aiId, increment);
 	}
 	
+	public final static void throwException(String message) {
+		gameCommunicator.throwException(message);
+	}
+	
 	// -------------------------------------------------------------------------
 	// Protected methods
 	// -------------------------------------------------------------------------

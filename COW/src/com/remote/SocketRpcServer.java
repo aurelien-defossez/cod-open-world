@@ -249,12 +249,13 @@ public class SocketRpcServer implements RpcServer {
 					logger.trace("API call return=" + returnVariant);
 				
 				// Send return value
+				out.writeByte(RpcValues.CALL_API_RESULT);
 				returnVariant.serialize(out);
 				out.flush();
 				break;
 			
 			case RpcValues.ERROR:
-				// TODO: Manage error message
+				// TODO: Handle error message
 				throw new CowException("AI connection error: TODO");
 				
 			}

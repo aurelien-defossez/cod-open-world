@@ -91,6 +91,15 @@ public abstract class JavaGameCommunicator {
 		connector.callViewFunction(call);
 	}
 	
+	/**
+	 * Throws an exception, thus stopping the application.
+	 * 
+	 * @param message the exception message.
+	 */
+	public void throwException(String message) {
+		connector.throwException(message);
+	}
+	
 	// -------------------------------------------------------------------------
 	// Abstract methods
 	// -------------------------------------------------------------------------

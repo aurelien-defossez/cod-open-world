@@ -10,6 +10,7 @@ import com.ApiCall;
 import com.Lang;
 import com.Lang.Language;
 import main.CowException;
+import main.GameException;
 import data.ConfigLoader;
 import sim.LiveSimulator;
 import view.View;
@@ -177,6 +178,14 @@ public abstract class Game implements GameInterface {
 	@Override
 	public void callViewFunction(ApiCall call) {
 		simulator.callViewApi(call);
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void throwException(String message) {
+		throw new GameException(message);
 	}
 	
 	/**

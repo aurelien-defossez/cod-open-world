@@ -16,6 +16,7 @@ public class AiCommunicator extends JavaAiCommunicator {
 	
 	// Phases
 	private static final byte PHASE_PERFORM_TEST = 1;
+	private static final byte PHASE_CALLBACK = 2;
 	
 	// -------------------------------------------------------------------------
 	// Attributes
@@ -53,6 +54,10 @@ public class AiCommunicator extends JavaAiCommunicator {
 		switch (call.getFunctionId()) {
 		case PHASE_PERFORM_TEST:
 			aiInstance.performTest((Integer) call.getParameter(0).getValue());
+			break;
+		
+		case PHASE_CALLBACK:
+			aiInstance.callback();
 			break;
 		}
 	}

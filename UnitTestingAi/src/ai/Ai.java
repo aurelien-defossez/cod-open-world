@@ -90,12 +90,15 @@ public class Ai implements UnitTestingAi {
 			case 16:
 				testStringMatrixConcat();
 				break;
+			
+			case 17:
+				testCallback();
+				break;
 			}
 		} catch (AssertionError e) {
 			System.out.println(" ________________");
 			System.out.println("| Test #" + testNb + " failed | "
 				+ e.getMessage());
-			System.out.println(" ����������������");
 		}
 	}
 	
@@ -585,6 +588,10 @@ public class Ai implements UnitTestingAi {
 			+ result.length + ")";
 	}
 	
+	private void testCallback() {
+		Api.testCallback(0);
+	}
+	
 	private String randomizeString(int n) {
 		StringBuffer sb = new StringBuffer(n);
 		Random random = new Random();
@@ -598,5 +605,10 @@ public class Ai implements UnitTestingAi {
 		}
 		
 		return sb.toString();
+	}
+
+	@Override
+	public void callback() {
+		System.out.println("Callback received");
 	}
 }

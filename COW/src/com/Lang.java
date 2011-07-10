@@ -29,17 +29,15 @@ public abstract class Lang {
 	public static Language getLanguage(String language) {
 		language = language.toLowerCase();
 		
-		if (language.equals("cpp")) {
+		if (language.equals("cpp") || language.equals("c++")) {
 			return Language.Cpp;
-		}
-		if (language.equals("java")) {
+		} else if (language.equals("java")) {
 			return Language.Java;
-		}
-		if (language.equals("python")) {
+		} else if (language.equals("python")) {
 			return Language.Python;
+		} else {
+			return null;
 		}
-		
-		return null;
 	}
 	
 	/**

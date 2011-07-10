@@ -74,6 +74,8 @@ public interface UnitTestingEngine {
 	public double[][] testDoubleMatrixMult(double[][] x, double[][] y);
 	
 	public int testStringMatrixFind(String[] x, String y);
-	
+
 	public String[] testStringMatrixConcat(String[][] x, String delim);
+	
+	public void testCallback(int aiId);
 }

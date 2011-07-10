@@ -33,6 +33,7 @@ public class Api extends JavaApi {
 	private static final short API_TEST_DOUBLE_MATRIX_MULT = 14;
 	private static final short API_TEST_STRING_MATRIX_FIND = 15;
 	private static final short API_TEST_STRING_MATRIX_CONCAT = 16;
+	private static final short API_TEST_CALLBACK = 17;
 	
 	// -------------------------------------------------------------------------
 	// Attributes
@@ -189,5 +190,11 @@ public class Api extends JavaApi {
 		call.add(new Variant(x));
 		call.add(new Variant(delim));
 		return (String[]) callGameFunction(call);
+	}
+	
+	public static void testCallback(int aiId) {
+		ApiCall call = new ApiCall(API_TEST_CALLBACK, 1);
+		call.add(new Variant(aiId));
+		callGameFunction(call);
 	}
 }

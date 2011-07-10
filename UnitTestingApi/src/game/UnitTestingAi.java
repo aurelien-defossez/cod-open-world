@@ -21,4 +21,9 @@ public interface UnitTestingAi {
 	 * @param testNb the test number.
 	 */
 	public void performTest(int testNb);
+	
+	/**
+	 * Receives the callback.
+	 */
+	public void callback();
 }

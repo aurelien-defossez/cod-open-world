@@ -9,6 +9,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.Collection;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import main.CowException;
 import com.ai.Ai;
@@ -148,5 +149,10 @@ public class Gui extends Ui {
 	@Override
 	public void updateScore() {
 		scorePanel.updateScore();
+	}
+	
+	public void displayError(String title, String message) {
+		JOptionPane.showMessageDialog(window, message, title,
+			JOptionPane.ERROR_MESSAGE);
 	}
 }

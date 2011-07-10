@@ -16,7 +16,7 @@
 			<arguments>
 				<dictionary>
 					<key>LaunchConfigHandle</key>
-					<value>&lt;project&gt;/.externalToolBuilders/Unit Testing AI jar maker.launch</value>
+					<value>&lt;project&gt;/.externalToolBuilders/UnitTestingAiJarMaker.launch</value>
 				</dictionary>
 			</arguments>
 		</buildCommand>

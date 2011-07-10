@@ -92,4 +92,11 @@ public interface GameInterface {
 	 * @param call the view API call.
 	 */
 	public abstract void callViewFunction(ApiCall call);
+	
+	/**
+	 * Throws an exception, thus stopping the application.
+	 * 
+	 * @param message the exception message.
+	 */
+	public abstract void throwException(String message);
 }

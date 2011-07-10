@@ -54,7 +54,7 @@ public class RemoteAiLauncher {
 		boolean loadOk = true;
 		
 		// Initialize logger
-		PropertyConfigurator.configure("log4j-config.txt");
+		PropertyConfigurator.configure("log4j-remote-config.txt");
 		
 		if (logger.isTraceEnabled()) {
 			StringBuffer arguments = new StringBuffer();

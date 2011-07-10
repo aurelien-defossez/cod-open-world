@@ -52,18 +52,18 @@ public abstract class RpcValues {
 	 */
 	public static String getConstantName(byte constant) {
 		switch (constant) {
+		case CMD_GAME_CALL_API:
+			return "CMD_GAME_CALL_API";
+		case CALL_API_RESULT:
+			return "CALL_API_RESULT";
+		case ACK:
+			return "ACK";
 		case CMD_AI_EXE:
 			return "CMD_AI_EXE";
 		case CMD_AI_STOP:
 			return "CMD_AI_STOP";
-		case CMD_GAME_CALL_API:
-			return "CMD_GAME_CALL_API";
-		case ACK:
-			return "ACK";
 		case ERROR:
 			return "ERROR";
-		case CALL_API_RESULT:
-			return "CALL_API_RESULT";
 		default:
 			return "Unknown constant (" + constant + ")";
 		}
