@@ -1,7 +1,7 @@
 
 package game;
 
-import java.util.Iterator;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Player {
@@ -23,44 +23,53 @@ public class Player {
 	public void setNextPlayer(Player player) {
 		nextPlayer = player;
 	}
-
+	
 	public short getAiId() {
 		return aiId;
 	}
-
-	public int[] getCardsValues() {
-		int[] cardsValues = new int[cards.size()];
-		
-		Iterator<Card> it = cards.iterator();
-		int i = 0;
-		while (it.hasNext()) {
-			cardsValues[i] = it.next().getCode();
-			i++;
-		}
-		
-		return cardsValues;
+	
+	public String getAiName() {
+		return aiName;
+	}
+	
+	public String getPlayerName() {
+		return playerName;
+	}
+	
+	public List<Card> getCards() {
+		return cards;
 	}
 	
 	public Player nextPlayer() {
 		return nextPlayer;
 	}
 	
-	public void setCards(List<Card> cards) {
-		this.cards = cards;
+	public void setCards(List<Card> newCards) {
+		cards = new ArrayList<Card>();
+		addCards(newCards);
+	}
+	
+	public void addCards(List<Card> newCards) {
+		for (Card card : newCards) {
+			cards.add(card);
+		}
+	}
+	
+	public boolean hasCard(Card card) {
+		return cards.contains(card);
+	}
+	
+	public void removeCards(int[] oldCards) {
+		for (int code : oldCards) {
+			removeCard(Utils.getCard(code));
+		}
+	}
+	
+	public void removeCard(Card card) {
+		cards.remove(card);
 	}
 	
 	public String toString() {
-		StringBuffer sb = new StringBuffer();
-		
-		sb.append("[AI #" + aiId + " (" + aiName + ", " + playerName
-			+ "); score=" + score + " { ");
-		
-		Iterator<Card> it = cards.iterator();
-		while (it.hasNext()) {
-			sb.append(it.next() + " ");
-		}
-		
-		sb.append("}]");
-		return sb.toString();
+		return "AI #" + aiId + " (" + aiName + ", " + playerName + ")";
 	}
 }

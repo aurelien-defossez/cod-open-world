@@ -119,7 +119,7 @@ public class CowSimulator {
 					String aiName = args[i++];
 					ais.add(aiName);
 				}
-				
+
 				// -f, --resultFile
 				else if (option.equals("-f") || option.equals("--resultFile")) {
 					resultFile = args[i++];
@@ -233,8 +233,7 @@ public class CowSimulator {
 			try {
 				// Open file
 				String line;
-				BufferedReader reader =
-					new BufferedReader(new FileReader(new File(HELP_FILE)));
+				BufferedReader reader = new BufferedReader(new FileReader(new File(HELP_FILE)));
 				
 				// Print file
 				while ((line = reader.readLine()) != null) {
@@ -247,8 +246,8 @@ public class CowSimulator {
 			}
 			// IO Exception
 			catch (IOException e) {
-				logger.fatal("An IO error occurred while reading the "
-					+ "help file (" + e.getMessage() + ").");
+				logger.fatal("An IO error occurred while reading the help file (" + e.getMessage()
+					+ ").");
 			}
 		}
 		// Launch game
@@ -265,8 +264,7 @@ public class CowSimulator {
 				
 				// Set game
 				if (loadReplayName == null) {
-					simulator =
-						scheduler.loadGame(gameName, parameters, testMode, resultFile);
+					simulator = scheduler.loadGame(gameName, parameters, testMode, resultFile);
 				} else {
 					simulator = scheduler.loadReplay(gameName, loadReplayName);
 				}
@@ -278,8 +276,7 @@ public class CowSimulator {
 				
 				// Add replay writers
 				for (String replay : replays) {
-					simulator
-						.addGameListener(new ReplayWriter(gameName, replay));
+					simulator.addGameListener(new ReplayWriter(gameName, replay));
 				}
 				
 				// Create GUI

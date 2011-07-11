@@ -15,15 +15,17 @@ public class AiCommunicator extends JavaAiCommunicator {
 	// -------------------------------------------------------------------------
 	
 	// Phases
-	private static final byte PHASE_INIT = 0;
-	private static final byte PHASE_NEW_HAND = 1;
-	private static final byte PHASE_BID = 2;
-	private static final byte PHASE_BID_INFO = 3;
-	private static final byte PHASE_SET_CARDS_ASIDE = 4;
-	private static final byte PHASE_CARDS_ASIDE_INFO = 5;
-	private static final byte PHASE_PLAY_CARD = 6;
-	private static final byte PHASE_TURN_INFO = 7;
-	private static final byte PHASE_HAND_INFO = 8;
+	private static final byte PHASE_INIT = 1;
+	private static final byte PHASE_NEW_HAND = 2;
+	private static final byte PHASE_BID = 3;
+	private static final byte PHASE_BID_INFO = 4;
+	private static final byte PHASE_DOG_INFO = 5;
+	private static final byte PHASE_SET_CARDS_ASIDE = 6;
+	private static final byte PHASE_CARDS_ASIDE_INFO = 7;
+	private static final byte PHASE_ANNOUNCEMENT_INFO = 8;
+	private static final byte PHASE_PLAY_CARD = 9;
+	private static final byte PHASE_TURN_INFO = 10;
+	private static final byte PHASE_HAND_INFO = 11;
 	
 	// -------------------------------------------------------------------------
 	// Attributes
@@ -92,6 +94,11 @@ public class AiCommunicator extends JavaAiCommunicator {
 				(Integer) call.getParameter(1).getValue());
 			break;
 			
+		case PHASE_DOG_INFO:
+			aiInstance.dogInfo(
+				(int[]) call.getParameter(0).getValue());
+			break;
+			
 		case PHASE_HAND_INFO:
 			aiInstance.handInfo(
 				(Boolean) call.getParameter(0).getValue(),
@@ -105,6 +112,12 @@ public class AiCommunicator extends JavaAiCommunicator {
 		case PHASE_CARDS_ASIDE_INFO:
 			aiInstance.cardsAsideInfo(
 				(Integer) call.getParameter(0).getValue());
+			break;
+			
+		case PHASE_ANNOUNCEMENT_INFO:
+			aiInstance.announcementInfo(
+				(Integer) call.getParameter(0).getValue(),
+				(Integer) call.getParameter(1).getValue());
 			break;
 		}
 	}

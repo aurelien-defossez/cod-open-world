@@ -1,3 +1,4 @@
+
 package lang.cpp.callback;
 
 import lang.cpp.VariantStruct;

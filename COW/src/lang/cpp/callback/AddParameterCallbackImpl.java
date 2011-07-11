@@ -1,3 +1,4 @@
+
 package lang.cpp.callback;
 
 import lang.cpp.CallbackHandler;
@@ -9,7 +10,7 @@ public class AddParameterCallbackImpl implements AddParameterCallback {
 	public AddParameterCallbackImpl(CallbackHandler callbackHandler) {
 		this.callbackHandler = callbackHandler;
 	}
-
+	
 	@Override
 	public void invoke(VariantStruct.ByValue parameter) {
 		callbackHandler.addParameter(parameter);

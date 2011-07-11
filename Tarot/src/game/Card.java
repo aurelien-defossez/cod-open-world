@@ -12,6 +12,10 @@ public class Card {
 	public final static int PIQUE = TarotEngine.PIQUE_1 & COLOR_MASK;
 	public final static int TREFLE = TarotEngine.TREFLE_1 & COLOR_MASK;
 	public final static int ATOUT = TarotEngine.ATOUT_1 & COLOR_MASK;
+	public final static int VALET = 11;
+	public final static int CAVALIER = 12;
+	public final static int DAME = 13;
+	public final static int ROI = 14;
 	
 	private int code;
 	private int color;
@@ -20,11 +24,7 @@ public class Card {
 	
 	public Card(int code) {
 		this.code = code;
-		
-		// Extract color
 		this.color = code & COLOR_MASK;
-		
-		// Extract value
 		this.value = code & VALUE_MASK;
 		
 		// Extract info
@@ -36,8 +36,43 @@ public class Card {
 		return code;
 	}
 	
+	public int getColor() {
+		return color;
+	}
+	
+	public int getValue() {
+		return value;
+	}
+	
+	public double getPoints() {
+		if (color == ATOUT) {
+			return (oudler) ? 4.5 : 0.5;
+		} else {
+			switch (value) {
+			case VALET:
+				return 1.5;
+			case CAVALIER:
+				return 2.5;
+			case DAME:
+				return 3.5;
+			case ROI:
+				return 4.5;
+			default:
+				return 0.5;
+			}
+		}
+	}
+	
 	public boolean isOudler() {
 		return oudler;
+	}
+	
+	public boolean isBetterThan(Card otherCard, int desiredColor) {
+		// Better if the other card is the excuse, or not of the desired
+		// color, or of the same color but less strong
+		return (otherCard.getCode() == Game.EXCUSE
+			|| (otherCard.getColor() != desiredColor && otherCard.getColor() != ATOUT)
+			|| (otherCard.getColor() == desiredColor && otherCard.getValue() < value));
 	}
 	
 	public String toString() {
@@ -62,17 +97,17 @@ public class Card {
 	}
 	
 	private String getStringValue() {
-		if (color == ATOUT) {
+		if (color == ATOUT || value < VALET) {
 			return Integer.toString(value);
 		} else {
 			switch (value) {
-			case 11:
+			case VALET:
 				return "V";
-			case 12:
+			case CAVALIER:
 				return "C";
-			case 13:
+			case DAME:
 				return "D";
-			case 14:
+			case ROI:
 				return "R";
 			default:
 				return Integer.toString(value);

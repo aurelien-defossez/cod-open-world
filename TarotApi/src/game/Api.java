@@ -19,30 +19,31 @@ public class Api extends JavaApi {
 	private static final short API_BID = 1;
 	private static final short API_SET_CARDS_ASIDE = 2;
 	private static final short API_PLAY_CARD = 3;
+	private static final short API_MAKE_ANNOUNCEMENT = 4;
 	
 	// Contracts (French)
-	public final static int ENCHERE_PRISE = 1;
-	public final static int ENCHERE_GARDE = 2;
-	public final static int ENCHERE_GARDE_SANS = 3;
-	public final static int ENCHERE_GARDE_CONTRE = 4;
+	public final static int ENCHERE_PRISE = 11;
+	public final static int ENCHERE_GARDE = 12;
+	public final static int ENCHERE_GARDE_SANS = 13;
+	public final static int ENCHERE_GARDE_CONTRE = 14;
 	
 	// Contracts (English)
-	public final static int BID_TAKE = 1;
-	public final static int BID_GUARD = 2;
-	public final static int BID_GUARD_WITHOUT = 3;
-	public final static int BID_GUARD_AGAINST = 4;
+	public final static int BID_TAKE = 11;
+	public final static int BID_GUARD = 12;
+	public final static int BID_GUARD_WITHOUT = 13;
+	public final static int BID_GUARD_AGAINST = 14;
 	
 	// Bonus (French)
-	public final static int POIGNEE_SIMPLE = 5;
-	public final static int POIGNEE_DOUBLE = 6;
-	public final static int POIGNEE_TRIPLE = 7;
-	public final static int CHELEM = 8;
+	public final static int POIGNEE_SIMPLE = 15;
+	public final static int POIGNEE_DOUBLE = 16;
+	public final static int POIGNEE_TRIPLE = 17;
+	public final static int CHELEM = 18;
 	
 	// Bonus (English)
-	public final static int HANDFUL_SINGLE = 5;
-	public final static int HANDFUL_DOUBLE = 6;
-	public final static int HANDFUL_TRIPLE = 7;
-	public final static int SLAM = 8;
+	public final static int HANDFUL_SINGLE = 15;
+	public final static int HANDFUL_DOUBLE = 16;
+	public final static int HANDFUL_TRIPLE = 17;
+	public final static int SLAM = 18;
 	
 	// Cards (French)
 	public final static int COEUR_1 = 0x21;
@@ -212,6 +213,11 @@ public class Api extends JavaApi {
 	public final static int TRUMP_20 = 0xB4;
 	public final static int TRUMP_21 = 0xB5;
 	
+	// Errors
+	public final static int OK = 1;
+	public final static int ILLEGAL_PHASE = -1;
+	public final static int ILLEGAL_CONTRACT = -2;
+	
 	// -------------------------------------------------------------------------
 	// Attributes
 	// -------------------------------------------------------------------------
@@ -254,6 +260,12 @@ public class Api extends JavaApi {
 	
 	public static String decode(int code) {
 		switch (code) {
+		case OK:
+			return "OK";
+		case ILLEGAL_PHASE:
+			return "ILLEGAL_PHASE";
+		case ILLEGAL_CONTRACT:
+			return "ILLEGAL_CONTRACT";
 		case ENCHERE_PRISE:
 			return "ENCHERE_PRISE";
 		case ENCHERE_GARDE:
@@ -448,6 +460,13 @@ public class Api extends JavaApi {
 		return (Integer) callGameFunction(new ApiCall(API_PLAY_CARD,
 			new Variant[] {
 			new Variant(card)
+		}));
+	}
+	
+	public static int makeAnnouncement(int announcement) {
+		return (Integer) callGameFunction(new ApiCall(API_MAKE_ANNOUNCEMENT,
+			new Variant[] {
+			new Variant(announcement)
 		}));
 	}
 }

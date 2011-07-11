@@ -10,7 +10,7 @@ public abstract class GameConnector implements GameInterface {
 	// -------------------------------------------------------------------------
 	// Constants
 	// -------------------------------------------------------------------------
-
+	
 	public static final int SET_FRAME = 1;
 	public static final int SET_TIMEOUT = 2;
 	public static final int SET_SCORE = 3;

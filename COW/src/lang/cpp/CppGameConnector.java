@@ -2,7 +2,6 @@
 package lang.cpp;
 
 import java.util.Collection;
-
 import main.CowException;
 import org.apache.log4j.Logger;
 import com.ApiCall;
@@ -29,7 +28,7 @@ public class CppGameConnector extends GameConnector {
 	
 	private GameLibraryInterface gameLib;
 	private GameCallbackHandler callbackHandler;
-
+	
 	// -------------------------------------------------------------------------
 	// Constructor
 	// -------------------------------------------------------------------------
@@ -42,22 +41,23 @@ public class CppGameConnector extends GameConnector {
 		
 		// Set path to game
 		CppUtils.appendJNALibraryPath("games/" + game.getName() + "/engine");
-
+		
 		// Load game
 		try {
-			gameLib = (GameLibraryInterface) (Library)Native.loadLibrary("game",
+			gameLib =
+				(GameLibraryInterface) (Library) Native.loadLibrary("game",
 					GameLibraryInterface.class);
 			
 			callbackHandler = new GameCallbackHandler(this, gameLib);
 			
 			if (logger.isDebugEnabled())
 				logger.info("Cpp Game (" + game.getName() + ") connected.");
-		} catch(UnsatisfiedLinkError e) {
+		} catch (UnsatisfiedLinkError e) {
 			throw new CowException("Cannot load Game (" + game.getName() + ")",
 				e.getMessage());
 		}
 	}
-
+	
 	// -------------------------------------------------------------------------
 	// Public methods
 	// -------------------------------------------------------------------------

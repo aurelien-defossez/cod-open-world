@@ -141,12 +141,12 @@ public class ApiCall {
 	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
-		sb.append("ApiCall(function #"+functionId+"(");
+		sb.append("ApiCall(function #" + functionId + "(");
 		
 		for (int i = 0; i < parameters.length; i++) {
 			sb.append(parameters[i]);
 			
-			if(i < parameters.length - 1) {
+			if (i < parameters.length - 1) {
 				sb.append(", ");
 			}
 		}

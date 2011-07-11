@@ -14,6 +14,10 @@ public class Ai implements TarotAi {
 	// -------------------------------------------------------------------------
 	
 	private int id;
+	private Hand hand;
+	private int position;
+	private int currentContract;
+	private boolean taker;
 	
 	// -------------------------------------------------------------------------
 	// Public methods
@@ -21,58 +25,109 @@ public class Ai implements TarotAi {
 	
 	public void init(int id) {
 		this.id = id;
-		
-		System.out.println("My id is " + id);
 	}
 	
 	@Override
 	public void newHand(int position, int[] cards) {
-		System.out.print("My hand is { ");
+		this.hand = new Hand(cards);
+		this.currentContract = 0;
+		this.position = position;
 		
-		for (int card : cards) {
-			System.out.print(Api.decode(card) + " ");
-		}
-		
-		System.out.println("} and I'm in position #" + position + ".");
+		System.out.println("[" + id + "] My hand is " + hand + ", pos #"
+			+ position + ".");
 	}
 	
 	@Override
 	public void bid() {
-		System.out.println("I pass.");
+		hand.computeScores(position, currentContract);
+		
+		int score = hand.getScore();
+		int scoreSans = hand.getScoreSans();
+		
+		System.out
+			.println("[" + id + "] Scores = " + score + " / " + scoreSans);
+		
+		// Garde contre
+		if (scoreSans >= Params.THRESHOLD_GARDE_CONTRE
+			&& currentContract < Api.ENCHERE_GARDE_CONTRE) {
+			
+			System.out.println("[" + id + "] I bid " + Api.decode(Api.ENCHERE_GARDE_CONTRE)
+				+ " (" + Api.decode(Api.bid(Api.ENCHERE_GARDE_CONTRE)) + ")");
+			
+			taker = true;
+		}
+		// Garde sans
+		else if (scoreSans >= Params.THRESHOLD_GARDE_SANS
+			&& currentContract < Api.ENCHERE_GARDE_SANS) {
+			
+			System.out.println("[" + id + "] I bid " + Api.decode(Api.ENCHERE_GARDE_SANS)
+				+ " (" + Api.decode(Api.bid(Api.ENCHERE_GARDE_SANS)) + ")");
+			
+			taker = true;
+		}
+		// Garde
+		else if (score >= Params.THRESHOLD_GARDE
+			&& currentContract < Api.ENCHERE_GARDE) {
+			
+			System.out.println("[" + id + "] I bid " + Api.decode(Api.ENCHERE_GARDE)
+				+ " (" + Api.decode(Api.bid(Api.ENCHERE_GARDE)) + ")");
+			
+			taker = true;
+		}
 	}
 	
 	@Override
-	public void bidInfo(int arg0, int arg1) {
-		// TODO Auto-generated method stub
-		
+	public void bidInfo(int bidder, int contract) {
+		currentContract = contract;
+		taker = false;
+	}
+	
+	@Override
+	public void dogInfo(int[] cards) {
+		// It's my dog
+		if (taker) {
+			System.out.println("[" + id + "] My dog is {"
+				+ Utils.printCards(cards) + "}");
+			
+			hand.addCards(cards);
+		}
 	}
 	
 	@Override
 	public void setCardsAside() {
+		int[] cardsAside = hand.setCardsAside();
+		
+		System.out.println("[" + id + "] Setting aside {" + Utils.printCards(cardsAside) + "}"
+			+ " (" + Api.decode(Api.setCardsAside(cardsAside)) + ")");
+		System.out.println("[" + id + "] My hand now is "+hand);
+	}
+	
+	@Override
+	public void cardsAsideInfo(int card) {
 		// TODO Auto-generated method stub
 		
 	}
 	
 	@Override
-	public void cardsAsideInfo(int arg0) {
+	public void announcementInfo(int announcer, int announcement) {
 		// TODO Auto-generated method stub
 		
 	}
 	
 	@Override
-	public void playCard(int[] arg0) {
+	public void playCard(int[] cards) {
 		// TODO Auto-generated method stub
 		
 	}
 	
 	@Override
-	public void turnInfo(int arg0, int[] arg1) {
+	public void turnInfo(int taker, int[] cards) {
 		// TODO Auto-generated method stub
 		
 	}
 	
 	@Override
-	public void handInfo(boolean arg0, int[] arg1) {
+	public void handInfo(boolean won, int[] scores) {
 		// TODO Auto-generated method stub
 		
 	}

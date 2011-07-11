@@ -17,7 +17,7 @@ public class CppAiConnector extends AiConnector {
 	 * The log4j logger.
 	 */
 	private Logger logger = Logger.getLogger(CppAiConnector.class);
-
+	
 	// -------------------------------------------------------------------------
 	// Attributes
 	// -------------------------------------------------------------------------
@@ -25,7 +25,7 @@ public class CppAiConnector extends AiConnector {
 	private AiLibraryInterface aiLib;
 	private AiCallbackHandler callbackHandler;
 	private boolean initialized;
-
+	
 	// -------------------------------------------------------------------------
 	// Constructor
 	// -------------------------------------------------------------------------
@@ -50,12 +50,12 @@ public class CppAiConnector extends AiConnector {
 			
 			if (logger.isDebugEnabled())
 				logger.info("Cpp AI (" + ai.getName() + ") connected.");
-		} catch(UnsatisfiedLinkError e) {
+		} catch (UnsatisfiedLinkError e) {
 			throw new CowException("Cannot load AI (" + ai.getName() + ")",
 				e.getMessage());
 		}
 	}
-
+	
 	// -------------------------------------------------------------------------
 	// Public methods
 	// -------------------------------------------------------------------------
@@ -65,7 +65,7 @@ public class CppAiConnector extends AiConnector {
 	 */
 	@Override
 	public void performAiFunction(ApiCall call) {
-		if(!initialized) {
+		if (!initialized) {
 			callbackHandler.registerCallbacks();
 		}
 		

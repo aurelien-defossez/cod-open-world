@@ -137,7 +137,7 @@ public class WatchdogTimer extends Thread {
 		if (logger.isTraceEnabled())
 			logger.trace("Thread ended");
 	}
-
+	
 	/**
 	 * Returns whether the timer is paused.
 	 * 

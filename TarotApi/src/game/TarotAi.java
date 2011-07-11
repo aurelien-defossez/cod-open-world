@@ -18,9 +18,13 @@ public interface TarotAi {
 	
 	public void bidInfo(int bidder, int contract);
 	
+	public void dogInfo(int cards[]);
+	
 	public void setCardsAside();
 	
 	public void cardsAsideInfo(int card);
+	
+	public void announcementInfo(int announcer, int announcement);
 	
 	public void playCard(int[] cards);
 	

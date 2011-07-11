@@ -16,20 +16,22 @@ public class GameCommander extends JavaGameCommander {
 	// -------------------------------------------------------------------------
 	
 	// Phases
-	private static final byte PHASE_INIT = 0;
-	private static final byte PHASE_NEW_HAND = 1;
-	private static final byte PHASE_BID = 2;
-	private static final byte PHASE_BID_INFO = 3;
-	private static final byte PHASE_SET_CARDS_ASIDE = 4;
-	private static final byte PHASE_CARDS_ASIDE_INFO = 5;
-	private static final byte PHASE_PLAY_CARD = 6;
-	private static final byte PHASE_TURN_INFO = 7;
-	private static final byte PHASE_HAND_INFO = 8;
+	private static final byte PHASE_INIT = 1;
+	private static final byte PHASE_NEW_HAND = 2;
+	private static final byte PHASE_BID = 3;
+	private static final byte PHASE_BID_INFO = 4;
+	private static final byte PHASE_DOG_INFO = 5;
+	private static final byte PHASE_SET_CARDS_ASIDE = 6;
+	private static final byte PHASE_CARDS_ASIDE_INFO = 7;
+	private static final byte PHASE_ANNOUNCEMENT_INFO = 8;
+	private static final byte PHASE_PLAY_CARD = 9;
+	private static final byte PHASE_TURN_INFO = 10;
+	private static final byte PHASE_HAND_INFO = 11;
 	
 	// -------------------------------------------------------------------------
 	// Public methods
 	// -------------------------------------------------------------------------
-
+	
 	public static void init(short aiId, int id) {
 		callAiFunction(aiId, new ApiCall(PHASE_INIT, new Variant[] {
 			new Variant(id)
@@ -54,6 +56,12 @@ public class GameCommander extends JavaGameCommander {
 		}));
 	}
 	
+	public static void dogInfo(short aiId, int cards[]) {
+		callAiFunction(aiId, new ApiCall(PHASE_DOG_INFO, new Variant[] {
+			new Variant(cards)
+		}));
+	}
+	
 	public static void setCardsAside(short aiId) {
 		callAiFunction(aiId, new ApiCall(PHASE_SET_CARDS_ASIDE, 0));
 	}
@@ -61,6 +69,14 @@ public class GameCommander extends JavaGameCommander {
 	public static void cardsAsideInfo(short aiId, int card) {
 		callAiFunction(aiId, new ApiCall(PHASE_CARDS_ASIDE_INFO, new Variant[] {
 			new Variant(card)
+		}));
+	}
+	
+	public static void announcementInfo(short aiId, int announcer,
+		int announcement) {
+		callAiFunction(aiId, new ApiCall(PHASE_ANNOUNCEMENT_INFO, new Variant[] {
+			new Variant(announcer),
+			new Variant(announcement)
 		}));
 	}
 	

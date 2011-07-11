@@ -562,7 +562,7 @@ public class Variant {
 				(stringMatrix3.length == 0) ? 0 : stringMatrix3[0].length,
 				(stringMatrix3.length == 0 || stringMatrix3[0].length == 0) ? 0
 					: stringMatrix3[0][0].length };
-		
+			
 		default:
 			return new int[] { 0 };
 		}

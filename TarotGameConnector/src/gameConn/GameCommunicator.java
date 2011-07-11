@@ -20,6 +20,7 @@ public class GameCommunicator extends JavaGameCommunicator {
 	private static final short API_BID = 1;
 	private static final short API_SET_CARDS_ASIDE = 2;
 	private static final short API_PLAY_CARD = 3;
+	private static final short API_MAKE_ANNOUNCEMENT = 4;
 	
 	// -------------------------------------------------------------------------
 	// Attributes
@@ -93,6 +94,10 @@ public class GameCommunicator extends JavaGameCommunicator {
 		case API_SET_CARDS_ASIDE:
 			return new Variant(gameInstance.setCardsAside(aiId,
 				(int[]) call.getParameter(0).getValue()));
+		
+		case API_MAKE_ANNOUNCEMENT:
+			return new Variant(gameInstance.makeAnnouncement(aiId,
+				(Integer) call.getParameter(0).getValue()));
 			
 		default:
 			return null;

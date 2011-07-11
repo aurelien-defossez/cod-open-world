@@ -59,12 +59,12 @@ public class Watchdog {
 	 * Activates the watchdog.
 	 */
 	public void activate() {
-		if(!activated) {
+		if (!activated) {
 			activated = true;
 			timer.start();
 		}
 	}
-
+	
 	/**
 	 * Returns whether the watchdog is paused.
 	 * 

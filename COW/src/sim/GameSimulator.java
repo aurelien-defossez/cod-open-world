@@ -12,9 +12,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
-
 import org.apache.log4j.Logger;
-
 import view.View.ViewType;
 import com.ApiCall;
 import com.GameListener;
@@ -139,11 +137,12 @@ public abstract class GameSimulator implements Simulator {
 	public void setScore(short aiId, int score) {
 		Ai ai = getAi(aiId);
 		
-		if(ai != null) {
+		if (ai != null) {
 			ai.setScore(score);
 			updateScore();
 		} else {
-			logger.error("Can't set score for AI #" + aiId + ", does not exist.");
+			logger.error("Can't set score for AI #" + aiId
+				+ ", does not exist.");
 		}
 	}
 	
@@ -187,22 +186,24 @@ public abstract class GameSimulator implements Simulator {
 	public final String[] getParameters() {
 		return parameters;
 	}
-
+	
 	/**
 	 * Prints the score in the output stream, one integer for each AI, in the
 	 * order of the initial AI order in the parameter list.
 	 */
 	public final void printScores() {
-		if(resultFile != null) {
+		if (resultFile != null) {
 			try {
-				BufferedWriter result = new BufferedWriter(new FileWriter(resultFile));
+				BufferedWriter result =
+					new BufferedWriter(new FileWriter(resultFile));
 				
-				for(Ai ai : ais.values()) {
+				for (Ai ai : ais.values()) {
 					result.write(Integer.toString(ai.getScore()) + " ");
 				}
 				result.close();
 			} catch (IOException e) {
-				logger.error("Can't save results in file '"+resultFile+"': "+e.getMessage());
+				logger.error("Can't save results in file '" + resultFile
+					+ "': " + e.getMessage());
 			}
 		}
 	}

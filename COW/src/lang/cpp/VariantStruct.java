@@ -20,7 +20,7 @@ public class VariantStruct extends Structure {
 		this();
 		setValue(variant);
 	}
-
+	
 	public void setValue(Variant variant) {
 		VariantType vType = variant.getType();
 		type = vType.getId();

@@ -10,28 +10,28 @@ public interface TarotEngine {
 	// -------------------------------------------------------------------------
 	
 	// Contracts (French)
-	public final static int ENCHERE_PRISE = 1;
-	public final static int ENCHERE_GARDE = 2;
-	public final static int ENCHERE_GARDE_SANS = 3;
-	public final static int ENCHERE_GARDE_CONTRE = 4;
+	public final static int ENCHERE_PRISE = 11;
+	public final static int ENCHERE_GARDE = 12;
+	public final static int ENCHERE_GARDE_SANS = 13;
+	public final static int ENCHERE_GARDE_CONTRE = 14;
 	
 	// Contracts (English)
-	public final static int BID_TAKE = 1;
-	public final static int BID_GUARD = 2;
-	public final static int BID_GUARD_WITHOUT = 3;
-	public final static int BID_GUARD_AGAINST = 4;
+	public final static int BID_TAKE = 11;
+	public final static int BID_GUARD = 12;
+	public final static int BID_GUARD_WITHOUT = 13;
+	public final static int BID_GUARD_AGAINST = 14;
 	
 	// Bonus (French)
-	public final static int POIGNEE_SIMPLE = 5;
-	public final static int POIGNEE_DOUBLE = 6;
-	public final static int POIGNEE_TRIPLE = 7;
-	public final static int CHELEM = 8;
+	public final static int POIGNEE_SIMPLE = 15;
+	public final static int POIGNEE_DOUBLE = 16;
+	public final static int POIGNEE_TRIPLE = 17;
+	public final static int CHELEM = 18;
 	
 	// Bonus (English)
-	public final static int HANDFUL_SINGLE = 5;
-	public final static int HANDFUL_DOUBLE = 6;
-	public final static int HANDFUL_TRIPLE = 7;
-	public final static int SLAM = 8;
+	public final static int HANDFUL_SINGLE = 15;
+	public final static int HANDFUL_DOUBLE = 16;
+	public final static int HANDFUL_TRIPLE = 17;
+	public final static int SLAM = 18;
 	
 	// Cards (French) 
 	public final static int COEUR_1 = 0x21;
@@ -201,6 +201,15 @@ public interface TarotEngine {
 	public final static int TRUMP_20 = 0xB4;
 	public final static int TRUMP_21 = 0xB5;
 	
+	// Errors
+	public final static int OK = 1;
+	public final static int ILLEGAL_PHASE = -1;
+	public final static int ILLEGAL_CONTRACT = -2;
+	public final static int UNKNOWN_CARD_CODE = -3;
+	public final static int CARD_NOT_IN_HAND = -4;
+	public final static int ILLEGAL_CARD_ASIDE = -5;
+	public final static int ILLEGAL_CARD_PLAYED = -6;
+	
 	// -------------------------------------------------------------------------
 	// Abstract methods
 	// -------------------------------------------------------------------------
@@ -244,4 +253,6 @@ public interface TarotEngine {
 	public int setCardsAside(short aiId, int[] cards);
 	
 	public int playCard(short aiId, int card);
+	
+	public int makeAnnouncement(short aiId, int announcement);
 }

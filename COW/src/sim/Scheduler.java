@@ -101,9 +101,11 @@ public class Scheduler extends Thread {
 		
 		// Create game simulator
 		if (testMode) {
-			this.simulator = new TestSimulator(this, gameName, parameters, resultFile);
+			this.simulator =
+				new TestSimulator(this, gameName, parameters, resultFile);
 		} else {
-			this.simulator = new SecureSimulator(this, gameName, parameters, resultFile);
+			this.simulator =
+				new SecureSimulator(this, gameName, parameters, resultFile);
 		}
 		
 		if (logger.isDebugEnabled())

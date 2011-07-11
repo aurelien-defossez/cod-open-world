@@ -69,7 +69,7 @@ public class ProcessReader extends Thread {
 			while (reading) {
 				String line = processStdOut.readLine();
 				
-				if(line != null) {
+				if (line != null) {
 					System.out.println(line);
 				}
 			}

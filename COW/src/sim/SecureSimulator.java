@@ -65,7 +65,7 @@ public class SecureSimulator extends LiveSimulator {
 	 */
 	@Override
 	public void setFrame() {
-		if(!watchdog.isPaused()) {
+		if (!watchdog.isPaused()) {
 			watchdog.pause();
 			super.setFrame();
 			watchdog.resume();
