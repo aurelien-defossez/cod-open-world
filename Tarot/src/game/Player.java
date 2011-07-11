@@ -58,6 +58,26 @@ public class Player {
 	public boolean hasCard(Card card) {
 		return cards.contains(card);
 	}
+
+	public boolean hasColor(int desiredColor) {
+		for (Card card : cards) {
+			if (card.getColor() == desiredColor) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+
+	public boolean hasAtoutAbove(int value) {
+		for (Card card : cards) {
+			if (card.getColor() == Card.ATOUT && card.getValue() > value) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
 	
 	public void removeCards(int[] oldCards) {
 		for (int code : oldCards) {

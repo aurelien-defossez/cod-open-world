@@ -2,6 +2,7 @@
 package ai;
 
 import game.Api;
+import java.util.Random;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -70,6 +71,29 @@ public class Hand {
 			}
 		}
 	}
+
+	public void removeCard(int card) {
+		int color = card & COLOR_MASK;
+		int value = card & VALUE_MASK;
+		
+		switch (color) {
+		case COEUR:
+			coeur.remove(value);
+			break;
+		case CARREAU:
+			carreau.remove(value);
+			break;
+		case PIQUE:
+			pique.remove(value);
+			break;
+		case TREFLE:
+			trefle.remove(value);
+			break;
+		case ATOUT:
+			atout.remove(value);
+			break;
+		}
+	}
 	
 	public void computeScores(int position, int currentContract) {
 		// Compute scores from hand
@@ -112,15 +136,16 @@ public class Hand {
 	public int getScoreSans() {
 		return scoreSans;
 	}
-
+	
 	public int[] setCardsAside() {
 		int[] cardsAside = new int[6];
 		int ctDiscarded = 0;
 		
-		// TODO: Set other parameters to set aside cards (Point saving, singletons, ...)
+		// TODO: Set other parameters to set aside cards (Point saving,
+		// singletons, ...)
 		// TODO: Discard atouts if needed
 		
-		while(ctDiscarded < 6) {
+		while (ctDiscarded < 6) {
 			int[] weakColors = new int[] {
 				coeur.size() - countDominants(coeur),
 				carreau.size() - countDominants(carreau),
@@ -131,7 +156,7 @@ public class Hand {
 			// Determine weakest
 			int weakest = 0;
 			int min = 15;
-			for(int i = 0; i < 4; i++) {
+			for (int i = 0; i < 4; i++) {
 				if (weakColors[i] > 0 && weakColors[i] < min) {
 					weakest = i;
 					min = weakColors[i];
@@ -141,35 +166,85 @@ public class Hand {
 			// Discard card
 			int value = 0;
 			int color = 0;
-			switch(weakest) {
+			switch (weakest) {
 			case 0:
 				color = COEUR;
 				value = coeur.iterator().next();
 				coeur.remove(value);
 				break;
-
+			
 			case 1:
 				color = CARREAU;
 				value = carreau.iterator().next();
 				carreau.remove(value);
 				break;
-
+			
 			case 2:
 				color = PIQUE;
 				value = pique.iterator().next();
 				pique.remove(value);
 				break;
-
+			
 			case 3:
 				color = TREFLE;
 				value = trefle.iterator().next();
 				trefle.remove(value);
 				break;
 			}
+			
 			cardsAside[ctDiscarded++] = color | value;
 		}
 		
 		return cardsAside;
+	}
+	
+	public int getRandomCard() {
+		Random r = new Random();
+		boolean found = false;
+		Set<Integer> cardSet = null;
+		int color = 0;
+		
+		do {
+			int randColor = r.nextInt(5);
+			
+			switch (randColor) {
+			case 0:
+				cardSet = coeur;
+				color = COEUR;
+				break;
+			case 1:
+				cardSet = carreau;
+				color = CARREAU;
+				break;
+			case 2:
+				cardSet = pique;
+				color = PIQUE;
+				break;
+			case 3:
+				cardSet = trefle;
+				color = TREFLE;
+				break;
+			case 4:
+				cardSet = atout;
+				color = ATOUT;
+				break;
+			}
+			
+			if(cardSet.size() > 0) {
+				int randCard = r.nextInt(cardSet.size());
+				
+				int ctCard = 0;
+				for(Integer value : cardSet) {
+					if (ctCard == randCard) {
+						return color | value;
+					}
+					
+					ctCard++;
+				}
+			}
+		} while (!found);
+		
+		return 0;
 	}
 	
 	public String toString() {

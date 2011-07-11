@@ -99,7 +99,7 @@ public class Ai implements TarotAi {
 		
 		System.out.println("[" + id + "] Setting aside {" + Utils.printCards(cardsAside) + "}"
 			+ " (" + Api.decode(Api.setCardsAside(cardsAside)) + ")");
-		System.out.println("[" + id + "] My hand now is "+hand);
+		System.out.println("[" + id + "] My hand now is " + hand);
 	}
 	
 	@Override
@@ -116,8 +116,18 @@ public class Ai implements TarotAi {
 	
 	@Override
 	public void playCard(int[] cards) {
-		// TODO Auto-generated method stub
+		boolean ok;
+		int randCard;
 		
+		do {
+			randCard = hand.getRandomCard();
+			ok = (Api.playCard(randCard) == Api.OK);
+		} while (!ok);
+		
+		System.out.println("[" + id + "] My hand is " + hand);
+		System.out.println("[" + id + "] Played " + Api.decode(randCard));
+		
+		hand.removeCard(randCard);
 	}
 	
 	@Override

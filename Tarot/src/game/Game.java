@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import com.jme.scene.Circle;
 import gameConn.TarotEngine;
 import gameConn.GameCommander;
 

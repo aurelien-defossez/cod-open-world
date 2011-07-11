@@ -12,6 +12,7 @@ public class Card {
 	public final static int PIQUE = TarotEngine.PIQUE_1 & COLOR_MASK;
 	public final static int TREFLE = TarotEngine.TREFLE_1 & COLOR_MASK;
 	public final static int ATOUT = TarotEngine.ATOUT_1 & COLOR_MASK;
+	
 	public final static int VALET = 11;
 	public final static int CAVALIER = 12;
 	public final static int DAME = 13;
@@ -68,11 +69,20 @@ public class Card {
 	}
 	
 	public boolean isBetterThan(Card otherCard, int desiredColor) {
-		// Better if the other card is the excuse, or not of the desired
-		// color, or of the same color but less strong
-		return (otherCard.getCode() == Game.EXCUSE
-			|| (otherCard.getColor() != desiredColor && otherCard.getColor() != ATOUT)
-			|| (otherCard.getColor() == desiredColor && otherCard.getValue() < value));
+		int otherColor = otherCard.getColor();
+		int otherValue = otherCard.getValue();
+		
+		return
+		// Both of the desired color but this card has a better value
+		((color == desiredColor && otherColor == desiredColor && value > otherValue)
+			// This card has the desired color and the other has not
+			|| (color == desiredColor && otherColor != desiredColor && otherColor != Card.ATOUT)
+			// This card is an atout and the other not
+			|| (color == Card.ATOUT && otherColor != Card.ATOUT)
+			// Both are atout but this card has a better value
+			|| (color == Card.ATOUT && otherColor == Card.ATOUT && value > otherValue)
+		// Other card is the excuse
+		|| (otherCard.getCode() == Game.EXCUSE));
 	}
 	
 	public String toString() {

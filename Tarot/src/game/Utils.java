@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Utils {
-	public static Map<Integer, Card> cards;
+	private static Map<Integer, Card> cards;
 	
 	public static int[] toArray(List<Card> cards) {
 		int[] cardsValues = new int[cards.size()];
