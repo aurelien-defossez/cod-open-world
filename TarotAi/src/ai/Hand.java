@@ -7,90 +7,90 @@ import java.util.Set;
 import java.util.TreeSet;
 
 public class Hand {
-	public final static byte COLOR_MASK = (byte) 0xE0;
-	public final static byte VALUE_MASK = (byte) 0x1F;
+	// -------------------------------------------------------------------------
+	// Attributes
+	// -------------------------------------------------------------------------
 	
-	public final static int COEUR = Api.COEUR_1 & COLOR_MASK;
-	public final static int CARREAU = Api.CARREAU_1 & COLOR_MASK;
-	public final static int PIQUE = Api.PIQUE_1 & COLOR_MASK;
-	public final static int TREFLE = Api.TREFLE_1 & COLOR_MASK;
-	public final static int ATOUT = Api.ATOUT_1 & COLOR_MASK;
-	
-	public final static int VALET = 11;
-	public final static int CAVALIER = 12;
-	public final static int DAME = 13;
-	public final static int ROI = 14;
-	
-	private Set<Integer> coeur;
-	private Set<Integer> carreau;
-	private Set<Integer> pique;
-	private Set<Integer> trefle;
-	private Set<Integer> atout;
+	private Set<Card> coeur;
+	private Set<Card> carreau;
+	private Set<Card> pique;
+	private Set<Card> trefle;
+	private Set<Card> atout;
 	
 	private int nbBouts;
 	private int score;
 	private int scoreSans;
 	
+	// -------------------------------------------------------------------------
+	// Constructor
+	// -------------------------------------------------------------------------
+	
 	public Hand(int[] cards) {
-		coeur = new TreeSet<Integer>();
-		carreau = new TreeSet<Integer>();
-		pique = new TreeSet<Integer>();
-		trefle = new TreeSet<Integer>();
-		atout = new TreeSet<Integer>();
+		CardComparator comparator = new CardComparator();
+		
+		coeur = new TreeSet<Card>(comparator);
+		carreau = new TreeSet<Card>(comparator);
+		pique = new TreeSet<Card>(comparator);
+		trefle = new TreeSet<Card>(comparator);
+		atout = new TreeSet<Card>(comparator);
 		nbBouts = 0;
 		
 		// Add cards
 		addCards(cards);
 	}
 	
+	// -------------------------------------------------------------------------
+	// Public methods
+	// -------------------------------------------------------------------------
+	
 	public void addCards(int[] cards) {
-		for (int card : cards) {
-			int color = card & COLOR_MASK;
-			int value = card & VALUE_MASK;
+		for (int code : cards) {
+			Card card = Utils.getCard(code);
 			
-			switch (color) {
-			case COEUR:
-				coeur.add(value);
+			switch (card.getColor()) {
+			case Card.COEUR:
+				coeur.add(card);
 				break;
 			
-			case CARREAU:
-				carreau.add(value);
+			case Card.CARREAU:
+				carreau.add(card);
 				break;
 			
-			case PIQUE:
-				pique.add(value);
+			case Card.PIQUE:
+				pique.add(card);
 				break;
 			
-			case TREFLE:
-				trefle.add(value);
+			case Card.TREFLE:
+				trefle.add(card);
 				break;
 			
-			case ATOUT:
-				atout.add(value);
+			case Card.ATOUT:
+				atout.add(card);
 				break;
 			}
 		}
 	}
-
-	public void removeCard(int card) {
-		int color = card & COLOR_MASK;
-		int value = card & VALUE_MASK;
+	
+	public void removeCard(Card card) {
+		switch (card.getColor()) {
+		case Card.COEUR:
+			coeur.remove(card);
+			break;
 		
-		switch (color) {
-		case COEUR:
-			coeur.remove(value);
+		case Card.CARREAU:
+			carreau.remove(card);
 			break;
-		case CARREAU:
-			carreau.remove(value);
+		
+		case Card.PIQUE:
+			pique.remove(card);
 			break;
-		case PIQUE:
-			pique.remove(value);
+		
+		case Card.TREFLE:
+			trefle.remove(card);
 			break;
-		case TREFLE:
-			trefle.remove(value);
-			break;
-		case ATOUT:
-			atout.remove(value);
+		
+		case Card.ATOUT:
+			atout.remove(card);
 			break;
 		}
 	}
@@ -164,45 +164,36 @@ public class Hand {
 			}
 			
 			// Discard card
-			int value = 0;
-			int color = 0;
+			Card discarded = null;
 			switch (weakest) {
 			case 0:
-				color = COEUR;
-				value = coeur.iterator().next();
-				coeur.remove(value);
+				discarded = coeur.iterator().next();
 				break;
 			
 			case 1:
-				color = CARREAU;
-				value = carreau.iterator().next();
-				carreau.remove(value);
+				discarded = carreau.iterator().next();
 				break;
 			
 			case 2:
-				color = PIQUE;
-				value = pique.iterator().next();
-				pique.remove(value);
+				discarded = pique.iterator().next();
 				break;
 			
 			case 3:
-				color = TREFLE;
-				value = trefle.iterator().next();
-				trefle.remove(value);
+				discarded = coeur.iterator().next();
 				break;
 			}
-			
-			cardsAside[ctDiscarded++] = color | value;
+
+			removeCard(discarded);
+			cardsAside[ctDiscarded++] = discarded.getCode();
 		}
 		
 		return cardsAside;
 	}
 	
-	public int getRandomCard() {
+	public Card getRandomCard() {
 		Random r = new Random();
 		boolean found = false;
-		Set<Integer> cardSet = null;
-		int color = 0;
+		Set<Card> cardSet = null;
 		
 		do {
 			int randColor = r.nextInt(5);
@@ -210,33 +201,28 @@ public class Hand {
 			switch (randColor) {
 			case 0:
 				cardSet = coeur;
-				color = COEUR;
 				break;
 			case 1:
 				cardSet = carreau;
-				color = CARREAU;
 				break;
 			case 2:
 				cardSet = pique;
-				color = PIQUE;
 				break;
 			case 3:
 				cardSet = trefle;
-				color = TREFLE;
 				break;
 			case 4:
 				cardSet = atout;
-				color = ATOUT;
 				break;
 			}
 			
-			if(cardSet.size() > 0) {
+			if (cardSet.size() > 0) {
 				int randCard = r.nextInt(cardSet.size());
 				
 				int ctCard = 0;
-				for(Integer value : cardSet) {
+				for (Card card : cardSet) {
 					if (ctCard == randCard) {
-						return color | value;
+						return card;
 					}
 					
 					ctCard++;
@@ -244,7 +230,7 @@ public class Hand {
 			}
 		} while (!found);
 		
-		return 0;
+		return null;
 	}
 	
 	public String toString() {
@@ -253,40 +239,40 @@ public class Hand {
 		if (atout.size() > 0) {
 			sb.append("[A] ");
 			
-			for (int value : atout) {
-				sb.append(value + " ");
+			for (Card card : atout) {
+				sb.append(card.getStringValue() + " ");
 			}
 		}
 		
 		if (coeur.size() > 0) {
 			sb.append("[C] ");
 			
-			for (int value : coeur) {
-				sb.append(valueOf(value) + " ");
+			for (Card card : coeur) {
+				sb.append(card.getStringValue() + " ");
 			}
 		}
 		
 		if (carreau.size() > 0) {
 			sb.append("[K] ");
 			
-			for (int value : carreau) {
-				sb.append(valueOf(value) + " ");
+			for (Card card : carreau) {
+				sb.append(card.getStringValue() + " ");
 			}
 		}
 		
 		if (pique.size() > 0) {
 			sb.append("[P] ");
 			
-			for (int value : pique) {
-				sb.append(valueOf(value) + " ");
+			for (Card card : pique) {
+				sb.append(card.getStringValue() + " ");
 			}
 		}
 		
 		if (trefle.size() > 0) {
 			sb.append("[T] ");
 			
-			for (int value : trefle) {
-				sb.append(valueOf(value) + " ");
+			for (Card card : trefle) {
+				sb.append(card.getStringValue() + " ");
 			}
 		}
 		
@@ -295,12 +281,18 @@ public class Hand {
 		return sb.toString();
 	}
 	
+	// -------------------------------------------------------------------------
+	// Private methods
+	// -------------------------------------------------------------------------
+	
 	private void computeScoreAtout() {
 		int straight = 0;
 		int lastAtout = 0;
 		nbBouts = 0;
 		
-		for (int value : atout) {
+		for (Card card : atout) {
+			int value = card.getValue();
+			
 			// Excuse
 			if (value == 0) {
 				score += Params.POINTS_EXCUSE;
@@ -353,11 +345,11 @@ public class Hand {
 		}
 	}
 	
-	private void computeScoreCouleur(Set<Integer> color) {
-		boolean hasRoi = color.contains(ROI);
-		boolean hasDame = color.contains(DAME);
-		boolean hasCavalier = color.contains(CAVALIER);
-		boolean hasValet = color.contains(VALET);
+	private void computeScoreCouleur(Set<Card> color) {
+		boolean hasRoi = Utils.hasCardValue(color, Card.ROI);
+		boolean hasDame = Utils.hasCardValue(color, Card.DAME);
+		boolean hasCavalier = Utils.hasCardValue(color, Card.CAVALIER);
+		boolean hasValet = Utils.hasCardValue(color, Card.VALET);
 		
 		// Roi
 		if (hasRoi) {
@@ -403,13 +395,13 @@ public class Hand {
 		}
 	}
 	
-	private int countDominants(Set<Integer> color) {
+	private int countDominants(Set<Card> color) {
 		int ctDominants = 0;
-		int currentDominant = ROI;
-		Integer[] colorArray = (Integer[]) color.toArray(new Integer[0]);
+		int currentDominant = Card.ROI;
+		Card[] colorArray = (Card[]) color.toArray(new Card[0]);
 		
 		for (int i = colorArray.length - 1; i >= 0; i--) {
-			if (colorArray[i] == currentDominant) {
+			if (colorArray[i].getValue() == currentDominant) {
 				ctDominants++;
 				currentDominant--;
 			} else {
@@ -418,20 +410,5 @@ public class Hand {
 		}
 		
 		return ctDominants;
-	}
-	
-	private String valueOf(int value) {
-		switch (value) {
-		case VALET:
-			return "V";
-		case CAVALIER:
-			return "C";
-		case DAME:
-			return "D";
-		case ROI:
-			return "R";
-		default:
-			return Integer.toString(value);
-		}
 	}
 }

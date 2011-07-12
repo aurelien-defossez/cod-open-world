@@ -6,6 +6,10 @@ import game.Game.Phase;
 import gameConn.GameCommander;
 
 public class GameSession {
+	// -------------------------------------------------------------------------
+	// Attributes
+	// -------------------------------------------------------------------------
+	
 	private Game game;
 	private int contract;
 	private Player taker;
@@ -18,6 +22,10 @@ public class GameSession {
 	private Card turnBestCard;
 	private int desiredColor;
 	
+	// -------------------------------------------------------------------------
+	// Constructor
+	// -------------------------------------------------------------------------
+	
 	public GameSession(Game game, Player taker, int contract,
 		Player currentPlayer, List<Card> dog) {
 		this.game = game;
@@ -28,6 +36,10 @@ public class GameSession {
 		this.score = 0;
 		this.turnCards = new int[4];
 	}
+
+	// -------------------------------------------------------------------------
+	// Public methods
+	// -------------------------------------------------------------------------
 	
 	public Player getCurrentPlayer() {
 		return currentPlayer;

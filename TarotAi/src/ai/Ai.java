@@ -20,6 +20,14 @@ public class Ai implements TarotAi {
 	private boolean taker;
 	
 	// -------------------------------------------------------------------------
+	// Constructor
+	// -------------------------------------------------------------------------
+	
+	public Ai() {
+		Utils.createCards();
+	}
+	
+	// -------------------------------------------------------------------------
 	// Public methods
 	// -------------------------------------------------------------------------
 	
@@ -117,15 +125,15 @@ public class Ai implements TarotAi {
 	@Override
 	public void playCard(int[] cards) {
 		boolean ok;
-		int randCard;
+		Card randCard;
 		
 		do {
 			randCard = hand.getRandomCard();
-			ok = (Api.playCard(randCard) == Api.OK);
+			ok = (Api.playCard(randCard.getCode()) == Api.OK);
 		} while (!ok);
 		
 		System.out.println("[" + id + "] My hand is " + hand);
-		System.out.println("[" + id + "] Played " + Api.decode(randCard));
+		System.out.println("[" + id + "] Played " + randCard);
 		
 		hand.removeCard(randCard);
 	}

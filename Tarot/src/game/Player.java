@@ -5,12 +5,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Player {
+	// -------------------------------------------------------------------------
+	// Attributes
+	// -------------------------------------------------------------------------
+	
 	private short aiId;
 	private String aiName;
 	private String playerName;
 	private int score;
 	private List<Card> cards;
 	private Player nextPlayer;
+	
+	// -------------------------------------------------------------------------
+	// Constructor
+	// -------------------------------------------------------------------------
 	
 	public Player(short aiId, String aiName, String playerName) {
 		this.aiId = aiId;
@@ -19,6 +27,10 @@ public class Player {
 		this.score = 0;
 		this.cards = null;
 	}
+	
+	// -------------------------------------------------------------------------
+	// Public methods
+	// -------------------------------------------------------------------------
 	
 	public void setNextPlayer(Player player) {
 		nextPlayer = player;

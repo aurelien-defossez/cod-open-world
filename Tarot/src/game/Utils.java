@@ -7,7 +7,15 @@ import java.util.List;
 import java.util.Map;
 
 public class Utils {
+	// -------------------------------------------------------------------------
+	// Class attributes
+	// -------------------------------------------------------------------------
+	
 	private static Map<Integer, Card> cards;
+	
+	// -------------------------------------------------------------------------
+	// Class methods
+	// -------------------------------------------------------------------------
 	
 	public static int[] toArray(List<Card> cards) {
 		int[] cardsValues = new int[cards.size()];

@@ -1,7 +1,6 @@
+package ai;
 
-package game;
-
-import gameConn.TarotEngine;
+import game.Api;
 
 public class Card {
 	// -------------------------------------------------------------------------
@@ -11,11 +10,11 @@ public class Card {
 	public final static byte COLOR_MASK = (byte) 0xE0;
 	public final static byte VALUE_MASK = (byte) 0x1F;
 	
-	public final static int COEUR = TarotEngine.COEUR_1 & COLOR_MASK;
-	public final static int CARREAU = TarotEngine.CARREAU_1 & COLOR_MASK;
-	public final static int PIQUE = TarotEngine.PIQUE_1 & COLOR_MASK;
-	public final static int TREFLE = TarotEngine.TREFLE_1 & COLOR_MASK;
-	public final static int ATOUT = TarotEngine.ATOUT_1 & COLOR_MASK;
+	public final static int COEUR = Api.COEUR_1 & COLOR_MASK;
+	public final static int CARREAU = Api.CARREAU_1 & COLOR_MASK;
+	public final static int PIQUE = Api.PIQUE_1 & COLOR_MASK;
+	public final static int TREFLE = Api.TREFLE_1 & COLOR_MASK;
+	public final static int ATOUT = Api.ATOUT_1 & COLOR_MASK;
 	
 	public final static int VALET = 11;
 	public final static int CAVALIER = 12;
@@ -98,11 +97,30 @@ public class Card {
 			// Both are atout but this card has a better value
 			|| (color == Card.ATOUT && otherColor == Card.ATOUT && value > otherValue)
 		// Other card is the excuse
-		|| (otherCard.getCode() == Game.EXCUSE));
+		|| (otherCard.getCode() == Api.EXCUSE));
 	}
 	
 	public String toString() {
 		return getStringValue() + getStringColor();
+	}
+	
+	public String getStringValue() {
+		if (color == ATOUT || value < VALET) {
+			return Integer.toString(value);
+		} else {
+			switch (value) {
+			case VALET:
+				return "V";
+			case CAVALIER:
+				return "C";
+			case DAME:
+				return "D";
+			case ROI:
+				return "R";
+			default:
+				return Integer.toString(value);
+			}
+		}
 	}
 	
 	// -------------------------------------------------------------------------
@@ -123,25 +141,6 @@ public class Card {
 			return "T";
 		default:
 			return ".";
-		}
-	}
-	
-	private String getStringValue() {
-		if (color == ATOUT || value < VALET) {
-			return Integer.toString(value);
-		} else {
-			switch (value) {
-			case VALET:
-				return "V";
-			case CAVALIER:
-				return "C";
-			case DAME:
-				return "D";
-			case ROI:
-				return "R";
-			default:
-				return Integer.toString(value);
-			}
 		}
 	}
 }

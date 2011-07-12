@@ -1,6 +1,10 @@
 package ai;
 
 public class Params {
+	// -------------------------------------------------------------------------
+	// Constants
+	// -------------------------------------------------------------------------
+	
 	// Contracts Threshold
 	public static final int THRESHOLD_GARDE = 48;
 	public static final int THRESHOLD_GARDE_SANS = 70;
