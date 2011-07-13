@@ -14,6 +14,7 @@ public class Ai implements TarotAi {
 	// -------------------------------------------------------------------------
 	
 	private int id;
+	private Game game;
 	private Hand hand;
 	private int position;
 	private int currentContract;
@@ -24,7 +25,8 @@ public class Ai implements TarotAi {
 	// -------------------------------------------------------------------------
 	
 	public Ai() {
-		Utils.createCards();
+		Utils.init();
+		game = null;
 	}
 	
 	// -------------------------------------------------------------------------
@@ -35,14 +37,17 @@ public class Ai implements TarotAi {
 		this.id = id;
 	}
 	
+	public int getId() {
+		return id;
+	}
+	
 	@Override
 	public void newHand(int position, int[] cards) {
 		this.hand = new Hand(cards);
 		this.currentContract = 0;
 		this.position = position;
 		
-		System.out.println("[" + id + "] My hand is " + hand + ", pos #"
-			+ position + ".");
+		System.out.println("[" + id + "] My hand is " + hand + ", pos #" + position + ".");
 	}
 	
 	@Override
@@ -94,8 +99,7 @@ public class Ai implements TarotAi {
 	public void dogInfo(int[] cards) {
 		// It's my dog
 		if (taker) {
-			System.out.println("[" + id + "] My dog is {"
-				+ Utils.printCards(cards) + "}");
+			System.out.println("[" + id + "] My dog is {" + Utils.printCards(cards) + "}");
 			
 			hand.addCards(cards);
 		}
@@ -103,17 +107,18 @@ public class Ai implements TarotAi {
 	
 	@Override
 	public void setCardsAside() {
+		System.out.println("[" + id + "] My hand is " + hand);
+		
 		int[] cardsAside = hand.setCardsAside();
 		
 		System.out.println("[" + id + "] Setting aside {" + Utils.printCards(cardsAside) + "}"
 			+ " (" + Api.decode(Api.setCardsAside(cardsAside)) + ")");
-		System.out.println("[" + id + "] My hand now is " + hand);
+		System.out.println("[" + id + "] My hand is " + hand);
 	}
 	
 	@Override
 	public void cardsAsideInfo(int card) {
 		// TODO Auto-generated method stub
-		
 	}
 	
 	@Override
@@ -124,30 +129,24 @@ public class Ai implements TarotAi {
 	
 	@Override
 	public void playCard(int[] cards) {
-		boolean ok;
-		Card randCard;
+		if (game == null) {
+			game = new Game(this, hand, taker);
+		}
 		
-		do {
-			randCard = hand.getRandomCard();
-			ok = (Api.playCard(randCard.getCode()) == Api.OK);
-		} while (!ok);
-		
-		System.out.println("[" + id + "] My hand is " + hand);
-		System.out.println("[" + id + "] Played " + randCard);
-		
-		hand.removeCard(randCard);
+		game.playCard(cards);
 	}
 	
 	@Override
 	public void turnInfo(int taker, int[] cards) {
-		// TODO Auto-generated method stub
-		
+		for (int code : cards) {
+			Utils.getCard(code).discard();
+		}
 	}
 	
 	@Override
 	public void handInfo(boolean won, int[] scores) {
 		// TODO Auto-generated method stub
-		
+		game = null;
 	}
 	
 	@Override

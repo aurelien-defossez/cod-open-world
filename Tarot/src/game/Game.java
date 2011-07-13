@@ -192,6 +192,9 @@ public class Game implements TarotEngine {
 				currentPlayer = currentPlayer.nextPlayer();
 			}
 			
+			// Frame
+			GameCommander.setFrame();
+			
 			// Play hand
 			if (currentContract >= ENCHERE_PRISE) {
 				ctHands++;

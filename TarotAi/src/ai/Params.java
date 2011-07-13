@@ -33,4 +33,7 @@ public class Params {
 	public static final int POINTS_LONGUE_CARTE_SUPPL = 2;
 	public static final int POINTS_COUPE = 6;
 	public static final int POINTS_SINGLETTE = 3;
+	
+	// Strategies
+	public static final int MIN_LONGUE_SIZE = 4;
 }

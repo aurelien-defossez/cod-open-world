@@ -95,6 +95,40 @@ public class Hand {
 		}
 	}
 	
+	public boolean hasCard(Card card) {
+		switch (card.getColor()) {
+		case Card.COEUR:
+			return coeur.contains(card);
+		case Card.CARREAU:
+			return carreau.contains(card);
+		case Card.PIQUE:
+			return pique.contains(card);
+		case Card.TREFLE:
+			return trefle.contains(card);
+		case Card.ATOUT:
+			return atout.contains(card);
+		default:
+			return false;
+		}
+	}
+	
+	public Set<Card> getColor(int color) {
+		switch (color) {
+		case Card.COEUR:
+			return coeur;
+		case Card.CARREAU:
+			return carreau;
+		case Card.PIQUE:
+			return pique;
+		case Card.TREFLE:
+			return trefle;
+		case Card.ATOUT:
+			return atout;
+		default:
+			return null;
+		}
+	}
+	
 	public void computeScores(int position, int currentContract) {
 		// Compute scores from hand
 		score = 0;
@@ -146,20 +180,27 @@ public class Hand {
 		// TODO: Discard atouts if needed
 		
 		while (ctDiscarded < 6) {
-			int[] weakColors = new int[] {
-				coeur.size() - countDominants(coeur),
-				carreau.size() - countDominants(carreau),
-				pique.size() - countDominants(pique),
-				trefle.size() - countDominants(trefle)
+			int[] colorSize = new int[] {
+				coeur.size(),
+				carreau.size(),
+				pique.size(),
+				trefle.size()
+			};
+			
+			int[] discardable = new int[] {
+				colorSize[0] - countDominants(coeur),
+				colorSize[1] - countDominants(carreau),
+				colorSize[2] - countDominants(pique),
+				colorSize[3] - countDominants(trefle)
 			};
 			
 			// Determine weakest
 			int weakest = 0;
-			int min = 15;
+			int min = Card.ROI + 1;
 			for (int i = 0; i < 4; i++) {
-				if (weakColors[i] > 0 && weakColors[i] < min) {
+				if (discardable[i] > 0 && (colorSize[i] < min)) {
 					weakest = i;
-					min = weakColors[i];
+					min = colorSize[i];
 				}
 			}
 			
@@ -179,10 +220,10 @@ public class Hand {
 				break;
 			
 			case 3:
-				discarded = coeur.iterator().next();
+				discarded = trefle.iterator().next();
 				break;
 			}
-
+			
 			removeCard(discarded);
 			cardsAside[ctDiscarded++] = discarded.getCode();
 		}
@@ -346,10 +387,10 @@ public class Hand {
 	}
 	
 	private void computeScoreCouleur(Set<Card> color) {
-		boolean hasRoi = Utils.hasCardValue(color, Card.ROI);
-		boolean hasDame = Utils.hasCardValue(color, Card.DAME);
-		boolean hasCavalier = Utils.hasCardValue(color, Card.CAVALIER);
-		boolean hasValet = Utils.hasCardValue(color, Card.VALET);
+		boolean hasRoi = (Utils.getCardValue(color, Card.ROI) != null);
+		boolean hasDame = (Utils.getCardValue(color, Card.DAME) != null);
+		boolean hasCavalier = (Utils.getCardValue(color, Card.CAVALIER) != null);
+		boolean hasValet = (Utils.getCardValue(color, Card.VALET) != null);
 		
 		// Roi
 		if (hasRoi) {

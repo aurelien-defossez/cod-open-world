@@ -1,7 +1,9 @@
 package ai;
 
 import game.Api;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
@@ -11,13 +13,20 @@ public class Utils {
 	// Class attributes
 	// -------------------------------------------------------------------------
 
+	private static List<Integer> colors;
 	private static Map<Integer, Card> cards;
 	
 	// -------------------------------------------------------------------------
 	// Class methods
 	// -------------------------------------------------------------------------
 	
-	public static void createCards() {
+	public static void init() {
+		colors = new ArrayList<Integer>(4);
+		colors.add(Card.COEUR);
+		colors.add(Card.CARREAU);
+		colors.add(Card.PIQUE);
+		colors.add(Card.TREFLE);
+		
 		cards = new HashMap<Integer, Card>(78, 1);
 		cards.put(Api.COEUR_1, new Card(Api.COEUR_1));
 		cards.put(Api.COEUR_2, new Card(Api.COEUR_2));
@@ -99,35 +108,43 @@ public class Utils {
 		cards.put(Api.ATOUT_21, new Card(Api.ATOUT_21));
 	}
 	
+	public static List<Integer> getColors() {
+		return colors;
+	}
+	
+	public static ArrayList<Card> createDeck() {
+		return new ArrayList<Card>(cards.values());
+	}
+	
 	public static Card getCard(int code) {
 		return cards.get(code);
 	}
 	
-	public static boolean hasCardValue(Set<Card> cards, int value) {
+	public static Card getCardValue(Set<Card> cards, int value) {
 		for (Card card : cards) {
 			if (card.getValue() == value) {
-				return true;
+				return card;
 			}
 		}
 		
-		return false;
+		return null;
 	}
 	
 	public static String printCards(int[] cards) {
-		TreeSet<Integer> cardSet = new TreeSet<Integer>();
+		StringBuffer sb = new StringBuffer(" ");
 		
-		for (int card : cards) {
-			cardSet.add(card);
+		for (int code : cards) {
+			sb.append(Utils.getCard(code) + " ");
 		}
 		
-		return printCards(cardSet);
+		return sb.toString();
 	}
-	
-	public static String printCards(Set<Integer> cards) {
+
+	public static String printCards(Set<Card> cards) {
 		StringBuffer sb = new StringBuffer(" ");
 
-		for (int card : cards) {
-			sb.append(Api.decode(card) + " ");
+		for (Card card : cards) {
+			sb.append(card + " ");
 		}
 		
 		return sb.toString();

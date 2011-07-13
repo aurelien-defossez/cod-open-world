@@ -29,6 +29,8 @@ public class Card {
 	private int color;
 	private int value;
 	private boolean isOudler;
+	private boolean isDominant;
+	private boolean isInGame;
 
 	// -------------------------------------------------------------------------
 	// Constructor
@@ -42,11 +44,18 @@ public class Card {
 		// Extract info
 		this.isOudler = (color == ATOUT &&
 			(value == 0 || value == 1 || value == 21));
+		
+		reset();
 	}
 
 	// -------------------------------------------------------------------------
 	// Public methods
 	// -------------------------------------------------------------------------
+	
+	public void reset() {
+		isDominant = false;
+		isInGame = true;
+	}
 	
 	public int getCode() {
 		return code;
@@ -58,6 +67,18 @@ public class Card {
 	
 	public int getValue() {
 		return value;
+	}
+	
+	public boolean isDominant() {
+		return isDominant;
+	}
+	
+	public boolean isInGame() {
+		return isInGame;
+	}
+	
+	public boolean isOudler() {
+		return isOudler;
 	}
 	
 	public double getPoints() {
@@ -79,10 +100,6 @@ public class Card {
 		}
 	}
 	
-	public boolean isOudler() {
-		return isOudler;
-	}
-	
 	public boolean isBetterThan(Card otherCard, int desiredColor) {
 		int otherColor = otherCard.getColor();
 		int otherValue = otherCard.getValue();
@@ -98,6 +115,10 @@ public class Card {
 			|| (color == Card.ATOUT && otherColor == Card.ATOUT && value > otherValue)
 		// Other card is the excuse
 		|| (otherCard.getCode() == Api.EXCUSE));
+	}
+	
+	public void discard() {
+		isInGame = false;
 	}
 	
 	public String toString() {

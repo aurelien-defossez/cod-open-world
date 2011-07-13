@@ -36,7 +36,7 @@ public class GameSession {
 		this.score = 0;
 		this.turnCards = new int[4];
 	}
-
+	
 	// -------------------------------------------------------------------------
 	// Public methods
 	// -------------------------------------------------------------------------
@@ -62,6 +62,9 @@ public class GameSession {
 				GameCommander.dogInfo(currentPlayer.getAiId(), Utils.toArray(dog));
 				currentPlayer = currentPlayer.nextPlayer();
 			}
+			
+			// Frame
+			GameCommander.setFrame();
 			
 			// Add cards to taker
 			taker.addCards(dog);
@@ -102,6 +105,9 @@ public class GameSession {
 			for (innerTurnNb = 0; innerTurnNb < Game.NB_PLAYERS; innerTurnNb++) {
 				GameCommander.playCard(currentPlayer.getAiId(), turnCards);
 				
+				// Frame
+				GameCommander.setFrame();
+				
 				// Player didn't play a card
 				if (turnCards[innerTurnNb] == 0) {
 					GameCommander.throwException("The current player (" + currentPlayer
@@ -128,9 +134,16 @@ public class GameSession {
 			// Set new first player
 			currentPlayer = turnWinner;
 		}
-		
-		// End
+
 		// TODO
+		// TODO
+		// TODO
+		// Give hand info
+		game.setPhase(Phase.Idle);
+		for (int i = 0; i < Game.NB_PLAYERS; i++) {
+			GameCommander.handInfo(currentPlayer.getAiId(), true, new int[] {0,0,0,0});
+			currentPlayer = currentPlayer.nextPlayer();
+		}
 	}
 	
 	public boolean cardPlayed(Card card) {
@@ -143,47 +156,49 @@ public class GameSession {
 		// Following players
 		else {
 			// Determine if this move is legal
-			int cardColor = card.getColor();
-			
-			// In color
-			if (desiredColor != Card.ATOUT) {
-				// Not the same color
-				if (cardColor != desiredColor) {
-					// Another color but had the same color
-					if (currentPlayer.hasColor(desiredColor)) {
-						return false;
+			if (card.getCode() != Game.EXCUSE) {
+				int cardColor = card.getColor();
+				
+				// In color
+				if (desiredColor != Card.ATOUT) {
+					// Not the same color
+					if (cardColor != desiredColor) {
+						// Another color but had the same color
+						if (currentPlayer.hasColor(desiredColor)) {
+							return false;
+						}
+						// Another color but had atout
+						else if (cardColor != Card.ATOUT && currentPlayer.hasAtoutAbove(0)) {
+							return false;
+						}
+						// A small atout but had better
+						else if (cardColor == Card.ATOUT
+							&& turnBestCard.getColor() == Card.ATOUT
+							&& !card.isBetterThan(turnBestCard, desiredColor)
+							&& currentPlayer.hasAtoutAbove(turnBestCard.getValue())) {
+							return false;
+						}
 					}
-					// Another color but had atout
-					else if (cardColor != Card.ATOUT && currentPlayer.hasAtoutAbove(0)) {
+				}
+				// Atout
+				else {
+					// Not atout but had atouts
+					if (cardColor != Card.ATOUT && currentPlayer.hasAtoutAbove(0)) {
 						return false;
 					}
 					// A small atout but had better
 					else if (cardColor == Card.ATOUT
-						&& turnBestCard.getColor() == Card.ATOUT
 						&& !card.isBetterThan(turnBestCard, desiredColor)
 						&& currentPlayer.hasAtoutAbove(turnBestCard.getValue())) {
 						return false;
 					}
 				}
-			}
-			// Atout
-			else {
-				// Not atout but had atouts
-				if (cardColor != Card.ATOUT && currentPlayer.hasAtoutAbove(0)) {
-					return false;
+				
+				// Determine if this card is better than the other
+				if (card.isBetterThan(turnBestCard, desiredColor)) {
+					turnBestCard = card;
+					turnWinner = currentPlayer;
 				}
-				// A small atout but had better
-				else if (cardColor == Card.ATOUT
-					&& !card.isBetterThan(turnBestCard, desiredColor)
-					&& currentPlayer.hasAtoutAbove(turnBestCard.getValue())) {
-					return false;
-				}
-			}
-			
-			// Determine if this card is better than the other
-			if (card.isBetterThan(turnBestCard, desiredColor)) {
-				turnBestCard = card;
-				turnWinner = currentPlayer;
 			}
 		}
 		
