@@ -18,7 +18,8 @@ public class Ai implements TarotAi {
 	private Hand hand;
 	private int position;
 	private int currentContract;
-	private boolean taker;
+	private int lastTurnWinner;
+	private boolean isTaker;
 	
 	// -------------------------------------------------------------------------
 	// Constructor
@@ -67,7 +68,7 @@ public class Ai implements TarotAi {
 			System.out.println("[" + id + "] I bid " + Api.decode(Api.ENCHERE_GARDE_CONTRE)
 				+ " (" + Api.decode(Api.bid(Api.ENCHERE_GARDE_CONTRE)) + ")");
 			
-			taker = true;
+			isTaker = true;
 		}
 		// Garde sans
 		else if (scoreSans >= Params.THRESHOLD_GARDE_SANS
@@ -76,7 +77,7 @@ public class Ai implements TarotAi {
 			System.out.println("[" + id + "] I bid " + Api.decode(Api.ENCHERE_GARDE_SANS)
 				+ " (" + Api.decode(Api.bid(Api.ENCHERE_GARDE_SANS)) + ")");
 			
-			taker = true;
+			isTaker = true;
 		}
 		// Garde
 		else if (score >= Params.THRESHOLD_GARDE
@@ -85,20 +86,20 @@ public class Ai implements TarotAi {
 			System.out.println("[" + id + "] I bid " + Api.decode(Api.ENCHERE_GARDE)
 				+ " (" + Api.decode(Api.bid(Api.ENCHERE_GARDE)) + ")");
 			
-			taker = true;
+			isTaker = true;
 		}
 	}
 	
 	@Override
 	public void bidInfo(int bidder, int contract) {
 		currentContract = contract;
-		taker = false;
+		isTaker = false;
 	}
 	
 	@Override
 	public void dogInfo(int[] cards) {
 		// It's my dog
-		if (taker) {
+		if (isTaker) {
 			System.out.println("[" + id + "] My dog is {" + Utils.printCards(cards) + "}");
 			
 			hand.addCards(cards);
@@ -128,19 +129,17 @@ public class Ai implements TarotAi {
 	}
 	
 	@Override
-	public void playCard(int[] cards) {
+	public void playCard(int firstPlayer, int[] cards) {
 		if (game == null) {
-			game = new Game(this, hand, taker);
+			game = new Game(this, hand, isTaker);
 		}
 		
 		game.playCard(cards);
 	}
 	
 	@Override
-	public void turnInfo(int taker, int[] cards) {
-		for (int code : cards) {
-			Utils.getCard(code).discard();
-		}
+	public void turnInfo(int firstPlayer, int turnWinner, int[] cards) {
+		game.cardsPlayed(firstPlayer, cards);
 	}
 	
 	@Override

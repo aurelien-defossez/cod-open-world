@@ -9,14 +9,12 @@ import ai.Hand;
 import ai.Params;
 import ai.Utils;
 
-public class AttackHuntAtouts implements Strategy {
+public class AttackPlayLongue implements Strategy {
 	// -------------------------------------------------------------------------
 	// Attributes
 	// -------------------------------------------------------------------------
 	
 	private boolean isActivated;
-	private Game game;
-	private Hand hand;
 	
 	private Set<Card> longue;
 	
@@ -24,9 +22,7 @@ public class AttackHuntAtouts implements Strategy {
 	// Public methods
 	// -------------------------------------------------------------------------
 	
-	public AttackHuntAtouts(Game game, Hand hand) {
-		this.game = game;
-		this.hand = hand;
+	public AttackPlayLongue(Game game, Hand hand) {
 		this.isActivated = true;
 		
 		for (Integer color : Utils.getColors()) {
@@ -56,7 +52,7 @@ public class AttackHuntAtouts implements Strategy {
 		
 		if (isActivated) {
 			Card chosenCard = null;
-
+			
 			System.out.println("[" + getName() + "] Executing...");
 			
 			Card king = Utils.getCardValue(longue, Card.ROI);
@@ -92,6 +88,8 @@ public class AttackHuntAtouts implements Strategy {
 	// -------------------------------------------------------------------------
 	
 	private void checkRequirements() {
+		// TODO: Check que les autres joueurs ont tous potentiellement des
+		// atouts et que personne ne pisse
 		if (longue == null || longue.size() == 0) {
 			deactivate();
 		}
@@ -99,7 +97,7 @@ public class AttackHuntAtouts implements Strategy {
 	
 	private void deactivate() {
 		isActivated = false;
-
+		
 		System.out.println("[" + getName() + "] Strategy deactivated.");
 	}
 	

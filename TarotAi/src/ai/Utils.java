@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeSet;
 
 public class Utils {
 	// -------------------------------------------------------------------------
@@ -106,6 +105,12 @@ public class Utils {
 		cards.put(Api.ATOUT_19, new Card(Api.ATOUT_19));
 		cards.put(Api.ATOUT_20, new Card(Api.ATOUT_20));
 		cards.put(Api.ATOUT_21, new Card(Api.ATOUT_21));
+	}
+	
+	public static void resetCards() {
+		for (Card card : cards.values()) {
+			card.reset();
+		}
 	}
 	
 	public static List<Integer> getColors() {

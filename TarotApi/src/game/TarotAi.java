@@ -26,9 +26,9 @@ public interface TarotAi {
 	
 	public void announcementInfo(int announcer, int announcement);
 	
-	public void playCard(int[] cards);
+	public void playCard(int firstPlayer, int[] cards);
 	
-	public void turnInfo(int taker, int[] cards);
+	public void turnInfo(int firstPlayer, int turnWinner, int[] cards);
 	
 	public void handInfo(boolean won, int[] scores);
 	

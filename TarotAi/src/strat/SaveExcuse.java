@@ -30,7 +30,6 @@ public class SaveExcuse implements Strategy {
 	public SaveExcuse(Game game, Hand hand) {
 		this.game = game;
 		this.hand = hand;
-		System.out.println("[" + getName() + "] Built");
 		this.isActivated = true;
 	}
 	

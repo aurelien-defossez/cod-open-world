@@ -1,8 +1,9 @@
+
 package ai;
 
 import java.util.ArrayList;
 import java.util.List;
-import strat.AttackHuntAtouts;
+import strat.AttackPlayLongue;
 import strat.SaveExcuse;
 import strat.Strategy;
 import game.Api;
@@ -20,11 +21,12 @@ public class Game {
 	
 	private int id;
 	private Hand hand;
+	private Opponent[] opponents;
 	private Strategy[] strategiesEntame;
 	private Strategy[] strategiesFollow;
 	private int ctAtouts;
 	private int turnNb;
-
+	
 	// -------------------------------------------------------------------------
 	// Constructor
 	// -------------------------------------------------------------------------
@@ -34,18 +36,27 @@ public class Game {
 		this.hand = hand;
 		this.ctAtouts = 21;
 		this.turnNb = 1;
+		this.opponents = new Opponent[4];
 		
-		// Remove atouts from self
-		ctAtouts -=  hand.getColor(Card.ATOUT).size();
+		// Remove atouts counted from self
+		ctAtouts -= hand.getColor(Card.ATOUT).size();
 		if (hand.hasCard(Utils.getCard(Api.EXCUSE))) {
-			ctAtouts ++;
+			ctAtouts++;
+		}
+		
+		// Reset card attributes
+		Utils.resetCards();
+		
+		// Create opponents
+		for (int i = 0; i < 4; i++) {
+			opponents[i] = new Opponent(i);
 		}
 		
 		// Attack strategies
 		if (taker) {
 			strategiesEntame = new Strategy[] {
 				new SaveExcuse(this, hand),
-				new AttackHuntAtouts(this, hand)
+				new AttackPlayLongue(this, hand)
 			};
 			
 			strategiesFollow = new Strategy[] {
@@ -67,7 +78,7 @@ public class Game {
 	public int getTurnNb() {
 		return turnNb;
 	}
-
+	
 	public void playCard(int[] cards) {
 		Card chosenCard = null;
 		
@@ -122,5 +133,55 @@ public class Game {
 		}
 		
 		return null;
+	}
+	
+	public void cardsPlayed(int firstPlayer, int[] cards) {
+		int desiredColor = 0;
+		int player = firstPlayer;
+		Card bestCard = null;
+		
+		for (int i = 0; i < 4; i++) {
+			Card card = Utils.getCard(cards[i]);
+			Opponent opponent = opponents[player];
+			
+			// Set card as discarded
+			card.discard();
+			
+			if (card.getCode() != Api.EXCUSE) {
+				// Define desired color
+				if (desiredColor == 0) {
+					desiredColor = card.getColor();
+				}
+				
+				// Counts atouts
+				if (card.getColor() == Card.ATOUT) {
+					ctAtouts--;
+					
+					// Atout less strong than best atout
+					if (bestCard != null
+						&& bestCard.getColor() == Card.ATOUT
+						&& bestCard.getValue() > card.getValue()) {
+						opponent.setBestAtout(bestCard.getValue() - 1);
+					}
+				}
+				
+				// Has not any atout left
+				if (card.getColor() != desiredColor && card.getColor() != Card.ATOUT) {
+					opponent.hasNotAnyAtoutLeft();
+				}
+				
+				// Check if this card is the best card
+				if (bestCard == null || card.isBetterThan(bestCard, desiredColor)) {
+					bestCard = card;
+				}
+			}
+			
+			player++;
+			if (player == 4) {
+				player = 0;
+			}
+		}
+		
+		// Determine dominant cards: TODO
 	}
 }

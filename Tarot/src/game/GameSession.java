@@ -13,6 +13,7 @@ public class GameSession {
 	private Game game;
 	private int contract;
 	private Player taker;
+	private Player firstPlayer;
 	private Player currentPlayer;
 	private double score;
 	private List<Card> dog;
@@ -31,6 +32,7 @@ public class GameSession {
 		this.game = game;
 		this.taker = taker;
 		this.contract = contract;
+		this.firstPlayer = currentPlayer;
 		this.currentPlayer = currentPlayer;
 		this.dog = dog;
 		this.score = 0;
@@ -53,8 +55,7 @@ public class GameSession {
 	
 	public void play() {
 		// Garde
-		if (contract == Game.ENCHERE_PRISE
-			|| contract == Game.ENCHERE_GARDE) {
+		if (contract == Game.ENCHERE_PRISE || contract == Game.ENCHERE_GARDE) {
 			
 			// Reveal dog
 			game.setPhase(Phase.Idle);
@@ -103,7 +104,7 @@ public class GameSession {
 			// Play 4 cards
 			game.setPhase(Phase.PlayingCard);
 			for (innerTurnNb = 0; innerTurnNb < Game.NB_PLAYERS; innerTurnNb++) {
-				GameCommander.playCard(currentPlayer.getAiId(), turnCards);
+				GameCommander.playCard(currentPlayer.getAiId(), firstPlayer.getAiId(), turnCards);
 				
 				// Frame
 				GameCommander.setFrame();
@@ -127,21 +128,26 @@ public class GameSession {
 			// Give turn info
 			game.setPhase(Phase.Idle);
 			for (int i = 0; i < Game.NB_PLAYERS; i++) {
-				GameCommander.turnInfo(currentPlayer.getAiId(), turnWinner.getAiId(), turnCards);
+				GameCommander.turnInfo(currentPlayer.getAiId(), firstPlayer.getAiId(),
+					turnWinner.getAiId(), turnCards);
 				currentPlayer = currentPlayer.nextPlayer();
 			}
 			
 			// Set new first player
-			currentPlayer = turnWinner;
+			firstPlayer = turnWinner;
+			currentPlayer = firstPlayer;
 		}
 
+		// Frame
+		GameCommander.setFrame();
+		
 		// TODO
 		// TODO
 		// TODO
 		// Give hand info
 		game.setPhase(Phase.Idle);
 		for (int i = 0; i < Game.NB_PLAYERS; i++) {
-			GameCommander.handInfo(currentPlayer.getAiId(), true, new int[] {0,0,0,0});
+			GameCommander.handInfo(currentPlayer.getAiId(), true, new int[] { 0, 0, 0, 0 });
 			currentPlayer = currentPlayer.nextPlayer();
 		}
 	}

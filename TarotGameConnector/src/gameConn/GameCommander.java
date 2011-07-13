@@ -80,15 +80,17 @@ public class GameCommander extends JavaGameCommander {
 		}));
 	}
 	
-	public static void playCard(short aiId, int[] cards) {
+	public static void playCard(short aiId, int firstPlayer, int[] cards) {
 		callAiFunction(aiId, new ApiCall(PHASE_PLAY_CARD, new Variant[] {
+			new Variant(firstPlayer),
 			new Variant(cards)
 		}));
 	}
 	
-	public static void turnInfo(short aiId, int taker, int[] cards) {
+	public static void turnInfo(short aiId, int firstPlayer, int turnWinner, int[] cards) {
 		callAiFunction(aiId, new ApiCall(PHASE_TURN_INFO, new Variant[] {
-			new Variant(taker),
+			new Variant(firstPlayer),
+			new Variant(turnWinner),
 			new Variant(cards)
 		}));
 	}

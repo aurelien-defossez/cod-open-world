@@ -64,13 +64,15 @@ public class AiCommunicator extends JavaAiCommunicator {
 		switch (call.getFunctionId()) {
 		case PHASE_PLAY_CARD:
 			aiInstance.playCard(
-				(int[]) call.getParameter(0).getValue());
+				(Integer) call.getParameter(0).getValue(),
+				(int[]) call.getParameter(1).getValue());
 			break;
 			
 		case PHASE_TURN_INFO:
 			aiInstance.turnInfo(
 				(Integer) call.getParameter(0).getValue(),
-				(int[]) call.getParameter(1).getValue());
+				(Integer) call.getParameter(1).getValue(),
+				(int[]) call.getParameter(2).getValue());
 			break;
 			
 		case PHASE_INIT:
