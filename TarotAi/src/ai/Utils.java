@@ -4,6 +4,7 @@ package ai;
 import game.Api;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -133,9 +134,23 @@ public class Utils {
 	public static Card getCard(int code) {
 		return cards.get(code);
 	}
-	
+
 	public static Card getPreviousCard(Card card) {
-		return (card.getValue() > 1) ? Utils.getCard(card.getCode() - 1) : null;
+		return Utils.getCard(card.getCode() - 1);
+	}
+	
+	public static Card getNextCard(Card card) {
+		return Utils.getCard(card.getCode() + 1);
+	}
+	
+	public static Card getBestCard(Set<Card> cards) {
+		Iterator<Card> it = cards.iterator();
+		
+		for (int i = 0; i < cards.size() - 1; i++) {
+			it.next();
+		}
+		
+		return (cards.isEmpty()) ? null : it.next();
 	}
 	
 	public static Card getCardValue(Set<Card> cards, int value) {

@@ -21,11 +21,13 @@ public class Game {
 	// -------------------------------------------------------------------------
 	
 	private int id;
+	private boolean taker;
 	private Hand hand;
 	private Opponent[] opponents;
 	private Strategy[] strategiesEntame;
 	private Strategy[] strategiesFollow;
 	private int ctAtouts;
+	private int ctOpponentWithAtouts;
 	private int turnNb;
 	
 	// -------------------------------------------------------------------------
@@ -34,16 +36,12 @@ public class Game {
 	
 	public Game(Ai ai, Hand hand, boolean taker) {
 		this.id = ai.getId();
+		this.taker = taker;
 		this.hand = hand;
 		this.ctAtouts = 21;
+		this.ctOpponentWithAtouts = 3;
 		this.turnNb = 1;
 		this.opponents = new Opponent[4];
-		
-		// Remove atouts counted from self
-		ctAtouts -= hand.getColor(Card.ATOUT).size();
-		if (hand.hasCard(Utils.getCard(Api.EXCUSE))) {
-			ctAtouts++;
-		}
 		
 		// Reset card attributes
 		Utils.resetCards();
@@ -80,6 +78,10 @@ public class Game {
 	
 	public int getAtoutCount() {
 		return ctAtouts;
+	}
+	
+	public int getNbOpponentWithAtouts() {
+		return ctOpponentWithAtouts;
 	}
 	
 	public int getTurnNb() {
@@ -174,8 +176,10 @@ public class Game {
 				
 				// Has not any atout left
 				if (card.getColor() != desiredColor
-					&& card.getColor() != Card.ATOUT) {
+					&& card.getColor() != Card.ATOUT
+					&& opponent.hasAtouts()) {
 					opponent.hasNotAnyAtoutLeft();
+					ctOpponentWithAtouts--;
 				}
 				
 				// Check if this card is the best card
