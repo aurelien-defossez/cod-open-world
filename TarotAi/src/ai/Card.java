@@ -1,5 +1,6 @@
 package ai;
 
+import com.sun.org.apache.xalan.internal.xsltc.DOM;
 import game.Api;
 
 public class Card {
@@ -119,6 +120,10 @@ public class Card {
 	
 	public void discard() {
 		isInGame = false;
+	}
+	
+	public void setDominant() {
+		isDominant = true;
 	}
 	
 	public String toString() {

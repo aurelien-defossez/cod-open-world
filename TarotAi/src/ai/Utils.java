@@ -1,3 +1,4 @@
+
 package ai;
 
 import game.Api;
@@ -11,7 +12,7 @@ public class Utils {
 	// -------------------------------------------------------------------------
 	// Class attributes
 	// -------------------------------------------------------------------------
-
+	
 	private static List<Integer> colors;
 	private static Map<Integer, Card> cards;
 	
@@ -108,9 +109,17 @@ public class Utils {
 	}
 	
 	public static void resetCards() {
+		// Reset cards
 		for (Card card : cards.values()) {
 			card.reset();
 		}
+		
+		// Reset dominant cards
+		Utils.getCard(Api.ATOUT_21).setDominant();
+		Utils.getCard(Api.COEUR_ROI).setDominant();
+		Utils.getCard(Api.CARREAU_ROI).setDominant();
+		Utils.getCard(Api.PIQUE_ROI).setDominant();
+		Utils.getCard(Api.TREFLE_ROI).setDominant();
 	}
 	
 	public static List<Integer> getColors() {
@@ -123,6 +132,10 @@ public class Utils {
 	
 	public static Card getCard(int code) {
 		return cards.get(code);
+	}
+	
+	public static Card getPreviousCard(Card card) {
+		return (card.getValue() > 1) ? Utils.getCard(card.getCode() - 1) : null;
 	}
 	
 	public static Card getCardValue(Set<Card> cards, int value) {
@@ -144,10 +157,10 @@ public class Utils {
 		
 		return sb.toString();
 	}
-
+	
 	public static String printCards(Set<Card> cards) {
 		StringBuffer sb = new StringBuffer(" ");
-
+		
 		for (Card card : cards) {
 			sb.append(card + " ");
 		}

@@ -18,7 +18,6 @@ public class Ai implements TarotAi {
 	private Hand hand;
 	private int position;
 	private int currentContract;
-	private int lastTurnWinner;
 	private boolean isTaker;
 	
 	// -------------------------------------------------------------------------

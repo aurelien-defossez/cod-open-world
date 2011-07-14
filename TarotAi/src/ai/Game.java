@@ -4,6 +4,7 @@ package ai;
 import java.util.ArrayList;
 import java.util.List;
 import strat.AttackPlayLongue;
+import strat.FinishGameStrategy;
 import strat.SaveExcuse;
 import strat.Strategy;
 import game.Api;
@@ -54,10 +55,12 @@ public class Game {
 		
 		// Attack strategies
 		if (taker) {
-			strategiesEntame = new Strategy[] {
-				new SaveExcuse(this, hand),
-				new AttackPlayLongue(this, hand)
-			};
+			strategiesEntame =
+				new Strategy[] {
+					new SaveExcuse(this, hand),
+					new AttackPlayLongue(this, hand),
+					new FinishGameStrategy(this, hand)
+				};
 			
 			strategiesFollow = new Strategy[] {
 				new SaveExcuse(this, hand)
@@ -73,6 +76,10 @@ public class Game {
 				new SaveExcuse(this, hand)
 			};
 		}
+	}
+	
+	public int getAtoutCount() {
+		return ctAtouts;
 	}
 	
 	public int getTurnNb() {
@@ -121,7 +128,8 @@ public class Game {
 		turnNb++;
 	}
 	
-	private Card executeStrategies(Strategy[] strategySet, List<Card> playedCards) {
+	private Card executeStrategies(Strategy[] strategySet,
+		List<Card> playedCards) {
 		for (Strategy strategy : strategySet) {
 			if (strategy.isActivated()) {
 				Card chosenCard = strategy.execute(playedCards);
@@ -158,21 +166,34 @@ public class Game {
 					ctAtouts--;
 					
 					// Atout less strong than best atout
-					if (bestCard != null
-						&& bestCard.getColor() == Card.ATOUT
+					if (bestCard != null && bestCard.getColor() == Card.ATOUT
 						&& bestCard.getValue() > card.getValue()) {
 						opponent.setBestAtout(bestCard.getValue() - 1);
 					}
 				}
 				
 				// Has not any atout left
-				if (card.getColor() != desiredColor && card.getColor() != Card.ATOUT) {
+				if (card.getColor() != desiredColor
+					&& card.getColor() != Card.ATOUT) {
 					opponent.hasNotAnyAtoutLeft();
 				}
 				
 				// Check if this card is the best card
-				if (bestCard == null || card.isBetterThan(bestCard, desiredColor)) {
+				if (bestCard == null
+					|| card.isBetterThan(bestCard, desiredColor)) {
 					bestCard = card;
+				}
+				
+				// Another card becomes dominant
+				if (card.isDominant()) {
+					Card nextDominant = card;
+					
+					while (!nextDominant.isInGame()
+						&& nextDominant.getValue() > 1) {
+						nextDominant = Utils.getPreviousCard(nextDominant);
+					}
+					
+					nextDominant.setDominant();
 				}
 			}
 			
@@ -181,7 +202,5 @@ public class Game {
 				player = 0;
 			}
 		}
-		
-		// Determine dominant cards: TODO
 	}
 }
