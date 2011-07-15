@@ -1,8 +1,9 @@
 
 package game;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class Player {
 	// -------------------------------------------------------------------------
@@ -13,7 +14,7 @@ public class Player {
 	private String aiName;
 	private String playerName;
 	private int score;
-	private List<Card> cards;
+	private Set<Card> cards;
 	private Player nextPlayer;
 	
 	// -------------------------------------------------------------------------
@@ -48,7 +49,7 @@ public class Player {
 		return playerName;
 	}
 	
-	public List<Card> getCards() {
+	public Set<Card> getCards() {
 		return cards;
 	}
 	
@@ -56,19 +57,31 @@ public class Player {
 		return nextPlayer;
 	}
 	
-	public void setCards(List<Card> newCards) {
-		cards = new ArrayList<Card>();
+	public int getScore() {
+		return score;
+	}
+	
+	public void setCards(Collection<Card> newCards) {
+		cards = new TreeSet<Card>(new CardComparator());
 		addCards(newCards);
 	}
 	
-	public void addCards(List<Card> newCards) {
+	public void addCards(Collection<Card> newCards) {
 		for (Card card : newCards) {
 			cards.add(card);
 		}
 	}
 	
+	public void removeCard(Card card) {
+		cards.remove(card);
+	}
+	
 	public boolean hasCard(Card card) {
 		return cards.contains(card);
+	}
+
+	public void addScore(int gameScore) {
+		score += gameScore;
 	}
 
 	public boolean hasColor(int desiredColor) {
@@ -89,16 +102,6 @@ public class Player {
 		}
 		
 		return false;
-	}
-	
-	public void removeCards(int[] oldCards) {
-		for (int code : oldCards) {
-			removeCard(Utils.getCard(code));
-		}
-	}
-	
-	public void removeCard(Card card) {
-		cards.remove(card);
 	}
 	
 	public String toString() {

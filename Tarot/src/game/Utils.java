@@ -3,8 +3,8 @@ package game;
 import gameConn.TarotEngine;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class Utils {
 	// -------------------------------------------------------------------------
@@ -17,11 +17,12 @@ public class Utils {
 	// Class methods
 	// -------------------------------------------------------------------------
 	
-	public static int[] toArray(List<Card> cards) {
+	public static int[] toArray(Set<Card> cards) {
 		int[] cardsValues = new int[cards.size()];
 		
-		for(int i = 0; i < cardsValues.length; i++) {
-			cardsValues[i] = cards.get(i).getCode();
+		int i = 0;
+		for (Card card : cards) {
+			cardsValues[i++] = card.getCode();
 		}
 		
 		return cardsValues;

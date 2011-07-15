@@ -1,4 +1,4 @@
-package ai;
+package game;
 
 import java.util.Comparator;
 

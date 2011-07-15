@@ -3,11 +3,10 @@ package ai;
 
 import game.Api;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class Utils {
 	// -------------------------------------------------------------------------
@@ -143,17 +142,11 @@ public class Utils {
 		return Utils.getCard(card.getCode() + 1);
 	}
 	
-	public static Card getBestCard(Set<Card> cards) {
-		Iterator<Card> it = cards.iterator();
-		
-		for (int i = 0; i < cards.size() - 1; i++) {
-			it.next();
-		}
-		
-		return (cards.isEmpty()) ? null : it.next();
+	public static Card getBestCard(List<Card> cards) {
+		return (cards.isEmpty()) ? null : cards.get(cards.size() - 1);
 	}
 	
-	public static Card getCardValue(Set<Card> cards, int value) {
+	public static Card getCardValue(Collection<Card> cards, int value) {
 		for (Card card : cards) {
 			if (card.getValue() == value) {
 				return card;
@@ -173,7 +166,7 @@ public class Utils {
 		return sb.toString();
 	}
 	
-	public static String printCards(Set<Card> cards) {
+	public static String printCards(Collection<Card> cards) {
 		StringBuffer sb = new StringBuffer(" ");
 		
 		for (Card card : cards) {

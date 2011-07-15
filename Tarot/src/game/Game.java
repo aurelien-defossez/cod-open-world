@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
+import java.util.TreeSet;
 import gameConn.TarotEngine;
 import gameConn.GameCommander;
 
@@ -31,7 +33,8 @@ public class Game implements TarotEngine {
 	public final static int NB_PLAYERS = 4;
 	public final static int NB_CARDS = 78;
 	public final static int DOG_SIZE = 6;
-	public final static int CARDS_PER_PLAYER = (NB_CARDS - DOG_SIZE) / NB_PLAYERS;
+	public final static int CARDS_PER_PLAYER =
+		(NB_CARDS - DOG_SIZE) / NB_PLAYERS;
 	
 	// -------------------------------------------------------------------------
 	// Attributes
@@ -93,12 +96,15 @@ public class Game implements TarotEngine {
 				
 				// Illegal number of hands
 				if (maxHands <= 0) {
-					GameCommander.throwException("The number of hands should be positive.");
+					GameCommander
+						.throwException("The number of hands should be positive.");
 				}
 				
 				// Wrong number of players
 				if (players.size() != NB_PLAYERS) {
-					GameCommander.throwException("4 players are needed to play Tarot, but " +
+					GameCommander
+						.throwException("4 players are needed to play Tarot, but "
+							+
 							players.size() + " are present.");
 				}
 				
@@ -156,7 +162,8 @@ public class Game implements TarotEngine {
 		
 		// While there are hands to play
 		while (ctHands < maxHands) {
-			System.out.println("_________________________________________________________________");
+			System.out
+				.println("_________________________________________________________________");
 			System.out.println();
 			
 			// Shuffle deck
@@ -199,10 +206,27 @@ public class Game implements TarotEngine {
 			if (currentContract >= ENCHERE_PRISE) {
 				ctHands++;
 				
+				// Create game session
 				currentSession =
-					new GameSession(this, currentBidder, currentContract, currentPlayer, dog);
+					new GameSession(this, currentBidder, currentContract,
+						currentPlayer, dog);
 				
-				currentSession.play();
+				// Play game session
+				boolean won = currentSession.play();
+				
+				// Create scores array
+				int[] scores = new int[Game.NB_PLAYERS];
+				for(Player player : players.values()) {
+					scores[player.getAiId()] = player.getScore();
+					GameCommander.setScore(player.getAiId(), player.getScore());
+				}
+				
+				// Give hand info
+				setPhase(Phase.Idle);
+				for (i = 0; i < Game.NB_PLAYERS; i++) {
+					GameCommander.handInfo(currentPlayer.getAiId(), won, scores);
+					currentPlayer = currentPlayer.nextPlayer();
+				}
 			}
 		}
 	}
@@ -233,7 +257,8 @@ public class Game implements TarotEngine {
 		// Inform other players
 		Player otherPlayer = currentPlayer.nextPlayer();
 		for (int i = 0; i < NB_PLAYERS - 1; i++) {
-			GameCommander.bidInfo(otherPlayer.getAiId(), currentBidder.getAiId(), contract);
+			GameCommander.bidInfo(otherPlayer.getAiId(), currentBidder
+				.getAiId(), contract);
 			otherPlayer = otherPlayer.nextPlayer();
 		}
 		
@@ -247,11 +272,14 @@ public class Game implements TarotEngine {
 			return ILLEGAL_PHASE;
 		}
 		
+		Set<Card> cardsAside = new TreeSet<Card>(new CardComparator());
+		
 		for (int code : cards) {
 			Card card = Utils.getCard(code);
+			cardsAside.add(card);
 			
 			// Unknown card
-			if(card == null) {
+			if (card == null) {
 				return UNKNOWN_CARD_CODE;
 			}
 			
@@ -261,30 +289,30 @@ public class Game implements TarotEngine {
 			}
 			
 			// Illegal card (Oudler or King)
-			if (card.isOudler() || card.getColor() != Card.ATOUT && card.getValue() == Card.ROI) {
+			if (card.isOudler() || card.getColor() != Card.ATOUT
+				&& card.getValue() == Card.ROI) {
 				return ILLEGAL_CARD_ASIDE;
 			}
 		}
 		
-		for (int code : cards) {
-			Card card = Utils.getCard(code);
-			
+		for (Card card : cardsAside) {
 			// Announce atouts to other players
 			if (card.getColor() == Card.ATOUT) {
 				setPhase(Phase.Idle);
 				Player otherPlayer = currentBidder.nextPlayer();
 				for (int i = 0; i < NB_PLAYERS - 1; i++) {
-					GameCommander.cardsAsideInfo(otherPlayer.getAiId(), code);
+					GameCommander.cardsAsideInfo(otherPlayer.getAiId(), card
+						.getCode());
 					otherPlayer = otherPlayer.nextPlayer();
 				}
 			}
+			
+			// Remove card from hand
+			currentBidder.removeCard(card);
 		}
 		
 		// Add cards to player's score
-		currentSession.addToScore(cards);
-		
-		// Remove cards from hand
-		currentBidder.removeCards(cards);
+		currentSession.addToScore(cardsAside);
 		
 		return OK;
 	}
@@ -295,11 +323,11 @@ public class Game implements TarotEngine {
 		if (phase != Phase.PlayingCard) {
 			return ILLEGAL_PHASE;
 		}
-
+		
 		Card card = Utils.getCard(cardCode);
 		
 		// Unknown card
-		if(card == null) {
+		if (card == null) {
 			return UNKNOWN_CARD_CODE;
 		}
 		
@@ -324,27 +352,5 @@ public class Game implements TarotEngine {
 	
 	public void setPhase(Phase phaseState) {
 		phase = phaseState;
-	}
-	
-	// -------------------------------------------------------------------------
-	// Private methods
-	// -------------------------------------------------------------------------
-	
-	private String getNewGameState() {
-		StringBuffer sb = new StringBuffer();
-		
-		// Players' games
-		for (Player player : players.values()) {
-			sb.append(player + "\n");
-		}
-		
-		// Dog
-		sb.append("[Dog: { " + dog.get(0) + " " + dog.get(1) + " " + dog.get(2)
-			+ " " + dog.get(3) + " " + dog.get(4) + " " + dog.get(5) + " }]\n");
-		
-		// First player
-		sb.append("First player is " + firstPlayer);
-		
-		return sb.toString();
 	}
 }

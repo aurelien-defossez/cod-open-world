@@ -101,7 +101,7 @@ public class Ai implements TarotAi {
 		if (isTaker) {
 			System.out.println("[" + id + "] My dog is {" + Utils.printCards(cards) + "}");
 			
-			hand.addCards(cards);
+			hand.addCards(cards, true);
 		}
 	}
 	

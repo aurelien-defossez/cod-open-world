@@ -2,14 +2,12 @@
 package strat;
 
 import java.util.List;
-import java.util.Set;
-import game.Api;
 import ai.Card;
 import ai.Game;
 import ai.Hand;
 import ai.Utils;
 
-public class FinishGameStrategy implements Strategy {
+public class AttackPlayBestCardStrategy implements Strategy {
 	// -------------------------------------------------------------------------
 	// Attributes
 	// -------------------------------------------------------------------------
@@ -21,7 +19,7 @@ public class FinishGameStrategy implements Strategy {
 	// Public methods
 	// -------------------------------------------------------------------------
 	
-	public FinishGameStrategy(Game game, Hand hand) {
+	public AttackPlayBestCardStrategy(Game game, Hand hand) {
 		this.game = game;
 		this.hand = hand;
 	}
@@ -33,7 +31,7 @@ public class FinishGameStrategy implements Strategy {
 	
 	@Override
 	public Card execute(List<Card> playedCards) {
-		Set<Card> atouts = hand.getColor(Card.ATOUT);
+		List<Card> atouts = hand.getColorList(Card.ATOUT);
 		int myAtouts = atouts.size();
 		int atoutsInDefense = game.getAtoutCount() - myAtouts;
 		
@@ -60,7 +58,7 @@ public class FinishGameStrategy implements Strategy {
 		// Not atouts anymore
 		else {
 			for (Integer color : Utils.getColors()) {
-				Set<Card> colorSet = hand.getColor(color);
+				List<Card> colorSet = hand.getColorList(color);
 				
 				if (!colorSet.isEmpty()) {
 					Card bestCard = Utils.getBestCard(colorSet);

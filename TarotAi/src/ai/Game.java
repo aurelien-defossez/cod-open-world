@@ -1,13 +1,13 @@
 
 package ai;
 
+import game.Api;
 import java.util.ArrayList;
 import java.util.List;
+import strat.AttackPlayBestCardStrategy;
 import strat.AttackPlayLongue;
-import strat.FinishGameStrategy;
 import strat.SaveExcuse;
 import strat.Strategy;
-import game.Api;
 
 public class Game {
 	// -------------------------------------------------------------------------
@@ -57,7 +57,7 @@ public class Game {
 				new Strategy[] {
 					new SaveExcuse(this, hand),
 					new AttackPlayLongue(this, hand),
-					new FinishGameStrategy(this, hand)
+					new AttackPlayBestCardStrategy(this, hand)
 				};
 			
 			strategiesFollow = new Strategy[] {

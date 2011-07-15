@@ -2,20 +2,20 @@
 package ai;
 
 import game.Api;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
-import java.util.Set;
-import java.util.TreeSet;
 
 public class Hand {
 	// -------------------------------------------------------------------------
 	// Attributes
 	// -------------------------------------------------------------------------
 	
-	private Set<Card> coeur;
-	private Set<Card> carreau;
-	private Set<Card> pique;
-	private Set<Card> trefle;
-	private Set<Card> atout;
+	private List<Card> coeur;
+	private List<Card> carreau;
+	private List<Card> pique;
+	private List<Card> trefle;
+	private List<Card> atout;
 	
 	private int nbBouts;
 	private int score;
@@ -26,93 +26,37 @@ public class Hand {
 	// -------------------------------------------------------------------------
 	
 	public Hand(int[] cards) {
-		CardComparator comparator = new CardComparator();
-		
-		coeur = new TreeSet<Card>(comparator);
-		carreau = new TreeSet<Card>(comparator);
-		pique = new TreeSet<Card>(comparator);
-		trefle = new TreeSet<Card>(comparator);
-		atout = new TreeSet<Card>(comparator);
+		coeur = new ArrayList<Card>();
+		carreau = new ArrayList<Card>();
+		pique = new ArrayList<Card>();
+		trefle = new ArrayList<Card>();
+		atout = new ArrayList<Card>();
 		nbBouts = 0;
 		
 		// Add cards
-		addCards(cards);
+		addCards(cards, false);
 	}
 	
 	// -------------------------------------------------------------------------
 	// Public methods
 	// -------------------------------------------------------------------------
 	
-	public void addCards(int[] cards) {
+	public void addCards(int[] cards, boolean sort) {
 		for (int code : cards) {
 			Card card = Utils.getCard(code);
-			
-			switch (card.getColor()) {
-			case Card.COEUR:
-				coeur.add(card);
-				break;
-			
-			case Card.CARREAU:
-				carreau.add(card);
-				break;
-			
-			case Card.PIQUE:
-				pique.add(card);
-				break;
-			
-			case Card.TREFLE:
-				trefle.add(card);
-				break;
-			
-			case Card.ATOUT:
-				atout.add(card);
-				break;
-			}
+			addCard(getColorList(card.getColor()), card, sort);
 		}
 	}
 	
 	public void removeCard(Card card) {
-		switch (card.getColor()) {
-		case Card.COEUR:
-			coeur.remove(card);
-			break;
-		
-		case Card.CARREAU:
-			carreau.remove(card);
-			break;
-		
-		case Card.PIQUE:
-			pique.remove(card);
-			break;
-		
-		case Card.TREFLE:
-			trefle.remove(card);
-			break;
-		
-		case Card.ATOUT:
-			atout.remove(card);
-			break;
-		}
+		getColorList(card.getColor()).remove(card);
 	}
 	
 	public boolean hasCard(Card card) {
-		switch (card.getColor()) {
-		case Card.COEUR:
-			return coeur.contains(card);
-		case Card.CARREAU:
-			return carreau.contains(card);
-		case Card.PIQUE:
-			return pique.contains(card);
-		case Card.TREFLE:
-			return trefle.contains(card);
-		case Card.ATOUT:
-			return atout.contains(card);
-		default:
-			return false;
-		}
+		return getColorList(card.getColor()).contains(card);
 	}
 	
-	public Set<Card> getColor(int color) {
+	public List<Card> getColorList(int color) {
 		switch (color) {
 		case Card.COEUR:
 			return coeur;
@@ -234,34 +178,34 @@ public class Hand {
 	public Card getRandomCard() {
 		Random r = new Random();
 		boolean found = false;
-		Set<Card> cardSet = null;
+		List<Card> cardList = null;
 		
 		do {
 			int randColor = r.nextInt(5);
 			
 			switch (randColor) {
 			case 0:
-				cardSet = coeur;
+				cardList = coeur;
 				break;
 			case 1:
-				cardSet = carreau;
+				cardList = carreau;
 				break;
 			case 2:
-				cardSet = pique;
+				cardList = pique;
 				break;
 			case 3:
-				cardSet = trefle;
+				cardList = trefle;
 				break;
 			case 4:
-				cardSet = atout;
+				cardList = atout;
 				break;
 			}
 			
-			if (cardSet.size() > 0) {
-				int randCard = r.nextInt(cardSet.size());
+			if (cardList.size() > 0) {
+				int randCard = r.nextInt(cardList.size());
 				
 				int ctCard = 0;
-				for (Card card : cardSet) {
+				for (Card card : cardList) {
 					if (ctCard == randCard) {
 						return card;
 					}
@@ -326,6 +270,26 @@ public class Hand {
 	// Private methods
 	// -------------------------------------------------------------------------
 	
+	private void addCard(List<Card> cards, Card card, boolean sort) {
+		if (sort) {
+			boolean cardAdded = false;
+			
+			for (int i = 0; i < cards.size(); i++) {
+				if (card.getValue() < cards.get(i).getValue()) {
+					cards.add(i, card);
+					cardAdded = true;
+					break;
+				}
+			}
+			
+			if(!cardAdded) {
+				cards.add(cards.size(), card);
+			}
+		} else {
+			cards.add(card);
+		}
+	}
+	
 	private void computeScoreAtout() {
 		int straight = 0;
 		int lastAtout = 0;
@@ -386,7 +350,7 @@ public class Hand {
 		}
 	}
 	
-	private void computeScoreCouleur(Set<Card> color) {
+	private void computeScoreCouleur(List<Card> color) {
 		boolean hasRoi = (Utils.getCardValue(color, Card.ROI) != null);
 		boolean hasDame = (Utils.getCardValue(color, Card.DAME) != null);
 		boolean hasCavalier = (Utils.getCardValue(color, Card.CAVALIER) != null);
@@ -436,7 +400,7 @@ public class Hand {
 		}
 	}
 	
-	private int countDominants(Set<Card> color) {
+	private int countDominants(List<Card> color) {
 		int ctDominants = 0;
 		int currentDominant = Card.ROI;
 		Card[] colorArray = (Card[]) color.toArray(new Card[0]);

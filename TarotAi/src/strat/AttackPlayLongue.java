@@ -2,7 +2,6 @@
 package strat;
 
 import java.util.List;
-import java.util.Set;
 import ai.Card;
 import ai.Game;
 import ai.Hand;
@@ -16,7 +15,7 @@ public class AttackPlayLongue implements Strategy {
 	
 	private boolean isActivated;
 	
-	private Set<Card> longue;
+	private List<Card> longue;
 	
 	// -------------------------------------------------------------------------
 	// Public methods
@@ -26,7 +25,7 @@ public class AttackPlayLongue implements Strategy {
 		this.isActivated = true;
 		
 		for (Integer color : Utils.getColors()) {
-			Set<Card> colorSet = hand.getColor(color);
+			List<Card> colorSet = hand.getColorList(color);
 			
 			if (colorSet.size() > Params.MIN_LONGUE_SIZE
 				&& (longue == null || colorSet.size() > longue.size())) {
