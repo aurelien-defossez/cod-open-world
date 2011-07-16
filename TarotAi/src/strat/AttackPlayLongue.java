@@ -13,6 +13,7 @@ public class AttackPlayLongue implements Strategy {
 	// Attributes
 	// -------------------------------------------------------------------------
 	
+	private Game game;
 	private boolean isActivated;
 	
 	private List<Card> longue;
@@ -23,6 +24,7 @@ public class AttackPlayLongue implements Strategy {
 	
 	public AttackPlayLongue(Game game, Hand hand) {
 		this.isActivated = true;
+		this.game = game;
 		
 		for (Integer color : Utils.getColors()) {
 			List<Card> colorSet = hand.getColorList(color);
@@ -89,7 +91,8 @@ public class AttackPlayLongue implements Strategy {
 	private void checkRequirements() {
 		// TODO: Check que les autres joueurs ont tous potentiellement des
 		// atouts et que personne ne pisse
-		if (longue == null || longue.size() == 0) {
+		if (longue == null || longue.size() == 0
+			|| game.getNbOpponentWithAtouts() < 3) {
 			deactivate();
 		}
 	}

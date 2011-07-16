@@ -1,13 +1,15 @@
 package ai;
 
+import game.Api;
+
 public class Opponent {
 	private int id;
-	private int bestAtout;
+	private Card bestAtout;
 	private boolean hasAtouts;
 	
 	public Opponent(int id) {
 		this.id = id;
-		this.bestAtout = 21;
+		this.bestAtout = Utils.getCard(Api.ATOUT_21);
 		this.hasAtouts = true;
 	}
 	
@@ -19,16 +21,16 @@ public class Opponent {
 		return hasAtouts;
 	}
 	
-	public int getBestAtout() {
+	public Card getBestAtout() {
 		return bestAtout;
 	}
 	
 	public void hasNotAnyAtoutLeft() {
 		hasAtouts = false;
-		bestAtout = -1;
+		bestAtout = Utils.getCard(Api.EXCUSE);
 	}
 	
-	public void setBestAtout(int value) {
-		bestAtout = value;
+	public void setBestAtout(Card card) {
+		bestAtout = card;
 	}
 }

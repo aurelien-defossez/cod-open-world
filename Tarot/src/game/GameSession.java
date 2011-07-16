@@ -14,6 +14,7 @@ public class GameSession {
 	
 	private Game game;
 	private int contract;
+	private int ctTurn;
 	private Player taker;
 	private Player firstPlayer;
 	private Player currentPlayer;
@@ -53,13 +54,11 @@ public class GameSession {
 		return currentPlayer;
 	}
 	
-	public void addToScore(Set<Card> cards) {
-		for (Card card : cards) {
-			score += card.getPoints();
-			
-			if (card.isOudler()) {
-				nbOudlers++;
-			}
+	public void addToScore(Card card) {
+		score += card.getPoints();
+		
+		if (card.isOudler()) {
+			nbOudlers++;
 		}
 	}
 	
@@ -107,7 +106,7 @@ public class GameSession {
 		}
 		
 		// The game finally begins
-		for (int ctTurn = 0; ctTurn < Game.CARDS_PER_PLAYER; ctTurn++) {
+		for (ctTurn = 1; ctTurn <= Game.CARDS_PER_PLAYER; ctTurn++) {
 			System.out.println("--------- Turn #" + ctTurn + " ---------");
 			
 			// Reset turn cards
@@ -136,7 +135,11 @@ public class GameSession {
 			// Add points to score
 			if (turnWinner == taker) {
 				for (int code : turnCards) {
-					score += Utils.getCard(code).getPoints();
+					if (code != Game.EXCUSE) {
+						addToScore(Utils.getCard(code));
+					} else {
+						score += 0.5;
+					}
 				}
 			}
 			
@@ -185,6 +188,14 @@ public class GameSession {
 		// Already played
 		if (cardPlayed) {
 			return false;
+		}
+		
+		// Excuse played by the taker before the last turn
+		if (card.getCode() == Game.EXCUSE
+			&& currentPlayer == taker
+			&& ctTurn < Game.CARDS_PER_PLAYER) {
+			
+			addToScore(card);
 		}
 		
 		// First player

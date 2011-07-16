@@ -312,7 +312,9 @@ public class Game implements TarotEngine {
 		}
 		
 		// Add cards to player's score
-		currentSession.addToScore(cardsAside);
+		for (Card card : cardsAside) {
+			currentSession.addToScore(card);
+		}
 		
 		return OK;
 	}

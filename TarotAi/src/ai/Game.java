@@ -49,6 +49,10 @@ public class Game {
 		// Create opponents
 		for (int i = 0; i < 4; i++) {
 			opponents[i] = new Opponent(i);
+			
+			if (i != id) {
+				determineBestAtouts(opponents[i]);
+			}
 		}
 		
 		// Attack strategies
@@ -150,12 +154,18 @@ public class Game {
 		int player = firstPlayer;
 		Card bestCard = null;
 		
+		// Discard cards
 		for (int i = 0; i < 4; i++) {
 			Card card = Utils.getCard(cards[i]);
-			Opponent opponent = opponents[player];
 			
 			// Set card as discarded
 			card.discard();
+		}
+		
+		// Extract information
+		for (int i = 0; i < 4; i++) {
+			Card card = Utils.getCard(cards[i]);
+			Opponent opponent = opponents[player];
 			
 			if (card.getCode() != Api.EXCUSE) {
 				// Define desired color
@@ -168,16 +178,25 @@ public class Game {
 					ctAtouts--;
 					
 					// Atout less strong than best atout
-					if (bestCard != null && bestCard.getColor() == Card.ATOUT
+					if (player != id
+						&& bestCard != null
+						&& bestCard.getColor() == Card.ATOUT
 						&& bestCard.getValue() > card.getValue()) {
-						opponent.setBestAtout(bestCard.getValue() - 1);
+						
+						if (bestCard.isBetterThan(opponent.getBestAtout(),
+							Card.ATOUT)) {
+							opponent.setBestAtout(Utils
+								.getPreviousCard(bestCard));
+						}
 					}
 				}
 				
 				// Has not any atout left
-				if (card.getColor() != desiredColor
+				if (player != id
+					&& card.getColor() != desiredColor
 					&& card.getColor() != Card.ATOUT
 					&& opponent.hasAtouts()) {
+					
 					opponent.hasNotAnyAtoutLeft();
 					ctOpponentWithAtouts--;
 				}
@@ -204,6 +223,40 @@ public class Game {
 			player++;
 			if (player == 4) {
 				player = 0;
+			}
+		}
+		
+		// Determine best atouts
+		for (int i = 0; i < 4; i++) {
+			if (i!= id) {
+				determineBestAtouts(opponents[i]);
+			} 
+		}
+	}
+	
+	// -------------------------------------------------------------------------
+	// Private methods
+	// -------------------------------------------------------------------------
+	
+	private void determineBestAtouts(Opponent opponent) {
+		if (opponent.hasAtouts()) {
+			Card bestAtout = opponent.getBestAtout();
+			Card excuse = Utils.getCard(Api.EXCUSE);
+			
+			while (bestAtout != excuse) {
+				// Atout still in game in another player's hand
+				if (bestAtout.isInGame() && !hand.hasCard(bestAtout)) {
+					opponent.setBestAtout(bestAtout);
+					break;
+				}
+				
+				bestAtout = Utils.getPreviousCard(bestAtout);
+			}
+			
+			// Not any atout left
+			if (bestAtout == excuse) {
+				opponent.hasNotAnyAtoutLeft();
+				ctOpponentWithAtouts--;
 			}
 		}
 	}

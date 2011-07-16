@@ -1,6 +1,7 @@
 
 package strat;
 
+import game.Api;
 import java.util.List;
 import ai.Card;
 import ai.Game;
@@ -35,14 +36,18 @@ public class AttackPlayBestCardStrategy implements Strategy {
 		int myAtouts = atouts.size();
 		int atoutsInDefense = game.getAtoutCount() - myAtouts;
 		
-		System.out.println("[" + getName() + "] Executing...");
+		if (myAtouts > 0 && atouts.get(0).getCode() == Api.EXCUSE) {
+			myAtouts--;
+		}
 		
-		System.out.println("I have " + myAtouts + " atouts, they have "
-			+ atoutsInDefense + " (between "
-			+ game.getNbOpponentWithAtouts() + " players)");
+		System.out.println("[" + getName() + "] Executing...");
 		
 		// Still has atouts
 		if (atoutsInDefense > 0 && game.getNbOpponentWithAtouts() > 0) {
+			System.out.println("I have " + myAtouts + " atouts, they have "
+				+ atoutsInDefense + " (between "
+				+ game.getNbOpponentWithAtouts() + " players)");
+			
 			if (!atouts.isEmpty()
 				&& myAtouts > atoutsInDefense
 					/ game.getNbOpponentWithAtouts()

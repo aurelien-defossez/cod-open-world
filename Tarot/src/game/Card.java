@@ -29,8 +29,7 @@ public class Card {
 	private int code;
 	private int color;
 	private int value;
-	private boolean isOudler;
-
+	
 	// -------------------------------------------------------------------------
 	// Constructor
 	// -------------------------------------------------------------------------
@@ -39,12 +38,8 @@ public class Card {
 		this.code = code;
 		this.color = code & COLOR_MASK;
 		this.value = code & VALUE_MASK;
-		
-		// Extract info
-		this.isOudler = (color == ATOUT &&
-			(value == 0 || value == 1 || value == 21));
 	}
-
+	
 	// -------------------------------------------------------------------------
 	// Public methods
 	// -------------------------------------------------------------------------
@@ -63,17 +58,17 @@ public class Card {
 	
 	public double getPoints() {
 		if (color == ATOUT) {
-			return (isOudler) ? 4.5 : 0.5;
+			return (isOudler()) ? 4.5 : 0.5;
 		} else {
 			switch (value) {
-			case VALET:
-				return 1.5;
-			case CAVALIER:
-				return 2.5;
-			case DAME:
-				return 3.5;
 			case ROI:
 				return 4.5;
+			case DAME:
+				return 3.5;
+			case CAVALIER:
+				return 2.5;
+			case VALET:
+				return 1.5;
 			default:
 				return 0.5;
 			}
@@ -81,7 +76,7 @@ public class Card {
 	}
 	
 	public boolean isOudler() {
-		return isOudler;
+		return (code == Game.EXCUSE || code == Game.ATOUT_1 || code == Game.ATOUT_21);
 	}
 	
 	public boolean isBetterThan(Card otherCard, int desiredColor) {

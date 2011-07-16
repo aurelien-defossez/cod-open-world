@@ -1,6 +1,5 @@
 package ai;
 
-import com.sun.org.apache.xalan.internal.xsltc.DOM;
 import game.Api;
 
 public class Card {
