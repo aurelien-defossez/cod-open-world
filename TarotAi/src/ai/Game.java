@@ -4,7 +4,8 @@ package ai;
 import game.Api;
 import java.util.ArrayList;
 import java.util.List;
-import strat.AttackPlayBestCardStrategy;
+import strat.AttackEntameDefault;
+import strat.AttackPlayDominantStrategy;
 import strat.AttackPlayLongue;
 import strat.SaveExcuse;
 import strat.Strategy;
@@ -27,7 +28,6 @@ public class Game {
 	private Strategy[] strategiesEntame;
 	private Strategy[] strategiesFollow;
 	private int ctAtouts;
-	private int ctOpponentWithAtouts;
 	private int turnNb;
 	
 	// -------------------------------------------------------------------------
@@ -39,7 +39,6 @@ public class Game {
 		this.taker = taker;
 		this.hand = hand;
 		this.ctAtouts = 21;
-		this.ctOpponentWithAtouts = 3;
 		this.turnNb = 1;
 		this.opponents = new Opponent[4];
 		
@@ -57,12 +56,12 @@ public class Game {
 		
 		// Attack strategies
 		if (taker) {
-			strategiesEntame =
-				new Strategy[] {
-					new SaveExcuse(this, hand),
-					new AttackPlayLongue(this, hand),
-					new AttackPlayBestCardStrategy(this, hand)
-				};
+			strategiesEntame = new Strategy[] {
+				new SaveExcuse(this, hand),
+				new AttackPlayLongue(this, hand),
+				new AttackPlayDominantStrategy(this, hand),
+				new AttackEntameDefault(this, hand)
+			};
 			
 			strategiesFollow = new Strategy[] {
 				new SaveExcuse(this, hand)
@@ -82,10 +81,6 @@ public class Game {
 	
 	public int getAtoutCount() {
 		return ctAtouts;
-	}
-	
-	public int getNbOpponentWithAtouts() {
-		return ctOpponentWithAtouts;
 	}
 	
 	public int getTurnNb() {
@@ -191,14 +186,17 @@ public class Game {
 					}
 				}
 				
-				// Has not any atout left
-				if (player != id
-					&& card.getColor() != desiredColor
-					&& card.getColor() != Card.ATOUT
-					&& opponent.hasAtouts()) {
+				// Has not of the desired color
+				if (player != id && card.getColor() != desiredColor) {
+					// Has not any card of this color left
+					if (desiredColor != Card.ATOUT && opponent.hasColor(desiredColor)) {
+						opponent.hasNotColor(desiredColor);
+					}
 					
-					opponent.hasNotAnyAtoutLeft();
-					ctOpponentWithAtouts--;
+					// Has not any atout left
+					if (card.getColor() != Card.ATOUT && opponent.hasColor(Card.ATOUT)) {
+						opponent.hasNotAnyAtoutLeft();
+					}
 				}
 				
 				// Check if this card is the best card
@@ -228,10 +226,26 @@ public class Game {
 		
 		// Determine best atouts
 		for (int i = 0; i < 4; i++) {
-			if (i!= id) {
+			if (i != id) {
 				determineBestAtouts(opponents[i]);
-			} 
+			}
 		}
+	}
+	
+	public int countOpponentsWithColor(int color) {
+		return countOpponentsWithColor(color, false);
+	}
+	
+	public int countOpponentsWithColor(int color, boolean andAtouts) {
+		int ct = 0;
+		
+		for (int i = 0; i < 4; i++) {
+			if (i != id && opponents[i].hasColor(color) && (!andAtouts || opponents[i].hasColor(Card.ATOUT))) {
+				ct++;
+			}
+		}
+		
+		return ct;
 	}
 	
 	// -------------------------------------------------------------------------
@@ -239,7 +253,7 @@ public class Game {
 	// -------------------------------------------------------------------------
 	
 	private void determineBestAtouts(Opponent opponent) {
-		if (opponent.hasAtouts()) {
+		if (opponent.hasColor(Card.ATOUT)) {
 			Card bestAtout = opponent.getBestAtout();
 			Card excuse = Utils.getCard(Api.EXCUSE);
 			
@@ -256,7 +270,6 @@ public class Game {
 			// Not any atout left
 			if (bestAtout == excuse) {
 				opponent.hasNotAnyAtoutLeft();
-				ctOpponentWithAtouts--;
 			}
 		}
 	}

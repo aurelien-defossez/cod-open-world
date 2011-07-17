@@ -29,8 +29,7 @@ public class AttackPlayLongue implements Strategy {
 		for (Integer color : Utils.getColors()) {
 			List<Card> colorSet = hand.getColorList(color);
 			
-			if (colorSet.size() > Params.MIN_LONGUE_SIZE
-				&& (longue == null || colorSet.size() > longue.size())) {
+			if (colorSet.size() > Params.MIN_LONGUE_SIZE && (longue == null || colorSet.size() > longue.size())) {
 				longue = colorSet;
 			}
 		}
@@ -52,10 +51,9 @@ public class AttackPlayLongue implements Strategy {
 		checkRequirements();
 		
 		if (isActivated) {
-			Card chosenCard = null;
-			
 			System.out.println("[" + getName() + "] Executing...");
 			
+			Card chosenCard = null;
 			Card king = Utils.getCardValue(longue, Card.ROI);
 			
 			// Choose king
@@ -89,10 +87,7 @@ public class AttackPlayLongue implements Strategy {
 	// -------------------------------------------------------------------------
 	
 	private void checkRequirements() {
-		// TODO: Check que les autres joueurs ont tous potentiellement des
-		// atouts et que personne ne pisse
-		if (longue == null || longue.size() == 0
-			|| game.getNbOpponentWithAtouts() < 3) {
+		if (longue == null || longue.size() == 0 || game.countOpponentsWithColor(Card.ATOUT) < 3) {
 			deactivate();
 		}
 	}

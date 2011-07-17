@@ -8,7 +8,7 @@ import ai.Game;
 import ai.Hand;
 import ai.Utils;
 
-public class AttackPlayBestCardStrategy implements Strategy {
+public class AttackPlayDominantStrategy implements Strategy {
 	// -------------------------------------------------------------------------
 	// Attributes
 	// -------------------------------------------------------------------------
@@ -20,7 +20,7 @@ public class AttackPlayBestCardStrategy implements Strategy {
 	// Public methods
 	// -------------------------------------------------------------------------
 	
-	public AttackPlayBestCardStrategy(Game game, Hand hand) {
+	public AttackPlayDominantStrategy(Game game, Hand hand) {
 		this.game = game;
 		this.hand = hand;
 	}
@@ -32,26 +32,25 @@ public class AttackPlayBestCardStrategy implements Strategy {
 	
 	@Override
 	public Card execute(List<Card> playedCards) {
+		System.out.println("[" + getName() + "] Executing...");
+		
 		List<Card> atouts = hand.getColorList(Card.ATOUT);
 		int myAtouts = atouts.size();
 		int atoutsInDefense = game.getAtoutCount() - myAtouts;
+		int opponentsWithAtout = game.countOpponentsWithColor(Card.ATOUT);
 		
 		if (myAtouts > 0 && atouts.get(0).getCode() == Api.EXCUSE) {
 			myAtouts--;
 		}
 		
-		System.out.println("[" + getName() + "] Executing...");
-		
 		// Still has atouts
-		if (atoutsInDefense > 0 && game.getNbOpponentWithAtouts() > 0) {
+		if (atoutsInDefense > 0 && opponentsWithAtout > 0) {
 			System.out.println("I have " + myAtouts + " atouts, they have "
 				+ atoutsInDefense + " (between "
-				+ game.getNbOpponentWithAtouts() + " players)");
+				+ opponentsWithAtout + " players)");
 			
 			if (!atouts.isEmpty()
-				&& myAtouts > atoutsInDefense
-					/ game.getNbOpponentWithAtouts()
-					+ game.getNbOpponentWithAtouts() - 1) {
+				&& myAtouts > atoutsInDefense / opponentsWithAtout + opponentsWithAtout - 1) {
 				Card bestAtout = Utils.getBestCard(atouts);
 				
 				// Play best atout

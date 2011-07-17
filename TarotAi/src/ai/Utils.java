@@ -175,4 +175,21 @@ public class Utils {
 		
 		return sb.toString();
 	}
+	
+	public static String getStringColor(int color) {
+		switch (color) {
+		case Card.ATOUT:
+			return "#";
+		case Card.COEUR:
+			return "C";
+		case Card.CARREAU:
+			return "K";
+		case Card.PIQUE:
+			return "P";
+		case Card.TREFLE:
+			return "T";
+		default:
+			return ".";
+		}
+	}
 }
