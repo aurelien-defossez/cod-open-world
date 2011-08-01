@@ -2,10 +2,11 @@
 package ai;
 
 import game.Api;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import strat.AttackEntameDefault;
-import strat.AttackPlayDominantStrategy;
+import strat.AttackPlayDominant;
 import strat.AttackPlayLongue;
 import strat.SaveExcuse;
 import strat.Strategy;
@@ -59,7 +60,7 @@ public class Game {
 			strategiesEntame = new Strategy[] {
 				new SaveExcuse(this, hand),
 				new AttackPlayLongue(this, hand),
-				new AttackPlayDominantStrategy(this, hand),
+				new AttackPlayDominant(this, hand),
 				new AttackEntameDefault(this, hand)
 			};
 			
@@ -120,6 +121,16 @@ public class Game {
 				chosenCard = hand.getRandomCard();
 				ok = (Api.playCard(chosenCard.getCode()) == Api.OK);
 			} while (!ok);
+			
+			if (playedCards.size() == 0 && taker) {
+				try {
+					System.in.read();
+					System.in.read();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 		}
 		
 		System.out.println("[" + id + "] I Play " + chosenCard);

@@ -40,6 +40,11 @@ public class AttackEntameDefault implements Strategy {
 	public Card execute(List<Card> playedCards) {
 		System.out.println("[" + getName() + "] Executing...");
 		
+		// Last card
+		if (game.getTurnNb() == 18) {
+			return hand.getRandomCard();
+		}
+		
 		int opponentsWithAtouts = game.countOpponentsWithColor(Card.ATOUT);
 		
 		// Opponents have atouts: Make them cut
@@ -68,12 +73,12 @@ public class AttackEntameDefault implements Strategy {
 					
 					// Create possible cards list
 					for (int j = 0; j < colors.size(); j++) {
-						int expendable = (i == 1) ? Card.VALET : Card.CAVALIER;
+						int expendable = (i == 3) ? Card.DAME : (i == 2) ? Card.CAVALIER : Card.VALET;
 						List<Card> colorList = hand.getColorList(colors.get(j));
 						
 						if (colorList.get(0).getValue() <= expendable) {
 							possibleCards.add(colorList.get(0));
-							System.out.println("Add "+colorList.get(0)+" to possible cards");
+							System.out.println("Add " + colorList.get(0) + " to possible cards");
 						}
 					}
 					
@@ -91,12 +96,83 @@ public class AttackEntameDefault implements Strategy {
 			}
 		}
 		
+		// No atouts in defense: Play a dominant card in a color
+		if (opponentsWithAtouts == 0) {
+			for (int color : Utils.getColors()) {
+				Card bestCard = Utils.getBestCard(hand.getColorList(color));
+				
+				if (bestCard != null && bestCard.isDominant()) {
+					return bestCard;
+				}
+			}
+		}
+		
+		// Play an atout, except the petit
+		List<Card> myAtouts = hand.getColorList(Card.ATOUT);
+		if (!myAtouts.isEmpty()
+			&& (opponentsWithAtouts == 0 ||
+				myAtouts.size() >= (game.getAtoutCount() - myAtouts.size()) / opponentsWithAtouts)) {
+			
+			Card possibleAtout = playAtout();
+			if (possibleAtout != null) {
+				return possibleAtout;
+			}
+		}
+		
+		// Play the smallest color card
+		Card possibleCard = null;
+		for (int color : Utils.getColors()) {
+			List<Card> colorList = hand.getColorList(color);
+			Card firstCard = (colorList.isEmpty()) ? null : colorList.get(0);
+			
+			// New smallest card
+			if (firstCard != null
+				&& (possibleCard == null || firstCard.getValue() > possibleCard.getValue())) {
+				possibleCard = firstCard;
+			}
+		}
+		
+		if (possibleCard != null) {
+			return possibleCard;
+		}
+		
+		// Play atout
+		Card possibleAtout = playAtout();
+		if (possibleAtout != null) {
+			return possibleAtout;
+		}
+		
 		return null;
 	}
 	
 	// -------------------------------------------------------------------------
 	// Private methods
 	// -------------------------------------------------------------------------
+	
+	private Card playAtout() {
+		List<Card> myAtouts = hand.getColorList(Card.ATOUT);
+		Card bestAtout = Utils.getBestCard(myAtouts);
+		
+		// Play dominant atout
+		if (bestAtout.isDominant()) {
+			if (bestAtout.getValue() > 1) {
+				return bestAtout;
+			}
+		}
+		// Play lower atout
+		else {
+			// Determine lowest atout after 1
+			for (int i = 0; i < myAtouts.size(); i++) {
+				Card lowAtout = myAtouts.get(i);
+				
+				if (lowAtout.getValue() > 1) {
+					return lowAtout;
+				}
+			}
+		}
+		
+		return null;
+	}
 	
 	private String getName() {
 		return getClass().getSimpleName();

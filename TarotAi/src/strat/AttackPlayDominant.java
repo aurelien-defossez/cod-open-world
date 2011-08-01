@@ -8,7 +8,7 @@ import ai.Game;
 import ai.Hand;
 import ai.Utils;
 
-public class AttackPlayDominantStrategy implements Strategy {
+public class AttackPlayDominant implements Strategy {
 	// -------------------------------------------------------------------------
 	// Attributes
 	// -------------------------------------------------------------------------
@@ -20,7 +20,7 @@ public class AttackPlayDominantStrategy implements Strategy {
 	// Public methods
 	// -------------------------------------------------------------------------
 	
-	public AttackPlayDominantStrategy(Game game, Hand hand) {
+	public AttackPlayDominant(Game game, Hand hand) {
 		this.game = game;
 		this.hand = hand;
 	}
