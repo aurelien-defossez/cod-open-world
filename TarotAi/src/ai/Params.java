@@ -36,4 +36,7 @@ public class Params {
 	
 	// Strategies
 	public static final int MIN_LONGUE_SIZE = 4;
+	public static final double PETIT_HUNT_MAX_RATIO_DIRECT = 0.28;
+	public static final double PETIT_HUNT_MAX_RATIO_INDIRECT = 0.25;
+	public static final double PETIT_HUNT_MAX_RATIO_INDIRECT_2 = 0.20;
 }

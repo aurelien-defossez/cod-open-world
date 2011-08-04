@@ -73,6 +73,21 @@ public class Hand {
 		}
 	}
 	
+	public int countColor(int color) {
+		List<Card> colorList = getColorList(color);
+		int nbCards = colorList.size();
+		
+		// Remove Excuse from
+		if (color == Card.ATOUT
+			&& !colorList.isEmpty()
+			&& colorList.get(0).getCode() == Api.EXCUSE) {
+			
+			nbCards--;
+		}
+		
+		return nbCards;
+	}
+	
 	public void computeScores(int position, int currentContract) {
 		// Compute scores from hand
 		score = 0;
@@ -282,7 +297,7 @@ public class Hand {
 				}
 			}
 			
-			if(!cardAdded) {
+			if (!cardAdded) {
 				cards.add(cards.size(), card);
 			}
 		} else {

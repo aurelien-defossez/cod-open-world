@@ -2,10 +2,10 @@
 package ai;
 
 import game.Api;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import strat.AttackEntameDefault;
+import strat.AttackHuntPetit;
 import strat.AttackPlayDominant;
 import strat.AttackPlayLongue;
 import strat.SaveExcuse;
@@ -59,6 +59,7 @@ public class Game {
 		if (taker) {
 			strategiesEntame = new Strategy[] {
 				new SaveExcuse(this, hand),
+				new AttackHuntPetit(this, hand),
 				new AttackPlayLongue(this, hand),
 				new AttackPlayDominant(this, hand),
 				new AttackEntameDefault(this, hand)
@@ -121,16 +122,6 @@ public class Game {
 				chosenCard = hand.getRandomCard();
 				ok = (Api.playCard(chosenCard.getCode()) == Api.OK);
 			} while (!ok);
-			
-			if (playedCards.size() == 0 && taker) {
-				try {
-					System.in.read();
-					System.in.read();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
 		}
 		
 		System.out.println("[" + id + "] I Play " + chosenCard);
@@ -251,7 +242,8 @@ public class Game {
 		int ct = 0;
 		
 		for (int i = 0; i < 4; i++) {
-			if (i != id && opponents[i].hasColor(color) && (!andAtouts || opponents[i].hasColor(Card.ATOUT))) {
+			if (i != id && opponents[i].hasColor(color)
+				&& (!andAtouts || opponents[i].hasColor(Card.ATOUT))) {
 				ct++;
 			}
 		}
