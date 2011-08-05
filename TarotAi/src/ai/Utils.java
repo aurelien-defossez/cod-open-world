@@ -156,6 +156,60 @@ public class Utils {
 		return null;
 	}
 	
+	public static int getTurnColor(List<Card> playedCards) {
+		Card firstCard = playedCards.get(0);
+		
+		return (firstCard.getCode() != Api.EXCUSE) ?
+			firstCard.getColor() : playedCards.get(1).getColor();
+	}
+	
+	public static Card getTurnBestCard(List<Card> playedCards) {
+		int desiredColor = getTurnColor(playedCards);
+		Card bestCard = playedCards.get(0);
+		
+		for (int i = 1; i < playedCards.size(); i++) {
+			Card currentCard = playedCards.get(i);
+			if (currentCard.isBetterThan(bestCard, desiredColor)) {
+				bestCard = currentCard;
+			}
+		}
+		
+		return bestCard;
+	}
+	
+	public static int countRemainingCards(int color) {
+		Card lastCard = null;
+		int ctCards = 0;
+		
+		switch(color) {
+		case Card.COEUR:
+			lastCard = Utils.getCard(Api.COEUR_ROI);
+			break;
+		case Card.CARREAU:
+			lastCard = Utils.getCard(Api.CARREAU_ROI);
+			break;
+		case Card.PIQUE:
+			lastCard = Utils.getCard(Api.PIQUE_ROI);
+			break;
+		case Card.TREFLE:
+			lastCard = Utils.getCard(Api.TREFLE_ROI);
+			break;
+		case Card.ATOUT:
+			lastCard = Utils.getCard(Api.ATOUT_21);
+			break;
+		}
+		
+		while (lastCard.getValue() >= 1) {
+			if (lastCard.isInGame()) {
+				ctCards++;
+			}
+			
+			lastCard = Utils.getPreviousCard(lastCard);
+		}
+		
+		return ctCards;
+	}
+	
 	public static String printCards(int[] cards) {
 		StringBuffer sb = new StringBuffer(" ");
 		

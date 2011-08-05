@@ -77,9 +77,9 @@ public class AttackPlayLongue implements Strategy {
 			}
 			
 			return chosenCard;
-		} else {
-			return null;
 		}
+		
+		return null;
 	}
 	
 	// -------------------------------------------------------------------------

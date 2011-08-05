@@ -103,11 +103,9 @@ public class AttackHuntPetit implements Strategy {
 				return (myAtouts.get(0).getCode() == Api.EXCUSE) ?
 					myAtouts.get(1) : myAtouts.get(0);
 			}
-			
-			return null;
-		} else {
-			return null;
 		}
+
+		return null;
 	}
 	
 	@Override

@@ -50,12 +50,10 @@ public class SaveExcuse implements Strategy {
 				deactivate();
 				
 				return excuse;
-			} else {
-				return null;
 			}
-		} else {
-			return null;
 		}
+		
+		return null;
 	}
 	
 	// -------------------------------------------------------------------------

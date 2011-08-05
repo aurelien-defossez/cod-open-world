@@ -103,7 +103,8 @@ public class Game {
 		}
 		
 		// Entame strategies
-		if (playedCards.size() == 0) {
+		if (playedCards.size() == 0
+			|| playedCards.size() == 1 && playedCards.get(0).getCode() == Api.EXCUSE) {
 			chosenCard = executeStrategies(strategiesEntame, playedCards);
 		} else {
 			chosenCard = executeStrategies(strategiesFollow, playedCards);
