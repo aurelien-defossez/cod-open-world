@@ -210,6 +210,23 @@ public class Utils {
 		return ctCards;
 	}
 	
+	public static int getColorIndex(int color) {
+		switch (color) {
+		case Card.ATOUT:
+			return 4;
+		case Card.COEUR:
+			return 0;
+		case Card.CARREAU:
+			return 1;
+		case Card.PIQUE:
+			return 2;
+		case Card.TREFLE:
+			return 3;
+		default:
+			return -1;
+		}
+	}
+	
 	public static String printCards(int[] cards) {
 		StringBuffer sb = new StringBuffer(" ");
 		

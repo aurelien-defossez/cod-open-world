@@ -29,7 +29,8 @@ public class AttackPlayLongue implements Strategy {
 		for (Integer color : Utils.getColors()) {
 			List<Card> colorSet = hand.getColorList(color);
 			
-			if (colorSet.size() > Params.MIN_LONGUE_SIZE && (longue == null || colorSet.size() > longue.size())) {
+			if (colorSet.size() > Params.MIN_LONGUE_SIZE
+				&& (longue == null || colorSet.size() > longue.size())) {
 				longue = colorSet;
 			}
 		}

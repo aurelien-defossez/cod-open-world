@@ -47,9 +47,8 @@ public class AttackHuntPetit implements Strategy {
 			
 			// Retrieve information
 			List<Card> myAtouts = hand.getColorList(Card.ATOUT);
-			int nbAtouts = game.getAtoutCount();
 			int nbMyAtouts = hand.countColor(Card.ATOUT);
-			int nbOpponentAtouts = nbAtouts - nbMyAtouts;
+			int nbOpponentAtouts = game.getColorCount(Card.ATOUT);
 			int nbOpponentsWithAtout = game.countOpponentsWithColor(Card.ATOUT);
 			
 			// Detect dominant suites

@@ -28,7 +28,7 @@ public class Game {
 	private Opponent[] opponents;
 	private Strategy[] strategiesEntame;
 	private Strategy[] strategiesFollow;
-	private int ctAtouts;
+	private int[] ctColors;
 	private int turnNb;
 	
 	// -------------------------------------------------------------------------
@@ -39,7 +39,12 @@ public class Game {
 		this.id = ai.getId();
 		this.taker = taker;
 		this.hand = hand;
-		this.ctAtouts = 21;
+		this.ctColors = new int[] {
+			14 - hand.countColor(Card.COEUR),
+			14 - hand.countColor(Card.CARREAU),
+			14 - hand.countColor(Card.PIQUE),
+			14 - hand.countColor(Card.TREFLE),
+			21 - hand.countColor(Card.ATOUT) };
 		this.turnNb = 1;
 		this.opponents = new Opponent[4];
 		
@@ -48,7 +53,7 @@ public class Game {
 		
 		// Create opponents
 		for (int i = 0; i < 4; i++) {
-			opponents[i] = new Opponent(i);
+			opponents[i] = new Opponent(i, this);
 			
 			if (i != id) {
 				determineBestAtouts(opponents[i]);
@@ -81,8 +86,8 @@ public class Game {
 		}
 	}
 	
-	public int getAtoutCount() {
-		return ctAtouts;
+	public int getColorCount(int color) {
+		return ctColors[Utils.getColorIndex(color)];
 	}
 	
 	public int getTurnNb() {
@@ -171,22 +176,19 @@ public class Game {
 					desiredColor = card.getColor();
 				}
 				
-				// Counts atouts
-				if (card.getColor() == Card.ATOUT) {
-					ctAtouts--;
-					
-					// Atout less strong than best atout
-					if (player != id
+				// Count remaining cards
+				if (player != id) {
+					ctColors[Utils.getColorIndex(card.getColor())]--;
+				}
+				
+				// Atout less strong than best atout
+				if (card.getColor() == Card.ATOUT
+						&& player != id
 						&& bestCard != null
 						&& bestCard.getColor() == Card.ATOUT
 						&& bestCard.getValue() > card.getValue()) {
-						
-						if (bestCard.isBetterThan(opponent.getBestAtout(),
-							Card.ATOUT)) {
-							opponent.setBestAtout(Utils
-								.getPreviousCard(bestCard));
-						}
-					}
+					
+					opponent.setBestAtout(Utils.getPreviousCard(bestCard));
 				}
 				
 				// Has not of the desired color
@@ -245,6 +247,18 @@ public class Game {
 		for (int i = 0; i < 4; i++) {
 			if (i != id && opponents[i].hasColor(color)
 				&& (!andAtouts || opponents[i].hasColor(Card.ATOUT))) {
+				ct++;
+			}
+		}
+		
+		return ct;
+	}
+	
+	public int countOpponentsCutingTo(int color, double proba) {
+		int ct = 0;
+		
+		for (int i = 0; i < 4; i++) {
+			if (i != id && opponents[i].getCutProbability(color) >= proba) {
 				ct++;
 			}
 		}

@@ -42,7 +42,7 @@ public class AttackEntameDefault implements Strategy {
 		
 		// Last card
 		if (game.getTurnNb() == 18) {
-			return hand.getRandomCard();
+			return hand.getFirstCard();
 		}
 		
 		int opponentsWithAtouts = game.countOpponentsWithColor(Card.ATOUT);
@@ -59,8 +59,8 @@ public class AttackEntameDefault implements Strategy {
 				if (!hand.getColorList(color).isEmpty()) {
 					cuts.get(3 - game.countOpponentsWithColor(color, true)).add(color);
 					
-					System.out.println((3 - game.countOpponentsWithColor(color, true)) + " opponents cut to "
-						+ Utils.getStringColor(color));
+					System.out.println((3 - game.countOpponentsCutingTo(color, 0.6))
+						+ " opponents cut to " + Utils.getStringColor(color) + " (p=0.6)");
 				}
 			}
 			
@@ -73,7 +73,8 @@ public class AttackEntameDefault implements Strategy {
 					
 					// Create possible cards list
 					for (int j = 0; j < colors.size(); j++) {
-						int expendable = (i == 3) ? Card.DAME : (i == 2) ? Card.CAVALIER : Card.VALET;
+						int expendable =
+							(i == 3) ? Card.DAME : (i == 2) ? Card.CAVALIER : Card.VALET;
 						List<Card> colorList = hand.getColorList(colors.get(j));
 						
 						if (colorList.get(0).getValue() <= expendable) {
@@ -111,7 +112,7 @@ public class AttackEntameDefault implements Strategy {
 		List<Card> myAtouts = hand.getColorList(Card.ATOUT);
 		if (!myAtouts.isEmpty()
 			&& (opponentsWithAtouts == 0 ||
-				myAtouts.size() >= (game.getAtoutCount() - myAtouts.size()) / opponentsWithAtouts)) {
+				myAtouts.size() >= (game.getColorCount(Card.ATOUT)) / opponentsWithAtouts)) {
 			
 			Card possibleAtout = playAtout();
 			if (possibleAtout != null) {

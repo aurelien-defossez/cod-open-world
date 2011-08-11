@@ -5,12 +5,14 @@ import game.Api;
 
 public class Opponent {
 	private int id;
+	private Game game;
 	private Card bestAtout;
 	private boolean[] hasColor;
 	private double[] probaCut;
 	
-	public Opponent(int id) {
+	public Opponent(int id, Game game) {
 		this.id = id;
+		this.game = game;
 		this.bestAtout = Utils.getCard(Api.ATOUT_21);
 		this.hasColor = new boolean[] { true, true, true, true, true };
 		this.probaCut = new double[] { 0, 0, 0, 0 };
@@ -21,20 +23,7 @@ public class Opponent {
 	}
 	
 	public boolean hasColor(int color) {
-		switch (color) {
-		case Card.COEUR:
-			return hasColor[0];
-		case Card.CARREAU:
-			return hasColor[1];
-		case Card.PIQUE:
-			return hasColor[2];
-		case Card.TREFLE:
-			return hasColor[3];
-		case Card.ATOUT:
-			return hasColor[4];
-		default:
-			return false;
-		}
+		return hasColor[Utils.getColorIndex(color)];
 	}
 	
 	public double getCutProbability(int color) {
@@ -43,19 +32,22 @@ public class Opponent {
 			return 0;
 		}
 		
-		// Return cut probability
-		switch (color) {
-		case Card.COEUR:
-			return probaCut[0];
-		case Card.CARREAU:
-			return probaCut[1];
-		case Card.PIQUE:
-			return probaCut[2];
-		case Card.TREFLE:
-			return probaCut[3];
-		default:
-			return -1.0;
+		// Cuts
+		if (!hasColor(color)) {
+			return 1;
 		}
+		
+		int nbCards = game.getColorCount(color);
+		
+		// No cards left
+		if (nbCards == 0) {
+			return 1;
+		}
+		
+		int otherWithColors = game.countOpponentsWithColor(color) - 1;
+		
+		// Return cut probability (p/(n+p))
+		return otherWithColors / (nbCards + otherWithColors);
 	}
 	
 	public Card getBestAtout() {
@@ -72,26 +64,6 @@ public class Opponent {
 	}
 	
 	public void hasNotColor(int color) {
-		switch (color) {
-		case Card.COEUR:
-			hasColor[0] = false;
-			probaCut[0] = 1;
-			break;
-		case Card.CARREAU:
-			hasColor[1] = false;
-			probaCut[1] = 1;
-			break;
-		case Card.PIQUE:
-			hasColor[2] = false;
-			probaCut[2] = 1;
-			break;
-		case Card.TREFLE:
-			hasColor[3] = false;
-			probaCut[3] = 1;
-			break;
-		case Card.ATOUT:
-			hasColor[4] = false;
-			break;
-		}
+		hasColor[Utils.getColorIndex(color)] = false;
 	}
 }

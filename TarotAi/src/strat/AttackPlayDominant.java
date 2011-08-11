@@ -1,7 +1,6 @@
 
 package strat;
 
-import game.Api;
 import java.util.List;
 import ai.Card;
 import ai.Game;
@@ -36,12 +35,8 @@ public class AttackPlayDominant implements Strategy {
 		
 		List<Card> atouts = hand.getColorList(Card.ATOUT);
 		int myAtouts = atouts.size();
-		int atoutsInDefense = game.getAtoutCount() - myAtouts;
+		int atoutsInDefense = game.getColorCount(Card.ATOUT);
 		int opponentsWithAtout = game.countOpponentsWithColor(Card.ATOUT);
-		
-		if (myAtouts > 0 && atouts.get(0).getCode() == Api.EXCUSE) {
-			myAtouts--;
-		}
 		
 		// Still has atouts
 		if (atoutsInDefense > 0 && opponentsWithAtout > 0) {

@@ -16,6 +16,7 @@ public class Hand {
 	private List<Card> pique;
 	private List<Card> trefle;
 	private List<Card> atout;
+	private boolean excuse;
 	
 	private int nbBouts;
 	private int score;
@@ -31,6 +32,7 @@ public class Hand {
 		pique = new ArrayList<Card>();
 		trefle = new ArrayList<Card>();
 		atout = new ArrayList<Card>();
+		excuse = false;
 		nbBouts = 0;
 		
 		// Add cards
@@ -44,16 +46,29 @@ public class Hand {
 	public void addCards(int[] cards, boolean sort) {
 		for (int code : cards) {
 			Card card = Utils.getCard(code);
-			addCard(getColorList(card.getColor()), card, sort);
+			
+			if (card.getCode() == Api.EXCUSE) {
+				excuse = true;
+			} else {
+				addCard(getColorList(card.getColor()), card, sort);
+			}
 		}
 	}
 	
 	public void removeCard(Card card) {
-		getColorList(card.getColor()).remove(card);
+		if (card.getCode() == Api.EXCUSE) {
+			excuse = false;
+		} else {
+			getColorList(card.getColor()).remove(card);
+		}
 	}
 	
 	public boolean hasCard(Card card) {
-		return getColorList(card.getColor()).contains(card);
+		if (card.getCode() == Api.EXCUSE) {
+			return excuse;
+		} else {
+			return getColorList(card.getColor()).contains(card);
+		}
 	}
 	
 	public List<Card> getColorList(int color) {
@@ -74,18 +89,7 @@ public class Hand {
 	}
 	
 	public int countColor(int color) {
-		List<Card> colorList = getColorList(color);
-		int nbCards = colorList.size();
-		
-		// Remove Excuse from
-		if (color == Card.ATOUT
-			&& !colorList.isEmpty()
-			&& colorList.get(0).getCode() == Api.EXCUSE) {
-			
-			nbCards--;
-		}
-		
-		return nbCards;
+		return getColorList(color).size();
 	}
 	
 	public void computeScores(int position, int currentContract) {
@@ -213,6 +217,9 @@ public class Hand {
 				break;
 			case 4:
 				cardList = atout;
+				if (excuse) {
+					return Utils.getCard(Api.EXCUSE);
+				}
 				break;
 			}
 			
@@ -232,9 +239,41 @@ public class Hand {
 		
 		return null;
 	}
+
+	public Card getFirstCard() {
+		if (coeur.size() > 0) {
+			return coeur.get(0);
+		}
+		
+		if (carreau.size() > 0) {
+			return carreau.get(0);
+		}
+		
+		if (pique.size() > 0) {
+			return pique.get(0);
+		}
+		
+		if (trefle.size() > 0) {
+			return trefle.get(0);
+		}
+		
+		if (atout.size() > 0) {
+			return atout.get(0);
+		}
+		
+		if (excuse) {
+			return Utils.getCard(Api.EXCUSE);
+		}
+		
+		return null;
+	}
 	
 	public String toString() {
 		StringBuffer sb = new StringBuffer("{ ");
+		
+		if (excuse) {
+			sb.append("[EX] ");
+		}
 		
 		if (atout.size() > 0) {
 			sb.append("[A] ");
@@ -309,17 +348,18 @@ public class Hand {
 		int straight = 0;
 		int lastAtout = 0;
 		nbBouts = 0;
+
+		// Excuse
+		if (excuse) {
+			score += Params.POINTS_EXCUSE;
+			nbBouts++;
+		}
 		
 		for (Card card : atout) {
 			int value = card.getValue();
 			
-			// Excuse
-			if (value == 0) {
-				score += Params.POINTS_EXCUSE;
-				nbBouts++;
-			}
 			// 21
-			else if (value == 21) {
+			if (value == 21) {
 				score += Params.POINTS_21;
 				nbBouts++;
 			}
