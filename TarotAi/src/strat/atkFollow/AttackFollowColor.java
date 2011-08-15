@@ -6,7 +6,6 @@ import strat.Strategy;
 import ai.Card;
 import ai.Game;
 import ai.Hand;
-import ai.Opponent;
 import ai.Params;
 import ai.Utils;
 
@@ -46,7 +45,7 @@ public class AttackFollowColor implements Strategy {
 			Card myBestCard = Utils.getBestCard(myColor);
 			Card aboveCard = Utils.getFirstCardAbove(bestTurnCard, myColor);
 			
-			game.print("BEST TURN CARD IS "+bestTurnCard);
+			game.print("BEST TURN CARD IS " + bestTurnCard);
 			
 			// Can't win turn
 			if (aboveCard == null || bestTurnCard.isBetterThan(myBestCard, desiredColor)) {
@@ -54,21 +53,20 @@ public class AttackFollowColor implements Strategy {
 				game.print("Can't win turn, playing lowest card");
 				return myColor.get(0);
 			}
-
+			
 			// Play points
 			if (position == 4 && myBestCard.getValue() >= Card.VALET) {
 				game.print("Win turn at last position with points");
 				return myBestCard;
 			}
 			
-			Opponent[] followers = game.getFollowers();
-			double cutProba = 0.0;
+			double cutProba = game.getFollowersCutProbability(desiredColor, position);
+			double remainingPoints = Utils.countRemainingPoints(desiredColor, hand);
+			double currentPoints = Utils.countPoints(playedCards, 1.5);
+			double score = currentPoints / 10 + remainingPoints / 20 - cutProba;
 			
-			for (int i = 0; i < 4 - position; i++) {
-				cutProba = Math.max(cutProba, followers[i].getCutProbability(desiredColor));
-			}
-			
-			game.print("Cut proba = " + cutProba);
+			game.print("Cut proba=" + cutProba + "; currentPoints=" + currentPoints
+				+ "; remainingPoints=" + remainingPoints + "; score=" + score);
 			
 			// Followers cut
 			if (cutProba == 1.0) {
@@ -82,28 +80,29 @@ public class AttackFollowColor implements Strategy {
 				switch (myBestCard.getValue()) {
 				case Card.ROI:
 					game.print("It should be safe, playing dominant");
-					if (cutProba <= Params.ATTACK_FOLLOW_COLOR_PLAY_ROI_CUT_TRESHOLD) {
+					if (score >= Params.ATTACK_FOLLOW_COLOR_PLAY_ROI_MIN_SCORE
+						|| !game.colorAlreadyPlayed(desiredColor)) {
 						return myBestCard;
 					}
 					break;
 				
 				case Card.DAME:
 					game.print("It should be safe, playing dominant");
-					if (cutProba <= Params.ATTACK_FOLLOW_COLOR_PLAY_DAME_CUT_TRESHOLD) {
+					if (score >= Params.ATTACK_FOLLOW_COLOR_PLAY_DAME_MIN_SCORE) {
 						return myBestCard;
 					}
 					break;
 				
 				case Card.CAVALIER:
 					game.print("It should be safe, playing dominant");
-					if (cutProba <= Params.ATTACK_FOLLOW_COLOR_PLAY_CAVALIER_CUT_TRESHOLD) {
+					if (score >= Params.ATTACK_FOLLOW_COLOR_PLAY_CAVALIER_MIN_SCORE) {
 						return myBestCard;
 					}
 					break;
 				
 				case Card.VALET:
 					game.print("It should be safe, playing dominant");
-					if (cutProba <= Params.ATTACK_FOLLOW_COLOR_PLAY_VALET_CUT_TRESHOLD) {
+					if (score >= Params.ATTACK_FOLLOW_COLOR_PLAY_VALET_MIN_SCORE) {
 						return myBestCard;
 					}
 					break;

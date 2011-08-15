@@ -40,9 +40,9 @@ public class Params {
 	public static final double PETIT_HUNT_MAX_RATIO_INDIRECT = 0.25;
 	public static final double PETIT_HUNT_MAX_RATIO_INDIRECT_2 = 0.20;
 	public static final double ATTACK_ENTAME_DEFAULT_CUT_TRESHOLD = 0.60;
-	public static final double ATTACK_FOLLOW_COLOR_PLAY_ROI_CUT_TRESHOLD = 0.30;
-	public static final double ATTACK_FOLLOW_COLOR_PLAY_DAME_CUT_TRESHOLD = 0.35;
-	public static final double ATTACK_FOLLOW_COLOR_PLAY_CAVALIER_CUT_TRESHOLD = 0.40;
-	public static final double ATTACK_FOLLOW_COLOR_PLAY_VALET_CUT_TRESHOLD = 0.50;
-	
+	public static final double ATTACK_FOLLOW_COLOR_PLAY_ROI_MIN_SCORE = 0.0;
+	public static final double ATTACK_FOLLOW_COLOR_PLAY_DAME_MIN_SCORE = 0.0;
+	public static final double ATTACK_FOLLOW_COLOR_PLAY_CAVALIER_MIN_SCORE = 0.0;
+	public static final double ATTACK_FOLLOW_COLOR_PLAY_VALET_MIN_SCORE = 0.0;
+	public static final double ATTACK_SAVE_PETIT_CUT_TRESHOLD = 0.2;
 }

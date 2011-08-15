@@ -224,6 +224,48 @@ public class Utils {
 		return ctCards;
 	}
 	
+	public static double countRemainingPoints(int color, Hand hand) {
+		Card lastCard = null;
+		double points = 0.0;
+		
+		switch(color) {
+		case Card.COEUR:
+			lastCard = Utils.getCard(Api.COEUR_ROI);
+			break;
+		case Card.CARREAU:
+			lastCard = Utils.getCard(Api.CARREAU_ROI);
+			break;
+		case Card.PIQUE:
+			lastCard = Utils.getCard(Api.PIQUE_ROI);
+			break;
+		case Card.TREFLE:
+			lastCard = Utils.getCard(Api.TREFLE_ROI);
+			break;
+		}
+		
+		while(lastCard.getValue() > 10) {
+			if (lastCard.isInGame() && !hand.hasCard(lastCard)) {
+				points += lastCard.getPoints();
+			}
+			
+			lastCard = Utils.getPreviousCard(lastCard);
+		}
+		
+		return points;
+	}
+
+	public static double countPoints(List<Card> playedCards, double minimum) {
+		double points = 0.0;
+		
+		for (Card card : playedCards) {
+			if (card.getPoints() >= minimum) {
+				points += card.getPoints();
+			}
+		}
+		
+		return points;
+	}
+	
 	public static int getColorIndex(int color) {
 		switch (color) {
 		case Card.ATOUT:

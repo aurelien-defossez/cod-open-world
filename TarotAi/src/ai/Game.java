@@ -8,7 +8,11 @@ import strat.atkEntame.AttackEntameDefault;
 import strat.atkEntame.AttackHuntPetit;
 import strat.atkEntame.AttackPlayDominant;
 import strat.atkEntame.AttackPlayLongue;
+import strat.atkFollow.AttackCut;
+import strat.atkFollow.AttackFollowAtout;
 import strat.atkFollow.AttackFollowColor;
+import strat.atkFollow.AttackPiss;
+import strat.atkFollow.AttackSavePetit;
 import strat.common.SaveExcuse;
 
 public class Game {
@@ -30,6 +34,7 @@ public class Game {
 	private Strategy[] strategiesEntame;
 	private Strategy[] strategiesFollow;
 	private int[] ctColors;
+	private boolean[] colorPlayed;
 	private int turnNb;
 	
 	// -------------------------------------------------------------------------
@@ -46,6 +51,7 @@ public class Game {
 			14 - hand.countColor(Card.PIQUE),
 			14 - hand.countColor(Card.TREFLE),
 			21 - hand.countColor(Card.ATOUT) };
+		this.colorPlayed = new boolean[] { false, false, false, false };
 		this.turnNb = 1;
 		this.opponents = new Opponent[4];
 		this.followers = new Opponent[3];
@@ -85,7 +91,11 @@ public class Game {
 			
 			strategiesFollow = new Strategy[] {
 				new SaveExcuse(this, hand),
-				new AttackFollowColor(this, hand)
+				new AttackFollowColor(this, hand),
+				new AttackSavePetit(this, hand),
+				new AttackCut(this, hand),
+				new AttackFollowAtout(this, hand),
+				new AttackPiss(this, hand)
 			};
 		}
 		// Defense strategies
@@ -180,6 +190,11 @@ public class Game {
 				// Define desired color
 				if (desiredColor == 0) {
 					desiredColor = card.getColor();
+					
+					// Color opened this turn (taken into account at the end of turn)
+					if (from > 0 && desiredColor != Card.ATOUT) {
+						colorPlayed[Utils.getColorIndex(desiredColor)] = true;
+					}
 				}
 				
 				// Count remaining cards
@@ -256,6 +271,10 @@ public class Game {
 		}
 	}
 	
+	public boolean colorAlreadyPlayed(int color) {
+		return colorPlayed[Utils.getColorIndex(color)];
+	}
+	
 	public int countOpponentsWithColor(int color) {
 		return countOpponentsWithColor(color, false);
 	}
@@ -273,6 +292,10 @@ public class Game {
 		return ct;
 	}
 	
+	public int countOpponentsCuttingTo(int color) {
+		return countOpponentsCuttingTo(color, 1.0);
+	}
+	
 	public int countOpponentsCuttingTo(int color, double proba) {
 		int ct = 0;
 		
@@ -285,8 +308,44 @@ public class Game {
 		return ct;
 	}
 	
-	public Opponent[] getFollowers() {
-		return followers;
+	public double getFollowersCutProbability(int color, int position) {
+		// X: First follower
+		// Y: Second follower (if any)
+		// Z: Third follower, or previous player
+		int nbCards = getColorCount(color);
+		
+		switch (position) {
+		case 1:
+			// P(cut) = P(X=0 U Y=0 U Z=0)
+			// P(cut) = P(X=0) + P(Y=0) + P(Z=0) - P(X=0 ^ Y=0) - P(Y=0 ^ Z=0) - P(X=0 ^ Z=0)
+			// P(cut) = P(X=0) + P(Y=0) + P(Z=0) - 3/((n+1)*(n+2)/2)
+			// P(cut) = P(X=0) + P(Y=0) + P(Z=0) - 6/((n+1)*(n+2))
+			return (nbCards == 0) ? 1.0 : followers[0].getCutProbability(color)
+				+ followers[1].getCutProbability(color)
+				+ followers[2].getCutProbability(color)
+				- 6 / ((nbCards + 1) * (nbCards + 2));
+			
+		case 2:
+			// P(cut) = P(X=0 U Y=0)
+			// P(cut) = P(X=0) + P(Y=0) - P(X=0 ^ Y=0)
+			// P(cut) = P(X=0) + P(Y=0) - P(Z=N)
+			// P(cut) = P(X=0) + P(Y=0) - 1/((n+1)*(n+2)/2)
+			// P(cut) = P(X=0) + P(Y=0) - 2/((n+1)*(n+2))
+			return followers[0].getCutProbability(color)
+				+ followers[1].getCutProbability(color)
+				- 2 / ((nbCards + 1) * (nbCards + 2));
+			
+		case 3:
+			// P(cut) = P(X=0)
+			return followers[0].getCutProbability(color);
+			
+		case 4:
+			// P(cut) = 0
+			return 0.0;
+			
+		default:
+			throw new IllegalArgumentException("Position must be in [1, 4].");
+		}
 	}
 	
 	public void print(String message) {
