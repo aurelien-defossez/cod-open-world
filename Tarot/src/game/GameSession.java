@@ -27,6 +27,8 @@ public class GameSession {
 	private Card turnBestCard;
 	private int desiredColor;
 	private boolean cardPlayed;
+	private boolean petitBoutAttack;
+	private boolean petitBoutDefense;
 	
 	// -------------------------------------------------------------------------
 	// Constructor
@@ -44,6 +46,8 @@ public class GameSession {
 		this.nbOudlers = 0;
 		this.score = 0;
 		this.turnCards = new int[4];
+		this.petitBoutAttack = false;
+		this.petitBoutDefense = false;
 	}
 	
 	// -------------------------------------------------------------------------
@@ -140,6 +144,20 @@ public class GameSession {
 					} else {
 						score += 0.5;
 					}
+					
+					// Petit au bout (Attack)
+					if (ctTurn == Game.CARDS_PER_PLAYER && code == Game.ATOUT_1) {
+						System.out.println("PETIT AU BOUT ATTACK");
+						petitBoutAttack = true;
+					}
+				}
+			} else {
+				for (int code : turnCards) {
+					// Petit au bout (Defense)
+					if (ctTurn == Game.CARDS_PER_PLAYER && code == Game.ATOUT_1) {
+						System.out.println("PETIT AU BOUT DEFENSE");
+						petitBoutDefense = true;
+					}
 				}
 			}
 			
@@ -164,9 +182,10 @@ public class GameSession {
 		int goal = getGoal(nbOudlers);
 		int finalScore = (int) score - goal;
 		finalScore += (finalScore > 0) ? 25 : -25;
+		finalScore += (petitBoutAttack) ? 10 : 0;
+		finalScore += (petitBoutDefense) ? -10 : 0;
 		finalScore *= getModifier(contract);
 		
-		// TODO: Manage petit au bout
 		// TODO: Manage poignées
 		// TODO: Manage Shelems
 		

@@ -95,8 +95,9 @@ public class AttackHuntPetit implements Strategy {
 				return Utils.getBestCard(myAtouts);
 			}
 			// Indirect hunt
-			else if (ratio[1] <= Params.PETIT_HUNT_MAX_RATIO_INDIRECT
-				|| ratio[2] <= Params.PETIT_HUNT_MAX_RATIO_INDIRECT_2) {
+			else if (nbOpponentAtouts >= Params.PETIT_HUNT_MIN_ATOUTS_DEFENSE
+				&& (ratio[1] <= Params.PETIT_HUNT_MAX_RATIO_INDIRECT
+				|| ratio[2] <= Params.PETIT_HUNT_MAX_RATIO_INDIRECT_2)) {
 				game.print("Indirect attack");
 				
 				// Play first atout

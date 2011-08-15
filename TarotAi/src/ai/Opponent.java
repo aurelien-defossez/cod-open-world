@@ -31,19 +31,24 @@ public class Opponent {
 	public double getCutProbability(int color, int nbCardsOffset) {
 		// Can't cut without atouts
 		if (!hasColor(Card.ATOUT)) {
-			return 0;
+			return 0.0;
+		}
+		
+		// Follow atout
+		if (color == Card.ATOUT) {
+			return 1.0;
 		}
 		
 		// Cuts
 		if (!hasColor(color)) {
-			return 1;
+			return 1.0;
 		}
 		
 		int nbCards = game.getColorCount(color) + nbCardsOffset;
 		
 		// No cards left
 		if (nbCards == 0) {
-			return 1;
+			return 1.0;
 		}
 		
 		int otherWithColors = game.countOpponentsWithColor(color) - 1;

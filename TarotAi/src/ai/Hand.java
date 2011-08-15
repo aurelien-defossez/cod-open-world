@@ -235,11 +235,9 @@ public class Hand {
 				
 				int ctCard = 0;
 				for (Card card : cardList) {
-					if (ctCard == randCard) {
+					if (ctCard++ == randCard) {
 						return card;
 					}
-					
-					ctCard++;
 				}
 			}
 		} while (!found);

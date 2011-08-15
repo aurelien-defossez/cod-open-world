@@ -176,6 +176,7 @@ public class Game implements TarotEngine {
 			// Distribute cards
 			i = 0;
 			for (Player player : players.values()) {
+				// TODO: Manage "Petit sec"
 				player.setCards(deck.subList(
 					CARDS_PER_PLAYER * i, CARDS_PER_PLAYER * (i + 1)));
 				i++;

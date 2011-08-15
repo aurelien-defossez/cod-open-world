@@ -12,7 +12,7 @@ import ai.Hand;
 import ai.Params;
 import ai.Utils;
 
-public class AttackCut implements Strategy {
+public class AttackBuy implements Strategy {
 	// -------------------------------------------------------------------------
 	// Attributes
 	// -------------------------------------------------------------------------
@@ -24,7 +24,7 @@ public class AttackCut implements Strategy {
 	// Constructor
 	// -------------------------------------------------------------------------
 	
-	public AttackCut(Game game, Hand hand) {
+	public AttackBuy(Game game, Hand hand) {
 		this.game = game;
 		this.hand = hand;
 	}
@@ -35,50 +35,44 @@ public class AttackCut implements Strategy {
 	
 	@Override
 	public Card execute(List<Card> playedCards) {
+		int desiredColor = Utils.getTurnColor(playedCards);
 		List<Card> myAtouts = hand.getColorList(Card.ATOUT);
 		
 		// Have atouts
 		if (!myAtouts.isEmpty()) {
 			game.print("[" + getName() + "] Executing...");
 			
-			// Determine lowest atout except Petit
-			Card lowestAtout = myAtouts.get(0);
-			if (lowestAtout.getCode() == Api.ATOUT_1 && myAtouts.size() > 1) {
-				lowestAtout = myAtouts.get(1);
-			}
-			
-			// Determine first atout to be played
-			Card turnBestCard = Utils.getTurnBestCard(playedCards);
-			Card currentAtout = null;
-			List<Card> possibleCards = new ArrayList<Card>(4);
-			
-			// Cut with the lowest atout
-			if (turnBestCard.getColor() != Card.ATOUT) {
-				currentAtout = lowestAtout;
-			}
-			// Cut with the just above atout
-			else {
-				currentAtout = Utils.getFirstCardAbove(turnBestCard, myAtouts);
-				
-				// Can't cut over the previous atout, so cut with the lowest atout
-				if (currentAtout == null) {
-					currentAtout = lowestAtout;
+			// Determine cards to buy
+			boolean hasDame = false;
+			boolean hasRoi = false;
+			boolean hasPetit = false;
+			for (Card card : playedCards) {
+				if (card.getPoints() >= 3.5) {
+					if (card.getValue() == Card.DAME) {
+						hasDame = true;
+					} else if (card.getValue() == Card.ROI) {
+						hasRoi = true;
+					} else if (card.getCode() == Api.ATOUT_1) {
+						hasPetit = true;
+					}
 				}
 			}
 			
-			// Add atouts in suite to possible cards
-			while(currentAtout != null && hand.hasCard(currentAtout)) {
-				possibleCards.add(currentAtout);
+			// Dame, Roi or Petit, consider buying it
+			if (hasDame || hasRoi || hasPetit) {
+				int position = playedCards.size() + 1;
+				double cutProba = game.getFollowersCutProbability(desiredColor, position);
 				
-				currentAtout = Utils.getNextCard(currentAtout);
-			}
-			
-			// Play randomly through possible atouts
-			int randCard = new Random().nextInt(possibleCards.size());
-			int ctCard = 0;
-			for (Card card : possibleCards) {
-				if (ctCard++ == randCard) {
-					return card;
+				game.print("cutProba = "+cutProba);
+				
+				// TODO: Play just above best followers atouts.
+				
+				// Buy
+				if ((hasDame && cutProba >= Params.ATTACK_BUY_DAME_MIN_CUT_PROBABILITY)
+					|| (hasRoi && cutProba >= Params.ATTACK_BUY_ROI_MIN_CUT_PROBABILITY)
+					|| (hasPetit && cutProba >= Params.ATTACK_BUY_PETIT_MIN_CUT_PROBABILITY)) {
+					game.print("Buy!");
+					return Utils.getBestCard(myAtouts);
 				}
 			}
 		}

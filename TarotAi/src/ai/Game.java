@@ -8,10 +8,11 @@ import strat.atkEntame.AttackEntameDefault;
 import strat.atkEntame.AttackHuntPetit;
 import strat.atkEntame.AttackPlayDominant;
 import strat.atkEntame.AttackPlayLongue;
+import strat.atkFollow.AttackBuy;
 import strat.atkFollow.AttackCut;
-import strat.atkFollow.AttackFollowAtout;
 import strat.atkFollow.AttackFollowColor;
 import strat.atkFollow.AttackPiss;
+import strat.atkFollow.AttackPlayExcuse;
 import strat.atkFollow.AttackSavePetit;
 import strat.common.SaveExcuse;
 
@@ -93,8 +94,9 @@ public class Game {
 				new SaveExcuse(this, hand),
 				new AttackFollowColor(this, hand),
 				new AttackSavePetit(this, hand),
+				new AttackBuy(this, hand),
+				new AttackPlayExcuse(this, hand),
 				new AttackCut(this, hand),
-				new AttackFollowAtout(this, hand),
 				new AttackPiss(this, hand)
 			};
 		}
@@ -313,6 +315,7 @@ public class Game {
 		// Y: Second follower (if any)
 		// Z: Third follower, or previous player
 		int nbCards = getColorCount(color);
+		double proba;
 		
 		switch (position) {
 		case 1:
@@ -320,10 +323,11 @@ public class Game {
 			// P(cut) = P(X=0) + P(Y=0) + P(Z=0) - P(X=0 ^ Y=0) - P(Y=0 ^ Z=0) - P(X=0 ^ Z=0)
 			// P(cut) = P(X=0) + P(Y=0) + P(Z=0) - 3/((n+1)*(n+2)/2)
 			// P(cut) = P(X=0) + P(Y=0) + P(Z=0) - 6/((n+1)*(n+2))
-			return (nbCards == 0) ? 1.0 : followers[0].getCutProbability(color)
+			proba = followers[0].getCutProbability(color)
 				+ followers[1].getCutProbability(color)
 				+ followers[2].getCutProbability(color)
 				- 6 / ((nbCards + 1) * (nbCards + 2));
+			break;
 			
 		case 2:
 			// P(cut) = P(X=0 U Y=0)
@@ -331,21 +335,26 @@ public class Game {
 			// P(cut) = P(X=0) + P(Y=0) - P(Z=N)
 			// P(cut) = P(X=0) + P(Y=0) - 1/((n+1)*(n+2)/2)
 			// P(cut) = P(X=0) + P(Y=0) - 2/((n+1)*(n+2))
-			return followers[0].getCutProbability(color)
+			proba = followers[0].getCutProbability(color)
 				+ followers[1].getCutProbability(color)
 				- 2 / ((nbCards + 1) * (nbCards + 2));
+			break;
 			
 		case 3:
 			// P(cut) = P(X=0)
-			return followers[0].getCutProbability(color);
+			proba = followers[0].getCutProbability(color);
+			break;
 			
 		case 4:
 			// P(cut) = 0
-			return 0.0;
+			proba = 0.0;
+			break;
 			
 		default:
 			throw new IllegalArgumentException("Position must be in [1, 4].");
 		}
+		
+		return Math.max(0.0, Math.min(proba, 1.0));
 	}
 	
 	public void print(String message) {

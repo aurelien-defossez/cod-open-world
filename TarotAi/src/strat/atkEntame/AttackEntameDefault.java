@@ -69,7 +69,7 @@ public class AttackEntameDefault implements Strategy {
 				}
 			}
 			
-			// Determine color to play
+			// Determine color to play to make cut
 			for (int i = 3; i > 0; i--) {
 				List<Integer> colors = cuts.get(i);
 				
@@ -82,6 +82,7 @@ public class AttackEntameDefault implements Strategy {
 							(i == 3) ? Card.DAME : (i == 2) ? Card.CAVALIER : Card.VALET;
 						List<Card> colorList = hand.getColorList(colors.get(j));
 						
+						// Add to possible cards to make cut
 						if (colorList.get(0).getValue() <= expendable) {
 							possibleCards.add(colorList.get(0));
 							game.print("Add " + colorList.get(0) + " to possible cards");
@@ -98,6 +99,15 @@ public class AttackEntameDefault implements Strategy {
 							}
 						}
 					}
+				}
+			}
+			
+			// Play dominant card in a no-cut color
+			List<Integer> colors = cuts.get(0);
+			for (int i = 0; i < colors.size(); i++) {
+				Card bestCard = Utils.getBestCard(hand.getColorList(colors.get(i)));
+				if (bestCard.isDominant()) {
+					return bestCard;
 				}
 			}
 		}
@@ -117,7 +127,8 @@ public class AttackEntameDefault implements Strategy {
 		List<Card> myAtouts = hand.getColorList(Card.ATOUT);
 		if (!myAtouts.isEmpty()
 			&& (opponentsWithAtouts == 0 ||
-				myAtouts.size() >= (game.getColorCount(Card.ATOUT)) / opponentsWithAtouts)) {
+				myAtouts.size() > game.getColorCount(Card.ATOUT) / opponentsWithAtouts
+					+ opponentsWithAtouts - 1)) {
 			
 			Card possibleAtout = playAtout();
 			if (possibleAtout != null) {

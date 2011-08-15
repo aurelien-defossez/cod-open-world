@@ -36,6 +36,7 @@ public class Params {
 	
 	// Strategies
 	public static final int MIN_LONGUE_SIZE = 5;
+	public static final int PETIT_HUNT_MIN_ATOUTS_DEFENSE = 7;
 	public static final double PETIT_HUNT_MAX_RATIO_DIRECT = 0.28;
 	public static final double PETIT_HUNT_MAX_RATIO_INDIRECT = 0.25;
 	public static final double PETIT_HUNT_MAX_RATIO_INDIRECT_2 = 0.20;
@@ -46,4 +47,7 @@ public class Params {
 	public static final double ATTACK_FOLLOW_COLOR_PLAY_VALET_MIN_SCORE = -0.5;
 	public static final double ATTACK_SAVE_PETIT_MAX_CUT_TRESHOLD_SECOND = 0.3;
 	public static final double ATTACK_SAVE_PETIT_MAX_CUT_TRESHOLD_THIRD = 0.2;
+	public static final double ATTACK_BUY_DAME_MIN_CUT_PROBABILITY = 0.5;
+	public static final double ATTACK_BUY_ROI_MIN_CUT_PROBABILITY = 0.4;
+	public static final double ATTACK_BUY_PETIT_MIN_CUT_PROBABILITY = 0.2;
 }

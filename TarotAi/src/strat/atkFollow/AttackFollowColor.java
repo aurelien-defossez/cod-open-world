@@ -61,8 +61,8 @@ public class AttackFollowColor implements Strategy {
 			}
 			
 			double cutProba = game.getFollowersCutProbability(desiredColor, position);
-			double remainingPoints = Utils.countRemainingPoints(desiredColor, hand);
 			double currentPoints = Utils.countPoints(playedCards, 1.5);
+			double remainingPoints = Utils.countRemainingPoints(desiredColor, hand) - currentPoints;
 			double score = currentPoints / 10 + remainingPoints / 20 - cutProba;
 			
 			game.print("Cut proba=" + cutProba + "; " +
