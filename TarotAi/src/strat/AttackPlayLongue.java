@@ -29,14 +29,14 @@ public class AttackPlayLongue implements Strategy {
 		for (Integer color : Utils.getColors()) {
 			List<Card> colorSet = hand.getColorList(color);
 			
-			if (colorSet.size() > Params.MIN_LONGUE_SIZE
+			if (colorSet.size() >= Params.MIN_LONGUE_SIZE
 				&& (longue == null || colorSet.size() > longue.size())) {
 				longue = colorSet;
 			}
 		}
 		
 		if (longue != null) {
-			System.out.println("My longue is " + Utils.printCards(longue));
+			game.print("My longue is {" + Utils.printCards(longue) + "}");
 		} else {
 			deactivate();
 		}
@@ -52,7 +52,7 @@ public class AttackPlayLongue implements Strategy {
 		checkRequirements();
 		
 		if (isActivated) {
-			System.out.println("[" + getName() + "] Executing...");
+			game.print("[" + getName() + "] Executing...");
 			
 			Card chosenCard = null;
 			Card king = Utils.getCardValue(longue, Card.ROI);
@@ -96,7 +96,7 @@ public class AttackPlayLongue implements Strategy {
 	private void deactivate() {
 		isActivated = false;
 		
-		System.out.println("[" + getName() + "] Strategy deactivated.");
+		game.print("[" + getName() + "] Strategy deactivated.");
 	}
 	
 	private String getName() {

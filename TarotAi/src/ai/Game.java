@@ -2,9 +2,9 @@
 package ai;
 
 import game.Api;
-import java.util.ArrayList;
 import java.util.List;
 import strat.AttackEntameDefault;
+import strat.AttackFollowColor;
 import strat.AttackHuntPetit;
 import strat.AttackPlayDominant;
 import strat.AttackPlayLongue;
@@ -26,6 +26,7 @@ public class Game {
 	private boolean taker;
 	private Hand hand;
 	private Opponent[] opponents;
+	private Opponent[] followers;
 	private Strategy[] strategiesEntame;
 	private Strategy[] strategiesFollow;
 	private int[] ctColors;
@@ -47,6 +48,12 @@ public class Game {
 			21 - hand.countColor(Card.ATOUT) };
 		this.turnNb = 1;
 		this.opponents = new Opponent[4];
+		this.followers = new Opponent[3];
+		
+		// Take dog cards into account, if any
+		for (Card card : hand.getCardsAside()) {
+			ctColors[Utils.getColorIndex(card.getColor())]--;
+		}
 		
 		// Reset card attributes
 		Utils.resetCards();
@@ -57,6 +64,12 @@ public class Game {
 			
 			if (i != id) {
 				determineBestAtouts(opponents[i]);
+				
+				if (i < id) {
+					followers[i - id + 3] = opponents[i];
+				} else {
+					followers[i - id - 1] = opponents[i];
+				}
 			}
 		}
 		
@@ -71,7 +84,8 @@ public class Game {
 			};
 			
 			strategiesFollow = new Strategy[] {
-				new SaveExcuse(this, hand)
+				new SaveExcuse(this, hand),
+				new AttackFollowColor(this, hand)
 			};
 		}
 		// Defense strategies
@@ -94,18 +108,10 @@ public class Game {
 		return turnNb;
 	}
 	
-	public void playCard(int[] cards) {
+	public void playCard(List<Card> playedCards) {
 		Card chosenCard = null;
 		
-		System.out.println("[" + id + "] My hand is " + hand);
-		
-		// Build played cards list
-		ArrayList<Card> playedCards = new ArrayList<Card>(4);
-		for (int code : cards) {
-			if (code != 0) {
-				playedCards.add(Utils.getCard(code));
-			}
-		}
+		print("My hand is " + hand);
 		
 		// Entame strategies
 		if (playedCards.size() == 0
@@ -121,7 +127,7 @@ public class Game {
 		}
 		// Play randomly
 		else {
-			System.out.println("[" + id + "] Playing randomly...");
+			print("Playing randomly...");
 			boolean ok;
 			
 			do {
@@ -130,7 +136,8 @@ public class Game {
 			} while (!ok);
 		}
 		
-		System.out.println("[" + id + "] I Play " + chosenCard);
+		print("I Play " + chosenCard);
+		System.out.println();
 		
 		hand.removeCard(chosenCard);
 		
@@ -139,6 +146,7 @@ public class Game {
 	
 	private Card executeStrategies(Strategy[] strategySet,
 		List<Card> playedCards) {
+		
 		for (Strategy strategy : strategySet) {
 			if (strategy.isActivated()) {
 				Card chosenCard = strategy.execute(playedCards);
@@ -152,22 +160,20 @@ public class Game {
 		return null;
 	}
 	
-	public void cardsPlayed(int firstPlayer, int[] cards) {
+	public void cardsPlayed(int firstPlayerId, List<Card> cards, int from) {
 		int desiredColor = 0;
-		int player = firstPlayer;
+		int player = firstPlayerId;
 		Card bestCard = null;
 		
 		// Discard cards
-		for (int i = 0; i < 4; i++) {
-			Card card = Utils.getCard(cards[i]);
-			
+		for (Card card : cards) {
 			// Set card as discarded
 			card.discard();
 		}
 		
 		// Extract information
-		for (int i = 0; i < 4; i++) {
-			Card card = Utils.getCard(cards[i]);
+		int position = 1;
+		for (Card card : cards) {
 			Opponent opponent = opponents[player];
 			
 			if (card.getCode() != Api.EXCUSE) {
@@ -177,8 +183,19 @@ public class Game {
 				}
 				
 				// Count remaining cards
-				if (player != id) {
-					ctColors[Utils.getColorIndex(card.getColor())]--;
+				if (position >= from) {
+					if (--ctColors[Utils.getColorIndex(card.getColor())] == 0) {
+						// Color exhausted
+						for (int j = 0; j < 4; j++) {
+							if (j != id) {
+								if (card.getColor() == Card.ATOUT) {
+									opponents[j].hasNotAnyAtoutLeft();
+								} else {
+									opponents[j].hasNotColor(card.getColor());
+								}
+							}
+						}
+					}
 				}
 				
 				// Atout less strong than best atout
@@ -221,6 +238,8 @@ public class Game {
 					
 					nextDominant.setDominant();
 				}
+				
+				position++;
 			}
 			
 			player++;
@@ -254,7 +273,7 @@ public class Game {
 		return ct;
 	}
 	
-	public int countOpponentsCutingTo(int color, double proba) {
+	public int countOpponentsCuttingTo(int color, double proba) {
 		int ct = 0;
 		
 		for (int i = 0; i < 4; i++) {
@@ -264,6 +283,14 @@ public class Game {
 		}
 		
 		return ct;
+	}
+	
+	public Opponent[] getFollowers() {
+		return followers;
+	}
+	
+	public void print(String message) {
+		System.out.println(((taker) ? "*" : " ") + "[" + id + "] " + message);
 	}
 	
 	// -------------------------------------------------------------------------

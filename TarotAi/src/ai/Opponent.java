@@ -8,14 +8,12 @@ public class Opponent {
 	private Game game;
 	private Card bestAtout;
 	private boolean[] hasColor;
-	private double[] probaCut;
 	
 	public Opponent(int id, Game game) {
 		this.id = id;
 		this.game = game;
 		this.bestAtout = Utils.getCard(Api.ATOUT_21);
 		this.hasColor = new boolean[] { true, true, true, true, true };
-		this.probaCut = new double[] { 0, 0, 0, 0 };
 	}
 	
 	public int getId() {
@@ -47,7 +45,7 @@ public class Opponent {
 		int otherWithColors = game.countOpponentsWithColor(color) - 1;
 		
 		// Return cut probability (p/(n+p))
-		return otherWithColors / (nbCards + otherWithColors);
+		return (1.0 * otherWithColors) / (nbCards + otherWithColors);
 	}
 	
 	public Card getBestAtout() {

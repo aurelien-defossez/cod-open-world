@@ -5,15 +5,11 @@ import java.util.List;
 import ai.Card;
 import ai.Game;
 import ai.Hand;
+import ai.Opponent;
+import ai.Params;
 import ai.Utils;
 
 public class AttackFollowColor implements Strategy {
-	// -------------------------------------------------------------------------
-	// Constants
-	// -------------------------------------------------------------------------
-	
-	private static final int NB_CARDS_IN_COLOR = 14;
-	
 	// -------------------------------------------------------------------------
 	// Attributes
 	// -------------------------------------------------------------------------
@@ -41,49 +37,95 @@ public class AttackFollowColor implements Strategy {
 		
 		// Color desired
 		if (desiredColor != Card.ATOUT && !myColor.isEmpty()) {
-			System.out.println("[" + getName() + "] Executing...");
-			
-			// Play last card
-			if (myColor.size() == 1) {
-				return myColor.get(0);
-			}
+			game.print("[" + getName() + "] Executing...");
 			
 			// Retrieve information
-			Card bestTurnCard = Utils.getTurnBestCard(playedCards);
-			int remainingCards = Utils.countRemainingCards(desiredColor);
 			int position = playedCards.size() + 1;
+			Card bestTurnCard = Utils.getTurnBestCard(playedCards);
 			Card myBestCard = Utils.getBestCard(myColor);
+			Card aboveCard = Utils.getFirstCardAbove(bestTurnCard, myColor);
+			
+			game.print("BEST TURN CARD IS "+bestTurnCard);
 			
 			// Can't win turn
-			if (!myBestCard.isBetterThan(bestTurnCard, desiredColor)) {
+			if (aboveCard == null || bestTurnCard.isBetterThan(myBestCard, desiredColor)) {
 				// Play first card
+				game.print("Can't win turn, playing lowest card");
+				return myColor.get(0);
+			}
+
+			// Play points
+			if (position == 4 && myBestCard.getValue() >= Card.VALET) {
+				game.print("Win turn at last position with points");
+				return myBestCard;
+			}
+			
+			Opponent[] followers = game.getFollowers();
+			double cutProba = 0.0;
+			
+			for (int i = 0; i < 4 - position; i++) {
+				cutProba = Math.max(cutProba, followers[i].getCutProbability(desiredColor));
+			}
+			
+			game.print("Cut proba = " + cutProba);
+			
+			// Followers cut
+			if (cutProba == 1.0) {
+				game.print("Followers cut, playing lowest card");
 				return myColor.get(0);
 			}
 			
-			// Last position
-			if (position == 4) {
-				// Play points and win turn
-				if (myBestCard.getValue() >= Card.VALET) {
-					return myBestCard;
-				}
-				
-				// Play card to win turn without exceeding value
-				Card aboveCard = Utils.getNextCard(bestTurnCard);
-				
-				while (aboveCard.getValue() < Card.VALET) {
-					if (hand.hasCard(aboveCard)) {
-						return aboveCard;
+			// Play dominant card
+			if (myBestCard.isDominant()) {
+				// Followers may cut
+				switch (myBestCard.getValue()) {
+				case Card.ROI:
+					game.print("It should be safe, playing dominant");
+					if (cutProba <= Params.ATTACK_FOLLOW_COLOR_PLAY_ROI_CUT_TRESHOLD) {
+						return myBestCard;
 					}
-					
-					aboveCard = Utils.getNextCard(aboveCard);
+					break;
+				
+				case Card.DAME:
+					game.print("It should be safe, playing dominant");
+					if (cutProba <= Params.ATTACK_FOLLOW_COLOR_PLAY_DAME_CUT_TRESHOLD) {
+						return myBestCard;
+					}
+					break;
+				
+				case Card.CAVALIER:
+					game.print("It should be safe, playing dominant");
+					if (cutProba <= Params.ATTACK_FOLLOW_COLOR_PLAY_CAVALIER_CUT_TRESHOLD) {
+						return myBestCard;
+					}
+					break;
+				
+				case Card.VALET:
+					game.print("It should be safe, playing dominant");
+					if (cutProba <= Params.ATTACK_FOLLOW_COLOR_PLAY_VALET_CUT_TRESHOLD) {
+						return myBestCard;
+					}
+					break;
+				
+				default:
+					if (position == 4) {
+						game.print("Win turn with just above card");
+						return aboveCard;
+					} else {
+						game.print("Trying to win turn with dominant");
+						return myBestCard;
+					}
 				}
 			}
-			// Second or third position
-			else {
-				// Check if next players cut > Play low card
-				// Else, check if they might cut > Play C- card depending on probability
-				// Else > play dominant card, or V- card
+			
+			// Play card in order to win
+			if (aboveCard.getValue() <= 10) {
+				game.print("Trying to win turn with above card");
+				return aboveCard;
 			}
+			
+			game.print("Playing lowest card by default");
+			return myColor.get(0);
 		}
 		
 		return null;

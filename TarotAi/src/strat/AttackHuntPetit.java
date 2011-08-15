@@ -43,7 +43,7 @@ public class AttackHuntPetit implements Strategy {
 		checkRequirements();
 		
 		if (isActivated) {
-			System.out.println("[" + getName() + "] Executing...");
+			game.print("[" + getName() + "] Executing...");
 			
 			// Retrieve information
 			List<Card> myAtouts = hand.getColorList(Card.ATOUT);
@@ -71,7 +71,7 @@ public class AttackHuntPetit implements Strategy {
 				currentAtout = Utils.getPreviousCard(currentAtout);
 			}
 			
-			System.out.println("Suites = " +
+			game.print("Suites = " +
 					"[" + suite[0] + ", " + suite[1] + ", " + suite[2] + "]");
 			
 			// Count atouts ratios after attack
@@ -83,12 +83,12 @@ public class AttackHuntPetit implements Strategy {
 					/ (nbMyAtouts - suite[i]) / nbOpponentsWithAtout;
 			}
 			
-			System.out.println("Ratios = " +
+			game.print("Ratios = " +
 					"[" + ratio[0] + ", " + ratio[1] + ", " + ratio[2] + "]");
 			
 			// Direct hunt
 			if (ratio[0] <= Params.PETIT_HUNT_MAX_RATIO_DIRECT) {
-				System.out.println("Direct attack");
+				game.print("Direct attack");
 				
 				// Play best atout
 				return Utils.getBestCard(myAtouts);
@@ -96,7 +96,7 @@ public class AttackHuntPetit implements Strategy {
 			// Indirect hunt
 			else if (ratio[1] <= Params.PETIT_HUNT_MAX_RATIO_INDIRECT
 				|| ratio[2] <= Params.PETIT_HUNT_MAX_RATIO_INDIRECT_2) {
-				System.out.println("Indirect attack");
+				game.print("Indirect attack");
 				
 				// Play first atout
 				return (myAtouts.get(0).getCode() == Api.EXCUSE) ?
@@ -125,7 +125,7 @@ public class AttackHuntPetit implements Strategy {
 	private void deactivate() {
 		isActivated = false;
 		
-		System.out.println("[" + getName() + "] Strategy deactivated.");
+		game.print("[" + getName() + "] Strategy deactivated.");
 	}
 	
 	private String getName() {

@@ -5,6 +5,8 @@
 
 package ai;
 
+import java.util.ArrayList;
+import java.util.List;
 import game.Api;
 import game.TarotAi;
 
@@ -47,7 +49,7 @@ public class Ai implements TarotAi {
 		this.currentContract = 0;
 		this.position = position;
 		
-		System.out.println("[" + id + "] My hand is " + hand + ", pos #" + position + ".");
+		print("My hand is " + hand + ", pos #" + position + ".");
 	}
 	
 	@Override
@@ -57,14 +59,13 @@ public class Ai implements TarotAi {
 		int score = hand.getScore();
 		int scoreSans = hand.getScoreSans();
 		
-		System.out
-			.println("[" + id + "] Scores = " + score + " / " + scoreSans);
+		print("Scores = " + score + " / " + scoreSans);
 		
 		// Garde contre
 		if (scoreSans >= Params.THRESHOLD_GARDE_CONTRE
 			&& currentContract < Api.ENCHERE_GARDE_CONTRE) {
 			
-			System.out.println("[" + id + "] I bid " + Api.decode(Api.ENCHERE_GARDE_CONTRE)
+			print("I bid " + Api.decode(Api.ENCHERE_GARDE_CONTRE)
 				+ " (" + Api.decode(Api.bid(Api.ENCHERE_GARDE_CONTRE)) + ")");
 			
 			isTaker = true;
@@ -73,7 +74,7 @@ public class Ai implements TarotAi {
 		else if (scoreSans >= Params.THRESHOLD_GARDE_SANS
 			&& currentContract < Api.ENCHERE_GARDE_SANS) {
 			
-			System.out.println("[" + id + "] I bid " + Api.decode(Api.ENCHERE_GARDE_SANS)
+			print("I bid " + Api.decode(Api.ENCHERE_GARDE_SANS)
 				+ " (" + Api.decode(Api.bid(Api.ENCHERE_GARDE_SANS)) + ")");
 			
 			isTaker = true;
@@ -82,7 +83,7 @@ public class Ai implements TarotAi {
 		else if (score >= Params.THRESHOLD_GARDE
 			&& currentContract < Api.ENCHERE_GARDE) {
 			
-			System.out.println("[" + id + "] I bid " + Api.decode(Api.ENCHERE_GARDE)
+			print("I bid " + Api.decode(Api.ENCHERE_GARDE)
 				+ " (" + Api.decode(Api.bid(Api.ENCHERE_GARDE)) + ")");
 			
 			isTaker = true;
@@ -99,7 +100,7 @@ public class Ai implements TarotAi {
 	public void dogInfo(int[] cards) {
 		// It's my dog
 		if (isTaker) {
-			System.out.println("[" + id + "] My dog is {" + Utils.printCards(cards) + "}");
+			print("My dog is {" + Utils.printCards(cards) + "}");
 			
 			hand.addCards(cards, true);
 		}
@@ -107,13 +108,13 @@ public class Ai implements TarotAi {
 	
 	@Override
 	public void setCardsAside() {
-		System.out.println("[" + id + "] My hand is " + hand);
+		print("My hand is " + hand);
 		
 		int[] cardsAside = hand.setCardsAside();
 		
-		System.out.println("[" + id + "] Setting aside {" + Utils.printCards(cardsAside) + "}"
+		print("Setting aside {" + Utils.printCards(cardsAside) + "}"
 			+ " (" + Api.decode(Api.setCardsAside(cardsAside)) + ")");
-		System.out.println("[" + id + "] My hand is " + hand);
+		print("My hand is " + hand);
 	}
 	
 	@Override
@@ -129,16 +130,33 @@ public class Ai implements TarotAi {
 	
 	@Override
 	public void playCard(int firstPlayer, int[] cards) {
+		List<Card> gameCards = new ArrayList<Card>(3);
+
+		for (int i = 0; i < 3; i++) {
+			if (cards[i] != 0) {
+				gameCards.add(Utils.getCard(cards[i]));
+			}
+		}
+		
+		position = gameCards.size() + 1;
+		
 		if (game == null) {
 			game = new Game(this, hand, isTaker);
 		}
-		
-		game.playCard(cards);
+
+		game.cardsPlayed(firstPlayer, gameCards, 0);
+		game.playCard(gameCards);
 	}
 	
 	@Override
 	public void turnInfo(int firstPlayer, int turnWinner, int[] cards) {
-		game.cardsPlayed(firstPlayer, cards);
+		List<Card> gameCards = new ArrayList<Card>(4);
+		
+		for (int i = 0; i < 4; i++) {
+			gameCards.add(Utils.getCard(cards[i]));
+		}
+		
+		game.cardsPlayed(firstPlayer, gameCards, position + 1);
 	}
 	
 	@Override
@@ -151,5 +169,9 @@ public class Ai implements TarotAi {
 	public void stop() {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	private void print(String message) {
+		System.out.println(" [" + id + "] " + message);
 	}
 }

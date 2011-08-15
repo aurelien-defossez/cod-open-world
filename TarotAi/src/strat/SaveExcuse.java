@@ -43,7 +43,7 @@ public class SaveExcuse implements Strategy {
 		checkRequirements();
 		
 		if (isActivated) {
-			System.out.println("[" + getName() + "] Executing...");
+			game.print("[" + getName() + "] Executing...");
 			
 			// Play excuse if next turn is last turn
 			if (game.getTurnNb() == Game.NB_TURNS - 1) {
@@ -69,7 +69,7 @@ public class SaveExcuse implements Strategy {
 	private void deactivate() {
 		isActivated = false;
 		
-		System.out.println("[" + getName() + "] Strategy deactivated.");
+		game.print("[" + getName() + "] Strategy deactivated.");
 	}
 	
 	private String getName() {

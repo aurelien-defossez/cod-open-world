@@ -8,6 +8,7 @@ import java.util.Map;
 import ai.Card;
 import ai.Game;
 import ai.Hand;
+import ai.Params;
 import ai.Utils;
 
 public class AttackEntameDefault implements Strategy {
@@ -38,7 +39,7 @@ public class AttackEntameDefault implements Strategy {
 	
 	@Override
 	public Card execute(List<Card> playedCards) {
-		System.out.println("[" + getName() + "] Executing...");
+		game.print("[" + getName() + "] Executing...");
 		
 		// Last card
 		if (game.getTurnNb() == 18) {
@@ -57,10 +58,13 @@ public class AttackEntameDefault implements Strategy {
 			// Determine how many players cut for each color
 			for (int color : Utils.getColors()) {
 				if (!hand.getColorList(color).isEmpty()) {
-					cuts.get(3 - game.countOpponentsWithColor(color, true)).add(color);
+					cuts.get(game.countOpponentsCuttingTo(color,
+							Params.ATTACK_ENTAME_DEFAULT_CUT_TRESHOLD)).add(color);
 					
-					System.out.println((3 - game.countOpponentsCutingTo(color, 0.6))
-						+ " opponents cut to " + Utils.getStringColor(color) + " (p=0.6)");
+					game.print(game.countOpponentsCuttingTo(color,
+						Params.ATTACK_ENTAME_DEFAULT_CUT_TRESHOLD)
+						+ " opponents cut to " + Utils.getStringColor(color)
+						+ " (p=" + Params.ATTACK_ENTAME_DEFAULT_CUT_TRESHOLD + ")");
 				}
 			}
 			
@@ -79,7 +83,7 @@ public class AttackEntameDefault implements Strategy {
 						
 						if (colorList.get(0).getValue() <= expendable) {
 							possibleCards.add(colorList.get(0));
-							System.out.println("Add " + colorList.get(0) + " to possible cards");
+							game.print("Add " + colorList.get(0) + " to possible cards");
 						}
 					}
 					

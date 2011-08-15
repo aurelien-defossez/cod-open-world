@@ -146,6 +146,20 @@ public class Utils {
 		return (cards.isEmpty()) ? null : cards.get(cards.size() - 1);
 	}
 	
+	public static Card getFirstCardAbove(Card card, List<Card> cards) {
+		Card aboveCard = Utils.getNextCard(card);
+		
+		while (aboveCard != null) {
+			if (cards.contains(aboveCard)) {
+				return aboveCard;
+			}
+			
+			aboveCard = Utils.getNextCard(aboveCard);
+		}
+		
+		return null;
+	}
+	
 	public static Card getCardValue(Collection<Card> cards, int value) {
 		for (Card card : cards) {
 			if (card.getValue() == value) {
@@ -199,7 +213,7 @@ public class Utils {
 			break;
 		}
 		
-		while (lastCard.getValue() >= 1) {
+		while (lastCard != null) {
 			if (lastCard.isInGame()) {
 				ctCards++;
 			}
@@ -222,6 +236,23 @@ public class Utils {
 			return 2;
 		case Card.TREFLE:
 			return 3;
+		default:
+			return -1;
+		}
+	}
+	
+	public static int getColorFromIndex(int colorIndex) {
+		switch (colorIndex) {
+		case 4:
+			return Card.ATOUT;
+		case 0:
+			return Card.COEUR;
+		case 1:
+			return Card.CARREAU;
+		case 2:
+			return Card.PIQUE;
+		case 3:
+			return Card.TREFLE;
 		default:
 			return -1;
 		}

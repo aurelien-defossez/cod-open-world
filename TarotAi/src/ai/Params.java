@@ -35,8 +35,14 @@ public class Params {
 	public static final int POINTS_SINGLETTE = 3;
 	
 	// Strategies
-	public static final int MIN_LONGUE_SIZE = 4;
+	public static final int MIN_LONGUE_SIZE = 5;
 	public static final double PETIT_HUNT_MAX_RATIO_DIRECT = 0.28;
 	public static final double PETIT_HUNT_MAX_RATIO_INDIRECT = 0.25;
 	public static final double PETIT_HUNT_MAX_RATIO_INDIRECT_2 = 0.20;
+	public static final double ATTACK_ENTAME_DEFAULT_CUT_TRESHOLD = 0.60;
+	public static final double ATTACK_FOLLOW_COLOR_PLAY_ROI_CUT_TRESHOLD = 0.30;
+	public static final double ATTACK_FOLLOW_COLOR_PLAY_DAME_CUT_TRESHOLD = 0.35;
+	public static final double ATTACK_FOLLOW_COLOR_PLAY_CAVALIER_CUT_TRESHOLD = 0.40;
+	public static final double ATTACK_FOLLOW_COLOR_PLAY_VALET_CUT_TRESHOLD = 0.50;
+	
 }

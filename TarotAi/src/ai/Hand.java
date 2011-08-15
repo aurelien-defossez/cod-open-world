@@ -10,7 +10,8 @@ public class Hand {
 	// -------------------------------------------------------------------------
 	// Attributes
 	// -------------------------------------------------------------------------
-	
+
+	private List<Card> cardsAside;
 	private List<Card> coeur;
 	private List<Card> carreau;
 	private List<Card> pique;
@@ -27,6 +28,7 @@ public class Hand {
 	// -------------------------------------------------------------------------
 	
 	public Hand(int[] cards) {
+		cardsAside = new ArrayList<Card>(6);
 		coeur = new ArrayList<Card>();
 		carreau = new ArrayList<Card>();
 		pique = new ArrayList<Card>();
@@ -135,7 +137,7 @@ public class Hand {
 	}
 	
 	public int[] setCardsAside() {
-		int[] cardsAside = new int[6];
+		int[] codesAside = new int[6];
 		int ctDiscarded = 0;
 		
 		// TODO: Set other parameters to set aside cards (Point saving,
@@ -187,10 +189,15 @@ public class Hand {
 				break;
 			}
 			
+			cardsAside.add(discarded);
+			codesAside[ctDiscarded++] = discarded.getCode();
 			removeCard(discarded);
-			cardsAside[ctDiscarded++] = discarded.getCode();
 		}
 		
+		return codesAside;
+	}
+	
+	public List<Card> getCardsAside() {
 		return cardsAside;
 	}
 	

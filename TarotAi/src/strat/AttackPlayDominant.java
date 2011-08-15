@@ -31,7 +31,7 @@ public class AttackPlayDominant implements Strategy {
 	
 	@Override
 	public Card execute(List<Card> playedCards) {
-		System.out.println("[" + getName() + "] Executing...");
+		game.print("[" + getName() + "] Executing...");
 		
 		List<Card> atouts = hand.getColorList(Card.ATOUT);
 		int myAtouts = atouts.size();
@@ -40,7 +40,7 @@ public class AttackPlayDominant implements Strategy {
 		
 		// Still has atouts
 		if (atoutsInDefense > 0 && opponentsWithAtout > 0) {
-			System.out.println("I have " + myAtouts + " atouts, they have "
+			game.print("I have " + myAtouts + " atouts, they have "
 				+ atoutsInDefense + " (between "
 				+ opponentsWithAtout + " players)");
 			
