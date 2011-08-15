@@ -244,7 +244,7 @@ public class Utils {
 		}
 		
 		while(lastCard.getValue() > 10) {
-			if (lastCard.isInGame() && !hand.hasCard(lastCard)) {
+			if (lastCard.isInGame()) {
 				points += lastCard.getPoints();
 			}
 			

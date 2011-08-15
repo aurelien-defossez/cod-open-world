@@ -65,8 +65,10 @@ public class AttackFollowColor implements Strategy {
 			double currentPoints = Utils.countPoints(playedCards, 1.5);
 			double score = currentPoints / 10 + remainingPoints / 20 - cutProba;
 			
-			game.print("Cut proba=" + cutProba + "; currentPoints=" + currentPoints
-				+ "; remainingPoints=" + remainingPoints + "; score=" + score);
+			game.print("Cut proba=" + cutProba + "; " +
+					"currentPoints=" + currentPoints + "; " +
+					"remainingPoints=" + remainingPoints + "; " +
+					"score=" + score);
 			
 			// Followers cut
 			if (cutProba == 1.0) {
@@ -79,30 +81,30 @@ public class AttackFollowColor implements Strategy {
 				// Followers may cut
 				switch (myBestCard.getValue()) {
 				case Card.ROI:
-					game.print("It should be safe, playing dominant");
 					if (score >= Params.ATTACK_FOLLOW_COLOR_PLAY_ROI_MIN_SCORE
 						|| !game.colorAlreadyPlayed(desiredColor)) {
+						game.print("It should be safe, playing dominant");
 						return myBestCard;
 					}
 					break;
 				
 				case Card.DAME:
-					game.print("It should be safe, playing dominant");
 					if (score >= Params.ATTACK_FOLLOW_COLOR_PLAY_DAME_MIN_SCORE) {
+						game.print("It should be safe, playing dominant");
 						return myBestCard;
 					}
 					break;
 				
 				case Card.CAVALIER:
-					game.print("It should be safe, playing dominant");
 					if (score >= Params.ATTACK_FOLLOW_COLOR_PLAY_CAVALIER_MIN_SCORE) {
+						game.print("It should be safe, playing dominant");
 						return myBestCard;
 					}
 					break;
 				
 				case Card.VALET:
-					game.print("It should be safe, playing dominant");
 					if (score >= Params.ATTACK_FOLLOW_COLOR_PLAY_VALET_MIN_SCORE) {
+						game.print("It should be safe, playing dominant");
 						return myBestCard;
 					}
 					break;

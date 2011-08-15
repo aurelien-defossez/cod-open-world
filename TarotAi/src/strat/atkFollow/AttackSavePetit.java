@@ -51,24 +51,34 @@ public class AttackSavePetit implements Strategy {
 			game.print("[" + getName() + "] Executing...");
 			
 			Card bestTurnCard = Utils.getTurnBestCard(playedCards);
-
+			
 			// Opponent already cut, don't save it
 			if (bestTurnCard.getColor() == Card.ATOUT) {
 				return null;
 			}
-
+			
 			int position = playedCards.size() + 1;
 			double cutProba = game.getFollowersCutProbability(desiredColor, position);
 			
-			// Opponents may cut, don't try to save it
-			if (cutProba > Params.ATTACK_SAVE_PETIT_CUT_TRESHOLD) {
+			// Enough atouts to place it to the end
+			int opponentsWithAtout = game.countOpponentsWithColor(Card.ATOUT);
+			if (opponentsWithAtout > 0
+				&& myAtouts.size() > game.getColorCount(Card.ATOUT) / opponentsWithAtout
+				+ opponentsWithAtout - 1) {
 				return null;
 			}
 			
-			// Enough atout to place it to the end: null
-			// Else play it
+			// Opponents may cut, don't try to save it
+			if (position == 2 && cutProba > Params.ATTACK_SAVE_PETIT_MAX_CUT_TRESHOLD_SECOND) {
+				return null;
+			} else if (position == 3 && cutProba > Params.ATTACK_SAVE_PETIT_MAX_CUT_TRESHOLD_THIRD) {
+				return null;
+			}
+			
+			// Save it
+			return petit;
 		}
-
+		
 		return null;
 	}
 	
