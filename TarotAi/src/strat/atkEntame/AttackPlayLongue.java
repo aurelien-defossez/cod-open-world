@@ -1,36 +1,46 @@
 
-package strat;
+package strat.atkEntame;
 
 import java.util.List;
-import game.Api;
+import strat.Strategy;
 import ai.Card;
 import ai.Game;
 import ai.Hand;
+import ai.Params;
 import ai.Utils;
 
-public class SaveExcuse implements Strategy {
-	// -------------------------------------------------------------------------
-	// Constants
-	// -------------------------------------------------------------------------
-	
-	private final Card excuse = Utils.getCard(Api.EXCUSE);
-	
+public class AttackPlayLongue implements Strategy {
 	// -------------------------------------------------------------------------
 	// Attributes
 	// -------------------------------------------------------------------------
 	
-	private boolean isActivated;
 	private Game game;
-	private Hand hand;
+	private boolean isActivated;
+	
+	private List<Card> longue;
 	
 	// -------------------------------------------------------------------------
 	// Public methods
 	// -------------------------------------------------------------------------
 	
-	public SaveExcuse(Game game, Hand hand) {
-		this.game = game;
-		this.hand = hand;
+	public AttackPlayLongue(Game game, Hand hand) {
 		this.isActivated = true;
+		this.game = game;
+		
+		for (Integer color : Utils.getColors()) {
+			List<Card> colorSet = hand.getColorList(color);
+			
+			if (colorSet.size() >= Params.MIN_LONGUE_SIZE
+				&& (longue == null || colorSet.size() > longue.size())) {
+				longue = colorSet;
+			}
+		}
+		
+		if (longue != null) {
+			game.print("My longue is {" + Utils.printCards(longue) + "}");
+		} else {
+			deactivate();
+		}
 	}
 	
 	@Override
@@ -45,12 +55,30 @@ public class SaveExcuse implements Strategy {
 		if (isActivated) {
 			game.print("[" + getName() + "] Executing...");
 			
-			// Play excuse if next turn is last turn
-			if (game.getTurnNb() == Game.NB_TURNS - 1) {
-				deactivate();
-				
-				return excuse;
+			Card chosenCard = null;
+			Card king = Utils.getCardValue(longue, Card.ROI);
+			
+			// Choose king
+			if (king != null) {
+				chosenCard = king;
 			}
+			// Choose first card
+			else {
+				chosenCard = longue.iterator().next();
+				
+				// Don't waste cards above valet
+				if (chosenCard.getValue() > Card.VALET) {
+					chosenCard = null;
+					deactivate();
+				}
+			}
+			
+			// Last card
+			if (longue.size() == 1) {
+				deactivate();
+			}
+			
+			return chosenCard;
 		}
 		
 		return null;
@@ -61,7 +89,7 @@ public class SaveExcuse implements Strategy {
 	// -------------------------------------------------------------------------
 	
 	private void checkRequirements() {
-		if (!hand.hasCard(excuse)) {
+		if (longue == null || longue.size() == 0 || game.countOpponentsWithColor(Card.ATOUT) < 3) {
 			deactivate();
 		}
 	}

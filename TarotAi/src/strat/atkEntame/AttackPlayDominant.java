@@ -1,7 +1,8 @@
 
-package strat;
+package strat.atkEntame;
 
 import java.util.List;
+import strat.Strategy;
 import ai.Card;
 import ai.Game;
 import ai.Hand;

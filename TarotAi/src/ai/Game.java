@@ -3,13 +3,13 @@ package ai;
 
 import game.Api;
 import java.util.List;
-import strat.AttackEntameDefault;
-import strat.AttackFollowColor;
-import strat.AttackHuntPetit;
-import strat.AttackPlayDominant;
-import strat.AttackPlayLongue;
-import strat.SaveExcuse;
 import strat.Strategy;
+import strat.atkEntame.AttackEntameDefault;
+import strat.atkEntame.AttackHuntPetit;
+import strat.atkEntame.AttackPlayDominant;
+import strat.atkEntame.AttackPlayLongue;
+import strat.atkFollow.AttackFollowColor;
+import strat.common.SaveExcuse;
 
 public class Game {
 	// -------------------------------------------------------------------------

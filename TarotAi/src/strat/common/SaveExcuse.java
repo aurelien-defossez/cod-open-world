@@ -1,45 +1,37 @@
 
-package strat;
+package strat.common;
 
 import java.util.List;
+import strat.Strategy;
+import game.Api;
 import ai.Card;
 import ai.Game;
 import ai.Hand;
-import ai.Params;
 import ai.Utils;
 
-public class AttackPlayLongue implements Strategy {
+public class SaveExcuse implements Strategy {
+	// -------------------------------------------------------------------------
+	// Constants
+	// -------------------------------------------------------------------------
+	
+	private final Card excuse = Utils.getCard(Api.EXCUSE);
+	
 	// -------------------------------------------------------------------------
 	// Attributes
 	// -------------------------------------------------------------------------
 	
-	private Game game;
 	private boolean isActivated;
-	
-	private List<Card> longue;
+	private Game game;
+	private Hand hand;
 	
 	// -------------------------------------------------------------------------
 	// Public methods
 	// -------------------------------------------------------------------------
 	
-	public AttackPlayLongue(Game game, Hand hand) {
-		this.isActivated = true;
+	public SaveExcuse(Game game, Hand hand) {
 		this.game = game;
-		
-		for (Integer color : Utils.getColors()) {
-			List<Card> colorSet = hand.getColorList(color);
-			
-			if (colorSet.size() >= Params.MIN_LONGUE_SIZE
-				&& (longue == null || colorSet.size() > longue.size())) {
-				longue = colorSet;
-			}
-		}
-		
-		if (longue != null) {
-			game.print("My longue is {" + Utils.printCards(longue) + "}");
-		} else {
-			deactivate();
-		}
+		this.hand = hand;
+		this.isActivated = true;
 	}
 	
 	@Override
@@ -54,30 +46,12 @@ public class AttackPlayLongue implements Strategy {
 		if (isActivated) {
 			game.print("[" + getName() + "] Executing...");
 			
-			Card chosenCard = null;
-			Card king = Utils.getCardValue(longue, Card.ROI);
-			
-			// Choose king
-			if (king != null) {
-				chosenCard = king;
-			}
-			// Choose first card
-			else {
-				chosenCard = longue.iterator().next();
-				
-				// Don't waste cards above valet
-				if (chosenCard.getValue() > Card.VALET) {
-					chosenCard = null;
-					deactivate();
-				}
-			}
-			
-			// Last card
-			if (longue.size() == 1) {
+			// Play excuse if next turn is last turn
+			if (game.getTurnNb() == Game.NB_TURNS - 1) {
 				deactivate();
+				
+				return excuse;
 			}
-			
-			return chosenCard;
 		}
 		
 		return null;
@@ -88,7 +62,7 @@ public class AttackPlayLongue implements Strategy {
 	// -------------------------------------------------------------------------
 	
 	private void checkRequirements() {
-		if (longue == null || longue.size() == 0 || game.countOpponentsWithColor(Card.ATOUT) < 3) {
+		if (!hand.hasCard(excuse)) {
 			deactivate();
 		}
 	}

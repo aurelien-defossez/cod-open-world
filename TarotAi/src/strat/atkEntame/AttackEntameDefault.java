@@ -1,10 +1,11 @@
 
-package strat;
+package strat.atkEntame;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import strat.Strategy;
 import ai.Card;
 import ai.Game;
 import ai.Hand;
