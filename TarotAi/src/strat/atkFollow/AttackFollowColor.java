@@ -29,7 +29,7 @@ public class AttackFollowColor implements Strategy {
 	// -------------------------------------------------------------------------
 	// Public methods
 	// -------------------------------------------------------------------------
-
+	
 	@Override
 	public void checkRequirements() {
 		// Do nothing
@@ -67,7 +67,9 @@ public class AttackFollowColor implements Strategy {
 			
 			double cutProba = game.getFollowersCutProbability(desiredColor, position);
 			double currentPoints = Utils.countPoints(playedCards, 1.5);
-			double remainingPoints = Utils.countRemainingPoints(desiredColor, hand) - currentPoints;
+			double currentColorPoints = Utils.countPoints(playedCards, 1.5, desiredColor);
+			double remainingPoints =
+				Utils.countRemainingPoints(desiredColor, hand) - currentColorPoints;
 			double score = currentPoints / 10 + remainingPoints / 20 - cutProba;
 			
 			game.print("Cut proba=" + cutProba + "; " +

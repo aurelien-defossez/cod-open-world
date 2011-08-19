@@ -123,23 +123,12 @@ public class AttackEntameDefault implements Strategy {
 			}
 		}
 		
-		// Play an atout, except the petit
-		List<Card> myAtouts = hand.getColorList(Card.ATOUT);
-		if (!myAtouts.isEmpty()
-			&& (opponentsWithAtouts == 0 ||
-				myAtouts.size() > game.getColorCount(Card.ATOUT) / opponentsWithAtouts
-					+ opponentsWithAtouts - 1)) {
-			
-			Card possibleAtout = playAtout();
-			if (possibleAtout != null) {
-				return possibleAtout;
-			}
-		}
-		
 		// Play the smallest color card
 		Card possibleCard = null;
+		int ctCards = 0;
 		for (int color : Utils.getColors()) {
 			List<Card> colorList = hand.getColorList(color);
+			ctCards += colorList.size();
 			Card firstCard = (colorList.isEmpty()) ? null : colorList.get(0);
 			
 			// New smallest card
@@ -149,17 +138,17 @@ public class AttackEntameDefault implements Strategy {
 			}
 		}
 		
+		// Keep color card until the end
+		if (ctCards == 1 && game.getTurnNb() < 18) {
+			return playAtout();
+		}
+		
 		if (possibleCard != null) {
 			return possibleCard;
 		}
 		
 		// Play atout
-		Card possibleAtout = playAtout();
-		if (possibleAtout != null) {
-			return possibleAtout;
-		}
-		
-		return null;
+		return playAtout();
 	}
 	
 	@Override
@@ -175,11 +164,9 @@ public class AttackEntameDefault implements Strategy {
 		List<Card> myAtouts = hand.getColorList(Card.ATOUT);
 		Card bestAtout = Utils.getBestCard(myAtouts);
 		
-		// Play dominant atout
-		if (bestAtout.isDominant()) {
-			if (bestAtout.getValue() > 1) {
-				return bestAtout;
-			}
+		// Play dominant atout (except petit)
+		if (bestAtout.isDominant() && bestAtout.getValue() > 1) {
+			return bestAtout;
 		}
 		// Play lower atout
 		else {

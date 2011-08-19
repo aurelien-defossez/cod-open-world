@@ -265,6 +265,18 @@ public class Utils {
 		
 		return points;
 	}
+
+	public static double countPoints(List<Card> playedCards, double minimum, int color) {
+		double points = 0.0;
+		
+		for (Card card : playedCards) {
+			if (card.getPoints() >= minimum && card.getColor() == color) {
+				points += card.getPoints();
+			}
+		}
+		
+		return points;
+	}
 	
 	public static int getColorIndex(int color) {
 		switch (color) {
