@@ -1,8 +1,7 @@
 
-package strat.common;
+package strat;
 
 import java.util.List;
-import strat.Strategy;
 import game.Api;
 import ai.Card;
 import ai.Game;
@@ -25,7 +24,7 @@ public class SaveExcuse implements Strategy {
 	private Hand hand;
 	
 	// -------------------------------------------------------------------------
-	// Public methods
+	// Constructor
 	// -------------------------------------------------------------------------
 	
 	public SaveExcuse(Game game, Hand hand) {
@@ -33,10 +32,16 @@ public class SaveExcuse implements Strategy {
 		this.hand = hand;
 		this.isActivated = true;
 	}
+
+	// -------------------------------------------------------------------------
+	// Public methods
+	// -------------------------------------------------------------------------
 	
 	@Override
-	public boolean isActivated() {
-		return isActivated;
+	public void checkRequirements() {
+		if (!hand.hasCard(excuse)) {
+			deactivate();
+		}
 	}
 	
 	@Override
@@ -57,15 +62,14 @@ public class SaveExcuse implements Strategy {
 		return null;
 	}
 	
+	@Override
+	public boolean isActivated() {
+		return isActivated;
+	}
+	
 	// -------------------------------------------------------------------------
 	// Private methods
 	// -------------------------------------------------------------------------
-	
-	private void checkRequirements() {
-		if (!hand.hasCard(excuse)) {
-			deactivate();
-		}
-	}
 	
 	private void deactivate() {
 		isActivated = false;

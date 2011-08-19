@@ -32,10 +32,10 @@ public class AttackEntameDefault implements Strategy {
 	// -------------------------------------------------------------------------
 	// Public methods
 	// -------------------------------------------------------------------------
-	
+
 	@Override
-	public boolean isActivated() {
-		return true;
+	public void checkRequirements() {
+		// Do nothing
 	}
 	
 	@Override
@@ -160,6 +160,11 @@ public class AttackEntameDefault implements Strategy {
 		}
 		
 		return null;
+	}
+	
+	@Override
+	public boolean isActivated() {
+		return true;
 	}
 	
 	// -------------------------------------------------------------------------

@@ -38,6 +38,13 @@ public class AttackSavePetit implements Strategy {
 	// -------------------------------------------------------------------------
 	// Public methods
 	// -------------------------------------------------------------------------
+
+	@Override
+	public void checkRequirements() {
+		if (!hand.hasCard(petit)) {
+			deactivate();
+		}
+	}
 	
 	@Override
 	public Card execute(List<Card> playedCards) {
@@ -76,6 +83,7 @@ public class AttackSavePetit implements Strategy {
 			}
 			
 			// Save it
+			deactivate();
 			return petit;
 		}
 		
@@ -90,12 +98,6 @@ public class AttackSavePetit implements Strategy {
 	// -------------------------------------------------------------------------
 	// Private methods
 	// -------------------------------------------------------------------------
-	
-	private void checkRequirements() {
-		if (!hand.hasCard(petit)) {
-			deactivate();
-		}
-	}
 	
 	private void deactivate() {
 		isActivated = false;

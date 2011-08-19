@@ -17,12 +17,21 @@ public class AttackPlayDominant implements Strategy {
 	private Hand hand;
 	
 	// -------------------------------------------------------------------------
-	// Public methods
+	// Constructor
 	// -------------------------------------------------------------------------
 	
 	public AttackPlayDominant(Game game, Hand hand) {
 		this.game = game;
 		this.hand = hand;
+	}
+	
+	// -------------------------------------------------------------------------
+	// Public methods
+	// -------------------------------------------------------------------------
+	
+	@Override
+	public void checkRequirements() {
+		// Do nothing
 	}
 	
 	@Override

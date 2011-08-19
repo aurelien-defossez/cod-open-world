@@ -3,6 +3,7 @@ package ai;
 
 import game.Api;
 import java.util.List;
+import strat.SaveExcuse;
 import strat.Strategy;
 import strat.atkEntame.AttackEntameDefault;
 import strat.atkEntame.AttackHuntPetit;
@@ -14,7 +15,6 @@ import strat.atkFollow.AttackFollowColor;
 import strat.atkFollow.AttackPiss;
 import strat.atkFollow.AttackPlayExcuse;
 import strat.atkFollow.AttackSavePetit;
-import strat.common.SaveExcuse;
 
 public class Game {
 	// -------------------------------------------------------------------------
@@ -121,6 +121,17 @@ public class Game {
 	}
 	
 	public void playCard(List<Card> playedCards) {
+		// Initialize strategies
+		if (turnNb == 1) {
+			for (Strategy strategy : strategiesEntame) {
+				strategy.checkRequirements();
+			}
+			
+			for (Strategy strategy : strategiesFollow) {
+				strategy.checkRequirements();
+			}
+		}
+		
 		Card chosenCard = null;
 		
 		print("My hand is " + hand);

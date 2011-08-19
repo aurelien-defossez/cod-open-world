@@ -2,9 +2,7 @@
 package strat.atkFollow;
 
 import game.Api;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import strat.Strategy;
 import ai.Card;
 import ai.Game;
@@ -19,6 +17,7 @@ public class AttackBuy implements Strategy {
 	
 	private Game game;
 	private Hand hand;
+	private boolean isActivated;
 	
 	// -------------------------------------------------------------------------
 	// Constructor
@@ -27,11 +26,17 @@ public class AttackBuy implements Strategy {
 	public AttackBuy(Game game, Hand hand) {
 		this.game = game;
 		this.hand = hand;
+		this.isActivated = true;
 	}
 	
 	// -------------------------------------------------------------------------
 	// Public methods
 	// -------------------------------------------------------------------------
+	
+	@Override
+	public void checkRequirements() {
+		// Do nothing
+	}
 	
 	@Override
 	public Card execute(List<Card> playedCards) {
@@ -76,18 +81,28 @@ public class AttackBuy implements Strategy {
 				}
 			}
 		}
+		// No more atouts
+		else {
+			deactivate();
+		}
 		
 		return null;
 	}
 	
 	@Override
 	public boolean isActivated() {
-		return true;
+		return isActivated;
 	}
 	
 	// -------------------------------------------------------------------------
 	// Private methods
 	// -------------------------------------------------------------------------
+
+	private void deactivate() {
+		isActivated = false;
+		
+		game.print("[" + getName() + "] Strategy deactivated.");
+	}
 	
 	private String getName() {
 		return getClass().getSimpleName();

@@ -6,9 +6,6 @@ import strat.Strategy;
 import ai.Card;
 import ai.Game;
 import ai.Hand;
-import ai.Opponent;
-import ai.Params;
-import ai.Utils;
 
 public class AttackPiss implements Strategy {
 	// -------------------------------------------------------------------------
@@ -30,6 +27,11 @@ public class AttackPiss implements Strategy {
 	// -------------------------------------------------------------------------
 	// Public methods
 	// -------------------------------------------------------------------------
+	
+	@Override
+	public void checkRequirements() {
+		// Do nothing
+	}
 	
 	@Override
 	public Card execute(List<Card> playedCards) {

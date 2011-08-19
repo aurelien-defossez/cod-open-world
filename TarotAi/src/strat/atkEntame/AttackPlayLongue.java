@@ -16,11 +16,10 @@ public class AttackPlayLongue implements Strategy {
 	
 	private Game game;
 	private boolean isActivated;
-	
 	private List<Card> longue;
 	
 	// -------------------------------------------------------------------------
-	// Public methods
+	// Constructor
 	// -------------------------------------------------------------------------
 	
 	public AttackPlayLongue(Game game, Hand hand) {
@@ -39,6 +38,17 @@ public class AttackPlayLongue implements Strategy {
 		if (longue != null) {
 			game.print("My longue is {" + Utils.printCards(longue) + "}");
 		} else {
+			deactivate();
+		}
+	}
+	
+	// -------------------------------------------------------------------------
+	// Public methods
+	// -------------------------------------------------------------------------
+	
+	@Override
+	public void checkRequirements() {
+		if (longue == null || longue.size() == 0 || game.countOpponentsWithColor(Card.ATOUT) < 3) {
 			deactivate();
 		}
 	}
@@ -68,8 +78,8 @@ public class AttackPlayLongue implements Strategy {
 				
 				// Don't waste cards above valet
 				if (chosenCard.getValue() > Card.VALET) {
-					chosenCard = null;
 					deactivate();
+					return null;
 				}
 			}
 			
@@ -87,12 +97,6 @@ public class AttackPlayLongue implements Strategy {
 	// -------------------------------------------------------------------------
 	// Private methods
 	// -------------------------------------------------------------------------
-	
-	private void checkRequirements() {
-		if (longue == null || longue.size() == 0 || game.countOpponentsWithColor(Card.ATOUT) < 3) {
-			deactivate();
-		}
-	}
 	
 	private void deactivate() {
 		isActivated = false;

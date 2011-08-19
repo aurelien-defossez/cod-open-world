@@ -40,6 +40,13 @@ public class AttackHuntPetit implements Strategy {
 	// -------------------------------------------------------------------------
 	
 	@Override
+	public void checkRequirements() {
+		if (!petit.isInGame() || hand.hasCard(petit)) {
+			deactivate();
+		}
+	}
+	
+	@Override
 	public Card execute(List<Card> playedCards) {
 		checkRequirements();
 		
@@ -117,12 +124,6 @@ public class AttackHuntPetit implements Strategy {
 	// -------------------------------------------------------------------------
 	// Private methods
 	// -------------------------------------------------------------------------
-	
-	private void checkRequirements() {
-		if (!petit.isInGame() || hand.hasCard(petit)) {
-			deactivate();
-		}
-	}
 	
 	private void deactivate() {
 		isActivated = false;

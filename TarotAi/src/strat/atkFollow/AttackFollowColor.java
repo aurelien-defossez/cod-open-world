@@ -29,6 +29,11 @@ public class AttackFollowColor implements Strategy {
 	// -------------------------------------------------------------------------
 	// Public methods
 	// -------------------------------------------------------------------------
+
+	@Override
+	public void checkRequirements() {
+		// Do nothing
+	}
 	
 	@Override
 	public Card execute(List<Card> playedCards) {

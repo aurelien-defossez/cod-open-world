@@ -7,6 +7,7 @@ import game.Api;
 import ai.Card;
 import ai.Game;
 import ai.Hand;
+import ai.Params;
 import ai.Utils;
 
 public class AttackPlayExcuse implements Strategy {
@@ -35,8 +36,10 @@ public class AttackPlayExcuse implements Strategy {
 	}
 	
 	@Override
-	public boolean isActivated() {
-		return isActivated;
+	public void checkRequirements() {
+		if (!hand.hasCard(excuse)) {
+			deactivate();
+		}
 	}
 	
 	@Override
@@ -46,25 +49,43 @@ public class AttackPlayExcuse implements Strategy {
 		if (isActivated) {
 			game.print("[" + getName() + "] Executing...");
 			
-			// TODO
-			// Play excuse when:
+			int position = playedCards.size() + 1;
+			double points = Utils.countPoints(playedCards, Card.VALET);
+			
 			// Last to play without points to take
-			// Not any point left to take for this color
+			if (position == 4 && points < Params.ATTACK_CUT_INSTEAD_OF_EXCUSE_MIN_POINTS) {
+				deactivate();
+				return excuse;
+			}
+			
+			int desiredColor = Utils.getTurnColor(playedCards);
+			
 			// Atout turn
+			if (desiredColor == Card.ATOUT) {
+				deactivate();
+				return excuse;
+			}
+			
+			double remainingPoints = Utils.countRemainingPoints(desiredColor, hand);
+			
+			// Not so much points left to take for this color
+			if (remainingPoints < Params.ATTACK_CUT_INSTEAD_OF_EXCUSE_MIN_POINTS) {
+				deactivate();
+				return excuse;
+			}
 		}
 		
 		return null;
 	}
 	
+	@Override
+	public boolean isActivated() {
+		return isActivated;
+	}
+	
 	// -------------------------------------------------------------------------
 	// Private methods
 	// -------------------------------------------------------------------------
-	
-	private void checkRequirements() {
-		if (!hand.hasCard(excuse)) {
-			deactivate();
-		}
-	}
 	
 	private void deactivate() {
 		isActivated = false;
