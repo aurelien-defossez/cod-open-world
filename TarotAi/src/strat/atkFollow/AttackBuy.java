@@ -70,14 +70,18 @@ public class AttackBuy implements Strategy {
 				
 				game.print("cutProba = "+cutProba);
 				
-				// TODO: Play just above best followers atouts.
-				
 				// Buy
 				if ((hasDame && cutProba >= Params.ATTACK_BUY_DAME_MIN_CUT_PROBABILITY)
 					|| (hasRoi && cutProba >= Params.ATTACK_BUY_ROI_MIN_CUT_PROBABILITY)
 					|| (hasPetit && cutProba >= Params.ATTACK_BUY_PETIT_MIN_CUT_PROBABILITY)) {
-					game.print("Buy!");
-					return Utils.getBestCard(myAtouts);
+					Card followersBestAtout = game.getFollowersBestAtout(position);
+					Card atoutAbove = Utils.getFirstCardAbove(followersBestAtout, myAtouts);
+					
+					if (atoutAbove == null) {
+						return Utils.getBestCard(myAtouts);
+					} else {
+						return atoutAbove;
+					}
 				}
 			}
 		}

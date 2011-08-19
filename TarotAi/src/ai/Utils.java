@@ -224,7 +224,7 @@ public class Utils {
 		return ctCards;
 	}
 	
-	public static double countRemainingPoints(int color, Hand hand) {
+	public static double countRemainingPoints(int color) {
 		Card lastCard = null;
 		double points = 0.0;
 		

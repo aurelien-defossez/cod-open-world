@@ -51,27 +51,41 @@ public class AttackPlayExcuse implements Strategy {
 			
 			int position = playedCards.size() + 1;
 			double points = Utils.countPoints(playedCards, Card.VALET);
+			double sacrificiablePoints =
+				(game.getTurnNb() < Params.ATTACK_PLAY_EXCUSE_END_BEGINNING_TURN)
+					? Params.ATTACK_PLAY_EXCUSE_SACRIFIABLE_POINTS
+					: Params.ATTACK_PLAY_EXCUSE_SACRIFIABLE_POINTS_END;
 			
-			// Last to play without points to take
-			if (position == 4 && points < Params.ATTACK_CUT_INSTEAD_OF_EXCUSE_MIN_POINTS) {
-				deactivate();
-				return excuse;
-			}
+			game.print(points + " points in game, can sacrifice up to " + sacrificiablePoints);
 			
-			int desiredColor = Utils.getTurnColor(playedCards);
-			
-			// Atout turn
-			if (desiredColor == Card.ATOUT) {
-				deactivate();
-				return excuse;
-			}
-			
-			double remainingPoints = Utils.countRemainingPoints(desiredColor, hand);
-			
-			// Not so much points left to take for this color
-			if (remainingPoints < Params.ATTACK_CUT_INSTEAD_OF_EXCUSE_MIN_POINTS) {
-				deactivate();
-				return excuse;
+			if (points <= sacrificiablePoints) {
+				// Last to play without points to take
+				if (position == 4) {
+					game.print("Last position, only " + points + " points");
+					deactivate();
+					return excuse;
+				}
+				
+				int desiredColor = Utils.getTurnColor(playedCards);
+				
+				// Atout turn
+				if (desiredColor == Card.ATOUT) {
+					game.print("Atout turn");
+					deactivate();
+					return excuse;
+				}
+				
+				double remainingPoints = Utils.countRemainingPoints(desiredColor);
+				int ctPissers = game.countFollowersPissing(desiredColor, position);
+				
+				game.print(remainingPoints + " points remaining in color and " + ctPissers
+					+ " followers piss");
+				
+				// Not so much points left to take for this color
+				if (remainingPoints <= sacrificiablePoints && ctPissers == 0) {
+					deactivate();
+					return excuse;
+				}
 			}
 		}
 		

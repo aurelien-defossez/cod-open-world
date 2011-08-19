@@ -50,5 +50,7 @@ public class Params {
 	public static final double ATTACK_BUY_DAME_MIN_CUT_PROBABILITY = 0.5;
 	public static final double ATTACK_BUY_ROI_MIN_CUT_PROBABILITY = 0.4;
 	public static final double ATTACK_BUY_PETIT_MIN_CUT_PROBABILITY = 0.2;
-	public static final double ATTACK_CUT_INSTEAD_OF_EXCUSE_MIN_POINTS = 1.5;
+	public static final double ATTACK_PLAY_EXCUSE_SACRIFIABLE_POINTS = 1.5;
+	public static final double ATTACK_PLAY_EXCUSE_SACRIFIABLE_POINTS_END = 2.5;
+	public static final double ATTACK_PLAY_EXCUSE_END_BEGINNING_TURN = 12;
 }

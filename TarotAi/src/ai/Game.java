@@ -320,6 +320,32 @@ public class Game {
 		
 		return ct;
 	}
+
+	public Card getFollowersBestAtout(int position) {
+		Card bestAtout = null;
+		
+		for (int i = 0; i < 3 - position; i++) {
+			Card followerBestAtout = followers[i].getBestAtout();
+			
+			if (bestAtout == null || followerBestAtout.getValue() > bestAtout.getValue()) {
+				bestAtout = followerBestAtout;
+			}
+		}
+		
+		return bestAtout;
+	}
+	
+	public int countFollowersPissing(int color, int position) {
+		int ctPissers = 0;
+		
+		for (int i = 0; i < 3 - position; i++) {
+			if (!followers[i].hasColor(color) && !followers[i].hasColor(Card.ATOUT)) {
+				ctPissers++;
+			}
+		}
+		
+		return ctPissers;
+	}
 	
 	public double getFollowersCutProbability(int color, int position) {
 		// X: First follower
