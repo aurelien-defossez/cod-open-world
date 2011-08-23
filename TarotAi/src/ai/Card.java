@@ -28,6 +28,8 @@ public class Card {
 	private int code;
 	private int color;
 	private int value;
+	private Card previous;
+	private Card next;
 	private boolean isOudler;
 	private boolean isDominant;
 	private boolean isInGame;
@@ -51,6 +53,11 @@ public class Card {
 	// -------------------------------------------------------------------------
 	// Public methods
 	// -------------------------------------------------------------------------
+	
+	public void init() {
+		previous = (value > 1) ? Utils.getCard(code - 1) : null;
+		next = (value < ROI || color == ATOUT && value < 21) ? Utils.getCard(code + 1) : null;
+	}
 	
 	public void reset() {
 		isDominant = false;
@@ -79,6 +86,26 @@ public class Card {
 	
 	public boolean isOudler() {
 		return isOudler;
+	}
+	
+	public Card previous(boolean inGame) {
+		if (previous == null) {
+			return null;
+		} else if(!inGame) {
+			return previous;
+		} else {
+			return (previous.isInGame()) ? previous : previous.previous(inGame);
+		}
+	}
+	
+	public Card next(boolean inGame) {
+		if (next == null) {
+			return null;
+		} else if(!inGame) {
+			return next;
+		} else {
+			return (next.isInGame()) ? next : next.next(inGame);
+		}
 	}
 	
 	public double getPoints() {

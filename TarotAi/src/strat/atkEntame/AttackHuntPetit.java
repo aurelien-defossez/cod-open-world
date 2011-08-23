@@ -64,7 +64,7 @@ public class AttackHuntPetit implements Strategy {
 			int ctHoles = 0;
 			Card currentAtout = Utils.getCard(Api.ATOUT_21);
 			
-			while (ctHoles <= 2 && currentAtout.getValue() > 0) {
+			while (ctHoles <= 2 && currentAtout != null) {
 				if (currentAtout.isInGame()) {
 					// Current atout in player's hand
 					if (hand.hasCard(currentAtout)) {
@@ -76,7 +76,7 @@ public class AttackHuntPetit implements Strategy {
 					}
 				}
 				
-				currentAtout = Utils.getPreviousCard(currentAtout);
+				currentAtout = currentAtout.previous(true);
 			}
 			
 			game.print("Suites = " +
@@ -86,9 +86,9 @@ public class AttackHuntPetit implements Strategy {
 			double ratio[] = new double[3];
 			
 			for (int i = 0; i < 3; i++) {
-				ratio[i] = (double) 1
-					* (nbOpponentAtouts - nbOpponentsWithAtout * suite[i])
-					/ (nbMyAtouts - suite[i]) / nbOpponentsWithAtout;
+				ratio[i] = (nbMyAtouts == suite[i]) ? 0.0 :
+					1.0 * (nbOpponentAtouts - nbOpponentsWithAtout * suite[i])
+						/ (nbMyAtouts - suite[i]) / nbOpponentsWithAtout;
 			}
 			
 			game.print("Ratios = " +
@@ -112,7 +112,7 @@ public class AttackHuntPetit implements Strategy {
 					myAtouts.get(1) : myAtouts.get(0);
 			}
 		}
-
+		
 		return null;
 	}
 	

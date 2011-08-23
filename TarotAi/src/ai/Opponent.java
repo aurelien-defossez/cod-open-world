@@ -63,7 +63,7 @@ public class Opponent {
 	
 	public void hasNotAnyAtoutLeft() {
 		hasNotColor(Card.ATOUT);
-		setBestAtout(Utils.getCard(Api.EXCUSE));
+		setBestAtout(null);
 	}
 	
 	public void setBestAtout(Card card) {

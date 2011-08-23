@@ -3,20 +3,9 @@ package ai;
 
 import game.Api;
 import java.util.List;
-import strat.SaveExcuse;
 import strat.Strategy;
-import strat.atkEntame.AttackEntameDefault;
-import strat.atkEntame.AttackHuntPetit;
-import strat.atkEntame.AttackPlayDominant;
-import strat.atkEntame.AttackPlayLongue;
-import strat.atkFollow.AttackBuy;
-import strat.atkFollow.AttackCut;
-import strat.atkFollow.AttackFollowColor;
-import strat.atkFollow.AttackPiss;
-import strat.atkFollow.AttackPlayExcuse;
-import strat.atkFollow.AttackSavePetit;
 
-public class Game {
+public abstract class Game {
 	// -------------------------------------------------------------------------
 	// Constants
 	// -------------------------------------------------------------------------
@@ -28,7 +17,6 @@ public class Game {
 	// -------------------------------------------------------------------------
 	
 	private int id;
-	private boolean taker;
 	private Hand hand;
 	private Opponent[] opponents;
 	private Opponent[] followers;
@@ -42,9 +30,8 @@ public class Game {
 	// Constructor
 	// -------------------------------------------------------------------------
 	
-	public Game(Ai ai, Hand hand, boolean taker) {
+	public Game(Ai ai, Hand hand) {
 		this.id = ai.getId();
-		this.taker = taker;
 		this.hand = hand;
 		this.ctColors = new int[] {
 			14 - hand.countColor(Card.COEUR),
@@ -79,37 +66,10 @@ public class Game {
 				}
 			}
 		}
-		
-		// Attack strategies
-		if (taker) {
-			strategiesEntame = new Strategy[] {
-				new SaveExcuse(this, hand),
-				new AttackHuntPetit(this, hand),
-				new AttackPlayLongue(this, hand),
-				new AttackPlayDominant(this, hand),
-				new AttackEntameDefault(this, hand)
-			};
-			
-			strategiesFollow = new Strategy[] {
-				new SaveExcuse(this, hand),
-				new AttackFollowColor(this, hand),
-				new AttackSavePetit(this, hand),
-				new AttackBuy(this, hand),
-				new AttackPlayExcuse(this, hand),
-				new AttackCut(this, hand),
-				new AttackPiss(this, hand)
-			};
-		}
-		// Defense strategies
-		else {
-			strategiesEntame = new Strategy[] {
-				new SaveExcuse(this, hand)
-			};
-			
-			strategiesFollow = new Strategy[] {
-				new SaveExcuse(this, hand)
-			};
-		}
+	}
+	
+	public int getId() {
+		return id;
 	}
 	
 	public int getColorCount(int color) {
@@ -146,10 +106,14 @@ public class Game {
 		
 		// Play chosen card
 		if (chosenCard != null) {
-			Api.playCard(chosenCard.getCode());
+			if (Api.playCard(chosenCard.getCode()) != Api.OK) {
+				print("*** ERROR *** Tried to play " + chosenCard);
+				chosenCard = null;
+			}
 		}
+		
 		// Play randomly
-		else {
+		if (chosenCard == null) {
 			print("Playing randomly...");
 			boolean ok;
 			
@@ -165,22 +129,6 @@ public class Game {
 		hand.removeCard(chosenCard);
 		
 		turnNb++;
-	}
-	
-	private Card executeStrategies(Strategy[] strategySet,
-		List<Card> playedCards) {
-		
-		for (Strategy strategy : strategySet) {
-			if (strategy.isActivated()) {
-				Card chosenCard = strategy.execute(playedCards);
-				
-				if (chosenCard != null) {
-					return chosenCard;
-				}
-			}
-		}
-		
-		return null;
 	}
 	
 	public void cardsPlayed(int firstPlayerId, List<Card> cards, int from) {
@@ -233,7 +181,7 @@ public class Game {
 						&& bestCard.getColor() == Card.ATOUT
 						&& bestCard.getValue() > card.getValue()) {
 					
-					opponent.setBestAtout(Utils.getPreviousCard(bestCard));
+					opponent.setBestAtout(bestCard.previous(true));
 				}
 				
 				// Has not of the desired color
@@ -257,14 +205,11 @@ public class Game {
 				
 				// Another card becomes dominant
 				if (card.isDominant()) {
-					Card nextDominant = card;
+					Card nextDominant = card.previous(true);
 					
-					while (!nextDominant.isInGame()
-						&& nextDominant.getValue() > 1) {
-						nextDominant = Utils.getPreviousCard(nextDominant);
+					if (nextDominant != null) {
+						nextDominant.setDominant();
 					}
-					
-					nextDominant.setDominant();
 				}
 				
 				position++;
@@ -320,14 +265,15 @@ public class Game {
 		
 		return ct;
 	}
-
+	
 	public Card getFollowersBestAtout(int position) {
 		Card bestAtout = null;
 		
-		for (int i = 0; i < 3 - position; i++) {
+		for (int i = 0; i < 4 - position; i++) {
 			Card followerBestAtout = followers[i].getBestAtout();
 			
-			if (bestAtout == null || followerBestAtout.getValue() > bestAtout.getValue()) {
+			if (followerBestAtout != null
+				&& (bestAtout == null || followerBestAtout.getValue() > bestAtout.getValue())) {
 				bestAtout = followerBestAtout;
 			}
 		}
@@ -338,7 +284,7 @@ public class Game {
 	public int countFollowersPissing(int color, int position) {
 		int ctPissers = 0;
 		
-		for (int i = 0; i < 3 - position; i++) {
+		for (int i = 0; i < 4 - position; i++) {
 			if (!followers[i].hasColor(color) && !followers[i].hasColor(Card.ATOUT)) {
 				ctPissers++;
 			}
@@ -365,7 +311,7 @@ public class Game {
 				+ followers[2].getCutProbability(color)
 				- 6 / ((nbCards + 1) * (nbCards + 2));
 			break;
-			
+		
 		case 2:
 			// P(cut) = P(X=0 U Y=0)
 			// P(cut) = P(X=0) + P(Y=0) - P(X=0 ^ Y=0)
@@ -376,17 +322,17 @@ public class Game {
 				+ followers[1].getCutProbability(color)
 				- 2 / ((nbCards + 1) * (nbCards + 2));
 			break;
-			
+		
 		case 3:
 			// P(cut) = P(X=0)
 			proba = followers[0].getCutProbability(color);
 			break;
-			
+		
 		case 4:
 			// P(cut) = 0
 			proba = 0.0;
 			break;
-			
+		
 		default:
 			throw new IllegalArgumentException("Position must be in [1, 4].");
 		}
@@ -394,33 +340,62 @@ public class Game {
 		return Math.max(0.0, Math.min(proba, 1.0));
 	}
 	
-	public void print(String message) {
-		System.out.println(((taker) ? "*" : " ") + "[" + id + "] " + message);
+	// -------------------------------------------------------------------------
+	// Protected methods
+	// -------------------------------------------------------------------------
+	
+	protected void setEntameStrategies(Strategy[] strategies) {
+		strategiesEntame = strategies;
+	}
+	
+	protected void setFollowStrategies(Strategy[] strategies) {
+		strategiesFollow = strategies;
 	}
 	
 	// -------------------------------------------------------------------------
 	// Private methods
 	// -------------------------------------------------------------------------
 	
+	private Card executeStrategies(Strategy[] strategySet,
+		List<Card> playedCards) {
+		
+		for (Strategy strategy : strategySet) {
+			if (strategy.isActivated()) {
+				Card chosenCard = strategy.execute(playedCards);
+				
+				if (chosenCard != null) {
+					return chosenCard;
+				}
+			}
+		}
+		
+		return null;
+	}
+	
 	private void determineBestAtouts(Opponent opponent) {
 		if (opponent.hasColor(Card.ATOUT)) {
 			Card bestAtout = opponent.getBestAtout();
-			Card excuse = Utils.getCard(Api.EXCUSE);
 			
-			while (bestAtout != excuse) {
+			while (bestAtout != null) {
 				// Atout still in game in another player's hand
 				if (bestAtout.isInGame() && !hand.hasCard(bestAtout)) {
 					opponent.setBestAtout(bestAtout);
 					break;
 				}
 				
-				bestAtout = Utils.getPreviousCard(bestAtout);
+				bestAtout = bestAtout.previous(true);
 			}
 			
 			// Not any atout left
-			if (bestAtout == excuse) {
+			if (bestAtout == null) {
 				opponent.hasNotAnyAtoutLeft();
 			}
 		}
 	}
+	
+	// -------------------------------------------------------------------------
+	// Abstract methods
+	// -------------------------------------------------------------------------
+	
+	public abstract void print(String message);
 }

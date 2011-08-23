@@ -1,17 +1,16 @@
 
-package strat.atkFollow;
+package strat;
 
 import game.Api;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import strat.Strategy;
 import ai.Card;
 import ai.Game;
 import ai.Hand;
 import ai.Utils;
 
-public class AttackCut implements Strategy {
+public class Cut implements Strategy {
 	// -------------------------------------------------------------------------
 	// Attributes
 	// -------------------------------------------------------------------------
@@ -24,7 +23,7 @@ public class AttackCut implements Strategy {
 	// Constructor
 	// -------------------------------------------------------------------------
 	
-	public AttackCut(Game game, Hand hand) {
+	public Cut(Game game, Hand hand) {
 		this.game = game;
 		this.hand = hand;
 		this.isActivated = true;
@@ -76,7 +75,7 @@ public class AttackCut implements Strategy {
 			while(currentAtout != null && hand.hasCard(currentAtout)) {
 				possibleCards.add(currentAtout);
 				
-				currentAtout = Utils.getNextCard(currentAtout);
+				currentAtout = currentAtout.next(true);
 			}
 			
 			// Play randomly through possible atouts

@@ -106,6 +106,10 @@ public class Utils {
 		cards.put(Api.ATOUT_19, new Card(Api.ATOUT_19));
 		cards.put(Api.ATOUT_20, new Card(Api.ATOUT_20));
 		cards.put(Api.ATOUT_21, new Card(Api.ATOUT_21));
+		
+		for (Card card : cards.values()) {
+			card.init();
+		}
 	}
 	
 	public static void resetCards() {
@@ -133,28 +137,20 @@ public class Utils {
 	public static Card getCard(int code) {
 		return cards.get(code);
 	}
-
-	public static Card getPreviousCard(Card card) {
-		return Utils.getCard(card.getCode() - 1);
-	}
-	
-	public static Card getNextCard(Card card) {
-		return Utils.getCard(card.getCode() + 1);
-	}
 	
 	public static Card getBestCard(List<Card> cards) {
 		return (cards.isEmpty()) ? null : cards.get(cards.size() - 1);
 	}
 	
 	public static Card getFirstCardAbove(Card card, List<Card> cards) {
-		Card aboveCard = Utils.getNextCard(card);
+		Card aboveCard = card.next(true);
 		
 		while (aboveCard != null) {
 			if (cards.contains(aboveCard)) {
 				return aboveCard;
 			}
 			
-			aboveCard = Utils.getNextCard(aboveCard);
+			aboveCard = aboveCard.next(true);
 		}
 		
 		return null;
@@ -192,63 +188,67 @@ public class Utils {
 	}
 	
 	public static int countRemainingCards(int color) {
-		Card lastCard = null;
+		Card card = null;
 		int ctCards = 0;
 		
 		switch(color) {
 		case Card.COEUR:
-			lastCard = Utils.getCard(Api.COEUR_ROI);
+			card = Utils.getCard(Api.COEUR_ROI);
 			break;
 		case Card.CARREAU:
-			lastCard = Utils.getCard(Api.CARREAU_ROI);
+			card = Utils.getCard(Api.CARREAU_ROI);
 			break;
 		case Card.PIQUE:
-			lastCard = Utils.getCard(Api.PIQUE_ROI);
+			card = Utils.getCard(Api.PIQUE_ROI);
 			break;
 		case Card.TREFLE:
-			lastCard = Utils.getCard(Api.TREFLE_ROI);
+			card = Utils.getCard(Api.TREFLE_ROI);
 			break;
 		case Card.ATOUT:
-			lastCard = Utils.getCard(Api.ATOUT_21);
+			card = Utils.getCard(Api.ATOUT_21);
 			break;
 		}
 		
-		while (lastCard != null) {
-			if (lastCard.isInGame()) {
+		if (card.isInGame()) {
+			ctCards++;
+		}
+		
+		while (card != null) {
+			card = card.previous(true);
+			
+			if (card != null) {
 				ctCards++;
 			}
-			
-			lastCard = Utils.getPreviousCard(lastCard);
 		}
 		
 		return ctCards;
 	}
 	
 	public static double countRemainingPoints(int color) {
-		Card lastCard = null;
+		Card card = null;
 		double points = 0.0;
 		
 		switch(color) {
 		case Card.COEUR:
-			lastCard = Utils.getCard(Api.COEUR_ROI);
+			card = Utils.getCard(Api.COEUR_ROI);
 			break;
 		case Card.CARREAU:
-			lastCard = Utils.getCard(Api.CARREAU_ROI);
+			card = Utils.getCard(Api.CARREAU_ROI);
 			break;
 		case Card.PIQUE:
-			lastCard = Utils.getCard(Api.PIQUE_ROI);
+			card = Utils.getCard(Api.PIQUE_ROI);
 			break;
 		case Card.TREFLE:
-			lastCard = Utils.getCard(Api.TREFLE_ROI);
+			card = Utils.getCard(Api.TREFLE_ROI);
 			break;
 		}
 		
-		while(lastCard.getValue() > 10) {
-			if (lastCard.isInGame()) {
-				points += lastCard.getPoints();
+		while(card != null && card.getValue() > 10) {
+			if (card.isInGame()) {
+				points += card.getPoints();
 			}
 			
-			lastCard = Utils.getPreviousCard(lastCard);
+			card = card.previous(true);
 		}
 		
 		return points;

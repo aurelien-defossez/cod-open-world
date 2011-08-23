@@ -69,9 +69,9 @@ public class AttackSavePetit implements Strategy {
 			
 			// Enough atouts to place it to the end
 			int opponentsWithAtout = game.countOpponentsWithColor(Card.ATOUT);
-			if (opponentsWithAtout > 0
-				&& myAtouts.size() > game.getColorCount(Card.ATOUT) / opponentsWithAtout
-				+ opponentsWithAtout - 1) {
+			if (opponentsWithAtout == 0
+				|| myAtouts.size() > game.getColorCount(Card.ATOUT) / opponentsWithAtout
+				+ opponentsWithAtout) {
 				return null;
 			}
 			

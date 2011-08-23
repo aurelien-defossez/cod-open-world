@@ -20,6 +20,7 @@ public class Ai implements TarotAi {
 	private Hand hand;
 	private int position;
 	private int currentContract;
+	private int takerId;
 	private boolean isTaker;
 	
 	// -------------------------------------------------------------------------
@@ -93,6 +94,7 @@ public class Ai implements TarotAi {
 	@Override
 	public void bidInfo(int bidder, int contract) {
 		currentContract = contract;
+		takerId = bidder;
 		isTaker = false;
 	}
 	
@@ -141,7 +143,11 @@ public class Ai implements TarotAi {
 		position = gameCards.size() + 1;
 		
 		if (game == null) {
-			game = new Game(this, hand, isTaker);
+			if (isTaker) {
+				game = new AttackGame(this, hand);
+			} else {
+				game = new DefenseGame(this, hand, takerId);
+			}
 		}
 
 		game.cardsPlayed(firstPlayer, gameCards, 0);

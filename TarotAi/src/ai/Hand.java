@@ -370,7 +370,6 @@ public class Hand {
 			}
 			// Petit
 			else if (value == 1) {
-				
 				if (atout.size() == 5) {
 					score += Params.POINTS_PETIT_5;
 				} else if (atout.size() == 6) {
