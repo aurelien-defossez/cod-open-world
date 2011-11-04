@@ -351,6 +351,18 @@ public abstract class Game {
 	protected void setFollowStrategies(Strategy[] strategies) {
 		strategiesFollow = strategies;
 	}
+
+	// -------------------------------------------------------------------------
+	// Protected methods
+	// -------------------------------------------------------------------------
+
+	protected Opponent getFollower(int index) {
+		return followers[index];
+	}
+	
+	protected Opponent getOpponent(int id) {
+		return opponents[id];
+	}
 	
 	// -------------------------------------------------------------------------
 	// Private methods

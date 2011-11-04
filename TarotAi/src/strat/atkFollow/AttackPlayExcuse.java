@@ -1,11 +1,11 @@
 
 package strat.atkFollow;
 
+import game.Api;
 import java.util.List;
 import strat.Strategy;
-import game.Api;
+import ai.AttackGame;
 import ai.Card;
-import ai.Game;
 import ai.Hand;
 import ai.Params;
 import ai.Utils;
@@ -22,14 +22,14 @@ public class AttackPlayExcuse implements Strategy {
 	// -------------------------------------------------------------------------
 	
 	private boolean isActivated;
-	private Game game;
+	private AttackGame game;
 	private Hand hand;
 	
 	// -------------------------------------------------------------------------
 	// Public methods
 	// -------------------------------------------------------------------------
 	
-	public AttackPlayExcuse(Game game, Hand hand) {
+	public AttackPlayExcuse(AttackGame game, Hand hand) {
 		this.game = game;
 		this.hand = hand;
 		this.isActivated = true;

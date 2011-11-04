@@ -4,8 +4,8 @@ package strat.atkEntame;
 import game.Api;
 import java.util.List;
 import strat.Strategy;
+import ai.AttackGame;
 import ai.Card;
-import ai.Game;
 import ai.Hand;
 import ai.Params;
 import ai.Utils;
@@ -21,7 +21,7 @@ public class AttackHuntPetit implements Strategy {
 	// Attributes
 	// -------------------------------------------------------------------------
 	
-	private Game game;
+	private AttackGame game;
 	private Hand hand;
 	private boolean isActivated;
 	
@@ -29,7 +29,7 @@ public class AttackHuntPetit implements Strategy {
 	// Constructor
 	// -------------------------------------------------------------------------
 	
-	public AttackHuntPetit(Game game, Hand hand) {
+	public AttackHuntPetit(AttackGame game, Hand hand) {
 		this.game = game;
 		this.hand = hand;
 		this.isActivated = true;

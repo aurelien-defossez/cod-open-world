@@ -6,8 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import strat.Strategy;
+import ai.AttackGame;
 import ai.Card;
-import ai.Game;
 import ai.Hand;
 import ai.Utils;
 
@@ -16,14 +16,14 @@ public class AttackPiss implements Strategy {
 	// Attributes
 	// -------------------------------------------------------------------------
 	
-	private Game game;
+	private AttackGame game;
 	private Hand hand;
 	
 	// -------------------------------------------------------------------------
 	// Constructor
 	// -------------------------------------------------------------------------
 	
-	public AttackPiss(Game game, Hand hand) {
+	public AttackPiss(AttackGame game, Hand hand) {
 		this.game = game;
 		this.hand = hand;
 	}

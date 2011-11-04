@@ -3,8 +3,8 @@ package strat.atkFollow;
 
 import java.util.List;
 import strat.Strategy;
+import ai.AttackGame;
 import ai.Card;
-import ai.Game;
 import ai.Hand;
 import ai.Params;
 import ai.Utils;
@@ -14,14 +14,14 @@ public class AttackFollowColor implements Strategy {
 	// Attributes
 	// -------------------------------------------------------------------------
 	
-	private Game game;
+	private AttackGame game;
 	private Hand hand;
 	
 	// -------------------------------------------------------------------------
 	// Constructor
 	// -------------------------------------------------------------------------
 	
-	public AttackFollowColor(Game game, Hand hand) {
+	public AttackFollowColor(AttackGame game, Hand hand) {
 		this.game = game;
 		this.hand = hand;
 	}

@@ -3,8 +3,8 @@ package strat.atkEntame;
 
 import java.util.List;
 import strat.Strategy;
+import ai.AttackGame;
 import ai.Card;
-import ai.Game;
 import ai.Hand;
 import ai.Utils;
 
@@ -13,14 +13,14 @@ public class AttackPlayDominant implements Strategy {
 	// Attributes
 	// -------------------------------------------------------------------------
 	
-	private Game game;
+	private AttackGame game;
 	private Hand hand;
 	
 	// -------------------------------------------------------------------------
 	// Constructor
 	// -------------------------------------------------------------------------
 	
-	public AttackPlayDominant(Game game, Hand hand) {
+	public AttackPlayDominant(AttackGame game, Hand hand) {
 		this.game = game;
 		this.hand = hand;
 	}

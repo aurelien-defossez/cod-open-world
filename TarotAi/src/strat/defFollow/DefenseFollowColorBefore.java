@@ -1,45 +1,33 @@
 
-package strat.atkEntame;
+package strat.defFollow;
 
 import java.util.List;
 import strat.Strategy;
-import ai.AttackGame;
 import ai.Card;
+import ai.DefenseGame;
 import ai.Hand;
-import ai.Params;
+import ai.Opponent;
 import ai.Utils;
 
-public class AttackPlayLongue implements Strategy {
+public class DefenseFollowColorBefore implements Strategy {
 	// -------------------------------------------------------------------------
 	// Attributes
 	// -------------------------------------------------------------------------
 	
-	private AttackGame game;
+	private DefenseGame game;
+	private Hand hand;
+	private Opponent taker;
 	private boolean isActivated;
-	private List<Card> longue;
 	
 	// -------------------------------------------------------------------------
 	// Constructor
 	// -------------------------------------------------------------------------
 	
-	public AttackPlayLongue(AttackGame game, Hand hand) {
-		this.isActivated = true;
+	public DefenseFollowColorBefore(DefenseGame game, Hand hand) {
 		this.game = game;
-		
-		for (Integer color : Utils.getColors()) {
-			List<Card> colorSet = hand.getColorList(color);
-			
-			if (colorSet.size() >= Params.MIN_LONGUE_SIZE
-				&& (longue == null || colorSet.size() > longue.size())) {
-				longue = colorSet;
-			}
-		}
-		
-		if (longue != null) {
-			game.print("My longue is {" + Utils.printCards(longue) + "}");
-		} else {
-			deactivate();
-		}
+		this.hand = hand;
+		this.isActivated = true;
+		this.taker = game.getTaker();
 	}
 	
 	// -------------------------------------------------------------------------
@@ -48,9 +36,40 @@ public class AttackPlayLongue implements Strategy {
 	
 	@Override
 	public void checkRequirements() {
-		if (longue == null || longue.size() == 0 || game.countOpponentsWithColor(Card.ATOUT) < 3) {
+		// If just after the taker
+		if (game.isAfterTaker(2)) {
 			deactivate();
 		}
+	}
+	
+	@Override
+	public Card execute(List<Card> playedCards) {
+		int position = playedCards.size() + 1;
+		int desiredColor = Utils.getTurnColor(playedCards);
+		List<Card> myColor = hand.getColorList(desiredColor);
+		
+		// Color desired
+		if (desiredColor != Card.ATOUT && !myColor.isEmpty() && game.isBeforeTaker(position)) {
+			game.print("[" + getName() + "] Executing...");
+
+			Card myBestCard = Utils.getBestCard(myColor);
+			Card myLowestCard = myColor.get(0);
+			
+			// First time played, has only two cards including king
+			if (!game.colorAlreadyPlayed(desiredColor)
+				&& myColor.size() == 2
+				&& myBestCard.getValue() == Card.ROI) {
+				
+				return myBestCard;
+			}
+			
+			// Taker cuts
+			if (taker.getCutProbability(desiredColor) == 1.0) {
+				
+			}
+		}
+		
+		return null;
 	}
 	
 	@Override
@@ -58,46 +77,10 @@ public class AttackPlayLongue implements Strategy {
 		return isActivated;
 	}
 	
-	@Override
-	public Card execute(List<Card> playedCards) {
-		checkRequirements();
-		
-		if (isActivated) {
-			game.print("[" + getName() + "] Executing...");
-			
-			Card chosenCard = null;
-			Card king = Utils.getCardValue(longue, Card.ROI);
-			
-			// Choose king
-			if (king != null) {
-				chosenCard = king;
-			}
-			// Choose first card
-			else {
-				chosenCard = longue.iterator().next();
-				
-				// Don't waste cards above valet
-				if (chosenCard.getValue() > Card.VALET) {
-					deactivate();
-					return null;
-				}
-			}
-			
-			// Last card
-			if (longue.size() == 1) {
-				deactivate();
-			}
-			
-			return chosenCard;
-		}
-		
-		return null;
-	}
-	
 	// -------------------------------------------------------------------------
 	// Private methods
 	// -------------------------------------------------------------------------
-	
+
 	private void deactivate() {
 		isActivated = false;
 		
