@@ -18,7 +18,7 @@ import com.ApiCall;
 import com.GameListener;
 import com.ai.Ai;
 
-public abstract class GameSimulator implements Simulator {
+public abstract class GameOrchestrator implements Simulator {
 	// -------------------------------------------------------------------------
 	// Class attributes
 	// -------------------------------------------------------------------------
@@ -26,7 +26,7 @@ public abstract class GameSimulator implements Simulator {
 	/**
 	 * The log4j logger.
 	 */
-	private Logger logger = Logger.getLogger(GameSimulator.class);
+	private Logger logger = Logger.getLogger(GameOrchestrator.class);
 	
 	// -------------------------------------------------------------------------
 	// Attributes
@@ -74,7 +74,7 @@ public abstract class GameSimulator implements Simulator {
 	 * @param parameters the game parameters.
 	 * @param resultFile the file to save the match result in.
 	 */
-	public GameSimulator(Scheduler scheduler, String gameName,
+	public GameOrchestrator(Scheduler scheduler, String gameName,
 		String[] parameters, String resultFile) {
 		this.scheduler = scheduler;
 		this.gameName = gameName;

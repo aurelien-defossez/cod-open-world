@@ -62,8 +62,8 @@ extern "C" {
 		communicator->endGame();
 	}
 
-	EXPORT void disqualifyAi(char *aiName, char *reason) {
-		communicator->disqualifyAi(aiName, reason);
+	EXPORT void aiTimedOut(int aiId) {
+		communicator->aiTimedOut(aiId);
 	}
 
 	EXPORT Variant performGameFunction(int functionId, int nbParameters,

@@ -8,7 +8,7 @@ package sim;
 import com.ai.LocalAi;
 import main.CowException;
 
-public class TestSimulator extends LiveSimulator {
+public class TestOrchestrator extends LiveOrchestrator {
 	// -------------------------------------------------------------------------
 	// Constructor
 	// -------------------------------------------------------------------------
@@ -22,7 +22,7 @@ public class TestSimulator extends LiveSimulator {
 	 * @param resultFile the file to save the match result in.
 	 * @throws CowException if the game cannot be loaded.
 	 */
-	public TestSimulator(Scheduler scheduler, String gameName,
+	public TestOrchestrator(Scheduler scheduler, String gameName,
 		String[] parameters, String resultFile) throws CowException {
 		super(scheduler, gameName, parameters, resultFile);
 	}

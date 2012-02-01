@@ -38,12 +38,11 @@ public interface GameInterface {
 	public abstract Variant performGameFunction(ApiCall call, Ai ai);
 	
 	/**
-	 * Disqualifies an AI.
+	 * Tells the game an AI has timed out.
 	 * 
 	 * @param ai the AI.
-	 * @param reason the reason of the disqualification.
 	 */
-	public abstract void disqualifyAi(Ai ai, String reason);
+	public abstract void aiTimedOut(Ai ai);
 	
 	/**
 	 * Ends the game.

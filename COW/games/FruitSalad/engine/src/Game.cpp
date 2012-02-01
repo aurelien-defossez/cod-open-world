@@ -121,16 +121,8 @@ void Game::endGame() {
 	stopping = true;
 }
 
-void Game::disqualifyAi(char *aiName, char *reason) {
-	cout << "Disqualifying AI " << aiName << " because of " << reason << endl;
-	for (int i=0; i<nbIA; i++)
-	{
-		if (map->getListPlayers()[i]->getName() == aiName)
-		{
-		  map->getListPlayers()[i]->setDead(true);
-		}
-	}
-	cout << "Ai disqualified" << endl;
+void Game::aiTimedOut(int aiId) {
+	cout << "AI " << aiId << " timed out." << endl;
 }
 
 // User-defined functions

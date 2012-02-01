@@ -49,6 +49,18 @@ public class Game implements UnitTestingEngine {
 	private boolean setFrames;
 	
 	// -------------------------------------------------------------------------
+	// Constructor
+	// -------------------------------------------------------------------------
+	
+	/**
+	 * Builds the game.
+	 */
+	public Game() {
+		aiNames = new HashMap<Short, String>();
+		playerNames = new HashMap<Short, String>();
+	}
+	
+	// -------------------------------------------------------------------------
 	// Public methods
 	// -------------------------------------------------------------------------
 	
@@ -57,8 +69,6 @@ public class Game implements UnitTestingEngine {
 	 */
 	@Override
 	public void init(String[] parameters) {
-		aiNames = new HashMap<Short, String>();
-		playerNames = new HashMap<Short, String>();
 		runningTests = true;
 		setFrames =
 			(parameters.length > 0 && parameters[0].toLowerCase()
@@ -96,7 +106,7 @@ public class Game implements UnitTestingEngine {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void disqualifyAi(short aiId, String reason) {
+	public void aiTimedOut(short aiId) {
 		aiNames.remove(aiId);
 		playerNames.remove(aiId);
 		stopUnitTesting();

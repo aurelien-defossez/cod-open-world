@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.Vector;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
-import sim.GameSimulator;
+import sim.GameOrchestrator;
 import sim.Scheduler;
 import sim.replay.ReplayWriter;
 import ui.gui.Gui;
@@ -260,7 +260,7 @@ public class CowSimulator {
 				
 				// Create scheduler
 				Scheduler scheduler = new Scheduler(gameSpeed);
-				GameSimulator simulator;
+				GameOrchestrator simulator;
 				
 				// Set game
 				if (loadReplayName == null) {

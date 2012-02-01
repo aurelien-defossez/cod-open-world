@@ -135,12 +135,11 @@ public abstract class JavaGameCommunicator {
 	public abstract void play();
 	
 	/**
-	 * Disqualifies an AI.
+	 * Tells the game an AI timed out.
 	 * 
 	 * @param aiId the AI id.
-	 * @param reason the reason of the disqualification.
 	 */
-	public abstract void disqualifyAi(short aiId, String reason);
+	public abstract void aiTimedOut(short aiId);
 	
 	/**
 	 * Performs a game API function call.

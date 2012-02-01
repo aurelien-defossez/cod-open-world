@@ -20,8 +20,8 @@ class GameCommunicator(PyGameCommunicator):
 	def addAi(self, aiId, playerName, aiName):
 		self.game.addAi(aiId, playerName, aiName)
 	
-	def removeAi(self, aiId, reason):
-		self.game.removeAi(aiId, reason)
+	def aiTimedOut(self, aiId):
+		self.game.aiTimedOut(aiId)
 	
 	#Ends the game
 	def endGame(self):

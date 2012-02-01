@@ -10,7 +10,7 @@ import lang.cpp.CppGameConnector;
 import lang.java.JavaGameConnector;
 import lang.python.PyGameConnector;
 import main.CowException;
-import sim.LiveSimulator;
+import sim.LiveOrchestrator;
 import com.ApiCall;
 import com.Variant;
 import com.ai.Ai;
@@ -36,7 +36,7 @@ public class LocalGame extends Game {
 	 * @param gameName the game name.
 	 * @throws CowException if the game cannot be loaded.
 	 */
-	public LocalGame(LiveSimulator simulator, String gameName) {
+	public LocalGame(LiveOrchestrator simulator, String gameName) {
 		super(simulator, gameName);
 		
 		switch (getLanguage()) {
@@ -95,8 +95,8 @@ public class LocalGame extends Game {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void disqualifyAi(Ai ai, String reason) {
-		connector.disqualifyAi(ai, reason);
+	public void aiTimedOut(Ai ai) {
+		connector.aiTimedOut(ai);
 	}
 	
 	/**

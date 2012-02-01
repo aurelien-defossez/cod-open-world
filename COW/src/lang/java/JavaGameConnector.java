@@ -139,8 +139,8 @@ public class JavaGameConnector extends GameConnector {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void disqualifyAi(Ai ai, String reason) {
-		gameCommunicator.disqualifyAi(ai.getId(), reason);
+	public void aiTimedOut(Ai ai) {
+		gameCommunicator.aiTimedOut(ai.getId());
 	}
 	
 	/**

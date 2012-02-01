@@ -19,7 +19,7 @@ public interface GameLibraryInterface extends Library {
 	
 	public void endGame();
 	
-	public void disqualifyAi(String aiName, String reason);
+	public void aiTimedOut(int aiId);
 	
 	public VariantStruct.ByValue performGameFunction(int functionId,
 		int nbParameters, VariantStruct parameters[]);

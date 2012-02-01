@@ -64,9 +64,7 @@ public class DefenseFollowColorBefore implements Strategy {
 			}
 			
 			// Taker cuts
-			if (taker.getCutProbability(desiredColor) == 1.0) {
-				
-			}
+			// TODO
 		}
 		
 		return null;

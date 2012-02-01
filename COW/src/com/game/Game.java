@@ -12,7 +12,7 @@ import com.Lang.Language;
 import main.CowException;
 import main.GameException;
 import data.ConfigLoader;
-import sim.LiveSimulator;
+import sim.LiveOrchestrator;
 import view.View;
 import view.View.ViewType;
 
@@ -33,7 +33,7 @@ public abstract class Game implements GameInterface {
 	/**
 	 * The game simulator.
 	 */
-	private LiveSimulator simulator;
+	private LiveOrchestrator simulator;
 	
 	/**
 	 * The game implementation language.
@@ -61,7 +61,7 @@ public abstract class Game implements GameInterface {
 	 * @param gameName the game name.
 	 * @throws CowException if the game cannot be loaded.
 	 */
-	public Game(LiveSimulator simulator, String gameName) throws CowException {
+	public Game(LiveOrchestrator simulator, String gameName) throws CowException {
 		this.simulator = simulator;
 		this.name = gameName;
 		

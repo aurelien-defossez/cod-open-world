@@ -86,8 +86,8 @@ public class GameCommunicator extends JavaGameCommunicator {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void disqualifyAi(short aiId, String reason) {
-		gameInstance.disqualifyAi(aiId, reason);
+	public void aiTimedOut(short aiId) {
+		gameInstance.aiTimedOut(aiId);
 	}
 	
 	/**

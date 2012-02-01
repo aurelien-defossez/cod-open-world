@@ -25,7 +25,7 @@ public:
 	void addAi(short aiId, char *aiName, char *playerName);
 	void play();
 	void endGame();
-	void disqualifyAi(char *aiName, char *reason);
+	void aiTimedOut(int aiId);
 	
 	// User-defined functions
 	int move(int fruitId, int x, int y);

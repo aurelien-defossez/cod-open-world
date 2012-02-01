@@ -96,8 +96,8 @@ public class CppGameConnector extends GameConnector {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void disqualifyAi(Ai ai, String reason) {
-		gameLib.disqualifyAi(ai.getName(), reason);
+	public void aiTimedOut(Ai ai) {
+		gameLib.aiTimedOut(ai.getId());
 	}
 	
 	/**

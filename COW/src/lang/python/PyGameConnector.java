@@ -81,9 +81,8 @@ public class PyGameConnector extends GameConnector {
 	}
 	
 	@Override
-	public void disqualifyAi(Ai ai, String reason) {
-		gameCommunicator.removeAi(new PyInteger(ai.getId()), new PyString(
-			reason));
+	public void aiTimedOut(Ai ai) {
+		gameCommunicator.aiTimedOut(new PyInteger(ai.getId()));
 	}
 	
 	@Override

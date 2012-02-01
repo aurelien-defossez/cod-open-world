@@ -32,7 +32,7 @@ class Game(object):
 		self.map.addHunter(aiId)
 	
 	#Removes an AI
-	def removeAi(self, aiId, reason):
+	def aiTimedOut(self, aiId):
 		self.map.getHunter(aiId).delete()
 		self.ais.remove(aiId)
 	

@@ -26,7 +26,7 @@ extern "C" {
 	void addAi(short aiId, char *aiName, char *playerName);
 	void play();
 	void endGame();
-	void disqualifyAi(char *aiName, char *reason);
+	void aiTimedOut(int aiId);
 	Variant performGameFunction(int functionId, int nbParameters,
 			Variant parameters[]);
 }

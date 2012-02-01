@@ -14,7 +14,7 @@ import com.ai.Ai;
 import com.game.Game;
 import com.game.LocalGame;
 
-public abstract class LiveSimulator extends GameSimulator {
+public abstract class LiveOrchestrator extends GameOrchestrator {
 	// -------------------------------------------------------------------------
 	// Class attributes
 	// -------------------------------------------------------------------------
@@ -22,7 +22,7 @@ public abstract class LiveSimulator extends GameSimulator {
 	/**
 	 * The log4j logger.
 	 */
-	private Logger logger = Logger.getLogger(LiveSimulator.class);
+	private Logger logger = Logger.getLogger(LiveOrchestrator.class);
 	
 	// -------------------------------------------------------------------------
 	// Attributes
@@ -46,7 +46,7 @@ public abstract class LiveSimulator extends GameSimulator {
 	 * @param resultFile the file to save the match result in.
 	 * @throws CowException if the game cannot be loaded.
 	 */
-	public LiveSimulator(Scheduler scheduler, String gameName,
+	public LiveOrchestrator(Scheduler scheduler, String gameName,
 		String[] parameters, String resultFile) throws CowException {
 		super(scheduler, gameName, parameters, resultFile);
 		
@@ -59,16 +59,14 @@ public abstract class LiveSimulator extends GameSimulator {
 	// -------------------------------------------------------------------------
 	
 	/**
-	 * Disqualifies an AI and removes it from the game.
+	 * Tells the game an AI has timed out.
 	 * 
-	 * @param ai the AI to disqualify.
-	 * @param reason the reason of the removal.
+	 * @param ai the timed out AI.
 	 */
-	public void disqualifyAi(Ai ai, String reason) {
-		game.disqualifyAi(ai, reason);
-		removeAi(ai);
+	public void aiTimedOut(Ai ai) {
+		game.aiTimedOut(ai);
 		
-		logger.info("AI " + ai.getName() + " disqualified (" + reason + ")");
+		logger.info("AI " + ai.getName() + " timed out");
 	}
 	
 	/**

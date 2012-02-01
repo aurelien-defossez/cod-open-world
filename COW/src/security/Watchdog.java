@@ -5,7 +5,7 @@
 
 package security;
 
-import sim.LiveSimulator;
+import sim.LiveOrchestrator;
 import com.Lang;
 import com.remote.ProxyAi;
 
@@ -18,7 +18,7 @@ public class Watchdog {
 	/**
 	 * The simulator.
 	 */
-	private LiveSimulator simulator;
+	private LiveOrchestrator simulator;
 	
 	/**
 	 * The current AI running.
@@ -44,7 +44,7 @@ public class Watchdog {
 	 * 
 	 * @param simulator the simulator.
 	 */
-	public Watchdog(LiveSimulator simulator) {
+	public Watchdog(LiveOrchestrator simulator) {
 		this.simulator = simulator;
 		this.runningAi = null;
 		this.timer = new WatchdogTimer(this);
@@ -117,9 +117,8 @@ public class Watchdog {
 	/**
 	 * Disqualifies the current AI and stops the timer.
 	 */
-	public void disqualifyCurrentAi() {
-		simulator.disqualifyAi(runningAi, "timeout");
-		runningAi.kill();
+	public void aiTimedOut() {
+		simulator.aiTimedOut(runningAi);
 	}
 	
 	/**

@@ -25,5 +25,5 @@ public interface PyGameCommunicator {
 	public Variant performGameFunction(short function, short aiId,
 		Object[] pyParameters);
 	
-	public void removeAi(PyInteger pyInteger, PyString pyString);
+	public void aiTimedOut(PyInteger pyInteger);
 }

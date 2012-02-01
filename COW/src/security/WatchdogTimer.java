@@ -121,7 +121,7 @@ public class WatchdogTimer extends Thread {
 				
 				// Timeout
 				if (timeoutCounter >= languageDependentTimeout) {
-					watchdog.disqualifyCurrentAi();
+					watchdog.aiTimedOut();
 					stopTimer();
 				}
 			}

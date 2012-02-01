@@ -92,7 +92,7 @@ public:
 	virtual void addAi(short aiId, char *aiName, char *playerName) = 0;
 	virtual void play() = 0;
 	virtual void endGame() = 0;
-	virtual void disqualifyAi(char *aiName, char *reason) = 0;
+	virtual void aiTimedOut(int aiId) = 0;
 	
 	// User-defined functions
 	virtual int move(int fruitId, int x, int y) = 0;

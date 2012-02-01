@@ -24,8 +24,8 @@ void SpecificCommunicator::endGame() {
 	game->endGame();
 }
 
-void SpecificCommunicator::disqualifyAi(char *aiName, char *reason){
-	game->disqualifyAi(aiName, reason);
+void SpecificCommunicator::aiTimedOut(int aiId){
+	game->aiTimedOut(aiName);
 }
 
 Variant SpecificCommunicator::performGameFunction(int functionId,

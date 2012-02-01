@@ -60,7 +60,7 @@ public class ReplayGame extends Game {
 	 * Does nothing.
 	 */
 	@Override
-	public void disqualifyAi(Ai ai, String reason) {
+	public void aiTimedOut(Ai ai) {
 		// Do nothing
 	}
 	

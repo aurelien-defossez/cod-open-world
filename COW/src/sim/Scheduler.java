@@ -9,7 +9,7 @@ import java.io.IOException;
 import main.CowException;
 import main.CowSimulator;
 import org.apache.log4j.Logger;
-import sim.replay.ReplaySimulator;
+import sim.replay.ReplayOrchestrator;
 
 public class Scheduler extends Thread {
 	// -------------------------------------------------------------------------
@@ -41,7 +41,7 @@ public class Scheduler extends Thread {
 	/**
 	 * The game simulator.
 	 */
-	private GameSimulator simulator;
+	private GameOrchestrator simulator;
 	
 	/**
 	 * The game speed, in frames per seconds.
@@ -94,7 +94,7 @@ public class Scheduler extends Thread {
 	 * @return the game live simulator.
 	 * @throws CowException if the game cannot be loaded.
 	 */
-	public LiveSimulator loadGame(String gameName, String[] parameters,
+	public LiveOrchestrator loadGame(String gameName, String[] parameters,
 		boolean testMode, String resultFile) throws CowException {
 		if (logger.isTraceEnabled())
 			logger.trace("Loading game (" + gameName + ")...");
@@ -102,16 +102,16 @@ public class Scheduler extends Thread {
 		// Create game simulator
 		if (testMode) {
 			this.simulator =
-				new TestSimulator(this, gameName, parameters, resultFile);
+				new TestOrchestrator(this, gameName, parameters, resultFile);
 		} else {
 			this.simulator =
-				new SecureSimulator(this, gameName, parameters, resultFile);
+				new SecureOrchestrator(this, gameName, parameters, resultFile);
 		}
 		
 		if (logger.isDebugEnabled())
 			logger.debug("Game loaded.");
 		
-		return (LiveSimulator) simulator;
+		return (LiveOrchestrator) simulator;
 	}
 	
 	/**
@@ -123,18 +123,18 @@ public class Scheduler extends Thread {
 	 * @throws FileNotFoundException if the game or replay does not exist.
 	 * @throws IOException if an error occurs while loading the replay.
 	 */
-	public ReplaySimulator loadReplay(String gameName, String replayName)
+	public ReplayOrchestrator loadReplay(String gameName, String replayName)
 		throws FileNotFoundException, IOException {
 		if (logger.isTraceEnabled())
 			logger.trace("Loading replay (" + replayName + ")...");
 		
 		// Create replay simulator
-		this.simulator = new ReplaySimulator(this, gameName, replayName);
+		this.simulator = new ReplayOrchestrator(this, gameName, replayName);
 		
 		if (logger.isDebugEnabled())
 			logger.debug("Replay loaded.");
 		
-		return (ReplaySimulator) simulator;
+		return (ReplayOrchestrator) simulator;
 	}
 	
 	/**
@@ -275,7 +275,7 @@ public class Scheduler extends Thread {
 	 * 
 	 * @return the game simulator.
 	 */
-	public GameSimulator getSimulator() {
+	public GameOrchestrator getSimulator() {
 		return simulator;
 	}
 	

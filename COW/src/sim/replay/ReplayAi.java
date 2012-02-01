@@ -19,7 +19,7 @@ public class ReplayAi extends Ai {
 	 * @param aiId the AI id.
 	 * @param aiName the AI name.
 	 */
-	public ReplayAi(ReplaySimulator simulator, short aiId, String aiName) {
+	public ReplayAi(ReplayOrchestrator simulator, short aiId, String aiName) {
 		super(simulator, simulator.getGameName(), aiId, aiName);
 	}
 	

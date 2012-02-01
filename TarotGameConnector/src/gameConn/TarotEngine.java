@@ -236,12 +236,11 @@ public interface TarotEngine {
 	public void play();
 	
 	/**
-	 * Disqualifies an AI.
+	 * An AI timed out.
 	 * 
 	 * @param aiId the AI id.
-	 * @param reason the reason.
 	 */
-	public void disqualifyAi(short aiId, String reason);
+	public void aiTimedOut(short aiId);
 	
 	/**
 	 * Stops the game.

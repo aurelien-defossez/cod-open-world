@@ -10,7 +10,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import org.apache.log4j.Logger;
-import sim.GameSimulator;
+import sim.GameOrchestrator;
 import sim.Scheduler;
 import view.View;
 import view.View.ViewType;
@@ -20,7 +20,7 @@ import com.VariantType;
 import com.ai.Ai;
 import com.remote.CompressedDataInputStream;
 
-public class ReplaySimulator extends GameSimulator {
+public class ReplayOrchestrator extends GameOrchestrator {
 	// -------------------------------------------------------------------------
 	// Class attributes
 	// -------------------------------------------------------------------------
@@ -28,7 +28,7 @@ public class ReplaySimulator extends GameSimulator {
 	/**
 	 * The log4j logger.
 	 */
-	private Logger logger = Logger.getLogger(ReplaySimulator.class);
+	private Logger logger = Logger.getLogger(ReplayOrchestrator.class);
 	
 	// -------------------------------------------------------------------------
 	// Attributes
@@ -56,7 +56,7 @@ public class ReplaySimulator extends GameSimulator {
 	 * @throws FileNotFoundException if the game or replay does not exist.
 	 * @throws IOException if an error occurs while loading the replay.
 	 */
-	public ReplaySimulator(Scheduler scheduler, String gameName,
+	public ReplayOrchestrator(Scheduler scheduler, String gameName,
 		String replayName) throws FileNotFoundException, IOException {
 		super(scheduler, gameName, new String[0], null);
 		

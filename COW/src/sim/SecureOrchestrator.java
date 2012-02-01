@@ -9,7 +9,7 @@ import com.remote.ProxyAi;
 import security.Watchdog;
 import main.CowException;
 
-public class SecureSimulator extends LiveSimulator {
+public class SecureOrchestrator extends LiveOrchestrator {
 	// -------------------------------------------------------------------------
 	// Attributes
 	// -------------------------------------------------------------------------
@@ -32,7 +32,7 @@ public class SecureSimulator extends LiveSimulator {
 	 * @param resultFile the file to save the match result in.
 	 * @throws CowException if the game cannot be loaded.
 	 */
-	public SecureSimulator(Scheduler scheduler, String gameName,
+	public SecureOrchestrator(Scheduler scheduler, String gameName,
 		String[] parameters, String resultFile) throws CowException {
 		super(scheduler, gameName, parameters, resultFile);
 		watchdog = new Watchdog(this);
