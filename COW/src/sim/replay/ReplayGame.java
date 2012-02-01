@@ -71,5 +71,12 @@ public class ReplayGame extends Game {
 	public void endGame() {
 		// Do nothing
 	}
-	
+
+	/**
+	 * Does nothing.
+	 */
+	@Override
+	public void stopAi(short aiId) {
+		// Do nothing
+	}
 }

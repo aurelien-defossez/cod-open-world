@@ -92,6 +92,15 @@ public abstract class JavaGameCommunicator {
 	}
 	
 	/**
+	 * Stops an AI.
+	 * 
+	 * @param aiId the AI to stop.
+	 */
+	public void stopAi(short aiId) {
+		connector.stopAi(aiId);
+	}
+	
+	/**
 	 * Throws an exception, thus stopping the application.
 	 * 
 	 * @param message the exception message.

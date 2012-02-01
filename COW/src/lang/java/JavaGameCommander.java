@@ -46,6 +46,10 @@ public abstract class JavaGameCommander {
 		gameCommunicator.incrementScore(aiId, increment);
 	}
 	
+	public final static void stopAi(short aiId) {
+		gameCommunicator.stopAi(aiId);
+	}
+	
 	public final static void throwException(String message) {
 		gameCommunicator.throwException(message);
 	}

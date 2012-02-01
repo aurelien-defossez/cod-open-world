@@ -56,3 +56,9 @@ class GameCommunicator(PyGameCommunicator):
 	def incrementScore(self, aiId, score):
 		self.framework.incrementScore(aiId, score)
 	
+	def stopAi(self, aiId):
+		self.framework.stopAi(aiId)
+	
+	def throwException(self, message):
+		self.framework.throwException(message)
+	

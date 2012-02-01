@@ -46,4 +46,12 @@ public class TestOrchestrator extends LiveOrchestrator {
 	public void setTimeout(int timeout) {
 		// Do nothing
 	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void stopAi(short aiId) {
+		// Do nothing
+	}
 }

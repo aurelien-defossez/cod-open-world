@@ -1,11 +1,11 @@
 
 package ai;
 
-import treasureHunt.AiInterface;
-import treasureHunt.Api;
+import game.Api;
+import game.TreasureHuntAi;
 
-public class Ai implements AiInterface {
-	private final double BLOCK_PROBA = 0.0001;
+public class Ai implements TreasureHuntAi {
+	private final double BLOCK_PROBA = 0.01;
 	
 	private int w;
 	private int h;
@@ -229,6 +229,7 @@ public class Ai implements AiInterface {
 	
 	private void blockAi(double proba) {
 		if (Math.random() < proba) {
+			System.out.println("Mouhahahahahaha!");
 			System.out.println("Mouhahahahahaha!");
 			while (true)
 				;

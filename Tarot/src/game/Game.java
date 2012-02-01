@@ -144,7 +144,7 @@ public class Game implements TarotEngine {
 	}
 	
 	@Override
-	public void disqualifyAi(short aiId, String reason) {
+	public void aiTimedOut(short aiId) {
 		// TODO Auto-generated method stub
 		
 	}

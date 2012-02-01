@@ -38,6 +38,18 @@ void Commander::incrementScore(short aiId, int increment) {
 	makeCall();
 }
 
+void Commander::stopAi(short aiId) {
+	prepareCall(__CALLBACK_FUNCTION_STOP_AI__, 1);
+	addParameter(toVariant(aiId));
+	makeCall();
+}
+
+void Commander::throwException(char *message) {
+	prepareCall(__CALLBACK_FUNCTION_THROW_EXCEPTION__, 1);
+	addParameter(toVariant(message));
+	makeCall();
+}
+
 void Commander::displayGrid(int x0, int y0, int x1, int y1, int xSpacing,
 		int ySpacing, int color, bool temporary) {
 	prepareCall(__CALLBACK_FUNCTION_DISPLAY_GRID__, 8);

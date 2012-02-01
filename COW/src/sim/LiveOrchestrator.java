@@ -147,4 +147,6 @@ public abstract class LiveOrchestrator extends GameOrchestrator {
 	 * @param timeout the maximum execution time in milliseconds.
 	 */
 	public abstract void setTimeout(int timeout);
+
+	public abstract void stopAi(short aiId);
 }

@@ -93,6 +93,13 @@ public interface GameInterface {
 	public abstract void callViewFunction(ApiCall call);
 	
 	/**
+	 * Stops an AI.
+	 * 
+	 * @param aiId the AI to be stopped.
+	 */
+	public abstract void stopAi(short aiId);
+	
+	/**
 	 * Throws an exception, thus stopping the application.
 	 * 
 	 * @param message the exception message.

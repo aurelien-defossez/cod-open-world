@@ -1,6 +1,5 @@
 /**
- * Watchdog Timer - This class times every AI execution and throws an event if
- * they are out limits.
+ * Watchdog Timer - This class times every AI execution and throws an event if they are out limits.
  */
 
 package security;
@@ -29,10 +28,9 @@ public class WatchdogTimer extends Thread {
 	private static final int MAX_CHECK_PERIOD = 1000;
 	
 	/**
-	 * The number of checks per execution. Example: If the timeout is set to
-	 * 1000ms and the number of checks to 10, then the period between each
-	 * checks would be 100ms, thus the maximal error would be 100ms and the
-	 * maximum execution time would be in [1000 ; 1100] milliseconds.
+	 * The number of checks per execution. Example: If the timeout is set to 1000ms and the number
+	 * of checks to 10, then the period between each checks would be 100ms, thus the maximal error
+	 * would be 100ms and the maximum execution time would be in [1000 ; 1100] milliseconds.
 	 */
 	private static final int CHECKS_PER_EXECUTION = 10;
 	
@@ -122,7 +120,7 @@ public class WatchdogTimer extends Thread {
 				// Timeout
 				if (timeoutCounter >= languageDependentTimeout) {
 					watchdog.aiTimedOut();
-					stopTimer();
+					resetTimer();
 				}
 			}
 			
@@ -162,23 +160,23 @@ public class WatchdogTimer extends Thread {
 	/**
 	 * Starts the timer.
 	 * 
-	 * @param aiSpeedHandicap the speed handicap the AI bonuses depending on its
-	 *            implementation language.
+	 * @param aiSpeedHandicap the speed handicap the AI bonuses depending on its implementation
+	 *            language.
 	 */
 	public void startTimer(double aiSpeedHandicap) {
 		languageDependentTimeout = (int) (baseTimeout * aiSpeedHandicap);
 		
 		refreshTime =
-			Math.min(
-				MAX_CHECK_PERIOD,
-				Math.max(MIN_CHECK_PERIOD, languageDependentTimeout
-					/ CHECKS_PER_EXECUTION));
+				Math.min(
+					MAX_CHECK_PERIOD,
+					Math.max(MIN_CHECK_PERIOD, languageDependentTimeout
+						/ CHECKS_PER_EXECUTION));
 		
 		paused = false;
 		
 		if (logger.isTraceEnabled())
 			logger.trace("Watchdog started (timeout="
-				+ languageDependentTimeout + ")");
+					+ languageDependentTimeout + ")");
 	}
 	
 	/**
@@ -199,6 +197,16 @@ public class WatchdogTimer extends Thread {
 		
 		if (logger.isTraceEnabled())
 			logger.trace("Watchdog resumed");
+	}
+	
+	/**
+	 * Resets the timer.
+	 */
+	public void resetTimer() {
+		timeoutCounter = 0;
+		
+		if (logger.isTraceEnabled())
+			logger.trace("Watchdog resetted");
 	}
 	
 	/**

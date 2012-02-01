@@ -75,8 +75,15 @@ public class GameCallbackHandler implements CallbackHandler {
 			}
 			
 			// Call AI API function
-			connector.callAiFunction(call.getParameter(0).getIntValue()
-				.shortValue(), aiApiCall);
+			connector.callAiFunction(call.getParameter(0).getIntValue().shortValue(), aiApiCall);
+			break;
+		
+		case GameConnector.STOP_AI:
+			connector.stopAi(call.getParameter(0).getIntValue().shortValue());
+			break;
+		
+		case GameConnector.THROW_EXCEPTION:
+			connector.throwException(call.getParameter(0).getStringValue());
 			break;
 		
 		// View functions

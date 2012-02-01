@@ -13,6 +13,8 @@
 #define __CALLBACK_FUNCTION_SET_SCORE__ 3
 #define __CALLBACK_FUNCTION_INCREMENT_SCORE__ 4
 #define __CALLBACK_FUNCTION_CALL_AI_FUNCTION__ 5
+#define __CALLBACK_FUNCTION_THROW_EXCEPTION__ 6
+#define __CALLBACK_FUNCTION_STOP_AI__ 7
 
 // View shapes functions
 #define __CALLBACK_FUNCTION_DISPLAY_GRID__ 20
@@ -54,6 +56,8 @@ public:
 	void setTimeout(int timeout);
 	void setScore(short aiId, int score);
 	void incrementScore(short aiId, int increment);
+	void stopAi(short aiId);
+	void throwException(char *message);
 	
 	void displayGrid(int x0, int y0, int x1, int y1, int xSpacing, int ySpacing,
 		int color, bool temporary);

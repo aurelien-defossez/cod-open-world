@@ -35,6 +35,7 @@ class Game(object):
 	def aiTimedOut(self, aiId):
 		self.map.getHunter(aiId).delete()
 		self.ais.remove(aiId)
+		self.conn.stopAi(aiId)
 	
 	#Ends the game
 	def endGame(self):

@@ -127,4 +127,12 @@ public class Watchdog {
 	public void endWatchdog() {
 		timer.stopTimerThread();
 	}
+
+	/**
+	 * Kills the running AI.
+	 */
+	public void killRunningAi() {
+		runningAi.kill();
+		timer.stopTimer();
+	}
 }

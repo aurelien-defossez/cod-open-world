@@ -1,6 +1,7 @@
 
 package lang.cpp;
 
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import com.Variant;
 import com.sun.jna.Pointer;
 import com.sun.jna.Union;
@@ -42,16 +43,13 @@ public class VariantUnion extends Union {
 			break;
 		
 		case BOOL_MATRIX1:
-			// TODO
-			break;
+			throw new NotImplementedException();
 		
 		case BOOL_MATRIX2:
-			// TODO
-			break;
+			throw new NotImplementedException();
 		
 		case BOOL_MATRIX3:
-			// TODO
-			break;
+			throw new NotImplementedException();
 		
 		case INT_MATRIX1:
 			setType(IntMatrix.ByReference.class);
@@ -68,32 +66,29 @@ public class VariantUnion extends Union {
 			break;
 		
 		case INT_MATRIX3:
-			// TODO
+			setType(IntMatrix.ByReference.class);
+			this.intMatrix = (((int[][][]) variant.getValue()).length == 0) ?
+				new IntMatrix.ByReference(new int[][][] { { { 0 } } }) :
+				new IntMatrix.ByReference((int[][][]) variant.getValue());
 			break;
 		
 		case DOUBLE_MATRIX1:
-			// TODO
-			break;
+			throw new NotImplementedException();
 		
 		case DOUBLE_MATRIX2:
-			// TODO
-			break;
+			throw new NotImplementedException();
 		
 		case DOUBLE_MATRIX3:
-			// TODO
-			break;
+			throw new NotImplementedException();
 		
 		case STRING_MATRIX1:
-			// TODO
-			break;
+			throw new NotImplementedException();
 		
 		case STRING_MATRIX2:
-			// TODO
-			break;
+			throw new NotImplementedException();
 		
 		case STRING_MATRIX3:
-			// TODO
-			break;
+			throw new NotImplementedException();
 		}
 	}
 	

@@ -5,6 +5,7 @@
 
 package sim;
 
+import com.ai.Ai;
 import com.remote.ProxyAi;
 import security.Watchdog;
 import main.CowException;
@@ -82,5 +83,11 @@ public class SecureOrchestrator extends LiveOrchestrator {
 		super.endGame();
 		
 		watchdog.endWatchdog();
+	}
+
+	@Override
+	public void stopAi(short aiId) {
+		removeAi(getAi(aiId));
+		watchdog.killRunningAi();
 	}
 }

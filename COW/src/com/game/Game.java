@@ -192,6 +192,14 @@ public abstract class Game implements GameInterface {
 	 * {@inheritDoc}
 	 */
 	@Override
+	public void stopAi(short aiId) {
+		simulator.stopAi(aiId);
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public String toString() {
 		return "Game." + language + "(" + name + ")";
 	}

@@ -17,6 +17,7 @@ public abstract class GameConnector implements GameInterface {
 	public static final int INCREMENT_SCORE = 4;
 	public static final int CALL_AI_FUNCTION = 5;
 	public static final int THROW_EXCEPTION = 6;
+	public static final int STOP_AI = 7;
 	
 	// -------------------------------------------------------------------------
 	// Attributes
@@ -98,6 +99,14 @@ public abstract class GameConnector implements GameInterface {
 	@Override
 	public void throwException(String message) {
 		game.throwException(message);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void stopAi(short aiId) {
+		game.stopAi(aiId);
 	}
 	
 	/**
