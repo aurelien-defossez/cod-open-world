@@ -28,11 +28,6 @@ public class CowSimulator {
 	public static final double MIN_SPEED = 1;
 	
 	/**
-	 * The default speed, in frames per second.
-	 */
-	public static final double DEFAULT_SPEED = 5;
-	
-	/**
 	 * The maximal speed, in frames per second.
 	 */
 	public static final double MAX_SPEED = 1000;
@@ -41,17 +36,6 @@ public class CowSimulator {
 	 * The unlimited speed constant.
 	 */
 	public static final double UNLIMITED_SPEED = MAX_SPEED + 1;
-	
-	/**
-	 * The unlimited speed complete name, to use with the speed option (-s
-	 * unlimited).
-	 */
-	public static final String UNLIMITED_NAME = "unlimited";
-	
-	/**
-	 * The unlimited speed small name, to use with the speed option (-s u).
-	 */
-	public static final String UNLIMITED_LETTER = "u";
 	
 	/**
 	 * Help file name.
@@ -98,7 +82,7 @@ public class CowSimulator {
 		String gameName = null;
 		String loadReplayName = null;
 		String resultFile = null;
-		double gameSpeed = DEFAULT_SPEED;
+		double gameSpeed = UNLIMITED_SPEED;
 		boolean displayHelp = false;
 		boolean autoStart = false;
 		boolean testMode = false;
@@ -166,23 +150,15 @@ public class CowSimulator {
 				else if (option.equals("-s") || option.equals("--speed")) {
 					String speed = args[i++].toLowerCase();
 					
-					// Check unlimited speed
-					if (speed.equals(UNLIMITED_NAME)
-						|| speed.equals(UNLIMITED_LETTER)) {
-						gameSpeed = UNLIMITED_SPEED;
+					if (gameSpeed != UNLIMITED_SPEED) {
+						throw new CowException("Speed cannot be specified twice");
 					}
-					// Get integer speed
-					else {
-						try {
-							gameSpeed = Double.parseDouble(speed);
-							gameSpeed =
-								Math.max(MIN_SPEED, Math.min(gameSpeed,
-									MAX_SPEED));
-						} catch (NumberFormatException e) {
-							throw new CowException("Speed must be an float "
-								+ ", \"" + UNLIMITED_NAME + "\" " + "or \""
-								+ UNLIMITED_LETTER + "\".");
-						}
+					
+					try {
+						gameSpeed = Double.parseDouble(speed);
+						gameSpeed = Math.max(MIN_SPEED, Math.min(gameSpeed, MAX_SPEED));
+					} catch (NumberFormatException e) {
+						throw new CowException("Speed must be an float.");
 					}
 				}
 
@@ -306,7 +282,7 @@ public class CowSimulator {
 			}
 			// Cow exception
 			catch (CowException e) {
-				logger.fatal("COW error: " + e.getMessage(), e);
+				logger.fatal("COW error: " + e.getMessage());
 				
 				if (gui != null) {
 					gui.displayError("COW error", e.getMessage());
