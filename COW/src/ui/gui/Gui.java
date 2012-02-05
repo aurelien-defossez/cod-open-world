@@ -147,8 +147,8 @@ public class Gui extends Ui {
 	}
 	
 	@Override
-	public void updateScore() {
-		scorePanel.updateScore();
+	public void updateScore(long nbFrames) {
+		scorePanel.updateScore(nbFrames);
 	}
 	
 	public void displayError(String title, String message) {

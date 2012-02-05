@@ -100,7 +100,7 @@ public abstract class View implements GameListener, KeyboardListener {
 	}
 	
 	@Override
-	public void updateScore() {
+	public void updateScore(long nbFrames) {
 		// Do nothing
 	}
 	

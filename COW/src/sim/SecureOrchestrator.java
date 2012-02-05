@@ -5,6 +5,7 @@
 
 package sim;
 
+import java.awt.Color;
 import com.ai.Ai;
 import com.remote.ProxyAi;
 import security.Watchdog;
@@ -47,10 +48,10 @@ public class SecureOrchestrator extends LiveOrchestrator {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void addAi(short aiId, String aiName) {
+	public void addAi(short aiId, String aiName, Color color) {
 		watchdog.activate();
 		
-		addAi(new ProxyAi(this, getGameName(), aiId, aiName, watchdog));
+		addAi(new ProxyAi(this, getGameName(), aiId, aiName, color, watchdog));
 	}
 	
 	/**

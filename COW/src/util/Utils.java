@@ -4,6 +4,7 @@
 
 package util;
 
+import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -43,5 +44,20 @@ public class Utils {
 			throw new BashException("Unable to execute command '" + command + "' " +
 					"(" + e.getMessage() + ")");
 		}
+	}
+	
+	/**
+	 * Randomizes a color.
+	 * 
+	 * @param min the minimal value for a component, between 0 and 1.
+	 * @param max the maximal value for a component, between 0 and 1.
+	 * @return a random color in the given interval.
+	 */
+	public static Color randomColor(double min, double max) {
+		double r = min + Math.random() * (max - min);
+		double g = min + Math.random() * (max - min);
+		double b = min + Math.random() * (max - min);
+		
+		return new Color((float) r, (float) g, (float) b);
 	}
 }

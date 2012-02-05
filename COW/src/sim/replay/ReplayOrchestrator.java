@@ -5,6 +5,7 @@
 
 package sim.replay;
 
+import java.awt.Color;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -70,9 +71,10 @@ public class ReplayOrchestrator extends GameOrchestrator {
 			short aiId = (short) in.readUnsignedVarint();
 			in.readUTF(); // Read player name
 			String aiName = in.readUTF();
+			Color color = new Color(in.readInt());
 			
 			// Add AI
-			addAi(new ReplayAi(this, aiId, aiName));
+			addAi(new ReplayAi(this, aiId, aiName, color));
 		}
 		
 		// Load game
@@ -88,9 +90,10 @@ public class ReplayOrchestrator extends GameOrchestrator {
 	 * 
 	 * @param aiId the AI id.
 	 * @param aiName the AI name.
+	 * @param color the AI color.
 	 */
 	@Override
-	public void addAi(short aiId, String aiName) {
+	public void addAi(short aiId, String aiName, Color color) {
 		// Do nothing
 	}
 	

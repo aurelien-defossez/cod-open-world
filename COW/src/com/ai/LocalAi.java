@@ -1,10 +1,11 @@
 /**
- * Local AI - This class represents a local AI, meaning an AI connected directly
- * in the same process as the platform.
+ * Local AI - This class represents a local AI, meaning an AI connected directly in the same process
+ * as the platform.
  */
 
 package com.ai;
 
+import java.awt.Color;
 import lang.cpp.CppAiConnector;
 import lang.java.JavaAiConnector;
 import lang.python.PyAiConnector;
@@ -33,11 +34,12 @@ public class LocalAi extends Ai {
 	 * @param gameName the game name.
 	 * @param aiId the AI id.
 	 * @param aiName the AI name.
+	 * @param color the AI color.
 	 * @throws CowException if the AI cannot be loaded.
 	 */
 	public LocalAi(Simulator simulator, String gameName, short aiId,
-		String aiName) {
-		super(simulator, gameName, aiId, aiName);
+		String aiName, Color color) {
+		super(simulator, gameName, aiId, aiName, color);
 		
 		switch (getLanguage()) {
 		// Load C++ AI
@@ -59,6 +61,20 @@ public class LocalAi extends Ai {
 			throw new CowException("Cannot load AI (" + aiName
 				+ "): Not supported language (" + getLanguage() + ")");
 		}
+	}
+	
+	/**
+	 * Constructs and connects a local AI with no color.
+	 * 
+	 * @param simulator the game simulator.
+	 * @param gameName the game name.
+	 * @param aiId the AI id.
+	 * @param aiName the AI name.
+	 * @throws CowException if the AI cannot be loaded.
+	 */
+	public LocalAi(Simulator simulator, String gameName, short aiId,
+		String aiName) {
+		this(simulator, gameName, aiId, aiName, Color.BLACK);
 	}
 	
 	// -------------------------------------------------------------------------

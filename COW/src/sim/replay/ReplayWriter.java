@@ -95,6 +95,7 @@ public class ReplayWriter implements GameListener {
 					out.writeUnsignedVarint(ai.getId());
 					out.writeUTF(ai.getPlayerName());
 					out.writeUTF(ai.getName());
+					out.writeInt(ai.getColor().getRGB());
 				}
 			} catch (IOException e) {
 				logger.error(e.getMessage(), e);
@@ -117,7 +118,7 @@ public class ReplayWriter implements GameListener {
 	 * Writes the scores in the file.
 	 */
 	@Override
-	public void updateScore() {
+	public void updateScore(long nbFrames) {
 		if (opened) {
 			try {
 				// Write scores

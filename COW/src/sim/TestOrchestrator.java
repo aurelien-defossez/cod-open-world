@@ -5,6 +5,7 @@
 
 package sim;
 
+import java.awt.Color;
 import com.ai.LocalAi;
 import main.CowException;
 
@@ -35,8 +36,8 @@ public class TestOrchestrator extends LiveOrchestrator {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void addAi(short aiId, String aiName) {
-		addAi(new LocalAi(this, getGameName(), aiId, aiName));
+	public void addAi(short aiId, String aiName, Color color) {
+		addAi(new LocalAi(this, getGameName(), aiId, aiName, color));
 	}
 	
 	/**

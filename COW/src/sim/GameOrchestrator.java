@@ -5,6 +5,7 @@
 
 package sim;
 
+import java.awt.Color;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -60,7 +61,18 @@ public abstract class GameOrchestrator implements Simulator {
 	/**
 	 * The file to save the match result in.
 	 */
+	@Deprecated
 	private String resultFile;
+	
+	/**
+	 * The number of frames since the beginning.
+	 */
+	private long frameCounter;
+	
+	/**
+	 * True if the score needs to be updated during the last frame.
+	 */
+	private boolean updateScore;
 	
 	// -------------------------------------------------------------------------
 	// Constructor
@@ -82,6 +94,8 @@ public abstract class GameOrchestrator implements Simulator {
 		this.ais = new HashMap<Short, Ai>();
 		this.parameters = parameters;
 		this.resultFile = resultFile;
+		this.frameCounter = 0;
+		this.updateScore = false;
 	}
 	
 	// -------------------------------------------------------------------------
@@ -139,7 +153,7 @@ public abstract class GameOrchestrator implements Simulator {
 		
 		if (ai != null) {
 			ai.setScore(score);
-			updateScore();
+			updateScore = true;
 		} else {
 			logger.error("Can't set score for AI #" + aiId
 				+ ", does not exist.");
@@ -155,18 +169,25 @@ public abstract class GameOrchestrator implements Simulator {
 	public void incrementScore(short aiId, int increment) {
 		Ai ai = getAi(aiId);
 		ai.setScore(ai.getScore() + increment);
-		updateScore();
+		updateScore = true;
 	}
 	
 	/**
 	 * Sets a game frame and signals that to every game listener.
 	 */
 	public void setFrame() {
+		frameCounter++;
 		scheduler.setFrame();
 		
 		for (GameListener listener : listeners) {
 			listener.setFrame();
+			
+			if (updateScore) {
+				listener.updateScore(frameCounter);
+			}
 		}
+		
+		updateScore = false;
 	}
 	
 	/**
@@ -254,7 +275,7 @@ public abstract class GameOrchestrator implements Simulator {
 	 */
 	protected final void updateScore() {
 		for (GameListener listener : listeners) {
-			listener.updateScore();
+			listener.updateScore(frameCounter);
 		}
 	}
 	
@@ -267,8 +288,9 @@ public abstract class GameOrchestrator implements Simulator {
 	 * 
 	 * @param aiId the AI id.
 	 * @param aiName the AI name.
+	 * @param color the AI color.
 	 */
-	public abstract void addAi(short aiId, String aiName);
+	public abstract void addAi(short aiId, String aiName, Color color);
 	
 	/**
 	 * Plays the game.

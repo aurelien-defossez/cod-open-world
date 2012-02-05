@@ -26,5 +26,6 @@
 	<classpathentry kind="lib" path="resources/libraries/lwjgl-2.7.1/jar/lwjgl-debug.jar"/>
 	<classpathentry kind="lib" path="resources/libraries/lwjgl-2.7.1/jar/lwjgl.jar"/>
 	<classpathentry kind="lib" path="resources/libraries/JNA3.2.7/jna.jar"/>
+	<classpathentry kind="lib" path="resources/libraries/jchart2d-3.2.2/jchart2d-3.2.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

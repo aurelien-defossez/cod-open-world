@@ -35,8 +35,10 @@ public interface GameListener {
 	
 	/**
 	 * Signals that the scores have been updated.
+	 * 
+	 * @param nbFrames the number of frames since the beginning of the game.
 	 */
-	public void updateScore();
+	public void updateScore(long nbFrames);
 	
 	/**
 	 * Signals that a game key frame has been created.

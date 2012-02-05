@@ -4,6 +4,7 @@
 
 package sim.replay;
 
+import java.awt.Color;
 import com.ApiCall;
 import com.ai.Ai;
 
@@ -18,9 +19,10 @@ public class ReplayAi extends Ai {
 	 * @param simulator the replay simulator.
 	 * @param aiId the AI id.
 	 * @param aiName the AI name.
+	 * @param aiColor the AI color.
 	 */
-	public ReplayAi(ReplayOrchestrator simulator, short aiId, String aiName) {
-		super(simulator, simulator.getGameName(), aiId, aiName);
+	public ReplayAi(ReplayOrchestrator simulator, short aiId, String aiName, Color aiColor) {
+		super(simulator, simulator.getGameName(), aiId, aiName, aiColor);
 	}
 	
 	// -------------------------------------------------------------------------

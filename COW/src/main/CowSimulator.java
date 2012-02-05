@@ -4,6 +4,7 @@
 
 package main;
 
+import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -16,6 +17,7 @@ import sim.GameOrchestrator;
 import sim.Scheduler;
 import sim.replay.ReplayWriter;
 import ui.gui.Gui;
+import util.Utils;
 
 public class CowSimulator {
 	// -------------------------------------------------------------------------
@@ -41,6 +43,30 @@ public class CowSimulator {
 	 * Help file name.
 	 */
 	public static final String HELP_FILE = "help.txt";
+	
+	/**
+	 * The default colors for AIs.
+	 */
+	private final static Color[] DEFAULT_COLORS = new Color[] {
+		Color.RED,
+		Color.BLUE,
+		Color.GREEN,
+		Color.ORANGE,
+		Color.MAGENTA,
+		Color.PINK,
+		Color.CYAN,
+		Color.DARK_GRAY
+	};
+	
+	/**
+	 * The minimal component value for generated colors.
+	 */
+	private final static double MIN_COLOR = 0.0;
+	
+	/**
+	 * The maximal component value for generated colors.
+	 */
+	private final static double MAX_COLOR = 0.9;
 	
 	// -------------------------------------------------------------------------
 	// Class attributes
@@ -89,6 +115,7 @@ public class CowSimulator {
 		boolean useView = true;
 		boolean quiet = false;
 		Gui gui = null;
+		int colorCount = 0;
 		
 		// Stop JME flooding (log4j)
 		System.setProperty("java.util.logging.config.file", "");
@@ -247,7 +274,10 @@ public class CowSimulator {
 				
 				// Add AIs
 				for (short i = 0; i < ais.size(); i++) {
-					simulator.addAi(i, ais.get(i));
+					Color color = (colorCount < DEFAULT_COLORS.length) ?
+						DEFAULT_COLORS[colorCount++] : Utils.randomColor(MIN_COLOR, MAX_COLOR);
+					
+					simulator.addAi(i, ais.get(i), color);
 				}
 				
 				// Add replay writers

@@ -4,6 +4,7 @@
 
 package com.remote;
 
+import java.awt.Color;
 import java.io.IOException;
 import java.util.Vector;
 import main.CowException;
@@ -54,12 +55,13 @@ public class ProxyAi extends Ai {
 	 * @param gameName the game name.
 	 * @param aiId the AI id.
 	 * @param aiName the AI name.
+	 * @param color the AI color.
 	 * @param watchdog the security watchdog.
 	 * @throws CowException if the AI cannot be loaded.
 	 */
 	public ProxyAi(Simulator simulator, String gameName, short aiId,
-		String aiName, Watchdog watchdog) {
-		super(simulator, gameName, aiId, aiName);
+		String aiName, Color color, Watchdog watchdog) {
+		super(simulator, gameName, aiId, aiName, color);
 		
 		ProcessBuilder builder;
 		
