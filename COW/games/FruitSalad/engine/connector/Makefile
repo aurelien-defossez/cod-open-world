@@ -7,6 +7,7 @@ all:
 	-I../../../../resources/cpp/game/src \
 	-L../../../../resources/cpp/game -lcppConnector
 	
+	@mkdir -p tmp
 	@(cd tmp && ar x ../../../../../resources/cpp/game/libcppConnector.a)
 	
 	@(ar rcs ../libcommunicator.a *.o tmp/*.o && echo libcommunicator.a created)

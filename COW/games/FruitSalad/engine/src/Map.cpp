@@ -13,8 +13,7 @@
 
 using namespace std;
 
-struct AStarNode
-{
+struct AStarNode {
 	pair<int, int> pos;
 	int cost;
 	int estimated_cost;

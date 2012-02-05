@@ -1,16 +1,7 @@
-- Platform
-	Add multidimensional arrays
-	Add test game
-	Remove protobuf & add CompressedData{In|Out}putStream
-
 - Languages
-	Support java (Game engine)
-	Support C/C++
+	Support C/C++ in Windows
 	Redo Python connectors
 	Support Lua
-
-- Game engine
-	Add parameters files
 
 - Replay
 	Support specific replays

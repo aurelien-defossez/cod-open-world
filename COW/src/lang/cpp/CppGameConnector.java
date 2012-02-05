@@ -2,8 +2,10 @@
 package lang.cpp;
 
 import java.util.Collection;
+import main.BashException;
 import main.CowException;
 import org.apache.log4j.Logger;
+import util.Utils;
 import com.ApiCall;
 import com.Variant;
 import com.ai.Ai;
@@ -53,8 +55,24 @@ public class CppGameConnector extends GameConnector {
 			if (logger.isDebugEnabled())
 				logger.info("Cpp Game (" + game.getName() + ") connected.");
 		} catch (UnsatisfiedLinkError e) {
+			String details = "";
+			
+			// Decipher C++ symbol into human-readable method signature
+			if (e.getMessage().contains("undefined symbol")) {
+				String symbol = e.getMessage().substring(
+					e.getMessage().indexOf("undefined symbol") + 18, e.getMessage().length());
+				
+				try {
+					details =
+						" (" + Utils.executeCommand("c++filt " + symbol).replaceAll("\n", "") + ")";
+				} catch (BashException be) {
+					details = " (Unable to decipher symbol, " +
+							"please install package c++filt for more information)";
+				}
+			}
+			
 			throw new CowException("Cannot load Game (" + game.getName() + ")",
-				e.getMessage());
+				e.getMessage() + details);
 		}
 	}
 	

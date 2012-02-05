@@ -25,7 +25,7 @@ void SpecificCommunicator::endGame() {
 }
 
 void SpecificCommunicator::aiTimedOut(int aiId){
-	game->aiTimedOut(aiName);
+	game->aiTimedOut(aiId);
 }
 
 Variant SpecificCommunicator::performGameFunction(int functionId,
