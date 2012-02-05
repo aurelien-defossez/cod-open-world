@@ -7,11 +7,11 @@ import info.monitorenter.gui.chart.traces.Trace2DSimple;
 import info.monitorenter.gui.chart.views.ChartPanel;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 import com.ai.Ai;
 
 public class ScorePanel extends JPanel {
@@ -26,9 +26,10 @@ public class ScorePanel extends JPanel {
 	// -------------------------------------------------------------------------
 	
 	private Collection<Ai> ais;
-	private JTextArea scoreArea;
+	private JPanel scoreArea;
 	private Chart2D chart;
 	private Map<Ai, ITrace2D> traces;
+	private Map<Ai, ScoreLabel> labels;
 	
 	// -------------------------------------------------------------------------
 	// Constructor
@@ -37,16 +38,13 @@ public class ScorePanel extends JPanel {
 	public ScorePanel() {
 		super(new BorderLayout());
 		
-		this.scoreArea = new JTextArea();
 		this.chart = new Chart2D();
 		this.traces = new HashMap<Ai, ITrace2D>();
-		
-		chart.enablePointHighlighting(true);
+		this.labels = new HashMap<Ai, ScoreLabel>();
 		
 		ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setPreferredSize(new Dimension(0, 200));
 		
-		add(scoreArea, BorderLayout.SOUTH);
 		add(chartPanel, BorderLayout.CENTER);
 	}
 	
@@ -56,6 +54,9 @@ public class ScorePanel extends JPanel {
 	
 	public void initIas(Collection<Ai> ais) {
 		this.ais = ais;
+		this.scoreArea = new JPanel(new GridLayout(ais.size(), 1));
+		
+		add(scoreArea, BorderLayout.SOUTH);
 		
 		for (Ai ai : ais) {
 			ITrace2D trace = new Trace2DSimple("");
@@ -63,18 +64,18 @@ public class ScorePanel extends JPanel {
 			
 			chart.addTrace(trace);
 			traces.put(ai, trace);
+			
+			ScoreLabel scoreLabel = new ScoreLabel(ai);
+			scoreArea.add(scoreLabel);
+			labels.put(ai, scoreLabel);
 		}
 		
 		updateScore(0);
 	}
 	
 	public void updateScore(long nbFrames) {
-		scoreArea.setText("");
-		
 		for (Ai ai : ais) {
-			scoreArea.append(" " + ai.getName() + " (" + ai.getPlayerName()
-				+ ") : " + ai.getScore() + " points\n");
-			
+			labels.get(ai).updateScore();
 			traces.get(ai).addPoint(nbFrames, ai.getScore());
 		}
 	}
