@@ -8,9 +8,9 @@ import info.monitorenter.gui.chart.views.ChartPanel;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 import javax.swing.JPanel;
 import com.ai.Ai;
 
@@ -25,11 +25,9 @@ public class ScorePanel extends JPanel {
 	// Attributes
 	// -------------------------------------------------------------------------
 	
-	private Collection<Ai> ais;
 	private JPanel scoreArea;
 	private Chart2D chart;
-	private Map<Ai, ITrace2D> traces;
-	private Map<Ai, ScoreLabel> labels;
+	private List<AiScorePanel> scorePanels;
 	
 	// -------------------------------------------------------------------------
 	// Constructor
@@ -39,11 +37,9 @@ public class ScorePanel extends JPanel {
 		super(new BorderLayout());
 		
 		this.chart = new Chart2D();
-		this.traces = new HashMap<Ai, ITrace2D>();
-		this.labels = new HashMap<Ai, ScoreLabel>();
 		
 		ChartPanel chartPanel = new ChartPanel(chart);
-		chartPanel.setPreferredSize(new Dimension(0, 200));
+		chartPanel.setPreferredSize(new Dimension(0, 160));
 		
 		add(chartPanel, BorderLayout.CENTER);
 	}
@@ -53,30 +49,26 @@ public class ScorePanel extends JPanel {
 	// -------------------------------------------------------------------------
 	
 	public void initIas(Collection<Ai> ais) {
-		this.ais = ais;
 		this.scoreArea = new JPanel(new GridLayout(ais.size(), 1));
+		this.scorePanels = new ArrayList<AiScorePanel>(ais.size());
 		
 		add(scoreArea, BorderLayout.SOUTH);
 		
 		for (Ai ai : ais) {
 			ITrace2D trace = new Trace2DSimple("");
-			trace.setColor(ai.getColor());
+			AiScorePanel scorePanel = new AiScorePanel(ai, trace);
 			
 			chart.addTrace(trace);
-			traces.put(ai, trace);
-			
-			ScoreLabel scoreLabel = new ScoreLabel(ai);
-			scoreArea.add(scoreLabel);
-			labels.put(ai, scoreLabel);
+			scorePanels.add(scorePanel);
+			scoreArea.add(scorePanel);
 		}
 		
 		updateScore(0);
 	}
 	
 	public void updateScore(long nbFrames) {
-		for (Ai ai : ais) {
-			labels.get(ai).updateScore();
-			traces.get(ai).addPoint(nbFrames, ai.getScore());
+		for (AiScorePanel scorePanel : scorePanels) {
+			scorePanel.updateScore(nbFrames);
 		}
 	}
 }
