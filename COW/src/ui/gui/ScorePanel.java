@@ -8,9 +8,7 @@ import info.monitorenter.gui.chart.views.ChartPanel;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import javax.swing.JPanel;
 import com.ai.Ai;
 
@@ -27,7 +25,7 @@ public class ScorePanel extends JPanel {
 	
 	private JPanel scoreArea;
 	private Chart2D chart;
-	private List<AiScorePanel> scorePanels;
+	private AiScorePanel[] scorePanels;
 	
 	// -------------------------------------------------------------------------
 	// Constructor
@@ -49,8 +47,10 @@ public class ScorePanel extends JPanel {
 	// -------------------------------------------------------------------------
 	
 	public void initIas(Collection<Ai> ais) {
+		int i = 0;
+		
 		this.scoreArea = new JPanel(new GridLayout(ais.size(), 1));
-		this.scorePanels = new ArrayList<AiScorePanel>(ais.size());
+		this.scorePanels = new AiScorePanel[ais.size()];
 		
 		add(scoreArea, BorderLayout.SOUTH);
 		
@@ -59,8 +59,8 @@ public class ScorePanel extends JPanel {
 			AiScorePanel scorePanel = new AiScorePanel(ai, trace);
 			
 			chart.addTrace(trace);
-			scorePanels.add(scorePanel);
 			scoreArea.add(scorePanel);
+			scorePanels[i++] = scorePanel;
 		}
 		
 		updateScore(0);
