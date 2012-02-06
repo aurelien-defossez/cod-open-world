@@ -151,6 +151,11 @@ public class Gui extends Ui {
 		scorePanel.updateScore(nbFrames);
 	}
 	
+	@Override
+	public void updateColors() {
+		scorePanel.updateColors();
+	}
+	
 	public void displayError(String title, String message) {
 		JOptionPane.showMessageDialog(window, message, title,
 			JOptionPane.ERROR_MESSAGE);

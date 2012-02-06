@@ -278,6 +278,15 @@ public abstract class GameOrchestrator implements Simulator {
 			listener.updateScore(frameCounter);
 		}
 	}
+
+	/**
+	 * Sends an event to every game listener to update the colors.
+	 */
+	protected final void updateColors() {
+		for (GameListener listener : listeners) {
+			listener.updateColors();
+		}
+	}
 	
 	// -------------------------------------------------------------------------
 	// Abstract methods

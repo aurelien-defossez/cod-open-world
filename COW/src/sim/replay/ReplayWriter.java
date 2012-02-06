@@ -95,7 +95,7 @@ public class ReplayWriter implements GameListener {
 					out.writeUnsignedVarint(ai.getId());
 					out.writeUTF(ai.getPlayerName());
 					out.writeUTF(ai.getName());
-					out.writeInt(ai.getColor().getRGB());
+					out.writeUnsignedVarint(ai.getColor().getRGB());
 				}
 			} catch (IOException e) {
 				logger.error(e.getMessage(), e);
@@ -112,6 +112,26 @@ public class ReplayWriter implements GameListener {
 	@Override
 	public void endGame() {
 		stopWriting();
+	}
+	
+	/**
+	 * Writes the new colors in the file.
+	 */
+	@Override
+	public void updateColors() {
+		if (opened) {
+			try {
+				// Write colors
+				out.writeUnsignedVarint(View.UPDATE_COLORS);
+				
+				for (Ai ai : ais) {
+					out.writeUnsignedVarint(ai.getColor().getRGB());
+				}
+			} catch (IOException e) {
+				logger.error(e.getMessage(), e);
+				stopWriting();
+			}
+		}
 	}
 	
 	/**

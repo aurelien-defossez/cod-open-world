@@ -3,7 +3,6 @@ package ui.gui;
 
 import info.monitorenter.gui.chart.ITrace2D;
 import java.awt.FlowLayout;
-import java.io.IOException;
 import java.util.NavigableMap;
 import java.util.TreeMap;
 import javax.swing.JLabel;
@@ -24,6 +23,7 @@ public class AiScorePanel extends JPanel {
 	// -------------------------------------------------------------------------
 	
 	private Ai ai;
+	private JLabel colorLabel;
 	private JLabel scoreLabel;
 	private ITrace2D trace;
 	private NavigableMap<Long, Integer> points;
@@ -50,15 +50,14 @@ public class AiScorePanel extends JPanel {
 		points.put(0L, 0);
 		
 		// Create colored box
-		JLabel colorLabel = new JLabel("      ");
-		colorLabel.setBackground(ai.getColor());
+		colorLabel = new JLabel("      ");
 		colorLabel.setOpaque(true);
-		
-		// Customize trace
-		trace.setColor(ai.getColor());
 		
 		// Create name label
 		JLabel nameLabel = new JLabel(ai.getName() + " (" + ai.getPlayerName() + ")");
+		
+		// Set default colors
+		updateColor();
 		
 		// Add components
 		add(colorLabel);
@@ -94,5 +93,10 @@ public class AiScorePanel extends JPanel {
 				trace.addPoint(i, points.floorEntry(i).getValue());
 			}
 		}
+	}
+	
+	public void updateColor() {
+		trace.setColor(ai.getColor());
+		colorLabel.setBackground(ai.getColor());
 	}
 }

@@ -1,6 +1,6 @@
 /**
- * Game Listener - This class represents a game listener, which will listen to
- * every external event of the game, used primarily for the different views.
+ * Game Listener - This class represents a game listener, which will listen to every external event
+ * of the game, used primarily for the different views.
  */
 
 package com;
@@ -26,8 +26,7 @@ public interface GameListener {
 	public void endGame();
 	
 	/**
-	 * Makes a view API call, which will control the view or the entities on the
-	 * view.
+	 * Makes a view API call, which will control the view or the entities on the view.
 	 * 
 	 * @param call the view API call.
 	 */
@@ -39,6 +38,11 @@ public interface GameListener {
 	 * @param nbFrames the number of frames since the beginning of the game.
 	 */
 	public void updateScore(long nbFrames);
+	
+	/**
+	 * Signals that the colors have been updated.
+	 */
+	public void updateColors();
 	
 	/**
 	 * Signals that a game key frame has been created.

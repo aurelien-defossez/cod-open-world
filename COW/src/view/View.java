@@ -19,6 +19,7 @@ public abstract class View implements GameListener, KeyboardListener {
 	
 	public static final int SET_FRAME = 1;
 	public static final int UPDATE_SCORE = 2;
+	public static final int UPDATE_COLORS = 3;
 	
 	public static final int PRINT_TEXT = 10;
 	
@@ -101,6 +102,11 @@ public abstract class View implements GameListener, KeyboardListener {
 	
 	@Override
 	public void updateScore(long nbFrames) {
+		// Do nothing
+	}
+	
+	@Override
+	public void updateColors() {
 		// Do nothing
 	}
 	

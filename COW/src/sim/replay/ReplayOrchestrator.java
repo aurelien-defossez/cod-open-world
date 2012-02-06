@@ -71,7 +71,7 @@ public class ReplayOrchestrator extends GameOrchestrator {
 			short aiId = (short) in.readUnsignedVarint();
 			in.readUTF(); // Read player name
 			String aiName = in.readUTF();
-			Color color = new Color(in.readInt());
+			Color color = new Color(in.readUnsignedVarint());
 			
 			// Add AI
 			addAi(new ReplayAi(this, aiId, aiName, color));
@@ -142,6 +142,13 @@ public class ReplayOrchestrator extends GameOrchestrator {
 					updateScore();
 					break;
 				
+				case View.UPDATE_COLORS:
+					for (Ai ai : getAis()) {
+						ai.setColor(new Color(in.readUnsignedVarint()));
+					}
+					updateColors();
+					break;
+				
 				case View.MOVE_ENTITY:
 					call = new ApiCall((short) function, 3);
 					call.add(in.readVariantValue(VariantType.INT));
@@ -193,7 +200,7 @@ public class ReplayOrchestrator extends GameOrchestrator {
 			logger.error(e.getMessage(), e);
 		}
 	}
-	
+
 	/**
 	 * Makes a game API call (not implemented, returns null).
 	 * 

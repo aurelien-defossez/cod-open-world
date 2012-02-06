@@ -33,8 +33,7 @@ public class Game implements TarotEngine {
 	public final static int NB_PLAYERS = 4;
 	public final static int NB_CARDS = 78;
 	public final static int DOG_SIZE = 6;
-	public final static int CARDS_PER_PLAYER =
-		(NB_CARDS - DOG_SIZE) / NB_PLAYERS;
+	public final static int CARDS_PER_PLAYER = (NB_CARDS - DOG_SIZE) / NB_PLAYERS;
 	
 	// -------------------------------------------------------------------------
 	// Attributes
@@ -52,14 +51,16 @@ public class Game implements TarotEngine {
 	private Map<Short, Player> players;
 	private List<Card> deck;
 	private List<Card> dog;
+	private boolean stopGame;
 	
 	// -------------------------------------------------------------------------
 	// Constructor
 	// -------------------------------------------------------------------------
 	
 	public Game() {
-		players = new HashMap<Short, Player>(NB_PLAYERS, 1);
-		ctHands = 0;
+		this.players = new HashMap<Short, Player>(NB_PLAYERS, 1);
+		this.ctHands = 0;
+		this.stopGame = false;
 		
 		// Create cards
 		Utils.createCards();
@@ -145,8 +146,7 @@ public class Game implements TarotEngine {
 	
 	@Override
 	public void aiTimedOut(short aiId) {
-		// TODO Auto-generated method stub
-		
+		GameCommander.stopAi(aiId);
 	}
 	
 	@Override
@@ -161,7 +161,7 @@ public class Game implements TarotEngine {
 		currentPlayer = firstPlayer;
 		
 		// While there are hands to play
-		while (ctHands < maxHands) {
+		while (ctHands < maxHands && !stopGame) {
 			System.out
 				.println("_________________________________________________________________");
 			System.out.println();
@@ -234,8 +234,7 @@ public class Game implements TarotEngine {
 	
 	@Override
 	public void stop() {
-		// TODO Auto-generated method stub
-		
+		stopGame = true;
 	}
 	
 	@Override
@@ -348,7 +347,7 @@ public class Game implements TarotEngine {
 	}
 	
 	@Override
-	public int makeAnnouncement(short arg0, int arg1) {
+	public int makeAnnouncement(short aiId, int announcement) {
 		// TODO Auto-generated method stub
 		return 0;
 	}

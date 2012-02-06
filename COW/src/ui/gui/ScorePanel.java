@@ -71,4 +71,10 @@ public class ScorePanel extends JPanel {
 			scorePanel.updateScore(nbFrames);
 		}
 	}
+	
+	public void updateColors() {
+		for (AiScorePanel scorePanel : scorePanels) {
+			scorePanel.updateColor();
+		}
+	}
 }
