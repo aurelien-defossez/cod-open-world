@@ -168,6 +168,14 @@ public abstract class Game implements GameInterface {
 	 * {@inheritDoc}
 	 */
 	@Override
+	public void setColor(short aiId, int color) {
+		simulator.setColor(aiId, color);
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public void incrementScore(short aiId, int increment) {
 		simulator.incrementScore(aiId, increment);
 	}

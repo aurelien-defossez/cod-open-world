@@ -89,6 +89,14 @@ public abstract class GameConnector implements GameInterface {
 	 * {@inheritDoc}
 	 */
 	@Override
+	public void setColor(short aiId, int color) {
+		game.setColor(aiId, color);
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public void callViewFunction(ApiCall call) {
 		game.callViewFunction(call);
 	}

@@ -73,6 +73,16 @@ public abstract class JavaGameCommunicator {
 	}
 	
 	/**
+	 * Sets a new color to an AI.
+	 * 
+	 * @param aiId the AI id.
+	 * @param color the new color for this AI, in RGB.
+	 */
+	public void setColor(short aiId, int color) {
+		connector.setColor(aiId, color);
+	}
+	
+	/**
 	 * Calls an AI API function.
 	 * 
 	 * @param aiId the AI to execute.

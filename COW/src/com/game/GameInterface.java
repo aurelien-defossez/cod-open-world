@@ -68,6 +68,14 @@ public interface GameInterface {
 	 * @param score the new score for this AI.
 	 */
 	public void setScore(short aiId, int score);
+
+	/**
+	 * Sets a new color to an AI.
+	 * 
+	 * @param aiId the AI id.
+	 * @param color the new color for this AI, in RGB.
+	 */
+	public void setColor(short aiId, int color);
 	
 	/**
 	 * Increments the score of an AI.

@@ -46,6 +46,10 @@ public abstract class JavaGameCommander {
 		gameCommunicator.incrementScore(aiId, increment);
 	}
 	
+	public final static void setColor(short aiId, int color) {
+		gameCommunicator.setColor(aiId, color);
+	}
+	
 	public final static void stopAi(short aiId) {
 		gameCommunicator.stopAi(aiId);
 	}

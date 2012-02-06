@@ -217,7 +217,7 @@ public class Game implements TarotEngine {
 				
 				// Create scores array
 				int[] scores = new int[Game.NB_PLAYERS];
-				for(Player player : players.values()) {
+				for (Player player : players.values()) {
 					scores[player.getAiId()] = player.getScore();
 					GameCommander.setScore(player.getAiId(), player.getScore());
 				}

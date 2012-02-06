@@ -1,6 +1,6 @@
 /**
- * Game Simulator - This abstract class represents a game simulator, which will
- * manage the game engine and the different AIs.
+ * Game Simulator - This abstract class represents a game simulator, which will manage the game
+ * engine and the different AIs.
  */
 
 package sim;
@@ -70,9 +70,14 @@ public abstract class GameOrchestrator implements Simulator {
 	private long frameCounter;
 	
 	/**
-	 * True if the score needs to be updated during the last frame.
+	 * True if the score needs to be updated during this frame.
 	 */
 	private boolean updateScore;
+	
+	/**
+	 * True if the colors needs to be updated during this frame.
+	 */
+	private boolean updateColors;
 	
 	// -------------------------------------------------------------------------
 	// Constructor
@@ -155,8 +160,24 @@ public abstract class GameOrchestrator implements Simulator {
 			ai.setScore(score);
 			updateScore = true;
 		} else {
-			logger.error("Can't set score for AI #" + aiId
-				+ ", does not exist.");
+			logger.error("Can't set score for AI #" + aiId + ", does not exist.");
+		}
+	}
+	
+	/**
+	 * Sets a color to an AI.
+	 * 
+	 * @param aiId the AI id.
+	 * @param color the new color, in RGB.
+	 */
+	public void setColor(short aiId, int color) {
+		Ai ai = getAi(aiId);
+		
+		if (ai != null) {
+			ai.setColor(new Color(color));
+			updateColors = true;
+		} else {
+			logger.error("Can't set color for AI #" + aiId + ", does not exist.");
 		}
 	}
 	
@@ -168,8 +189,13 @@ public abstract class GameOrchestrator implements Simulator {
 	 */
 	public void incrementScore(short aiId, int increment) {
 		Ai ai = getAi(aiId);
-		ai.setScore(ai.getScore() + increment);
-		updateScore = true;
+		
+		if (ai != null) {
+			ai.setScore(ai.getScore() + increment);
+			updateScore = true;
+		} else {
+			logger.error("Can't increment score for AI #" + aiId + ", does not exist.");
+		}
 	}
 	
 	/**
@@ -185,9 +211,14 @@ public abstract class GameOrchestrator implements Simulator {
 			if (updateScore) {
 				listener.updateScore(frameCounter);
 			}
+			
+			if (updateColors) {
+				listener.updateColors();
+			}
 		}
 		
 		updateScore = false;
+		updateColors = false;
 	}
 	
 	/**
@@ -209,8 +240,8 @@ public abstract class GameOrchestrator implements Simulator {
 	}
 	
 	/**
-	 * Prints the score in the output stream, one integer for each AI, in the
-	 * order of the initial AI order in the parameter list.
+	 * Prints the score in the output stream, one integer for each AI, in the order of the initial
+	 * AI order in the parameter list.
 	 */
 	public final void printScores() {
 		if (resultFile != null) {
@@ -278,7 +309,7 @@ public abstract class GameOrchestrator implements Simulator {
 			listener.updateScore(frameCounter);
 		}
 	}
-
+	
 	/**
 	 * Sends an event to every game listener to update the colors.
 	 */

@@ -56,6 +56,9 @@ class GameCommunicator(PyGameCommunicator):
 	def incrementScore(self, aiId, score):
 		self.framework.incrementScore(aiId, score)
 	
+	def setColor(self, aiId, color):
+		self.framework.setColor(aiId, color)
+	
 	def stopAi(self, aiId):
 		self.framework.stopAi(aiId)
 	
