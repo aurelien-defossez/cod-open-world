@@ -55,7 +55,7 @@ public class VariantStruct extends Structure {
 	}
 	
 	public static VariantStruct[] createArray(int nbStructs) {
-		return (VariantStruct[]) (new VariantStruct().toArray(nbStructs));
+		return (nbStructs > 0) ? (VariantStruct[]) (new VariantStruct().toArray(nbStructs)) : new VariantStruct[0];
 	}
 	
 	public static VariantStruct[] createArray(Variant[] variants) {
