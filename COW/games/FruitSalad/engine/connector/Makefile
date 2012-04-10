@@ -1,14 +1,14 @@
 all:
-	@(cd ../../../../resources/cpp/game && make)
+	@ cd ../../../../resources/cpp/game && make
 	
-	@echo Compiling Specific communicator...
-	g++ -c SpecificCommunicator.cpp SpecificCommander.cpp \
+	@ echo Compiling Specific communicator...
+	g++ -static -c SpecificCommunicator.cpp SpecificCommander.cpp \
 	-I../../../../resources/cpp/commons/src \
-	-I../../../../resources/cpp/game/src \
-	-L../../../../resources/cpp/game -lcppConnector
+	-I../../../../resources/cpp/game/src
 	
-	@mkdir -p tmp
-	@(cd tmp && ar x ../../../../../resources/cpp/game/libcppConnector.a)
+	@ mkdir -p tmp
+	@ cd tmp && ar x ../../../../../resources/cpp/game/libcppConnector.a
 	
-	@(ar rcs ../libcommunicator.a *.o tmp/*.o && echo libcommunicator.a created)
+	@ rm -f ../libcommunicator.a
+	@ ar rcs ../libcommunicator.a *.o tmp/*.o && echo libcommunicator.a created
 	

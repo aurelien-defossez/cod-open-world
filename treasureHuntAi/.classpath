@@ -3,5 +3,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="/COW/games/treasureHunt/api/java/api.jar"/>
+	<classpathentry kind="lib" path="/COW/resources/libraries/jchart2d-3.2.2/jchart2d-3.2.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
