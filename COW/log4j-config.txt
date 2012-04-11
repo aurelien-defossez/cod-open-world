@@ -1,5 +1,5 @@
 # Log configuration
-log4j.rootLogger=INFO, stdout, debugFile
+log4j.rootLogger=DEBUG, stdout, debugFile
 
 # Appender :: stdout
 log4j.appender.stdout=org.apache.log4j.ConsoleAppender

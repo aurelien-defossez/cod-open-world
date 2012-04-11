@@ -5,6 +5,8 @@
 
 package com.remote;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -73,8 +75,8 @@ public class SocketRpcClient implements RpcClient {
 			
 			// Create socket and connect
 			socket = new Socket(address, port);
-			in = new CompressedDataInputStream(socket.getInputStream());
-			out = new CompressedDataOutputStream(socket.getOutputStream());
+			in = new CompressedDataInputStream(new BufferedInputStream(socket.getInputStream()));
+			out = new CompressedDataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
 			listening = true;
 			
 			if (logger.isDebugEnabled())

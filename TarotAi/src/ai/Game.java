@@ -119,6 +119,7 @@ public abstract class Game {
 			
 			do {
 				chosenCard = hand.getRandomCard();
+				
 				ok = (Api.playCard(chosenCard.getCode()) == Api.OK);
 			} while (!ok);
 		}
