@@ -220,7 +220,12 @@ public class Ai implements TreasureHuntAi {
 	}
 	
 	private void move(int direction) {
+		long start = System.nanoTime();
 		Api.move(direction);
+		long end = System.nanoTime();
+		
+		System.out.println("AI::move(): "+(end-start)+"ns");
+		
 		lastMove = direction;
 	}
 }

@@ -150,7 +150,12 @@ public class Ai implements FruitSaladAi {
 	// -------------------------------------------------------------------------
 	
 	private void testGameApi() {
+		long start, end;
+
+		start = System.nanoTime();
 		System.out.println("move: " + Api.decode(Api.move(1, 42, 42)));
+		end = System.nanoTime();
+		System.out.println("AI::move(): "+(end-start) / 1000000+"ms");
 		
 		System.out.println("attack: " + Api.decode(Api.attack(1, 2)));
 		

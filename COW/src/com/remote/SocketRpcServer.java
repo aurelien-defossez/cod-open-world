@@ -222,7 +222,7 @@ public class SocketRpcServer implements RpcServer {
 		byte command;
 
 		// Start WatchDog
-		// watchdog.start(ai);
+		watchdog.start(ai);
 
 		if (logger.isDebugEnabled())
 			logger.debug("Wait for command...");

@@ -13,7 +13,7 @@ public:
 	virtual void addAi(short aiId, char *aiName, char *playerName) = 0;
 	virtual void play() = 0;
 	virtual void endGame() = 0;
-	virtual void aiTimedOut(int aiId) = 0;
+	virtual void aiTimedOut(short aiId) = 0;
 	virtual Variant performGameFunction(int functionId, int nbParameters,
 		Variant parameters[]) = 0;
 };

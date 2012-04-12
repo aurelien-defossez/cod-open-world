@@ -1,6 +1,9 @@
 #include "Ai.hpp"
 #include "Variant.hpp"
 #include <iostream>
+#include <sys/time.h>
+#include <unistd.h>
+#include <chrono>
 
 using namespace std;
 
@@ -66,7 +69,7 @@ void Ai::initGame(IntMatrix2 architecture,
 void Ai::playTurn(IntMatrix2 newObjects,
 	IntMatrix1 deletedObjects, IntMatrix2 movedFruits,
 	IntMatrix2 modifiedFruits, IntMatrix2 modifiedSugarDrops) {
-	cout << "VitaminCpp: Play Turn..." << endl;
+	/*cout << "VitaminCpp: Play Turn..." << endl;
 	
 	// Display new objects
 	cout << "== New objects ==" << endl;
@@ -118,11 +121,30 @@ void Ai::playTurn(IntMatrix2 newObjects,
 	
 	cout << "== Test Game API ==" << endl;
 	// Test game API functions
-	testGameApi();
+	testGameApi();*/
+	/*
+	struct timeval start, end;
+	long mtime, seconds, useconds;    
+
+	gettimeofday(&start, NULL);
+	api->move(1, 42, 42);
+	gettimeofday(&end, NULL);
+
+	seconds  = end.tv_sec  - start.tv_sec;
+	useconds = end.tv_usec - start.tv_usec;
+
+	mtime = ((seconds) * 1000 + useconds/1000.0) + 0.5;
+*/
+
+	std::chrono::time_point<std::chrono::high_resolution_clock> t1 = std::chrono::high_resolution_clock::now();
+	api->move(1, 42, 42);
+	std::chrono::time_point<std::chrono::high_resolution_clock> t2 = std::chrono::high_resolution_clock::now();
+
+	std::cout << "AI::Move done in " << std::chrono::duration_cast<std::chrono::microseconds > (t2 - t1).count() << "µs" << std::endl;
 }
 
 void Ai::mapUpdate(IntMatrix2 newObjects, IntMatrix2 modifiedSugarDrops) {
-	cout << "VitaminCpp: Map update..." << endl;
+	/*cout << "VitaminCpp: Map update..." << endl;
 	
 	// Display new objects
 	cout << "== New objects ==" << endl;
@@ -143,7 +165,7 @@ void Ai::mapUpdate(IntMatrix2 newObjects, IntMatrix2 modifiedSugarDrops) {
 			<< modifiedSugarDrops[i][OBJECT_ID] << " now has "
 			<< modifiedSugarDrops[i][OBJECT_SUGAR] << " sugar grains" << endl;
 	}
-	cout << endl;
+	cout << endl;*/
 }
 
 void Ai::testGameApi() {

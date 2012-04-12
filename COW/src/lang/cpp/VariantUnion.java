@@ -1,7 +1,6 @@
 
 package lang.cpp;
-
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+	
 import com.Variant;
 import com.sun.jna.Pointer;
 import com.sun.jna.Union;
@@ -23,7 +22,7 @@ public class VariantUnion extends Union {
 			break;
 		
 		case BOOL:
-			setType(boolean.class);
+			setType(boolean.class);	
 			this.boolValue = (Boolean) variant.getValue();
 			break;
 		
@@ -43,13 +42,13 @@ public class VariantUnion extends Union {
 			break;
 		
 		case BOOL_MATRIX1:
-			throw new NotImplementedException();
+			throw new UnsupportedOperationException();
 		
 		case BOOL_MATRIX2:
-			throw new NotImplementedException();
+			throw new UnsupportedOperationException();
 		
 		case BOOL_MATRIX3:
-			throw new NotImplementedException();
+			throw new UnsupportedOperationException();
 		
 		case INT_MATRIX1:
 			setType(IntMatrix.ByReference.class);
@@ -73,22 +72,22 @@ public class VariantUnion extends Union {
 			break;
 		
 		case DOUBLE_MATRIX1:
-			throw new NotImplementedException();
+			throw new UnsupportedOperationException();
 		
 		case DOUBLE_MATRIX2:
-			throw new NotImplementedException();
+			throw new UnsupportedOperationException();
 		
 		case DOUBLE_MATRIX3:
-			throw new NotImplementedException();
+			throw new UnsupportedOperationException();
 		
 		case STRING_MATRIX1:
-			throw new NotImplementedException();
+			throw new UnsupportedOperationException();
 		
 		case STRING_MATRIX2:
-			throw new NotImplementedException();
+			throw new UnsupportedOperationException();
 		
 		case STRING_MATRIX3:
-			throw new NotImplementedException();
+			throw new UnsupportedOperationException();
 		}
 	}
 	
