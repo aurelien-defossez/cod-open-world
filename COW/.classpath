@@ -4,7 +4,7 @@
 	<classpathentry kind="lib" path="resources/libraries/log4j/log4j.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
 		<attributes>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="COW/resources/libraries/lwjgl-2.8.3/native/macosx"/>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="COW/resources/libraries/lwjgl-2.8.3/native/linux"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="resources/libraries/jython2.5.2rc3/jython.jar"/>
@@ -16,7 +16,7 @@
 	<classpathentry kind="lib" path="resources/libraries/lwjgl-2.8.3/jar/lwjgl-debug.jar"/>
 	<classpathentry kind="lib" path="resources/libraries/lwjgl-2.8.3/jar/lwjgl.jar">
 		<attributes>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="COW/resources/libraries/lwjgl-2.8.3/native/macosx"/>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="COW/resources/libraries/lwjgl-2.8.3/native/linux"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="resources/libraries/jME2_2011-07-27/target/jme-audio.jar"/>
@@ -29,6 +29,7 @@
 	<classpathentry kind="lib" path="resources/libraries/jME2_2011-07-27/target/jme-model.jar"/>
 	<classpathentry kind="lib" path="resources/libraries/jME2_2011-07-27/target/jme-ogrexml.jar"/>
 	<classpathentry kind="lib" path="resources/libraries/jME2_2011-07-27/target/jme-scene.jar"/>
+	<classpathentry kind="lib" path="resources/libraries/jME2_2011-07-27/target/jme-swt.jar"/>
 	<classpathentry kind="lib" path="resources/libraries/jME2_2011-07-27/target/jme-terrain.jar"/>
 	<classpathentry kind="lib" path="resources/libraries/jME2_2011-07-27/target/jme.jar"/>
 	<classpathentry kind="output" path="bin"/>

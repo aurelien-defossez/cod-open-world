@@ -2,7 +2,7 @@ all:
 	@ cd ../../../../resources/cpp/game && make
 	
 	@ echo Compiling Specific communicator...
-	g++ -static -c SpecificCommunicator.cpp SpecificCommander.cpp \
+	g++ -static -m32 -c SpecificCommunicator.cpp SpecificCommander.cpp \
 	-I../../../../resources/cpp/commons/src \
 	-I../../../../resources/cpp/game/src
 	

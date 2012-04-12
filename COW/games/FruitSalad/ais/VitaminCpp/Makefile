@@ -4,7 +4,7 @@ all:
 	@(cd ../../api/cpp/connector && make)
 	
 	@echo Compiling ai...
-	g++ -std=c++0x -shared src/Ai.cpp \
+	g++ -std=c++0x -m32 -shared src/Ai.cpp \
 	-o libai.so \
 	-I../../api/cpp/connector \
 	-I../../../../resources/cpp/commons/src \

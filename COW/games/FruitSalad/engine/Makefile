@@ -5,7 +5,7 @@ all:
 	
 	@ echo Compiling game...
 	@ rm -f libgame.*
-	g++ -shared src/*.cpp \
+	g++ -shared -m32 src/*.cpp \
 	-o libgame.so \
 	-I./connector \
 	-I../../../resources/cpp/commons/src \
