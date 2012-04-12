@@ -1,17 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="resources/libraries/jME2_0_1-Stable/jme-audio.jar"/>
-	<classpathentry kind="lib" path="resources/libraries/jME2_0_1-Stable/jme-collada.jar"/>
-	<classpathentry kind="lib" path="resources/libraries/jME2_0_1-Stable/jme-editors.jar"/>
-	<classpathentry kind="lib" path="resources/libraries/jME2_0_1-Stable/jme-effects.jar"/>
-	<classpathentry kind="lib" path="resources/libraries/jME2_0_1-Stable/jme-font.jar"/>
-	<classpathentry kind="lib" path="resources/libraries/jME2_0_1-Stable/jme-gamestates.jar"/>
-	<classpathentry kind="lib" path="resources/libraries/jME2_0_1-Stable/jme-model.jar"/>
-	<classpathentry kind="lib" path="resources/libraries/jME2_0_1-Stable/jme-ogrexml.jar"/>
-	<classpathentry kind="lib" path="resources/libraries/jME2_0_1-Stable/jme-scene.jar"/>
-	<classpathentry kind="lib" path="resources/libraries/jME2_0_1-Stable/jme-terrain.jar"/>
-	<classpathentry kind="lib" path="resources/libraries/jME2_0_1-Stable/jme.jar"/>
 	<classpathentry kind="lib" path="resources/libraries/log4j/log4j.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
 		<attributes>
@@ -21,7 +10,6 @@
 	<classpathentry kind="lib" path="resources/libraries/jython2.5.2rc3/jython.jar"/>
 	<classpathentry kind="lib" path="resources/libraries/JNA3.2.7/jna.jar"/>
 	<classpathentry kind="lib" path="resources/libraries/jchart2d-3.2.2/jchart2d-3.2.2.jar"/>
-	<classpathentry kind="lib" path="resources/libraries/jME2_0_1-Stable/jme-awt.jar"/>
 	<classpathentry kind="lib" path="resources/libraries/lwjgl-2.8.3/jar/AppleJavaExtensions.jar"/>
 	<classpathentry kind="lib" path="resources/libraries/lwjgl-2.8.3/jar/lwjgl_test.jar"/>
 	<classpathentry kind="lib" path="resources/libraries/lwjgl-2.8.3/jar/lwjgl_util.jar"/>
@@ -31,5 +19,17 @@
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="COW/resources/libraries/lwjgl-2.8.3/native/macosx"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="resources/libraries/jME2_2011-07-27/target/jme-audio.jar"/>
+	<classpathentry kind="lib" path="resources/libraries/jME2_2011-07-27/target/jme-awt.jar"/>
+	<classpathentry kind="lib" path="resources/libraries/jME2_2011-07-27/target/jme-collada.jar"/>
+	<classpathentry kind="lib" path="resources/libraries/jME2_2011-07-27/target/jme-editors.jar"/>
+	<classpathentry kind="lib" path="resources/libraries/jME2_2011-07-27/target/jme-effects.jar"/>
+	<classpathentry kind="lib" path="resources/libraries/jME2_2011-07-27/target/jme-font.jar"/>
+	<classpathentry kind="lib" path="resources/libraries/jME2_2011-07-27/target/jme-gamestates.jar"/>
+	<classpathentry kind="lib" path="resources/libraries/jME2_2011-07-27/target/jme-model.jar"/>
+	<classpathentry kind="lib" path="resources/libraries/jME2_2011-07-27/target/jme-ogrexml.jar"/>
+	<classpathentry kind="lib" path="resources/libraries/jME2_2011-07-27/target/jme-scene.jar"/>
+	<classpathentry kind="lib" path="resources/libraries/jME2_2011-07-27/target/jme-terrain.jar"/>
+	<classpathentry kind="lib" path="resources/libraries/jME2_2011-07-27/target/jme.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
