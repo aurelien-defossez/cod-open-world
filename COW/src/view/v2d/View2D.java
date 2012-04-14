@@ -64,6 +64,7 @@ public class View2D extends View {
 		canvas.addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentResized(ComponentEvent ce) {
+				System.out.println("componentResized");
 				doResize();
 			}
 		});
