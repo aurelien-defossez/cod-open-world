@@ -8,13 +8,16 @@ import java.awt.Color;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+
+import main.CowException;
+import sim.OrchestratorAiIterface;
+
 import com.ApiCall;
 import com.Lang;
-import com.Lang.Language;
 import com.Variant;
-import main.CowException;
+import com.Lang.Language;
+
 import data.ConfigLoader;
-import sim.Simulator;
 
 public abstract class Ai implements AiInterface, Comparable<Ai> {
 	// -------------------------------------------------------------------------
@@ -33,7 +36,7 @@ public abstract class Ai implements AiInterface, Comparable<Ai> {
 	/**
 	 * The game simulator.
 	 */
-	private Simulator simulator;
+	private OrchestratorAiIterface simulator;
 	
 	/**
 	 * The AI id.
@@ -79,7 +82,7 @@ public abstract class Ai implements AiInterface, Comparable<Ai> {
 	 * @param color the AI color.
 	 * @throws CowException if the AI cannot be loaded.
 	 */
-	public Ai(Simulator simulator, String gameName, short aiId, String aiName, Color color)
+	public Ai(OrchestratorAiIterface simulator, String gameName, short aiId, String aiName, Color color)
 		throws CowException {
 		this.simulator = simulator;
 		this.id = aiId;

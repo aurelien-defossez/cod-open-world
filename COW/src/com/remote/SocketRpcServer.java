@@ -11,13 +11,10 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Vector;
-import main.CowException;
-import org.apache.log4j.Logger;
-import com.ApiCall;
-import com.Variant;
-import security.Watchdog;
 
-public class SocketRpcServer implements RpcServer {
+import org.apache.log4j.Logger;
+
+public abstract class SocketRpcServer {
 	// -------------------------------------------------------------------------
 	// Constant
 	// -------------------------------------------------------------------------
@@ -34,21 +31,11 @@ public class SocketRpcServer implements RpcServer {
 	/**
 	 * The log4j logger.
 	 */
-	private Logger logger = Logger.getLogger(RpcServer.class);
+	private Logger logger = Logger.getLogger(SocketRpcServer.class);
 
 	// -------------------------------------------------------------------------
 	// Attributes
 	// -------------------------------------------------------------------------
-
-	/**
-	 * The Proxy AI.
-	 */
-	private ProxyAi ai;
-
-	/**
-	 * The security watchdog.
-	 */
-	private Watchdog watchdog;
 
 	/**
 	 * The server socket, to connect the AI process.
@@ -63,12 +50,12 @@ public class SocketRpcServer implements RpcServer {
 	/**
 	 * The socket reader.
 	 */
-	private CompressedDataInputStream in;
+	protected CompressedDataInputStream in;
 
 	/**
 	 * The socket writer.
 	 */
-	private CompressedDataOutputStream out;
+	protected CompressedDataOutputStream out;
 
 	/**
 	 * The local port.
@@ -87,16 +74,12 @@ public class SocketRpcServer implements RpcServer {
 	/**
 	 * Initializes the Socket RPC server.
 	 * 
-	 * @param ai
-	 *            the proxy AI.
 	 * @param watchdog
 	 *            the security watchdog.
 	 * @throws IOException
 	 *             if an error occurs while creating the server socket.
 	 */
-	public SocketRpcServer(ProxyAi ai, Watchdog watchdog) throws IOException {
-		this.ai = ai;
-		this.watchdog = watchdog;
+	public SocketRpcServer() throws IOException {
 		this.listening = true;
 
 		// Create server socket
@@ -108,10 +91,6 @@ public class SocketRpcServer implements RpcServer {
 	// Public methods
 	// -------------------------------------------------------------------------
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
 	public Vector<String> getProcessParameters() {
 		Vector<String> parameters = new Vector<String>();
 		parameters.add(RPC_SOCKET_TYPE);
@@ -121,10 +100,6 @@ public class SocketRpcServer implements RpcServer {
 		return parameters;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
 	public void connect() throws IOException {
 		if (logger.isDebugEnabled())
 			logger.debug("Waiting for socket connection...");
@@ -149,54 +124,8 @@ public class SocketRpcServer implements RpcServer {
 					+ ".");
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void performAiFunction(ApiCall call) {
-		try {
-			// Send execute AI command
-			out.writeByte(RpcValues.CMD_AI_EXE);
-			call.serialize(out);
-			out.flush();
-
-			// Read AI stream
-			waitForCommand();
-		} catch (IOException e) {
-			if (!listening) {
-				logger.error(e.getMessage(), e);
-			}
-		}
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void stopAi() {
-		try {
-			// Send stop AI command
-			out.writeByte(RpcValues.CMD_AI_STOP);
-			out.flush();
-
-			// Read AI stream
-			waitForCommand();
-
-			// Close socket
-			close();
-		} catch (IOException e) {
-			if (!listening) {
-				logger.error(e.getMessage(), e);
-			}
-		}
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
 	public void close() {
-		listening = true;
+		listening = false;
 
 		try {
 			// Close socket
@@ -207,9 +136,13 @@ public class SocketRpcServer implements RpcServer {
 			// Do nothing
 		}
 	}
+	
+	public boolean isListening() {
+		return listening;
+	}
 
 	// -------------------------------------------------------------------------
-	// Private methods
+	// Abstract methods
 	// -------------------------------------------------------------------------
 
 	/**
@@ -218,57 +151,5 @@ public class SocketRpcServer implements RpcServer {
 	 * @throws IOException
 	 *             if an error occurs while communicating with the RPC client.
 	 */
-	private void waitForCommand() throws IOException {
-		byte command;
-
-		// Start WatchDog
-		watchdog.start(ai);
-
-		if (logger.isDebugEnabled())
-			logger.debug("Wait for command...");
-
-		do {
-			// Read command
-			command = (byte) in.read();
-			
-			if (logger.isDebugEnabled())
-				logger.debug("Command read: "
-						+ RpcValues.getConstantName(command));
-
-			switch (command) {
-			case RpcValues.CMD_GAME_CALL_API:
-				ApiCall call = ApiCall.deserialize(in);
-
-				if (logger.isTraceEnabled()) {
-					logger.trace("API call: function=" + call.getFunctionId()
-							+ ", " + "nbParameters="
-							+ call.getParameters().length);
-					for (Variant parameter : call.getParameters()) {
-						logger.trace("API call parameter="
-								+ parameter.getValue());
-					}
-				}
-
-				// Send API call
-				Variant returnVariant = ai.callGameFunction(call);
-
-				if (logger.isTraceEnabled())
-					logger.trace("API call return=" + returnVariant);
-
-				// Send return value
-				out.writeByte(RpcValues.CALL_API_RESULT);
-				returnVariant.serialize(out);
-				out.flush();
-				break;
-
-			case RpcValues.ERROR:
-				// TODO: Handle error message
-				throw new CowException("AI connection error: TODO");
-
-			}
-		} while (listening && command != RpcValues.ACK);
-
-		// Pause WatchDog
-		watchdog.stop();
-	}
+	protected abstract void waitForCommand() throws IOException;
 }

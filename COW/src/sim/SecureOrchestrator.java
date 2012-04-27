@@ -8,7 +8,8 @@ package sim;
 import java.awt.Color;
 import main.CowException;
 import security.Watchdog;
-import com.remote.ProxyAi;
+
+import com.ai.remote.ProxyAi;
 
 public class SecureOrchestrator extends LiveOrchestrator {
 	// -------------------------------------------------------------------------

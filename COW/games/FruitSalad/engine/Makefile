@@ -12,4 +12,6 @@ all:
 	-I../../../resources/cpp/game/src \
 	-L./ -lcommunicator
 	
+	@ echo Game created
+	
 	cp libgame.so libgame.dylib

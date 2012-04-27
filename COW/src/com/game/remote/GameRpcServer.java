@@ -3,13 +3,13 @@
  * client.
  */
 
-package com.remote;
+package com.game.remote;
 
 import java.io.IOException;
 import java.util.Vector;
 import com.ApiCall;
 
-public interface RpcServer {
+public interface GameRpcServer {
 	// -------------------------------------------------------------------------
 	// Abstract methods
 	// -------------------------------------------------------------------------

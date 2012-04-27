@@ -31,9 +31,9 @@ public abstract class Game implements GameInterface {
 	// -------------------------------------------------------------------------
 	
 	/**
-	 * The game simulator.
+	 * The game orchestrator.
 	 */
-	private LiveOrchestrator simulator;
+	private LiveOrchestrator orchestrator;
 	
 	/**
 	 * The game implementation language.
@@ -57,12 +57,12 @@ public abstract class Game implements GameInterface {
 	/**
 	 * Initializes the game.
 	 * 
-	 * @param simulator the game simulator.
+	 * @param orchestrator the game simulator.
 	 * @param gameName the game name.
 	 * @throws CowException if the game cannot be loaded.
 	 */
-	public Game(LiveOrchestrator simulator, String gameName) throws CowException {
-		this.simulator = simulator;
+	public Game(LiveOrchestrator orchestrator, String gameName) throws CowException {
+		this.orchestrator = orchestrator;
 		this.name = gameName;
 		
 		try {
@@ -137,7 +137,7 @@ public abstract class Game implements GameInterface {
 	 */
 	@Override
 	public final void callAiFunction(short aiId, ApiCall call) {
-		simulator.callAiFunction(aiId, call);
+		orchestrator.callAiFunction(aiId, call);
 	}
 	
 	/**
@@ -145,7 +145,7 @@ public abstract class Game implements GameInterface {
 	 */
 	@Override
 	public void setTimeout(int timeout) {
-		simulator.setTimeout(timeout);
+		orchestrator.setTimeout(timeout);
 	}
 	
 	/**
@@ -153,7 +153,7 @@ public abstract class Game implements GameInterface {
 	 */
 	@Override
 	public void setFrame() {
-		simulator.setFrame();
+		orchestrator.setFrame();
 	}
 	
 	/**
@@ -161,7 +161,7 @@ public abstract class Game implements GameInterface {
 	 */
 	@Override
 	public void setScore(short aiId, int score) {
-		simulator.setScore(aiId, score);
+		orchestrator.setScore(aiId, score);
 	}
 	
 	/**
@@ -169,7 +169,7 @@ public abstract class Game implements GameInterface {
 	 */
 	@Override
 	public void incrementScore(short aiId, int increment) {
-		simulator.incrementScore(aiId, increment);
+		orchestrator.incrementScore(aiId, increment);
 	}
 	
 	/**
@@ -177,7 +177,7 @@ public abstract class Game implements GameInterface {
 	 */
 	@Override
 	public void callViewFunction(ApiCall call) {
-		simulator.callViewApi(call);
+		orchestrator.callViewApi(call);
 	}
 	
 	/**
@@ -193,7 +193,7 @@ public abstract class Game implements GameInterface {
 	 */
 	@Override
 	public void stopAi(short aiId) {
-		simulator.stopAi(aiId);
+		orchestrator.stopAi(aiId);
 	}
 	
 	/**

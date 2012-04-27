@@ -10,7 +10,7 @@ import com.ApiCall;
 import com.Variant;
 import com.ai.Ai;
 
-public interface Simulator {
+public interface OrchestratorAiIterface {
 	// -------------------------------------------------------------------------
 	// Abstract methods
 	// -------------------------------------------------------------------------

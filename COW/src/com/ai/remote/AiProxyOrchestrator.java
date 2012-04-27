@@ -3,14 +3,15 @@
  * another process
  */
 
-package com.remote;
+package com.ai.remote;
+
+import sim.OrchestratorAiIterface;
 
 import com.ApiCall;
 import com.Variant;
 import com.ai.Ai;
-import sim.Simulator;
 
-public class ProxySimulator implements Simulator {
+public class AiProxyOrchestrator implements OrchestratorAiIterface {
 	// -------------------------------------------------------------------------
 	// Attributes
 	// -------------------------------------------------------------------------
@@ -23,7 +24,7 @@ public class ProxySimulator implements Simulator {
 	/**
 	 * The RPC client to communicate with the real framework.
 	 */
-	private RpcClient rpcClient;
+	private AiRpcClient rpcClient;
 	
 	// -------------------------------------------------------------------------
 	// Constructor
@@ -32,7 +33,7 @@ public class ProxySimulator implements Simulator {
 	/**
 	 * Initializes the proxy simulator.
 	 */
-	public ProxySimulator() {
+	public AiProxyOrchestrator() {
 		// Do nothing
 	}
 	
@@ -54,7 +55,7 @@ public class ProxySimulator implements Simulator {
 	 * 
 	 * @param rpcClient the RPC client.
 	 */
-	public void setRpcClient(RpcClient rpcClient) {
+	public void setRpcClient(AiRpcClient rpcClient) {
 		this.rpcClient = rpcClient;
 	}
 	
@@ -63,7 +64,7 @@ public class ProxySimulator implements Simulator {
 	 */
 	@Override
 	public Variant callGameFunction(ApiCall call, Ai ai) {
-		return rpcClient.callGameFunction(call);
+		return rpcClient.callGameFunction(call, ai);
 	}
 	
 	/**

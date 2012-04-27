@@ -3,23 +3,14 @@
  * server.
  */
 
-package com.remote;
+package com.game.remote;
 
-import com.ApiCall;
-import com.Variant;
+import sim.OrchestratorGameInterface;
 
-public interface RpcClient {
+public interface GameRpcClient extends OrchestratorGameInterface {
 	// -------------------------------------------------------------------------
 	// Abstract methods
 	// -------------------------------------------------------------------------
-	
-	/**
-	 * Calls a game API function.
-	 * 
-	 * @param call the game API call.
-	 * @return the call result.
-	 */
-	public Variant callGameFunction(ApiCall call);
 	
 	/**
 	 * Synchronizes the RPC client and starts listening.

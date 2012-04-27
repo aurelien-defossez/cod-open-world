@@ -2,18 +2,23 @@
  * Proxy AI - This class represents an AI located remotely in another process.
  */
 
-package com.remote;
+package com.ai.remote;
 
 import java.awt.Color;
 import java.io.IOException;
 import java.util.Vector;
+
 import main.CowException;
+
 import org.apache.log4j.Logger;
+
+import security.Watchdog;
+import sim.OrchestratorAiIterface;
+
 import com.ApiCall;
 import com.ai.Ai;
+
 import debug.ProcessReader;
-import security.Watchdog;
-import sim.Simulator;
 
 public class ProxyAi extends Ai {
 	// -------------------------------------------------------------------------
@@ -32,7 +37,7 @@ public class ProxyAi extends Ai {
 	/**
 	 * The RPC server, in order to communicate with the AI.
 	 */
-	private RpcServer rpcServer;
+	private AiRpcServer rpcServer;
 	
 	/**
 	 * The AI process.
@@ -59,7 +64,7 @@ public class ProxyAi extends Ai {
 	 * @param watchdog the security watchdog.
 	 * @throws CowException if the AI cannot be loaded.
 	 */
-	public ProxyAi(Simulator simulator, String gameName, short aiId,
+	public ProxyAi(OrchestratorAiIterface simulator, String gameName, short aiId,
 		String aiName, Color color, Watchdog watchdog) {
 		super(simulator, gameName, aiId, aiName, color);
 		
@@ -70,7 +75,7 @@ public class ProxyAi extends Ai {
 		
 		try {
 			// Create AI connector
-			rpcServer = new SocketRpcServer(this, watchdog);
+			rpcServer = new AiSocketRpcServer(this, watchdog);
 			Vector<String> parameters = new Vector<String>();
 			
 			// Prepare Java process creation
