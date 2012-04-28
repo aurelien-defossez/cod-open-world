@@ -6,19 +6,12 @@
 package com.game.remote;
 
 import sim.OrchestratorGameInterface;
-
 import com.ApiCall;
-import com.game.Game;
 
 public class GameProxyOrchestrator implements OrchestratorGameInterface {
 	// -------------------------------------------------------------------------
 	// Attributes
 	// -------------------------------------------------------------------------
-	
-	/**
-	 * The remote Game.
-	 */
-	private Game game;
 	
 	/**
 	 * The RPC client to communicate with the real framework.
@@ -32,84 +25,57 @@ public class GameProxyOrchestrator implements OrchestratorGameInterface {
 	/**
 	 * Initializes the proxy orchestrator.
 	 */
-	public GameProxyOrchestrator() {
-		// Do nothing
+	public GameProxyOrchestrator(GameRpcClient rpcClient) {
+		this.rpcClient = rpcClient;
 	}
 	
 	// -------------------------------------------------------------------------
 	// Public methods
 	// -------------------------------------------------------------------------
-	
-	/**
-	 * Sets the Game.
-	 * 
-	 * @param game the Game.
-	 */
-	public void setGame(Game game) {
-		this.game = game;
-	}
-	
-	/**
-	 * Sets the RPC client.
-	 * 
-	 * @param rpcClient the RPC client.
-	 */
-	public void setRpcClient(GameRpcClient rpcClient) {
-		this.rpcClient = rpcClient;
-	}
-	
-	/**
-	 * Tells the game to stop.
-	 */
-	public void stopGame() {
-		game.endGame();
-		rpcClient.close();
-	}
+
 
 	@Override
-	public void callViewApi(ApiCall call) {
-		rpcClient.callViewApi(call);
+	public void callViewFunction(ApiCall call) {
+		rpcClient.callViewFunction(call);
 	}
 
 	@Override
 	public void incrementScore(short aiId, int increment) {
-		// TODO Auto-generated method stub
-		
+		rpcClient.incrementScore(aiId, increment);
 	}
 
 	@Override
 	public void setFrame() {
-		// TODO Auto-generated method stub
-		
+		rpcClient.setFrame();
 	}
 
 	@Override
 	public void setScore(short aiId, int score) {
-		// TODO Auto-generated method stub
-		
+		rpcClient.setScore(aiId, score);
 	}
 
 	@Override
 	public void setTimeout(int timeout) {
-		// TODO Auto-generated method stub
-		
+		rpcClient.setTimeout(timeout);
 	}
 
 	@Override
 	public void stopAi(short aiId) {
-		// TODO Auto-generated method stub
-		
+		rpcClient.stopAi(aiId);
 	}
 
 	@Override
 	public void setColor(short aiId, int color) {
-		// TODO Auto-generated method stub
-		
+		rpcClient.setColor(aiId, color);
 	}
 
 	@Override
 	public void callAiFunction(short aiId, ApiCall call) {
-		// TODO Auto-generated method stub
-		
+		rpcClient.callAiFunction(aiId, call);
+	}
+
+	@Override
+	public void throwException(String message) {
+		rpcClient.throwException(message);
 	}
 }

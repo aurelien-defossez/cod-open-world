@@ -65,8 +65,6 @@ public class RemoteGameLauncher {
 			logger.trace("RemoteGameLauncher arguments: " + arguments);
 		}
 		
-		orchestrator = new GameProxyOrchestrator();
-		
 		try {
 			// Get generic parameters
 			gameName = args[0];
@@ -85,7 +83,7 @@ public class RemoteGameLauncher {
 				int port = Integer.parseInt(args[3]);
 				
 				// Create RPC client
-				rpcClient = new GameSocketRpcClient(orchestrator, address, port);
+				rpcClient = new GameSocketRpcClient(address, port);
 			}
 		} catch (IndexOutOfBoundsException e) {
 			System.out.println("usage: java -jar RemoteGameLauncher.jar "
@@ -99,14 +97,13 @@ public class RemoteGameLauncher {
 		}
 		
 		if (loadOk) {
-			// Set RPC client
-			orchestrator.setRpcClient(rpcClient);
+			orchestrator = new GameProxyOrchestrator(rpcClient);
 			
 			if (logger.isDebugEnabled())
 				logger.debug("Load game.");
 			
 			// Load Game
-			orchestrator.setGame(new LocalGame(orchestrator, gameName));
+			rpcClient.setGame(new LocalGame(orchestrator, gameName));
 			
 			if (logger.isDebugEnabled())
 				logger.trace("Start RPC client.");

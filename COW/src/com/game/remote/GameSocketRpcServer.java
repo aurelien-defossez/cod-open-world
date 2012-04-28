@@ -59,7 +59,7 @@ public class GameSocketRpcServer extends SocketRpcServer implements GameRpcServe
 	public void initGame(Collection<Ai> ais, String[] parameters) {
 		try {
 			// Send command
-			out.writeByte(RpcValues.CMD_INIT_GAME);
+			out.writeByte(RpcValues.CowToGame.InitGame.ordinal());
 			
 			// Serialize the AIs
 			out.writeVarint(ais.size());
@@ -76,7 +76,7 @@ public class GameSocketRpcServer extends SocketRpcServer implements GameRpcServe
 			}
 			
 			out.flush();
-
+			
 			waitForCommand();
 		} catch (IOException e) {
 			if (!isListening()) {
@@ -89,7 +89,7 @@ public class GameSocketRpcServer extends SocketRpcServer implements GameRpcServe
 	public void play() {
 		try {
 			// Send command
-			out.writeByte(RpcValues.CMD_PLAY);
+			out.writeByte(RpcValues.CowToGame.Play.ordinal());
 			out.flush();
 			
 			waitForCommand();
@@ -103,8 +103,12 @@ public class GameSocketRpcServer extends SocketRpcServer implements GameRpcServe
 	@Override
 	public Variant performGameFunction(ApiCall call, Ai ai) {
 		try {
+			if (logger.isTraceEnabled()) {
+				logger.trace("API call: " + call);
+			}
+		
 			// Send command
-			out.writeByte(RpcValues.CMD_PERFORM_GAME_API);
+			out.writeByte(RpcValues.CowToGame.PerformGameApiCall.ordinal());
 			
 			// Serialize the call
 			call.serialize(out);
@@ -117,10 +121,10 @@ public class GameSocketRpcServer extends SocketRpcServer implements GameRpcServe
 				command = in.readByte();
 				
 				// Execute callback command
-				if (command != RpcValues.CALL_API_RESULT) {
+				if (command != RpcValues.GameToCow.ApiCallResult.ordinal()) {
 					doCommand(command);
 				}
-			} while (command != RpcValues.CALL_API_RESULT);
+			} while (command != RpcValues.GameToCow.ApiCallResult.ordinal());
 			
 			// Read return variant
 			Variant returnVariant = Variant.deserialize(in);
@@ -141,10 +145,10 @@ public class GameSocketRpcServer extends SocketRpcServer implements GameRpcServe
 	public void aiTimedOut(Ai ai) {
 		try {
 			// Send command
-			out.writeByte(RpcValues.CMD_AI_TIMED_OUT);
+			out.writeByte(RpcValues.CowToGame.AiTimedOut.ordinal());
 			out.writeVarint(ai.getId());
 			out.flush();
-
+			
 			waitForCommand();
 		} catch (IOException e) {
 			if (!isListening()) {
@@ -157,9 +161,9 @@ public class GameSocketRpcServer extends SocketRpcServer implements GameRpcServe
 	public void endGame() {
 		try {
 			// Send command
-			out.writeByte(RpcValues.CMD_END_GAME);
+			out.writeByte(RpcValues.CowToGame.EndGame.ordinal());
 			out.flush();
-
+			
 			waitForCommand();
 			close();
 		} catch (IOException e) {
@@ -174,39 +178,71 @@ public class GameSocketRpcServer extends SocketRpcServer implements GameRpcServe
 	// -------------------------------------------------------------------------
 	
 	protected void doCommand(byte command) throws CowException, IOException {
-		if (logger.isDebugEnabled())
-			logger.debug("Command read: "
-					+ RpcValues.getConstantName(command));
-		
-		switch (command) {
-		case RpcValues.CMD_GAME_CALL_API:
-			ApiCall call = ApiCall.deserialize(in);
+		try {
+			short aiId;
+			ApiCall call;
 			
-			if (logger.isTraceEnabled()) {
-				logger.trace("API call: function=" + call.getFunctionId()
-						+ ", " + "nbParameters="
-						+ call.getParameters().length);
-				for (Variant parameter : call.getParameters()) {
-					logger.trace("API call parameter="
-							+ parameter.getValue());
-				}
-			}
-			
-			// Send API call
-			Variant returnVariant = ai.callGameFunction(call);
+			RpcValues.GameToCow commandValue = RpcValues.GameToCow.values()[command];
 			
 			if (logger.isTraceEnabled())
-				logger.trace("API call return=" + returnVariant);
+				logger.trace("Command: " + commandValue);
 			
-			// Send return value
-			out.writeByte(RpcValues.CALL_API_RESULT);
-			returnVariant.serialize(out);
-			out.flush();
-			break;
-		
-		case RpcValues.ERROR:
-			// TODO: Handle error message
-			throw new CowException("AI connection error: TODO");
+			switch (commandValue) {
+			case CallViewFunction:
+				call = ApiCall.deserialize(in);
+				game.callViewFunction(call);
+				break;
+			
+			case CallAiFunction:
+				aiId = (short) in.readVarint();
+				call = ApiCall.deserialize(in);
+				
+				game.callAiFunction(aiId, call);
+				
+				out.writeByte(RpcValues.CowToGame.AiAck.ordinal());
+				out.flush();
+				break;
+			
+			case SetFrame:
+				game.setFrame();
+				break;
+			
+			case IncrementScore:
+				aiId = (short) in.readVarint();
+				int increment = in.readVarint();
+				game.incrementScore(aiId, increment);
+				break;
+			
+			case SetScore:
+				aiId = (short) in.readVarint();
+				int score = in.readVarint();
+				game.setScore(aiId, score);
+				break;
+			
+			case StopAi:
+				aiId = (short) in.readVarint();
+				game.stopAi(aiId);
+				break;
+			
+			case SetColor:
+				aiId = (short) in.readVarint();
+				int color = in.readVarint();
+				game.setColor(aiId, color);
+				break;
+			
+			case SetTimeout:
+				int timeout = in.readVarint();
+				game.setTimeout(timeout);
+				break;
+			
+			case ThrowException:
+				String message = in.readUTF();
+				game.throwException(message);
+				break;
+			}
+		} catch (IndexOutOfBoundsException e) {
+			logger.trace("Command: Unknown (" + command + ")");
+			throw new CowException("Game connection error: TODO");
 		}
 	}
 }

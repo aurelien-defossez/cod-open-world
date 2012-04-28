@@ -7,12 +7,12 @@
 
 package lang.java;
 
-import sim.OrchestratorAiInterface;
 import com.ApiCall;
 import com.Variant;
 import com.ai.AiInterface;
+import com.ai.AiReverseInterface;
 
-public abstract class JavaAiCommunicator implements AiInterface, OrchestratorAiInterface {
+public abstract class JavaAiCommunicator implements AiInterface, AiReverseInterface {
 	// -------------------------------------------------------------------------
 	// Attributes
 	// -------------------------------------------------------------------------

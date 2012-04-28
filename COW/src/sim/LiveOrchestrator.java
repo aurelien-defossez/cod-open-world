@@ -1,6 +1,6 @@
 /**
- * Live Simulator - This class represents a live game simulator, with the real
- * game engine and real AIs.
+ * Live Simulator - This class represents a live game simulator, with the real game engine and real
+ * AIs.
  */
 
 package sim;
@@ -12,7 +12,6 @@ import com.ApiCall;
 import com.Variant;
 import com.ai.Ai;
 import com.game.Game;
-import com.game.LocalGame;
 
 public abstract class LiveOrchestrator extends GameOrchestrator {
 	// -------------------------------------------------------------------------
@@ -49,9 +48,6 @@ public abstract class LiveOrchestrator extends GameOrchestrator {
 	public LiveOrchestrator(Scheduler scheduler, String gameName,
 		String[] parameters, String resultFile) throws CowException {
 		super(scheduler, gameName, parameters, resultFile);
-		
-		// Load local game
-		this.game = new LocalGame(this, gameName);
 	}
 	
 	// -------------------------------------------------------------------------
@@ -133,5 +129,13 @@ public abstract class LiveOrchestrator extends GameOrchestrator {
 	@Override
 	public ViewType getViewType() {
 		return game.getViewType();
+	}
+	
+	// -------------------------------------------------------------------------
+	// Protected methods
+	// -------------------------------------------------------------------------
+	
+	protected void setGame(Game game) {
+		this.game = game;
 	}
 }

@@ -44,7 +44,8 @@ public abstract class RpcValues {
 		Play,
 		PerformGameApiCall,
 		AiTimedOut,
-		EndGame
+		EndGame,
+		AiAck
 	}
 	
 	/**
@@ -59,6 +60,7 @@ public abstract class RpcValues {
 		SetTimeout,
 		SetColor,
 		StopAi,
-		ThrowException
+		ThrowException,
+		ApiCallResult
 	}
 }

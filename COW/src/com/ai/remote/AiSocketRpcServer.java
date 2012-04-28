@@ -125,39 +125,33 @@ public class AiSocketRpcServer extends SocketRpcServer implements AiRpcServer {
 	
 	@Override
 	protected void doCommand(byte command) throws CowException, IOException {
-		if (logger.isTraceEnabled()) {
-			try {
-				logger.trace("Command: " + RpcValues.AiToCow.values()[command]);
-			} catch (IndexOutOfBoundsException e) {
-				logger.trace("Command: Unknown (" + command + ")");
-			}
-		}
-
-		if (command == RpcValues.AiToCow.CallGameFunction.ordinal()) {
-			ApiCall call = ApiCall.deserialize(in);
-			
-			if (logger.isTraceEnabled()) {
-				logger.trace("API call: function=" + call.getFunctionId()
-						+ ", " + "nbParameters="
-						+ call.getParameters().length);
-				for (Variant parameter : call.getParameters()) {
-					logger.trace("API call parameter="
-							+ parameter.getValue());
-				}
-			}
-			
-			// Send API call
-			Variant returnVariant = ai.callGameFunction(call);
+		try {
+			RpcValues.AiToCow commandValue = RpcValues.AiToCow.values()[command];
 			
 			if (logger.isTraceEnabled())
-				logger.trace("API call return=" + returnVariant);
+				logger.trace("Command: " + commandValue);
 			
-			// Send return value
-			out.writeByte(RpcValues.CowToAi.ApiCallResult.ordinal());
-			returnVariant.serialize(out);
-			out.flush();
-		} else if (command == RpcValues.ERROR) {
-			// TODO: Handle error message
+			switch (commandValue) {
+			case CallGameFunction:
+				ApiCall call = ApiCall.deserialize(in);
+				
+				if (logger.isTraceEnabled()) {
+					logger.trace("API call: " + call);
+				}
+				
+				// Send API call
+				Variant returnVariant = ai.callGameFunction(call);
+				
+				if (logger.isTraceEnabled())
+					logger.trace("API call return=" + returnVariant);
+				
+				// Send return value
+				out.writeByte(RpcValues.CowToAi.ApiCallResult.ordinal());
+				returnVariant.serialize(out);
+				out.flush();
+			}
+		} catch (IndexOutOfBoundsException e) {
+			logger.trace("Command: Unknown (" + command + ")");
 			throw new CowException("AI connection error: TODO");
 		}
 	}

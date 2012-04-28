@@ -8,8 +8,8 @@ package sim;
 import java.awt.Color;
 import main.CowException;
 import security.Watchdog;
-
 import com.ai.remote.ProxyAi;
+import com.game.remote.ProxyGame;
 
 public class SecureOrchestrator extends LiveOrchestrator {
 	// -------------------------------------------------------------------------
@@ -38,6 +38,8 @@ public class SecureOrchestrator extends LiveOrchestrator {
 		String[] parameters, String resultFile) throws CowException {
 		super(scheduler, gameName, parameters, resultFile);
 		watchdog = new Watchdog(this);
+		
+		setGame(new ProxyGame(this, gameName));
 	}
 	
 	// -------------------------------------------------------------------------

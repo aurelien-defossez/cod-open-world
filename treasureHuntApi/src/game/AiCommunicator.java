@@ -5,9 +5,9 @@
 
 package game;
 
-import com.ApiCall;
 import lang.java.JavaAiCommunicator;
 import lang.java.JavaAiConnector;
+import com.ApiCall;
 
 public class AiCommunicator extends JavaAiCommunicator {
 	// -------------------------------------------------------------------------

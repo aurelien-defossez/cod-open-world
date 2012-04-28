@@ -79,7 +79,8 @@ public abstract class Ai implements AiInterface, AiReverseInterface, Comparable<
 	 * @param color the AI color.
 	 * @throws CowException if the AI cannot be loaded.
 	 */
-	public Ai(OrchestratorAiInterface simulator, String gameName, short aiId, String aiName, Color color)
+	public Ai(OrchestratorAiInterface simulator, String gameName, short aiId, String aiName,
+		Color color)
 		throws CowException {
 		this.simulator = simulator;
 		this.id = aiId;
@@ -93,7 +94,7 @@ public abstract class Ai implements AiInterface, AiReverseInterface, Comparable<
 			throw new CowException("Cannot load AI \"" + aiName + "\": " +
 				"directory missing (games/" + gameName + "/ais/" + aiName + ").");
 		}
-
+		
 		try {
 			// Load config.ini file
 			ConfigLoader config = new ConfigLoader(aiDirectory.getPath() + "/" + CONFIG_FILE);
@@ -121,6 +122,16 @@ public abstract class Ai implements AiInterface, AiReverseInterface, Comparable<
 			throw new CowException("Cannot load AI \"" + aiName + "\": " +
 				"a problem occurs while reading " + CONFIG_FILE, e);
 		}
+	}
+	
+	public Ai(short aiId) {
+		this.id = aiId;
+	}
+	
+	public Ai(short aiId, String aiName, String playerName) {
+		this.id = aiId;
+		this.name = aiName;
+		this.playerName = playerName;
 	}
 	
 	// -------------------------------------------------------------------------

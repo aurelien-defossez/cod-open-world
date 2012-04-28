@@ -46,7 +46,7 @@ public class RemoteAiLauncher {
 	 */
 	public RemoteAiLauncher(String[] args) {
 		AiRpcClient rpcClient = null;
-		AiProxyOrchestrator simulator;
+		AiProxyOrchestrator orchestrator;
 		String gameName = "";
 		String aiName = "";
 		short aiId = 0;
@@ -66,8 +66,6 @@ public class RemoteAiLauncher {
 			
 			logger.trace("RemoteAiLauncher arguments: " + arguments);
 		}
-		
-		simulator = new AiProxyOrchestrator();
 		
 		try {
 			// Get generic parameters
@@ -89,7 +87,7 @@ public class RemoteAiLauncher {
 				int port = Integer.parseInt(args[5]);
 				
 				// Create RPC client
-				rpcClient = new AiSocketRpcClient(simulator, address, port);
+				rpcClient = new AiSocketRpcClient(address, port);
 			}
 		} catch (IndexOutOfBoundsException e) {
 			System.out.println("usage: java -jar RemoteAiLauncher.jar "
@@ -103,14 +101,13 @@ public class RemoteAiLauncher {
 		}
 		
 		if (loadOk) {
-			// Set RPC client
-			simulator.setRpcClient(rpcClient);
+			orchestrator = new AiProxyOrchestrator(rpcClient);
 			
 			if (logger.isDebugEnabled())
 				logger.debug("Load AI.");
 			
 			// Load AI
-			simulator.setAi(new LocalAi(simulator, gameName, aiId, aiName));
+			rpcClient.setAi(new LocalAi(orchestrator, gameName, aiId, aiName));
 			
 			if (logger.isDebugEnabled())
 				logger.trace("Start RPC client.");

@@ -29,9 +29,9 @@ public class AiSocketRpcClient extends SocketRpcClient implements AiRpcClient {
 	// -------------------------------------------------------------------------
 	
 	/**
-	 * The proxy orchestrator.
+	 * The AI.
 	 */
-	private AiProxyOrchestrator orchestrator;
+	private Ai ai;
 	
 	// -------------------------------------------------------------------------
 	// Constructor
@@ -44,10 +44,8 @@ public class AiSocketRpcClient extends SocketRpcClient implements AiRpcClient {
 	 * @param address the host address.
 	 * @param port the socket local port.
 	 */
-	public AiSocketRpcClient(AiProxyOrchestrator orchestrator, String address, int port) {
+	public AiSocketRpcClient(String address, int port) {
 		super(address, port);
-		
-		this.orchestrator = orchestrator;
 		
 		if (logger.isDebugEnabled())
 			logger.debug("Connecting to COW at " + address + ":" + port + "...");
@@ -56,6 +54,28 @@ public class AiSocketRpcClient extends SocketRpcClient implements AiRpcClient {
 	// -------------------------------------------------------------------------
 	// Public methods
 	// -------------------------------------------------------------------------
+
+	@Override
+	public void setAi(Ai ai) {
+		this.ai = ai;
+	}
+	
+	/**
+	 * Calls an AI API function.
+	 * 
+	 * @param call the function call.
+	 */
+	public void callAiFunction(ApiCall call) {
+		ai.performAiFunction(call);
+	}
+	
+	/**
+	 * Tells the AI to stop.
+	 */
+	public void stopAi() {
+		ai.stop();
+		close();
+	}
 	
 	/**
 	 * {@inheritDoc}
@@ -110,29 +130,33 @@ public class AiSocketRpcClient extends SocketRpcClient implements AiRpcClient {
 	 * @return false if the command received is "stop".
 	 */
 	protected boolean doCommand(byte command) throws CowException, IOException {
-		boolean stop = false;
-		
-		if (logger.isTraceEnabled()) {
-			try {
-				logger.trace("Command: " + RpcValues.CowToAi.values()[command]);
-			} catch (IndexOutOfBoundsException e) {
-				logger.trace("Command: Unknown (" + command + ")");
+		try {
+			boolean stop = false;
+			RpcValues.CowToAi commandValue = RpcValues.CowToAi.values()[command];
+			
+			if (logger.isTraceEnabled())
+				logger.trace("Command: " + commandValue);
+			
+			switch (commandValue) {
+			// Executes an AI function
+			case Execute:
+				ApiCall call = ApiCall.deserialize(in);
+				ai.performAiFunction(call);
+				ack();
+				break;
+			
+			// Stops the game
+			case Stop:
+				stop = true;
+				ai.stop();
+				ack();
+				break;
 			}
+			
+			return !stop;
+		} catch (IndexOutOfBoundsException e) {
+			logger.trace("Command: Unknown (" + command + ")");
+			return false;
 		}
-		
-		// Executes an AI function
-		if (command == RpcValues.CowToAi.Execute.ordinal()) {
-			ApiCall call = ApiCall.deserialize(in);
-			orchestrator.callAiFunction(call);
-			ack();
-		}
-		// Stops the game
-		else if (command == RpcValues.CowToAi.Stop.ordinal()) {
-			stop = true;
-			orchestrator.stopAi();
-			ack();
-		}
-		
-		return !stop;
 	}
 }

@@ -8,6 +8,7 @@ package sim;
 import java.awt.Color;
 import main.CowException;
 import com.ai.LocalAi;
+import com.game.LocalGame;
 
 public class TestOrchestrator extends LiveOrchestrator {
 	// -------------------------------------------------------------------------
@@ -26,6 +27,8 @@ public class TestOrchestrator extends LiveOrchestrator {
 	public TestOrchestrator(Scheduler scheduler, String gameName,
 		String[] parameters, String resultFile) throws CowException {
 		super(scheduler, gameName, parameters, resultFile);
+		
+		setGame(new LocalGame(this, gameName));
 	}
 	
 	// -------------------------------------------------------------------------
