@@ -1,23 +1,22 @@
 /**
- * Socket RPC Client - This class represents a RPC client communicating with a
- * RPC server through a socket.
+ * Socket RPC Client - This class represents a RPC client communicating with a RPC server through a
+ * socket.
  */
 
 package com.ai.remote;
 
 import java.io.IOException;
-
 import main.CowException;
-
 import org.apache.log4j.Logger;
-
+import sim.OrchestratorAiIterface;
 import com.ApiCall;
 import com.Variant;
 import com.ai.Ai;
 import com.remote.RpcValues;
 import com.remote.SocketRpcClient;
 
-public class AiSocketRpcClient extends SocketRpcClient implements AiRpcClient {
+public class AiSocketRpcClient extends SocketRpcClient implements AiRpcClient,
+	OrchestratorAiIterface {
 	// -------------------------------------------------------------------------
 	// Class attributes
 	// -------------------------------------------------------------------------

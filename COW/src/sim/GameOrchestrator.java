@@ -166,7 +166,7 @@ public abstract class GameOrchestrator implements OrchestratorGameInterface,
 			updateScore = true;
 		} else {
 			logger.error("Can't set score for AI #" + aiId + ", does not exist.");
-
+		}
 	}
 	
 	/**

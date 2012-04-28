@@ -6,19 +6,8 @@
 package com.ai.remote;
 
 import sim.OrchestratorAiIterface;
+import com.remote.RpcClient;
 
-public interface AiRpcClient extends OrchestratorAiIterface{
-	// -------------------------------------------------------------------------
-	// Abstract methods
-	// -------------------------------------------------------------------------
+public interface AiRpcClient extends RpcClient, OrchestratorAiIterface {
 	
-	/**
-	 * Synchronizes the RPC client and starts listening.
-	 */
-	public void start();
-	
-	/**
-	 * Stops the socket from listening.
-	 */
-	public void close();
 }

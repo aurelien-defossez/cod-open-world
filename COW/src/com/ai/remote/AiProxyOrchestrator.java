@@ -6,7 +6,6 @@
 package com.ai.remote;
 
 import sim.OrchestratorAiIterface;
-
 import com.ApiCall;
 import com.Variant;
 import com.ai.Ai;

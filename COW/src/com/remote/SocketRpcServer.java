@@ -14,7 +14,7 @@ import java.util.Vector;
 
 import org.apache.log4j.Logger;
 
-public abstract class SocketRpcServer {
+public abstract class SocketRpcServer implements RpcServer {
 	// -------------------------------------------------------------------------
 	// Constant
 	// -------------------------------------------------------------------------

@@ -15,7 +15,7 @@ import main.CowException;
 
 import org.apache.log4j.Logger;
 
-public abstract class SocketRpcClient {
+public abstract class SocketRpcClient implements RpcClient {
 	// -------------------------------------------------------------------------
 	// Class attributes
 	// -------------------------------------------------------------------------
@@ -80,6 +80,7 @@ public abstract class SocketRpcClient {
 	// Public methods
 	// -------------------------------------------------------------------------
 	
+	@Override
 	public void start() {
 		logger.info("Remote process started.");
 		
@@ -119,6 +120,7 @@ public abstract class SocketRpcClient {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void close() {
 		listening = false;
 	}

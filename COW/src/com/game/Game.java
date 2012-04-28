@@ -6,15 +6,15 @@ package com.game;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import com.ApiCall;
-import com.Lang;
-import com.Lang.Language;
 import main.CowException;
 import main.GameException;
-import data.ConfigLoader;
 import sim.LiveOrchestrator;
 import view.View;
 import view.View.ViewType;
+import com.ApiCall;
+import com.Lang;
+import com.Lang.Language;
+import data.ConfigLoader;
 
 public abstract class Game implements GameInterface {
 	// -------------------------------------------------------------------------
@@ -169,7 +169,7 @@ public abstract class Game implements GameInterface {
 	 */
 	@Override
 	public void setColor(short aiId, int color) {
-		simulator.setColor(aiId, color);
+		orchestrator.setColor(aiId, color);
 	}
 	
 	/**
