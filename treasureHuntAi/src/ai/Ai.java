@@ -200,26 +200,32 @@ public class Ai implements TreasureHuntAi {
 	}
 	
 	private void moveLeft() {
-		Api.move(Api.LEFT);
-		lastMove = Api.LEFT;
+		move(Api.LEFT);
 		x--;
 	}
 	
 	private void moveRight() {
-		Api.move(Api.RIGHT);
-		lastMove = Api.RIGHT;
+		move(Api.RIGHT);
 		x++;
 	}
 	
 	private void moveUp() {
-		Api.move(Api.UP);
-		lastMove = Api.UP;
+		move(Api.UP);
 		y++;
 	}
 	
 	private void moveDown() {
-		Api.move(Api.DOWN);
-		lastMove = Api.DOWN;
+		move(Api.DOWN);
 		y--;
+	}
+	
+	private void move(int direction) {
+		long start = System.nanoTime();
+		Api.move(direction);
+		long end = System.nanoTime();
+		
+		System.out.println("AI::move(): "+(end-start)+"ns");
+		
+		lastMove = direction;
 	}
 }

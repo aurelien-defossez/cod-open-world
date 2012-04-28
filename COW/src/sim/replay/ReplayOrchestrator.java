@@ -221,4 +221,14 @@ public class ReplayOrchestrator extends GameOrchestrator {
 	public ViewType getViewType() {
 		return game.getViewType();
 	}
+
+	@Override
+	public void setTimeout(int timeout) {
+		// Do nothing
+	}
+
+	@Override
+	public void stopAi(short aiId) {
+		// Do nothing
+	}
 }

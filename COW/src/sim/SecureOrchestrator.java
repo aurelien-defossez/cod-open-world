@@ -6,10 +6,10 @@
 package sim;
 
 import java.awt.Color;
-import com.ai.Ai;
-import com.remote.ProxyAi;
-import security.Watchdog;
 import main.CowException;
+import security.Watchdog;
+
+import com.ai.remote.ProxyAi;
 
 public class SecureOrchestrator extends LiveOrchestrator {
 	// -------------------------------------------------------------------------

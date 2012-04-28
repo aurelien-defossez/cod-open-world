@@ -13,67 +13,71 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
+
 import org.apache.log4j.Logger;
+
 import view.View.ViewType;
+
 import com.ApiCall;
 import com.GameListener;
 import com.ai.Ai;
 
-public abstract class GameOrchestrator implements Simulator {
+public abstract class GameOrchestrator implements OrchestratorGameInterface,
+		OrchestratorAiIterface {
 	// -------------------------------------------------------------------------
 	// Class attributes
 	// -------------------------------------------------------------------------
-	
+
 	/**
 	 * The log4j logger.
 	 */
 	private Logger logger = Logger.getLogger(GameOrchestrator.class);
-	
+
 	// -------------------------------------------------------------------------
 	// Attributes
 	// -------------------------------------------------------------------------
-	
+
 	/**
 	 * The game scheduler.
 	 */
 	private Scheduler scheduler;
-	
+
 	/**
 	 * The game listeners.
 	 */
 	private Vector<GameListener> listeners;
-	
+
 	/**
 	 * The game name.
 	 */
 	private String gameName;
-	
+
 	/**
 	 * The artificial intelligences (AIs).
 	 */
 	private Map<Short, Ai> ais;
-	
+
 	/**
 	 * The game parameters.
 	 */
 	private String[] parameters;
-	
+
 	/**
 	 * The file to save the match result in.
 	 */
 	@Deprecated
 	private String resultFile;
-	
+
 	/**
 	 * The number of frames since the beginning.
 	 */
 	private long frameCounter;
-	
+
 	/**
 	 * True if the score needs to be updated during this frame.
 	 */
 	private boolean updateScore;
-	
+
 	/**
 	 * True if the colors needs to be updated during this frame.
 	 */
@@ -82,17 +86,21 @@ public abstract class GameOrchestrator implements Simulator {
 	// -------------------------------------------------------------------------
 	// Constructor
 	// -------------------------------------------------------------------------
-	
+
 	/**
 	 * Initializes the game simulator.
 	 * 
-	 * @param scheduler the game scheduler.
-	 * @param gameName the game name.
-	 * @param parameters the game parameters.
-	 * @param resultFile the file to save the match result in.
+	 * @param scheduler
+	 *            the game scheduler.
+	 * @param gameName
+	 *            the game name.
+	 * @param parameters
+	 *            the game parameters.
+	 * @param resultFile
+	 *            the file to save the match result in.
 	 */
 	public GameOrchestrator(Scheduler scheduler, String gameName,
-		String[] parameters, String resultFile) {
+			String[] parameters, String resultFile) {
 		this.scheduler = scheduler;
 		this.gameName = gameName;
 		this.listeners = new Vector<GameListener>();
@@ -102,18 +110,18 @@ public abstract class GameOrchestrator implements Simulator {
 		this.frameCounter = 0;
 		this.updateScore = false;
 	}
-	
+
 	// -------------------------------------------------------------------------
 	// Public methods
 	// -------------------------------------------------------------------------
-	
+
 	/**
 	 * Adds a game listener to the simulator.
 	 */
 	public final void addGameListener(GameListener listener) {
 		listeners.add(listener);
 	}
-	
+
 	/**
 	 * Initializes the game listeners.
 	 */
@@ -122,7 +130,7 @@ public abstract class GameOrchestrator implements Simulator {
 			listener.initGame(getAis());
 		}
 	}
-	
+
 	/**
 	 * Ends the game.
 	 */
@@ -130,38 +138,35 @@ public abstract class GameOrchestrator implements Simulator {
 		for (Ai ai : ais.values()) {
 			ai.stop();
 		}
-		
+
 		for (GameListener listener : listeners) {
 			listener.endGame();
 		}
 	}
-	
+
 	/**
-	 * Makes a view API call.
-	 * 
-	 * @param call the view API call.
+	 * {@inheritDoc}
 	 */
+	@Override
 	public final void callViewApi(ApiCall call) {
 		for (GameListener listener : listeners) {
 			listener.callViewFunction(call);
 		}
 	}
-	
+
 	/**
-	 * Sets a score to an AI.
-	 * 
-	 * @param aiId the AI id.
-	 * @param score the new score.
+	 * {@inheritDoc}
 	 */
+	@Override
 	public void setScore(short aiId, int score) {
 		Ai ai = getAi(aiId);
-		
+
 		if (ai != null) {
 			ai.setScore(score);
 			updateScore = true;
 		} else {
 			logger.error("Can't set score for AI #" + aiId + ", does not exist.");
-		}
+
 	}
 	
 	/**
@@ -180,13 +185,11 @@ public abstract class GameOrchestrator implements Simulator {
 			logger.error("Can't set color for AI #" + aiId + ", does not exist.");
 		}
 	}
-	
+
 	/**
-	 * Increments the score of an AI.
-	 * 
-	 * @param aiId the AI id.
-	 * @param increment the value to add to the current score.
+	 * {@inheritDoc}
 	 */
+	@Override
 	public void incrementScore(short aiId, int increment) {
 		Ai ai = getAi(aiId);
 		
@@ -197,17 +200,18 @@ public abstract class GameOrchestrator implements Simulator {
 			logger.error("Can't increment score for AI #" + aiId + ", does not exist.");
 		}
 	}
-	
+
 	/**
-	 * Sets a game frame and signals that to every game listener.
+	 * {@inheritDoc}
 	 */
+	@Override
 	public void setFrame() {
 		frameCounter++;
 		scheduler.setFrame();
-		
+
 		for (GameListener listener : listeners) {
 			listener.setFrame();
-			
+
 			if (updateScore) {
 				listener.updateScore(frameCounter);
 			}
@@ -216,11 +220,11 @@ public abstract class GameOrchestrator implements Simulator {
 				listener.updateColors();
 			}
 		}
-		
+
 		updateScore = false;
 		updateColors = false;
 	}
-	
+
 	/**
 	 * Returns the game name.
 	 * 
@@ -229,7 +233,7 @@ public abstract class GameOrchestrator implements Simulator {
 	public final String getGameName() {
 		return gameName;
 	}
-	
+
 	/**
 	 * Returns the game parameters.
 	 * 
@@ -238,7 +242,7 @@ public abstract class GameOrchestrator implements Simulator {
 	public final String[] getParameters() {
 		return parameters;
 	}
-	
+
 	/**
 	 * Prints the score in the output stream, one integer for each AI, in the order of the initial
 	 * AI order in the parameter list.
@@ -246,42 +250,44 @@ public abstract class GameOrchestrator implements Simulator {
 	public final void printScores() {
 		if (resultFile != null) {
 			try {
-				BufferedWriter result =
-					new BufferedWriter(new FileWriter(resultFile));
-				
+				BufferedWriter result = new BufferedWriter(new FileWriter(
+						resultFile));
+
 				for (Ai ai : ais.values()) {
 					result.write(Integer.toString(ai.getScore()) + " ");
 				}
 				result.close();
 			} catch (IOException e) {
 				logger.error("Can't save results in file '" + resultFile
-					+ "': " + e.getMessage());
+						+ "': " + e.getMessage());
 			}
 		}
 	}
-	
+
 	// -------------------------------------------------------------------------
 	// Protected methods
 	// -------------------------------------------------------------------------
-	
+
 	/**
 	 * Adds an AI.
 	 * 
-	 * @param ai the AI.
+	 * @param ai
+	 *            the AI.
 	 */
 	protected final void addAi(Ai ai) {
 		ais.put(ai.getId(), ai);
 	}
-	
+
 	/**
 	 * Removes an AI.
 	 * 
-	 * @param ai the AI.
+	 * @param ai
+	 *            the AI.
 	 */
 	protected final void removeAi(Ai ai) {
 		ais.remove(ai.getId());
 	}
-	
+
 	/**
 	 * Returns the collection of AIs.
 	 * 
@@ -290,17 +296,18 @@ public abstract class GameOrchestrator implements Simulator {
 	protected final Collection<Ai> getAis() {
 		return ais.values();
 	}
-	
+
 	/**
 	 * Returns the desired AI.
 	 * 
-	 * @param aiId the AI id.
+	 * @param aiId
+	 *            the AI id.
 	 * @return the AI if it exists, or null otherwise.
 	 */
 	protected final Ai getAi(short aiId) {
 		return ais.get(aiId);
 	}
-	
+
 	/**
 	 * Sends an event to every game listener to update the score.
 	 */
@@ -318,25 +325,28 @@ public abstract class GameOrchestrator implements Simulator {
 			listener.updateColors();
 		}
 	}
-	
+
 	// -------------------------------------------------------------------------
 	// Abstract methods
 	// -------------------------------------------------------------------------
-	
+
 	/**
 	 * Adds an AI.
 	 * 
-	 * @param aiId the AI id.
-	 * @param aiName the AI name.
-	 * @param color the AI color.
+	 * @param aiId
+	 *            the AI id.
+	 * @param aiName
+	 *            the AI name.
+	 * @param color
+	 *            the AI color.
 	 */
 	public abstract void addAi(short aiId, String aiName, Color color);
-	
+
 	/**
 	 * Plays the game.
 	 */
 	public abstract void play();
-	
+
 	/**
 	 * Returns the game view type.
 	 * 

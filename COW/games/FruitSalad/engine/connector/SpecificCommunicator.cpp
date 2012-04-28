@@ -24,7 +24,7 @@ void SpecificCommunicator::endGame() {
 	game->endGame();
 }
 
-void SpecificCommunicator::aiTimedOut(int aiId){
+void SpecificCommunicator::aiTimedOut(short aiId){
 	game->aiTimedOut(aiId);
 }
 

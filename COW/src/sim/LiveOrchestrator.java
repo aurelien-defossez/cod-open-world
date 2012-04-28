@@ -136,17 +136,4 @@ public abstract class LiveOrchestrator extends GameOrchestrator {
 	public ViewType getViewType() {
 		return game.getViewType();
 	}
-	
-	// -------------------------------------------------------------------------
-	// Abstract methods
-	// -------------------------------------------------------------------------
-	
-	/**
-	 * Defines the AI timeout.
-	 * 
-	 * @param timeout the maximum execution time in milliseconds.
-	 */
-	public abstract void setTimeout(int timeout);
-
-	public abstract void stopAi(short aiId);
 }

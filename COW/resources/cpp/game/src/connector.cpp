@@ -62,7 +62,7 @@ extern "C" {
 		communicator->endGame();
 	}
 
-	EXPORT void aiTimedOut(int aiId) {
+	EXPORT void aiTimedOut(short aiId) {
 		communicator->aiTimedOut(aiId);
 	}
 

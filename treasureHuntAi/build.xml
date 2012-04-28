@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <project default="makeJar">
 	<target name="makeJar" description="Make jar in AI directory">
-		<jar destfile="../COW/games/treasureHunt/ais/java chocobo 1.0/ai.jar"
+		<jar destfile="../COW/games/treasureHunt/ais/chocobo/ai.jar"
 	    	basedir="bin"
 			includes="**/*.class"
 	    	update="true"

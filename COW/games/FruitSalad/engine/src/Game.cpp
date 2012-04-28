@@ -121,7 +121,7 @@ void Game::endGame() {
 	stopping = true;
 }
 
-void Game::aiTimedOut(int aiId) {
+void Game::aiTimedOut(short aiId) {
 	cout << "AI " << aiId << " timed out." << endl;
 }
 

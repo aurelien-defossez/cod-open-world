@@ -106,7 +106,12 @@ public abstract class Game {
 		
 		// Play chosen card
 		if (chosenCard != null) {
-			if (Api.playCard(chosenCard.getCode()) != Api.OK) {
+			long start = System.currentTimeMillis();
+			boolean ok = (Api.playCard(chosenCard.getCode()) == Api.OK);
+			long end = System.currentTimeMillis();
+			
+			System.out.println("play card time (AI) = "+(end-start)+"ms");
+			if (!ok) {
 				print("*** ERROR *** Tried to play " + chosenCard);
 				chosenCard = null;
 			}
@@ -119,7 +124,12 @@ public abstract class Game {
 			
 			do {
 				chosenCard = hand.getRandomCard();
+				
+				long start = System.currentTimeMillis();
 				ok = (Api.playCard(chosenCard.getCode()) == Api.OK);
+				long end = System.currentTimeMillis();
+				
+				System.out.println("play card time (AI) = "+(end-start)+"ms");
 			} while (!ok);
 		}
 		

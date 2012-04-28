@@ -4,14 +4,14 @@
 
 package main;
 
-import java.awt.Color;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
+
 import com.ai.LocalAi;
-import com.remote.ProxySimulator;
-import com.remote.RpcClient;
-import com.remote.SocketRpcClient;
-import com.remote.SocketRpcServer;
+import com.ai.remote.AiProxyOrchestrator;
+import com.ai.remote.AiRpcClient;
+import com.ai.remote.AiSocketRpcClient;
+import com.ai.remote.AiSocketRpcServer;
 
 public class RemoteAiLauncher {
 	// -------------------------------------------------------------------------
@@ -46,8 +46,8 @@ public class RemoteAiLauncher {
 	 * @param args the arguments.
 	 */
 	public RemoteAiLauncher(String[] args) {
-		RpcClient rpcClient = null;
-		ProxySimulator simulator;
+		AiRpcClient rpcClient = null;
+		AiProxyOrchestrator simulator;
 		String gameName = "";
 		String aiName = "";
 		short aiId = 0;
@@ -68,7 +68,7 @@ public class RemoteAiLauncher {
 			logger.trace("RemoteAiLauncher arguments: " + arguments);
 		}
 		
-		simulator = new ProxySimulator();
+		simulator = new AiProxyOrchestrator();
 		
 		try {
 			// Get generic parameters
@@ -84,13 +84,13 @@ public class RemoteAiLauncher {
 				logger.debug("Create RPC client.");
 			
 			// Socket
-			if (rpcType.equals(SocketRpcServer.RPC_SOCKET_TYPE)) {
+			if (rpcType.equals(AiSocketRpcServer.RPC_SOCKET_TYPE)) {
 				// Get RPC parameters
 				String address = args[4];
 				int port = Integer.parseInt(args[5]);
 				
 				// Create RPC client
-				rpcClient = new SocketRpcClient(simulator, address, port);
+				rpcClient = new AiSocketRpcClient(simulator, address, port);
 			}
 		} catch (IndexOutOfBoundsException e) {
 			System.out.println("usage: java -jar RemoteAiLauncher.jar "

@@ -2,7 +2,6 @@
 
 <project default="makeJar">
 	<target name="makeJar" description="Make COW and Remote AI Launcher jars">
-		
 		<jar destfile="resources/COW.jar"
 			manifest="CowManifest.mf">
 			<fileset dir="bin" includes="**/*.class"/>

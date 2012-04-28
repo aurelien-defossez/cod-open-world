@@ -1,4 +1,4 @@
-#ifndef __SPECIFIC_COMMUNICATOR_H__
+	#ifndef __SPECIFIC_COMMUNICATOR_H__
 #define __SPECIFIC_COMMUNICATOR_H__
 
 #include "SpecificCommunicatorInterface.hpp"
@@ -43,7 +43,7 @@ public:
 	void addAi(short aiId, char *aiName, char *playerName);
 	void play();
 	void endGame();
-	void aiTimedOut(int aiId);
+	void aiTimedOut(short aiId);
 	Variant performGameFunction(int functionId, int nbParameters,
 		Variant parameters[]);
 };

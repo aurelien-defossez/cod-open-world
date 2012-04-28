@@ -55,13 +55,15 @@ public class VariantStruct extends Structure {
 	}
 	
 	public static VariantStruct[] createArray(int nbStructs) {
-		return (VariantStruct[]) (new VariantStruct().toArray(nbStructs));
+		return (nbStructs > 0) ?
+			(VariantStruct[]) (new VariantStruct().toArray(nbStructs)) :
+			new VariantStruct[] { null };
 	}
 	
 	public static VariantStruct[] createArray(Variant[] variants) {
 		VariantStruct[] array = createArray(variants.length);
 		
-		for (int i = 0; i < array.length; i++) {
+		for (int i = 0; i < variants.length; i++) {
 			array[i].setValue(variants[i]);
 		}
 		

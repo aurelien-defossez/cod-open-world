@@ -11,11 +11,11 @@ void SugarFountain::dropSugarRandomly(Map *map)
     int count = 0;
     while (count < 4)
     {
-        std::pair<int,int> position = map->getValidSquare(x, y, 1);
-        if ((position.first == -1) && (position.second == -1))
+        std::pair<int,int> sugarPosition = map->getValidSquare(position.first, position.second, 1);
+        if ((sugarPosition.first == -1) && (sugarPosition.second == -1))
         {
             break;
         }
-        map->addSugarDrop(position.first, position.second, 3);
+        map->addSugarDrop(sugarPosition.first, sugarPosition.second, 3);
     }
 }
