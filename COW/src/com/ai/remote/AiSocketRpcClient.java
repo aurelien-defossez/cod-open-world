@@ -70,7 +70,7 @@ public class AiSocketRpcClient extends SocketRpcClient implements AiRpcClient {
 		
 		try {
 			// Write call API command
-			out.writeByte(RpcValues.CMD_GAME_CALL_API);
+			out.writeByte(RpcValues.AiToCow.CallGameFunction.ordinal());
 			
 			// Serialize and send call
 			call.serialize(out);
@@ -82,10 +82,10 @@ public class AiSocketRpcClient extends SocketRpcClient implements AiRpcClient {
 				command = in.readByte();
 				
 				// Execute callback command
-				if (command != RpcValues.CALL_API_RESULT) {
+				if (command != RpcValues.CowToAi.ApiCallResult.ordinal()) {
 					doCommand(command);
 				}
-			} while (command != RpcValues.CALL_API_RESULT);
+			} while (command != RpcValues.CowToAi.ApiCallResult.ordinal());
 			
 			// Read return variant
 			Variant returnVariant = Variant.deserialize(in);
@@ -110,24 +110,29 @@ public class AiSocketRpcClient extends SocketRpcClient implements AiRpcClient {
 	 * @return false if the command received is "stop".
 	 */
 	protected boolean doCommand(byte command) throws CowException, IOException {
-		if (logger.isTraceEnabled())
-			logger.trace("Command: " + RpcValues.getConstantName(command));
+		boolean stop = false;
 		
-		switch (command) {
+		if (logger.isTraceEnabled()) {
+			try {
+				logger.trace("Command: " + RpcValues.CowToAi.values()[command]);
+			} catch (IndexOutOfBoundsException e) {
+				logger.trace("Command: Unknown (" + command + ")");
+			}
+		}
+		
 		// Executes an AI function
-		case RpcValues.CMD_AI_EXE:
+		if (command == RpcValues.CowToAi.Execute.ordinal()) {
 			ApiCall call = ApiCall.deserialize(in);
 			orchestrator.callAiFunction(call);
 			ack();
-			break;
-		
+		}
 		// Stops the game
-		case RpcValues.CMD_AI_STOP:
+		else if (command == RpcValues.CowToAi.Stop.ordinal()) {
+			stop = true;
 			orchestrator.stopAi();
 			ack();
-			break;
 		}
 		
-		return (command != RpcValues.CMD_AI_STOP);
+		return !stop;
 	}
 }

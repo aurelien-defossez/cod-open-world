@@ -7,17 +7,12 @@ package com.ai.remote;
 import java.awt.Color;
 import java.io.IOException;
 import java.util.Vector;
-
 import main.CowException;
-
 import org.apache.log4j.Logger;
-
 import security.Watchdog;
-import sim.OrchestratorAiIterface;
-
+import sim.OrchestratorAiInterface;
 import com.ApiCall;
 import com.ai.Ai;
-
 import debug.ProcessReader;
 
 public class ProxyAi extends Ai {
@@ -64,7 +59,7 @@ public class ProxyAi extends Ai {
 	 * @param watchdog the security watchdog.
 	 * @throws CowException if the AI cannot be loaded.
 	 */
-	public ProxyAi(OrchestratorAiIterface simulator, String gameName, short aiId,
+	public ProxyAi(OrchestratorAiInterface simulator, String gameName, short aiId,
 		String aiName, Color color, Watchdog watchdog) {
 		super(simulator, gameName, aiId, aiName, color);
 		

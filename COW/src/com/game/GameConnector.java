@@ -4,9 +4,10 @@
 
 package com.game;
 
+import sim.OrchestratorGameInterface;
 import com.ApiCall;
 
-public abstract class GameConnector implements GameInterface, GameCommandInterface {
+public abstract class GameConnector implements GameInterface, OrchestratorGameInterface {
 	// -------------------------------------------------------------------------
 	// Constants
 	// -------------------------------------------------------------------------

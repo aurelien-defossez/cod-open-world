@@ -5,12 +5,12 @@
 
 package com.ai.remote;
 
-import sim.OrchestratorAiIterface;
+import sim.OrchestratorAiInterface;
 import com.ApiCall;
 import com.Variant;
 import com.ai.Ai;
 
-public class AiProxyOrchestrator implements OrchestratorAiIterface {
+public class AiProxyOrchestrator implements OrchestratorAiInterface {
 	// -------------------------------------------------------------------------
 	// Attributes
 	// -------------------------------------------------------------------------

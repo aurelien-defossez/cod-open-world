@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 
+import main.GameException;
 import org.apache.log4j.Logger;
 
 import view.View.ViewType;
@@ -23,7 +24,7 @@ import com.GameListener;
 import com.ai.Ai;
 
 public abstract class GameOrchestrator implements OrchestratorGameInterface,
-		OrchestratorAiIterface {
+		OrchestratorAiInterface {
 	// -------------------------------------------------------------------------
 	// Class attributes
 	// -------------------------------------------------------------------------
@@ -148,7 +149,7 @@ public abstract class GameOrchestrator implements OrchestratorGameInterface,
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final void callViewApi(ApiCall call) {
+	public final void callViewFunction(ApiCall call) {
 		for (GameListener listener : listeners) {
 			listener.callViewFunction(call);
 		}
@@ -260,6 +261,11 @@ public abstract class GameOrchestrator implements OrchestratorGameInterface,
 						+ "': " + e.getMessage());
 			}
 		}
+	}
+
+	@Override
+	public void throwException(String message) {
+		throw new GameException(message);
 	}
 
 	// -------------------------------------------------------------------------

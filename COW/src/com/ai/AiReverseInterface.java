@@ -8,7 +8,7 @@ package com.ai;
 import com.ApiCall;
 import com.Variant;
 
-public interface AiCommandInterface {
+public interface AiReverseInterface {
 	// -------------------------------------------------------------------------
 	// Abstract methods
 	// -------------------------------------------------------------------------
@@ -17,7 +17,7 @@ public interface AiCommandInterface {
 	 * Calls a game API function.
 	 * 
 	 * @param call the game API call.
-	 * @return the call return value.
+	 * @return the call result.
 	 */
 	public Variant callGameFunction(ApiCall call);
 }

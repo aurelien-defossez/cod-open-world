@@ -11,7 +11,7 @@ import lang.cpp.CppAiConnector;
 import lang.java.JavaAiConnector;
 import lang.python.PyAiConnector;
 import main.CowException;
-import sim.OrchestratorAiIterface;
+import sim.OrchestratorAiInterface;
 
 import com.ApiCall;
 
@@ -39,7 +39,7 @@ public class LocalAi extends Ai {
 	 * @param color the AI color.
 	 * @throws CowException if the AI cannot be loaded.
 	 */
-	public LocalAi(OrchestratorAiIterface simulator, String gameName, short aiId,
+	public LocalAi(OrchestratorAiInterface simulator, String gameName, short aiId,
 		String aiName, Color color) {
 		super(simulator, gameName, aiId, aiName, color);
 		
@@ -74,7 +74,7 @@ public class LocalAi extends Ai {
 	 * @param aiName the AI name.
 	 * @throws CowException if the AI cannot be loaded.
 	 */
-	public LocalAi(OrchestratorAiIterface simulator, String gameName, short aiId,
+	public LocalAi(OrchestratorAiInterface simulator, String gameName, short aiId,
 		String aiName) {
 		this(simulator, gameName, aiId, aiName, Color.BLACK);
 	}

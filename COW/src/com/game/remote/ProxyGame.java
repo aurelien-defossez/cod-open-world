@@ -4,24 +4,16 @@
 
 package com.game.remote;
 
-import java.awt.Color;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Vector;
-
 import main.CowException;
-
 import org.apache.log4j.Logger;
-
-import security.Watchdog;
-import sim.OrchestratorAiIterface;
 import sim.OrchestratorGameInterface;
-
 import com.ApiCall;
 import com.Variant;
 import com.ai.Ai;
 import com.game.Game;
-
 import debug.ProcessReader;
 
 public class ProxyGame extends Game {
@@ -123,13 +115,25 @@ public class ProxyGame extends Game {
 	// -------------------------------------------------------------------------
 	// Public methods
 	// -------------------------------------------------------------------------
-	
-	/**
-	 * {@inheritDoc}
-	 */
+
 	@Override
-	public void performAiFunction(ApiCall call) {
-		rpcServer.performAiFunction(call);
+	public void initGame(Collection<Ai> ais, String[] parameters) {
+		rpcServer.initGame(ais, parameters);
+	}
+
+	@Override
+	public void play() {
+		rpcServer.play();
+	}
+
+	@Override
+	public Variant performGameFunction(ApiCall call, Ai ai) {
+		return rpcServer.performGameFunction(call, ai);
+	}
+
+	@Override
+	public void aiTimedOut(Ai ai) {
+		rpcServer.aiTimedOut(ai);
 	}
 	
 	/**
@@ -143,8 +147,7 @@ public class ProxyGame extends Game {
 		try {
 			gameProcess.waitFor();
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error(e.getMessage(), e);
 		}
 	}
 	
@@ -154,29 +157,5 @@ public class ProxyGame extends Game {
 	public void kill() {
 		rpcServer.close();
 		gameProcess.destroy();
-	}
-
-	@Override
-	public void initGame(Collection<Ai> ais, String[] parameters) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void play() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public Variant performGameFunction(ApiCall call, Ai ai) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void aiTimedOut(Ai ai) {
-		// TODO Auto-generated method stub
-		
 	}
 }

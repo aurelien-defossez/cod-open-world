@@ -5,9 +5,9 @@
 
 package com.ai.remote;
 
-import sim.OrchestratorAiIterface;
+import sim.OrchestratorAiInterface;
 import com.remote.RpcClient;
 
-public interface AiRpcClient extends RpcClient, OrchestratorAiIterface {
+public interface AiRpcClient extends RpcClient, OrchestratorAiInterface {
 	
 }

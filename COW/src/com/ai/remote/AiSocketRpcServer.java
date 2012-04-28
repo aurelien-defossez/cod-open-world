@@ -68,7 +68,7 @@ public class AiSocketRpcServer extends SocketRpcServer implements AiRpcServer {
 	public void performAiFunction(ApiCall call) {
 		try {
 			// Send execute AI command
-			out.writeByte(RpcValues.CMD_AI_EXE);
+			out.writeByte(RpcValues.CowToAi.Execute.ordinal());
 			call.serialize(out);
 			out.flush();
 			
@@ -88,7 +88,7 @@ public class AiSocketRpcServer extends SocketRpcServer implements AiRpcServer {
 	public void stop() {
 		try {
 			// Send stop AI command
-			out.writeByte(RpcValues.CMD_AI_STOP);
+			out.writeByte(RpcValues.CowToAi.Stop.ordinal());
 			out.flush();
 			
 			// Read AI stream
@@ -125,12 +125,15 @@ public class AiSocketRpcServer extends SocketRpcServer implements AiRpcServer {
 	
 	@Override
 	protected void doCommand(byte command) throws CowException, IOException {
-		if (logger.isDebugEnabled())
-			logger.debug("Command read: "
-					+ RpcValues.getConstantName(command));
-		
-		switch (command) {
-		case RpcValues.CMD_GAME_CALL_API:
+		if (logger.isTraceEnabled()) {
+			try {
+				logger.trace("Command: " + RpcValues.AiToCow.values()[command]);
+			} catch (IndexOutOfBoundsException e) {
+				logger.trace("Command: Unknown (" + command + ")");
+			}
+		}
+
+		if (command == RpcValues.AiToCow.CallGameFunction.ordinal()) {
 			ApiCall call = ApiCall.deserialize(in);
 			
 			if (logger.isTraceEnabled()) {
@@ -150,12 +153,10 @@ public class AiSocketRpcServer extends SocketRpcServer implements AiRpcServer {
 				logger.trace("API call return=" + returnVariant);
 			
 			// Send return value
-			out.writeByte(RpcValues.CALL_API_RESULT);
+			out.writeByte(RpcValues.CowToAi.ApiCallResult.ordinal());
 			returnVariant.serialize(out);
 			out.flush();
-			break;
-		
-		case RpcValues.ERROR:
+		} else if (command == RpcValues.ERROR) {
 			// TODO: Handle error message
 			throw new CowException("AI connection error: TODO");
 		}

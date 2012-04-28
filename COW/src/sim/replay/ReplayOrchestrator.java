@@ -154,33 +154,33 @@ public class ReplayOrchestrator extends GameOrchestrator {
 					call.add(in.readVariantValue(VariantType.INT));
 					call.add(in.readVariantValue(VariantType.INT));
 					call.add(in.readVariantValue(VariantType.INT));
-					callViewApi(call);
+					callViewFunction(call);
 					break;
 				
 				case View.CREATE_ENTITY:
 					call = new ApiCall((short) function, 2);
 					call.add(in.readVariantValue(VariantType.INT));
 					call.add(in.readVariantValue(VariantType.INT));
-					callViewApi(call);
+					callViewFunction(call);
 					break;
 				
 				case View.DELETE_ENTITY:
 					call = new ApiCall((short) function, 1);
 					call.add(in.readVariantValue(VariantType.INT));
-					callViewApi(call);
+					callViewFunction(call);
 					break;
 				
 				case View.ROTATE_ENTITY:
 					call = new ApiCall((short) function, 2);
 					call.add(in.readVariantValue(VariantType.INT));
 					call.add(in.readVariantValue(VariantType.INT));
-					callViewApi(call);
+					callViewFunction(call);
 					break;
 				
 				case View.PRINT_TEXT:
 					call = new ApiCall((short) function, 1);
 					call.add(new Variant(in.readUTF()));
-					callViewApi(call);
+					callViewFunction(call);
 					break;
 				
 				case View.DISPLAY_GRID:
@@ -192,7 +192,7 @@ public class ReplayOrchestrator extends GameOrchestrator {
 					call.add(in.readVariantValue(VariantType.INT));
 					call.add(in.readVariantValue(VariantType.INT));
 					call.add(in.readVariantValue(VariantType.INT));
-					callViewApi(call);
+					callViewFunction(call);
 					break;
 				}
 			}

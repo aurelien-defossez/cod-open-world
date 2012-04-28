@@ -61,7 +61,7 @@ public class GameSocketRpcClient extends SocketRpcClient implements GameRpcClien
 	public void callViewApi(ApiCall call) {
 		try {
 			// Write call API command
-			out.writeByte(RpcValues.CMD_VIEW_CALL_API);
+			out.writeByte(RpcValues.GameToCow.CallViewFunction.ordinal());
 			
 			// Serialize and send call
 			call.serialize(out);
@@ -75,7 +75,7 @@ public class GameSocketRpcClient extends SocketRpcClient implements GameRpcClien
 	public void setScore(short aiId, int score) {
 		try {
 			// Write call API command
-			out.writeByte(RpcValues.CMD_SET_SCORE);
+			out.writeByte(RpcValues.GameToCow.SetScore.ordinal());
 			
 			// Serialize and send call
 			out.writeVarint(aiId);
@@ -90,7 +90,7 @@ public class GameSocketRpcClient extends SocketRpcClient implements GameRpcClien
 	public void incrementScore(short aiId, int increment) {
 		try {
 			// Write call API command
-			out.writeByte(RpcValues.CMD_INCREMENT_SCORE);
+			out.writeByte(RpcValues.GameToCow.IncrementScore.ordinal());
 			
 			// Serialize and send call
 			out.writeVarint(aiId);
@@ -105,7 +105,7 @@ public class GameSocketRpcClient extends SocketRpcClient implements GameRpcClien
 	public void setFrame() {
 		try {
 			// Write call API command
-			out.writeByte(RpcValues.CMD_SET_FRAME);
+			out.writeByte(RpcValues.GameToCow.SetFrame.ordinal());
 			
 			// Send call
 			out.flush();
@@ -118,7 +118,7 @@ public class GameSocketRpcClient extends SocketRpcClient implements GameRpcClien
 	public void setTimeout(int timeout) {
 		try {
 			// Write call API command
-			out.writeByte(RpcValues.CMD_SET_TIMEOUT);
+			out.writeByte(RpcValues.GameToCow.SetTimeout.ordinal());
 			
 			// Serialize and send call
 			out.writeVarint(timeout);
@@ -132,7 +132,7 @@ public class GameSocketRpcClient extends SocketRpcClient implements GameRpcClien
 	public void stopAi(short aiId) {
 		try {
 			// Write call API command
-			out.writeByte(RpcValues.CMD_STOP_AI);
+			out.writeByte(RpcValues.GameToCow.StopAi.ordinal());
 			
 			// Serialize and send call
 			out.writeVarint(aiId);

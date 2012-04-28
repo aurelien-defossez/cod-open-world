@@ -16,7 +16,7 @@ import com.Lang;
 import com.Lang.Language;
 import data.ConfigLoader;
 
-public abstract class Game implements GameInterface, GameCommandInterface {
+public abstract class Game implements GameInterface, OrchestratorGameInterface {
 	// -------------------------------------------------------------------------
 	// Constants
 	// -------------------------------------------------------------------------
@@ -185,7 +185,7 @@ public abstract class Game implements GameInterface, GameCommandInterface {
 	 */
 	@Override
 	public void callViewFunction(ApiCall call) {
-		orchestrator.callViewApi(call);
+		orchestrator.callViewFunction(call);
 	}
 	
 	/**

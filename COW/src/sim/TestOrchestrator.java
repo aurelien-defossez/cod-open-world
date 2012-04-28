@@ -6,8 +6,8 @@
 package sim;
 
 import java.awt.Color;
-import com.ai.LocalAi;
 import main.CowException;
+import com.ai.LocalAi;
 
 public class TestOrchestrator extends LiveOrchestrator {
 	// -------------------------------------------------------------------------

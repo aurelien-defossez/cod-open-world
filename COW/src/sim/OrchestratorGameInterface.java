@@ -12,62 +12,69 @@ public interface OrchestratorGameInterface {
 	// -------------------------------------------------------------------------
 	// Abstract methods
 	// -------------------------------------------------------------------------
-	
-	/**
-	 * Makes a view API call.
-	 * 
-	 * @param call the view API call.
-	 */
-	public void callViewApi(ApiCall call);
-	
-	/**
-	 * Sets a score to an AI.
-	 * 
-	 * @param aiId the AI id.
-	 * @param score the new score.
-	 */
-	public void setScore(short aiId, int score);
 
-	/**
-	 * Increments the score of an AI.
-	 * 
-	 * @param aiId the AI id.
-	 * @param increment the value to add to the current score.
-	 */
-	public void incrementScore(short aiId, int increment);
-	
-	/**
-	 * Sets a game frame and signals that to every game listener.
-	 */
-	public void setFrame();
-	
-	/**
-	 * Sets a color to an AI.
-	 * 
-	 * @param aiId the AI id.
-	 * @param color the new color, in RGB.
-	 */
-	public void setColor(short aiId, int color);
-	
 	/**
 	 * Defines the AI timeout.
 	 * 
-	 * @param timeout the maximum execution time in milliseconds.
+	 * @param timeout the maximum execution time of an AI in milliseconds.
 	 */
 	public void setTimeout(int timeout);
 	
 	/**
-	 * Calls an AI API function.
+	 * Sets a game key frame.
+	 */
+	public void setFrame();
+	
+	/**
+	 * Sets a new score to an AI.
 	 * 
 	 * @param aiId the AI id.
+	 * @param score the new score for this AI.
+	 */
+	public void setScore(short aiId, int score);
+
+	/**
+	 * Sets a new color to an AI.
+	 * 
+	 * @param aiId the AI id.
+	 * @param color the new color for this AI, in RGB.
+	 */
+	public void setColor(short aiId, int color);
+	
+	/**
+	 * Increments the score of an AI.
+	 * 
+	 * @param aiId the AI id.
+	 * @param increment the value to add to the score of this AI.
+	 */
+	public abstract void incrementScore(short aiId, int increment);
+	
+	/**
+	 * Calls an AI API function.
+	 * 
+	 * @param aiId the AI to execute.
 	 * @param call the AI API call.
 	 */
-	public void callAiFunction(short aiId, ApiCall call);
-
+	public abstract void callAiFunction(short aiId, ApiCall call);
+	
+	/**
+	 * Calls a view API function.
+	 * 
+	 * @param call the view API call.
+	 */
+	public abstract void callViewFunction(ApiCall call);
+	
 	/**
 	 * Stops an AI.
 	 * 
-	 * @param aiId the AI id to stop.
+	 * @param aiId the AI to be stopped.
 	 */
-	public void stopAi(short aiId);
+	public abstract void stopAi(short aiId);
+	
+	/**
+	 * Throws an exception, thus stopping the application.
+	 * 
+	 * @param message the exception message.
+	 */
+	public abstract void throwException(String message);
 }
