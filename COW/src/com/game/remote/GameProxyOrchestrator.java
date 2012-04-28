@@ -100,4 +100,16 @@ public class GameProxyOrchestrator implements OrchestratorGameInterface {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void setColor(short aiId, int color) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void callAiFunction(short aiId, ApiCall call) {
+		// TODO Auto-generated method stub
+		
+	}
 }

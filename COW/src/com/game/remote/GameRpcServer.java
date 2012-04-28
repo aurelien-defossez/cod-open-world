@@ -5,23 +5,9 @@
 
 package com.game.remote;
 
-import com.ApiCall;
+import com.game.GameInterface;
 import com.remote.RpcServer;
 
-public interface GameRpcServer extends RpcServer {
-	// -------------------------------------------------------------------------
-	// Abstract methods
-	// -------------------------------------------------------------------------
-
-	/**
-	 * Calls an AI API function.
-	 * 
-	 * @param call the AI API call.
-	 */
-	public void performAiFunction(ApiCall call);
+public interface GameRpcServer extends RpcServer, GameInterface {
 	
-	/**
-	 * Tells the AI to stop.
-	 */
-	public void stopAi();
 }

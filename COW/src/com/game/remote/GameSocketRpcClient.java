@@ -3,7 +3,7 @@
  * socket.
  */
 
-package com.ai.remote;
+package com.game.remote;
 
 import java.io.IOException;
 import main.CowException;
@@ -14,7 +14,7 @@ import com.ai.Ai;
 import com.remote.RpcValues;
 import com.remote.SocketRpcClient;
 
-public class AiSocketRpcClient extends SocketRpcClient implements AiRpcClient {
+public class GameSocketRpcClient extends SocketRpcClient implements GameRpcClient {
 	// -------------------------------------------------------------------------
 	// Class attributes
 	// -------------------------------------------------------------------------
@@ -22,16 +22,16 @@ public class AiSocketRpcClient extends SocketRpcClient implements AiRpcClient {
 	/**
 	 * The log4j logger.
 	 */
-	private static Logger logger = Logger.getLogger(AiSocketRpcClient.class);
+	private static Logger logger = Logger.getLogger(GameSocketRpcClient.class);
 	
 	// -------------------------------------------------------------------------
 	// Attributes
 	// -------------------------------------------------------------------------
 	
 	/**
-	 * The proxy orchestrator.
+	 * The proxy simulator.
 	 */
-	private AiProxyOrchestrator orchestrator;
+	private GameProxyOrchestrator simulator;
 	
 	// -------------------------------------------------------------------------
 	// Constructor
@@ -44,10 +44,10 @@ public class AiSocketRpcClient extends SocketRpcClient implements AiRpcClient {
 	 * @param address the host address.
 	 * @param port the socket local port.
 	 */
-	public AiSocketRpcClient(AiProxyOrchestrator orchestrator, String address, int port) {
+	public GameSocketRpcClient(GameProxyOrchestrator simulator, String address, int port) {
 		super(address, port);
 		
-		this.orchestrator = orchestrator;
+		this.simulator = simulator;
 		
 		if (logger.isDebugEnabled())
 			logger.debug("Connecting to COW at " + address + ":" + port + "...");
@@ -57,46 +57,88 @@ public class AiSocketRpcClient extends SocketRpcClient implements AiRpcClient {
 	// Public methods
 	// -------------------------------------------------------------------------
 	
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
-	public Variant callGameFunction(ApiCall call, Ai ai) {
-		// Read number of parameters
-		int nbParameters = call.getParameters().length;
-		
-		logger.trace("API call: function=" + call.getFunctionId() + ", "
-			+ "nbParameters=" + nbParameters);
-		
+	public void callViewApi(ApiCall call) {
 		try {
 			// Write call API command
-			out.writeByte(RpcValues.CMD_GAME_CALL_API);
+			out.writeByte(RpcValues.CMD_VIEW_CALL_API);
 			
 			// Serialize and send call
 			call.serialize(out);
 			out.flush();
-			
-			// Read return command
-			byte command;
-			do {
-				command = in.readByte();
-				
-				// Execute callback command
-				if (command != RpcValues.CALL_API_RESULT) {
-					doCommand(command);
-				}
-			} while (command != RpcValues.CALL_API_RESULT);
-			
-			// Read return variant
-			Variant returnVariant = Variant.deserialize(in);
-			
-			if (logger.isTraceEnabled())
-				logger.trace("API call return=" + returnVariant);
-			
-			return returnVariant;
 		} catch (IOException e) {
 			logger.fatal(e.getMessage(), e);
-			return null;
+		}
+	}
+	
+	@Override
+	public void setScore(short aiId, int score) {
+		try {
+			// Write call API command
+			out.writeByte(RpcValues.CMD_SET_SCORE);
+			
+			// Serialize and send call
+			out.writeVarint(aiId);
+			out.writeVarint(score);
+			out.flush();
+		} catch (IOException e) {
+			logger.fatal(e.getMessage(), e);
+		}
+	}
+	
+	@Override
+	public void incrementScore(short aiId, int increment) {
+		try {
+			// Write call API command
+			out.writeByte(RpcValues.CMD_INCREMENT_SCORE);
+			
+			// Serialize and send call
+			out.writeVarint(aiId);
+			out.writeVarint(increment);
+			out.flush();
+		} catch (IOException e) {
+			logger.fatal(e.getMessage(), e);
+		}
+	}
+	
+	@Override
+	public void setFrame() {
+		try {
+			// Write call API command
+			out.writeByte(RpcValues.CMD_SET_FRAME);
+			
+			// Send call
+			out.flush();
+		} catch (IOException e) {
+			logger.fatal(e.getMessage(), e);
+		}
+	}
+	
+	@Override
+	public void setTimeout(int timeout) {
+		try {
+			// Write call API command
+			out.writeByte(RpcValues.CMD_SET_TIMEOUT);
+			
+			// Serialize and send call
+			out.writeVarint(timeout);
+			out.flush();
+		} catch (IOException e) {
+			logger.fatal(e.getMessage(), e);
+		}
+	}
+	
+	@Override
+	public void stopAi(short aiId) {
+		try {
+			// Write call API command
+			out.writeByte(RpcValues.CMD_STOP_AI);
+			
+			// Serialize and send call
+			out.writeVarint(aiId);
+			out.flush();
+		} catch (IOException e) {
+			logger.fatal(e.getMessage(), e);
 		}
 	}
 	
@@ -115,15 +157,15 @@ public class AiSocketRpcClient extends SocketRpcClient implements AiRpcClient {
 		
 		switch (command) {
 		// Executes an AI function
-		case RpcValues.CMD_AI_EXE:
+		case RpcValues.CMD_GAME_CALL_API:
 			ApiCall call = ApiCall.deserialize(in);
-			orchestrator.callAiFunction(call);
+			simulator.callAiFunction(call);
 			ack();
 			break;
 		
 		// Stops the game
 		case RpcValues.CMD_AI_STOP:
-			orchestrator.stopAi();
+			simulator.stopAi();
 			ack();
 			break;
 		}

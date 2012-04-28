@@ -10,6 +10,11 @@
 		<jar destfile="resources/RemoteAiLauncher.jar"
 			basedir="bin"
     		includes="**/*.class"
-			manifest="RemoteManifest.mf" />
+			manifest="RemoteAiManifest.mf" />
+		
+		<jar destfile="resources/RemoteGameLauncher.jar"
+			basedir="bin"
+    		includes="**/*.class"
+			manifest="RemoteGameManifest.mf" />
 	</target>
 </project>

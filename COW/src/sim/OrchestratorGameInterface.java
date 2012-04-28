@@ -42,11 +42,27 @@ public interface OrchestratorGameInterface {
 	public void setFrame();
 	
 	/**
+	 * Sets a color to an AI.
+	 * 
+	 * @param aiId the AI id.
+	 * @param color the new color, in RGB.
+	 */
+	public void setColor(short aiId, int color);
+	
+	/**
 	 * Defines the AI timeout.
 	 * 
 	 * @param timeout the maximum execution time in milliseconds.
 	 */
 	public void setTimeout(int timeout);
+	
+	/**
+	 * Calls an AI API function.
+	 * 
+	 * @param aiId the AI id.
+	 * @param call the AI API call.
+	 */
+	public void callAiFunction(short aiId, ApiCall call);
 
 	/**
 	 * Stops an AI.

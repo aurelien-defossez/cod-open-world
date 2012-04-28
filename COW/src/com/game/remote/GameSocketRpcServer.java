@@ -3,18 +3,19 @@
  * socket.
  */
 
-package com.ai.remote;
+package com.game.remote;
 
 import java.io.IOException;
+import java.util.Collection;
 import main.CowException;
 import org.apache.log4j.Logger;
-import security.Watchdog;
 import com.ApiCall;
 import com.Variant;
+import com.ai.Ai;
 import com.remote.RpcValues;
 import com.remote.SocketRpcServer;
 
-public class AiSocketRpcServer extends SocketRpcServer implements AiRpcServer {
+public class GameSocketRpcServer extends SocketRpcServer implements GameRpcServer {
 	
 	// -------------------------------------------------------------------------
 	// Class attributes
@@ -23,21 +24,16 @@ public class AiSocketRpcServer extends SocketRpcServer implements AiRpcServer {
 	/**
 	 * The log4j logger.
 	 */
-	private Logger logger = Logger.getLogger(AiRpcServer.class);
+	private Logger logger = Logger.getLogger(GameRpcServer.class);
 	
 	// -------------------------------------------------------------------------
 	// Attributes
 	// -------------------------------------------------------------------------
 	
 	/**
-	 * The Proxy AI.
+	 * The Proxy game.
 	 */
-	private ProxyAi ai;
-	
-	/**
-	 * The security watchdog.
-	 */
-	private Watchdog watchdog;
+	private ProxyGame game;
 	
 	// -------------------------------------------------------------------------
 	// Constructor
@@ -46,33 +42,41 @@ public class AiSocketRpcServer extends SocketRpcServer implements AiRpcServer {
 	/**
 	 * Initializes the Socket RPC server.
 	 * 
-	 * @param ai the proxy AI.
-	 * @param watchdog the security watchdog.
+	 * @param game the proxy game.
 	 * @throws IOException if an error occurs while creating the server socket.
 	 */
-	public AiSocketRpcServer(ProxyAi ai, Watchdog watchdog) throws IOException {
+	public GameSocketRpcServer(ProxyGame game) throws IOException {
 		super();
 		
-		this.ai = ai;
-		this.watchdog = watchdog;
+		this.game = game;
 	}
 	
 	// -------------------------------------------------------------------------
 	// Public methods
 	// -------------------------------------------------------------------------
 	
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
-	public void performAiFunction(ApiCall call) {
+	public void initGame(Collection<Ai> ais, String[] parameters) {
 		try {
-			// Send execute AI command
-			out.writeByte(RpcValues.CMD_AI_EXE);
-			call.serialize(out);
-			out.flush();
+			// Send command
+			out.writeByte(RpcValues.CMD_INIT_GAME);
 			
-			// Read AI stream
+			// Serialize the AIs
+			out.writeVarint(ais.size());
+			for (Ai ai : ais) {
+				out.writeVarint(ai.getId());
+				out.writeUTF(ai.getName());
+				out.writeUTF(ai.getPlayerName());
+			}
+			
+			// Serialize the parameters
+			out.writeVarint(parameters.length);
+			for (String parameter : parameters) {
+				out.writeUTF(parameter);
+			}
+			
+			out.flush();
+
 			waitForCommand();
 		} catch (IOException e) {
 			if (!isListening()) {
@@ -81,20 +85,82 @@ public class AiSocketRpcServer extends SocketRpcServer implements AiRpcServer {
 		}
 	}
 	
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
-	public void stop() {
+	public void play() {
 		try {
-			// Send stop AI command
-			out.writeByte(RpcValues.CMD_AI_STOP);
+			// Send command
+			out.writeByte(RpcValues.CMD_PLAY);
 			out.flush();
 			
-			// Read AI stream
 			waitForCommand();
+		} catch (IOException e) {
+			if (!isListening()) {
+				logger.error(e.getMessage(), e);
+			}
+		}
+	}
+	
+	@Override
+	public Variant performGameFunction(ApiCall call, Ai ai) {
+		try {
+			// Send command
+			out.writeByte(RpcValues.CMD_PERFORM_GAME_API);
 			
-			// Close socket
+			// Serialize the call
+			call.serialize(out);
+			out.writeVarint(ai.getId());
+			out.flush();
+			
+			// Read return command
+			byte command;
+			do {
+				command = in.readByte();
+				
+				// Execute callback command
+				if (command != RpcValues.CALL_API_RESULT) {
+					doCommand(command);
+				}
+			} while (command != RpcValues.CALL_API_RESULT);
+			
+			// Read return variant
+			Variant returnVariant = Variant.deserialize(in);
+			
+			if (logger.isTraceEnabled())
+				logger.trace("API call return=" + returnVariant);
+			
+			return returnVariant;
+		} catch (IOException e) {
+			if (!isListening()) {
+				logger.error(e.getMessage(), e);
+			}
+			return null;
+		}
+	}
+	
+	@Override
+	public void aiTimedOut(Ai ai) {
+		try {
+			// Send command
+			out.writeByte(RpcValues.CMD_AI_TIMED_OUT);
+			out.writeVarint(ai.getId());
+			out.flush();
+
+			waitForCommand();
+		} catch (IOException e) {
+			if (!isListening()) {
+				logger.error(e.getMessage(), e);
+			}
+		}
+	}
+	
+	@Override
+	public void endGame() {
+		try {
+			// Send command
+			out.writeByte(RpcValues.CMD_END_GAME);
+			out.flush();
+
+			waitForCommand();
 			close();
 		} catch (IOException e) {
 			if (!isListening()) {
@@ -107,23 +173,6 @@ public class AiSocketRpcServer extends SocketRpcServer implements AiRpcServer {
 	// Private methods
 	// -------------------------------------------------------------------------
 	
-	/**
-	 * Waits for a command on the socket reader, then executes this command.
-	 * 
-	 * @throws IOException if an error occurs while communicating with the RPC client.
-	 */
-	@Override
-	protected void waitForCommand() throws IOException {
-		// Start WatchDog
-		watchdog.start(ai);
-		
-		super.waitForCommand();
-		
-		// Pause WatchDog
-		watchdog.stop();
-	}
-	
-	@Override
 	protected void doCommand(byte command) throws CowException, IOException {
 		if (logger.isDebugEnabled())
 			logger.debug("Command read: "

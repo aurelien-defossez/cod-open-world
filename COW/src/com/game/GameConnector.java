@@ -6,7 +6,7 @@ package com.game;
 
 import com.ApiCall;
 
-public abstract class GameConnector implements GameInterface {
+public abstract class GameConnector implements GameInterface, GameCommandInterface {
 	// -------------------------------------------------------------------------
 	// Constants
 	// -------------------------------------------------------------------------

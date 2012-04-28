@@ -168,13 +168,11 @@ public abstract class GameOrchestrator implements OrchestratorGameInterface,
 			logger.error("Can't set score for AI #" + aiId + ", does not exist.");
 		}
 	}
-	
+
 	/**
-	 * Sets a color to an AI.
-	 * 
-	 * @param aiId the AI id.
-	 * @param color the new color, in RGB.
+	 * {@inheritDoc}
 	 */
+	@Override
 	public void setColor(short aiId, int color) {
 		Ai ai = getAi(aiId);
 		

@@ -126,6 +126,17 @@ public abstract class SocketRpcClient implements RpcClient {
 	}
 	
 	// -------------------------------------------------------------------------
+	// Abstract methods
+	// -------------------------------------------------------------------------
+	
+	/**
+	 * Executes the given command from the socket reader.
+	 * 
+	 * @return false if the command received is "stop".
+	 */
+	protected abstract boolean doCommand(byte command) throws CowException, IOException;
+	
+	// -------------------------------------------------------------------------
 	// Private methods
 	// -------------------------------------------------------------------------
 	
@@ -140,11 +151,4 @@ public abstract class SocketRpcClient implements RpcClient {
 		
 		return doCommand(in.readByte());
 	}
-	
-	/**
-	 * Executes the given command from the socket reader.
-	 * 
-	 * @return false if the command received is "stop".
-	 */
-	protected abstract boolean doCommand(byte command) throws CowException, IOException;
 }

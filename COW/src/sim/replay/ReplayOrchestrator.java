@@ -231,4 +231,9 @@ public class ReplayOrchestrator extends GameOrchestrator {
 	public void stopAi(short aiId) {
 		// Do nothing
 	}
+
+	@Override
+	public void callAiFunction(short aiId, ApiCall call) {
+		// Do nothing
+	}
 }

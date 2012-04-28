@@ -80,11 +80,9 @@ public abstract class LiveOrchestrator extends GameOrchestrator {
 	}
 	
 	/**
-	 * Calls an AI API function.
-	 * 
-	 * @param aiId the AI id.
-	 * @param call the AI API call.
+	 * {@inheritDoc}
 	 */
+	@Override
 	public void callAiFunction(short aiId, ApiCall call) {
 		if (logger.isDebugEnabled())
 			logger.debug("Execute AI #" + aiId + ", phase #"

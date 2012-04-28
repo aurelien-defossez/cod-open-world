@@ -1,18 +1,18 @@
 /**
- * Remote AI Launcher - This class launches a remote AI.
+ * Remote Game Launcher - This class launches a remote game.
  */
 
 package main;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
-import com.ai.LocalAi;
-import com.ai.remote.AiProxyOrchestrator;
-import com.ai.remote.AiRpcClient;
-import com.ai.remote.AiSocketRpcClient;
+import com.game.LocalGame;
+import com.game.remote.GameProxyOrchestrator;
+import com.game.remote.GameRpcClient;
+import com.game.remote.GameSocketRpcClient;
 import com.remote.SocketRpcServer;
 
-public class RemoteAiLauncher {
+public class RemoteGameLauncher {
 	// -------------------------------------------------------------------------
 	// Class attributes
 	// -------------------------------------------------------------------------
@@ -20,19 +20,19 @@ public class RemoteAiLauncher {
 	/**
 	 * The log4j logger.
 	 */
-	private static Logger logger = Logger.getLogger(RemoteAiLauncher.class);
+	private static Logger logger = Logger.getLogger(RemoteGameLauncher.class);
 	
 	// -------------------------------------------------------------------------
 	// Main
 	// -------------------------------------------------------------------------
 	
 	/**
-	 * Launches the remote AI.
+	 * Launches the remote game.
 	 * 
 	 * @param args the arguments.
 	 */
 	public static void main(String[] args) {
-		new RemoteAiLauncher(args);
+		new RemoteGameLauncher(args);
 	}
 	
 	// -------------------------------------------------------------------------
@@ -40,16 +40,14 @@ public class RemoteAiLauncher {
 	// -------------------------------------------------------------------------
 	
 	/**
-	 * Launches the remote AI.
+	 * Launches the remote game.
 	 * 
 	 * @param args the arguments.
 	 */
-	public RemoteAiLauncher(String[] args) {
-		AiRpcClient rpcClient = null;
-		AiProxyOrchestrator simulator;
+	public RemoteGameLauncher(String[] args) {
+		GameRpcClient rpcClient = null;
+		GameProxyOrchestrator orchestrator;
 		String gameName = "";
-		String aiName = "";
-		short aiId = 0;
 		String rpcType = "";
 		boolean loadOk = true;
 		
@@ -62,22 +60,20 @@ public class RemoteAiLauncher {
 				arguments.append("\"" + arg + "\" ");
 			}
 			
-			Thread.currentThread().setName("RemoteAiLauncher (temp)");
+			Thread.currentThread().setName("RemoteGameLauncher (temp)");
 			
-			logger.trace("RemoteAiLauncher arguments: " + arguments);
+			logger.trace("RemoteGameLauncher arguments: " + arguments);
 		}
 		
-		simulator = new AiProxyOrchestrator();
+		orchestrator = new GameProxyOrchestrator();
 		
 		try {
 			// Get generic parameters
 			gameName = args[0];
-			aiName = args[1];
-			aiId = Short.parseShort(args[2]);
-			rpcType = args[3];
+			rpcType = args[1];
 			
-			// Rename Remote AI thread
-			Thread.currentThread().setName(aiName + " (" + aiId + ")");
+			// Rename Remote game thread
+			Thread.currentThread().setName(gameName);
 			
 			if (logger.isDebugEnabled())
 				logger.debug("Create RPC client.");
@@ -85,15 +81,15 @@ public class RemoteAiLauncher {
 			// Socket
 			if (rpcType.equals(SocketRpcServer.RPC_SOCKET_TYPE)) {
 				// Get RPC parameters
-				String address = args[4];
-				int port = Integer.parseInt(args[5]);
+				String address = args[2];
+				int port = Integer.parseInt(args[3]);
 				
 				// Create RPC client
-				rpcClient = new AiSocketRpcClient(simulator, address, port);
+				rpcClient = new GameSocketRpcClient(orchestrator, address, port);
 			}
 		} catch (IndexOutOfBoundsException e) {
-			System.out.println("usage: java -jar RemoteAiLauncher.jar "
-				+ "<gameName> <aiName> <aiId> <rpcType> "
+			System.out.println("usage: java -jar RemoteGameLauncher.jar "
+				+ "<gameName> <rpcType> "
 				+ "[<rpcParameters>]*");
 			loadOk = false;
 		} catch (NumberFormatException e) {
@@ -104,13 +100,13 @@ public class RemoteAiLauncher {
 		
 		if (loadOk) {
 			// Set RPC client
-			simulator.setRpcClient(rpcClient);
+			orchestrator.setRpcClient(rpcClient);
 			
 			if (logger.isDebugEnabled())
-				logger.debug("Load AI.");
+				logger.debug("Load game.");
 			
-			// Load AI
-			simulator.setAi(new LocalAi(simulator, gameName, aiId, aiName));
+			// Load Game
+			orchestrator.setGame(new LocalGame(orchestrator, gameName));
 			
 			if (logger.isDebugEnabled())
 				logger.trace("Start RPC client.");

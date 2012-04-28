@@ -8,7 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import main.CowException;
 import main.GameException;
-import sim.LiveOrchestrator;
+import sim.OrchestratorGameInterface;
 import view.View;
 import view.View.ViewType;
 import com.ApiCall;
@@ -16,7 +16,7 @@ import com.Lang;
 import com.Lang.Language;
 import data.ConfigLoader;
 
-public abstract class Game implements GameInterface {
+public abstract class Game implements GameInterface, GameCommandInterface {
 	// -------------------------------------------------------------------------
 	// Constants
 	// -------------------------------------------------------------------------
@@ -33,7 +33,7 @@ public abstract class Game implements GameInterface {
 	/**
 	 * The game orchestrator.
 	 */
-	private LiveOrchestrator orchestrator;
+	private OrchestratorGameInterface orchestrator;
 	
 	/**
 	 * The game implementation language.
@@ -61,7 +61,7 @@ public abstract class Game implements GameInterface {
 	 * @param gameName the game name.
 	 * @throws CowException if the game cannot be loaded.
 	 */
-	public Game(LiveOrchestrator orchestrator, String gameName) throws CowException {
+	public Game(OrchestratorGameInterface orchestrator, String gameName) throws CowException {
 		this.orchestrator = orchestrator;
 		this.name = gameName;
 		

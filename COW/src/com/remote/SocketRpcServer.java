@@ -12,6 +12,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Vector;
 
+import main.CowException;
 import org.apache.log4j.Logger;
 
 public abstract class SocketRpcServer implements RpcServer {
@@ -141,15 +142,40 @@ public abstract class SocketRpcServer implements RpcServer {
 		return listening;
 	}
 
+	
 	// -------------------------------------------------------------------------
 	// Abstract methods
 	// -------------------------------------------------------------------------
+	
+	/**
+	 * Executes the given command from the socket reader.
+	 * 
+	 * @return false if the command received is "stop".
+	 */
+	protected abstract void doCommand(byte command) throws CowException, IOException;
 
+	// -------------------------------------------------------------------------
+	// Protected methods
+	// -------------------------------------------------------------------------
 	/**
 	 * Waits for a command on the socket reader, then executes this command.
 	 * 
-	 * @throws IOException
-	 *             if an error occurs while communicating with the RPC client.
+	 * @throws IOException if an error occurs while communicating with the RPC client.
 	 */
-	protected abstract void waitForCommand() throws IOException;
+	protected void waitForCommand() throws IOException {
+		boolean ack;
+		
+		if (logger.isDebugEnabled())
+			logger.debug("Wait for command...");
+		
+		do {
+			// Read command
+			byte command = (byte) in.read();
+			ack = (command == RpcValues.ACK);
+			
+			if (!ack) {
+				doCommand(command);
+			}
+		} while (isListening() && !ack);
+	}
 }
