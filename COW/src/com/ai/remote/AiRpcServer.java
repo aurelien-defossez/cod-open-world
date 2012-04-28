@@ -5,23 +5,9 @@
 
 package com.ai.remote;
 
-import com.ApiCall;
+import com.ai.AiInterface;
 import com.remote.RpcServer;
 
-public interface AiRpcServer extends RpcServer {
-	// -------------------------------------------------------------------------
-	// Abstract methods
-	// -------------------------------------------------------------------------
-
-	/**
-	 * Calls an AI API function.
-	 * 
-	 * @param call the AI API call.
-	 */
-	public void performAiFunction(ApiCall call);
+public interface AiRpcServer extends RpcServer, AiInterface {
 	
-	/**
-	 * Tells the AI to stop.
-	 */
-	public void stopAi();
 }

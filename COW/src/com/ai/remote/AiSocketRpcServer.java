@@ -101,7 +101,7 @@ public class AiSocketRpcServer extends SocketRpcServer implements AiRpcServer {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void stopAi() {
+	public void stop() {
 		try {
 			// Send stop AI command
 			out.writeByte(RpcValues.CMD_AI_STOP);

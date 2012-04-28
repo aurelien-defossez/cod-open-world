@@ -6,21 +6,18 @@
 package com.ai;
 
 import com.ApiCall;
+import com.Variant;
 
-public interface AiInterface {
+public interface AiCommandInterface {
 	// -------------------------------------------------------------------------
 	// Abstract methods
 	// -------------------------------------------------------------------------
 	
 	/**
-	 * Performs an AI API function.
+	 * Calls a game API function.
 	 * 
-	 * @param call the AI API call.
+	 * @param call the game API call.
+	 * @return the call return value.
 	 */
-	public void performAiFunction(ApiCall call);
-	
-	/**
-	 * Tells the AI to stop playing.
-	 */
-	public void stop();
+	public Variant callGameFunction(ApiCall call);
 }

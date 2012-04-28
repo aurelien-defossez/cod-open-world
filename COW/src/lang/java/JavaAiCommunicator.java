@@ -9,9 +9,10 @@ package lang.java;
 
 import com.ApiCall;
 import com.Variant;
+import com.ai.AiCommandInterface;
 import com.ai.AiInterface;
 
-public abstract class JavaAiCommunicator implements AiInterface {
+public abstract class JavaAiCommunicator implements AiInterface, AiCommandInterface {
 	// -------------------------------------------------------------------------
 	// Attributes
 	// -------------------------------------------------------------------------

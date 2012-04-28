@@ -6,19 +6,8 @@
 package com.game.remote;
 
 import sim.OrchestratorGameInterface;
+import com.remote.RpcClient;
 
-public interface GameRpcClient extends OrchestratorGameInterface {
-	// -------------------------------------------------------------------------
-	// Abstract methods
-	// -------------------------------------------------------------------------
+public interface GameRpcClient extends RpcClient, OrchestratorGameInterface {
 	
-	/**
-	 * Synchronizes the RPC client and starts listening.
-	 */
-	public void start();
-	
-	/**
-	 * Stops the socket from listening.
-	 */
-	public void close();
 }

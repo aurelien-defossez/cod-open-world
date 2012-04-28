@@ -137,7 +137,7 @@ public class ProxyAi extends Ai {
 	 */
 	@Override
 	public void stop() {
-		rpcServer.stopAi();
+		rpcServer.stop();
 		processReader.stopReading();
 		
 		try {

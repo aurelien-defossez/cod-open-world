@@ -19,7 +19,7 @@ import com.Lang.Language;
 
 import data.ConfigLoader;
 
-public abstract class Ai implements AiInterface, Comparable<Ai> {
+public abstract class Ai implements AiInterface, AiCommandInterface, Comparable<Ai> {
 	// -------------------------------------------------------------------------
 	// Constants
 	// -------------------------------------------------------------------------
