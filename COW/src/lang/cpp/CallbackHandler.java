@@ -2,11 +2,15 @@
 package lang.cpp;
 
 public interface CallbackHandler {
-	public abstract void prepareCall(int functionId, int nbParameters);
+	void prepareCall(int functionId, int nbParameters);
 	
-	public abstract void addParameter(VariantStruct parameter);
+	void addParameter(VariantStruct parameter);
 	
-	public abstract void makeCall();
+	void makeCall();
 	
-	public abstract int makeReturnCall();
+	int makeReturnCall();
+	
+	void makeCompleteCall(int functionId, int nbParameters, VariantStruct.ByValue[] parameters);
+	
+	int makeCompleteReturnCall(int functionId, int nbParameters, VariantStruct.ByValue[] parameters);
 }

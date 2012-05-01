@@ -20,7 +20,8 @@ extern "C" {
 	void registerCallbacks(
 		prepareCallCallback prepareCall,
 		addParameterCallback addParameter,
-		makeCallCallback makeCall
+		makeCallCallback makeCall,
+		makeCompleteCallCallback makeCompleteCall
 	);
 	void performAiFunction(int functionId, int nbParameters,
 			Variant parameters[]);
