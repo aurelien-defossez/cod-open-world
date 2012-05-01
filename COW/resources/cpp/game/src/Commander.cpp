@@ -1,6 +1,9 @@
 #include "Commander.hpp"
 #include "connector.hpp"
 #include "Variant.hpp"
+#include <math.h>
+
+using namespace std;
 
 Commander::Commander() {
 	setCommander(this);
@@ -11,13 +14,7 @@ void Commander::registerCallbacks(makeCallCallback makeCall) {
 }
 
 void Commander::setFrame() {
-	Variant parameters[0];
-	parameters[0] = toVariant(fruitId);
-	parameters[1] = toVariant(x);
-	parameters[2] = toVariant(y);
-	return intValue(callGameFunction(__GAME_API_FUNCTION_MOVE__, 3, parameters));
-	
-	doMakeCall(__CALLBACK_FUNCTION_SET_FRAME__, 0, NULL);
+	doMakeCall(__CALLBACK_FUNCTION_SET_FRAME__, 0, 0);
 }
 
 void Commander::setTimeout(int timeout) {
@@ -99,7 +96,7 @@ void Commander::drawCircle(int x, int y, int radius, int samples, int color,
 }
 
 void Commander::deleteTemporaryShapes() {
-	doMakeCall(__CALLBACK_FUNCTION_DELETE_TEMPORARY_SHAPES__, 0, NULL);
+	doMakeCall(__CALLBACK_FUNCTION_DELETE_TEMPORARY_SHAPES__, 0, 0);
 }
 
 void Commander::createEntity(int definitionId, int id) {
@@ -141,7 +138,7 @@ void Commander::callAiFunction(short aiId, int functionId, int nbParameters,
 	parameters[1] = toVariant(functionId);
 	
 	for(int i = 0; i < nbParameters; i++) {
-		parameters[i + 2] = toVariant(aiParameters[i]);
+		parameters[i + 2] = aiParameters[i];
 	}
 	
 	doMakeCall(__CALLBACK_FUNCTION_CALL_AI_FUNCTION__, nbParameters + 2, parameters);
@@ -149,8 +146,8 @@ void Commander::callAiFunction(short aiId, int functionId, int nbParameters,
 
 void Commander::doMakeCall(int functionId, int nbParameters,
 			Variant parameters[]) {
-	int nbCalls = floor(nbParameters / 8);
-	
+	int nbCalls = ceil(nbParameters / 8.);
+
 	for (int i = 0; i < nbCalls; ++i) {
 		int remainingParameters = nbParameters - i * 8;
 		

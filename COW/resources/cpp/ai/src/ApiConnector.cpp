@@ -13,7 +13,7 @@ void ApiConnector::registerCallbacks(makeReturnCallCallback makeCall) {
 
 Variant ApiConnector::callGameFunction(int functionId, int nbParameters,
 			Variant parameters[]) {
-	int nbCalls = floor(nbParameters / 8);
+	int nbCalls = ceil(nbParameters / 8.);
 	
 	for (int i = 0; i < nbCalls; ++i) {
 		int remainingParameters = nbParameters - i * 8;
@@ -27,7 +27,7 @@ Variant ApiConnector::callGameFunction(int functionId, int nbParameters,
 		Variant parameter7 = (remainingParameters > 6) ? parameters[6] : Variant();
 		Variant parameter8 = (remainingParameters > 7) ? parameters[7] : Variant();
 		
-		return toVariant(makeReturnCall(
+		return toVariant(makeCall(
 			functionId,
 			nbParameters,
 			parameter1,
