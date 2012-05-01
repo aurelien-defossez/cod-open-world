@@ -34,14 +34,14 @@ Variant ApiConnector::callGameFunction(int functionId, int nbParameters,
 	for (int i = 0; i < nbCalls; ++i) {
 		int remainingParameters = nbParameters - i * 8;
 		
-		Variant parameter1 = (remainingParameters > 0) ? parameters[0] : null;
-		Variant parameter2 = (remainingParameters > 1) ? parameters[1] : null;
-		Variant parameter3 = (remainingParameters > 2) ? parameters[2] : null;
-		Variant parameter4 = (remainingParameters > 3) ? parameters[3] : null;
-		Variant parameter5 = (remainingParameters > 4) ? parameters[4] : null;
-		Variant parameter6 = (remainingParameters > 5) ? parameters[5] : null;
-		Variant parameter7 = (remainingParameters > 6) ? parameters[6] : null;
-		Variant parameter8 = (remainingParameters > 7) ? parameters[7] : null;
+		Variant parameter1 = (remainingParameters > 0) ? parameters[0] : Variant();
+		Variant parameter2 = (remainingParameters > 1) ? parameters[1] : Variant();
+		Variant parameter3 = (remainingParameters > 2) ? parameters[2] : Variant();
+		Variant parameter4 = (remainingParameters > 3) ? parameters[3] : Variant();
+		Variant parameter5 = (remainingParameters > 4) ? parameters[4] : Variant();
+		Variant parameter6 = (remainingParameters > 5) ? parameters[5] : Variant();
+		Variant parameter7 = (remainingParameters > 6) ? parameters[6] : Variant();
+		Variant parameter8 = (remainingParameters > 7) ? parameters[7] : Variant();
 		
 		return toVariant(makeCompleteCall(
 			functionId,

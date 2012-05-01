@@ -5,7 +5,7 @@ import lang.cpp.VariantStruct;
 import com.sun.jna.Callback;
 
 public interface MakeCompleteReturnCallCallback extends Callback {
-	public void invoke(
+	public int invoke(
 		int functionId,
 		int nbParameters,
 		VariantStruct.ByValue parameter1,

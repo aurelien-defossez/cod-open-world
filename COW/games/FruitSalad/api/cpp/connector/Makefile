@@ -2,7 +2,7 @@ all:
 	@(cd ../../../../../resources/cpp/ai && make)
 	
 	@echo Compiling Specific communicator...
-	g++ -c SpecificCommunicator.cpp SpecificApiConnector.cpp \
+	g++ -c -m32 SpecificCommunicator.cpp SpecificApiConnector.cpp \
 	-I../../../../../resources/cpp/commons/src \
 	-I../../../../../resources/cpp/ai/src \
 	-L../../../../../resources/cpp/ai -lcppConnector

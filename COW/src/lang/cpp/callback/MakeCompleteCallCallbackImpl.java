@@ -12,7 +12,7 @@ public class MakeCompleteCallCallbackImpl implements MakeCompleteCallCallback {
 	}
 	
 	@Override
-	public int invoke(
+	public void invoke(
 		int functionId,
 		int nbParameters,
 		VariantStruct.ByValue parameter1,
@@ -23,7 +23,7 @@ public class MakeCompleteCallCallbackImpl implements MakeCompleteCallCallback {
 		VariantStruct.ByValue parameter6,
 		VariantStruct.ByValue parameter7,
 		VariantStruct.ByValue parameter8) {
-		return this.callbackHandler.makeCompleteReturnCall(functionId, nbParameters,
+		this.callbackHandler.makeCompleteCall(functionId, nbParameters,
 			new VariantStruct.ByValue[] { parameter1, parameter2, parameter3,
 				parameter4, parameter5, parameter6, parameter7, parameter8 });
 	}

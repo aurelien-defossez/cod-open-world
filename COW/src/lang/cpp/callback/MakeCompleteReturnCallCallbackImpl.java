@@ -4,7 +4,7 @@ package lang.cpp.callback;
 import lang.cpp.CallbackHandler;
 import lang.cpp.VariantStruct;
 
-public class MakeCompleteReturnCallCallbackImpl implements MakeCompleteCallCallback {
+public class MakeCompleteReturnCallCallbackImpl implements MakeCompleteReturnCallCallback {
 	private CallbackHandler callbackHandler;
 	
 	public MakeCompleteReturnCallCallbackImpl(CallbackHandler callbackHandler) {
@@ -12,7 +12,7 @@ public class MakeCompleteReturnCallCallbackImpl implements MakeCompleteCallCallb
 	}
 	
 	@Override
-	public void invoke(
+	public int invoke(
 		int functionId,
 		int nbParameters,
 		VariantStruct.ByValue parameter1,
@@ -23,7 +23,7 @@ public class MakeCompleteReturnCallCallbackImpl implements MakeCompleteCallCallb
 		VariantStruct.ByValue parameter6,
 		VariantStruct.ByValue parameter7,
 		VariantStruct.ByValue parameter8) {
-		this.callbackHandler.makeCompleteCall(functionId, nbParameters,
+		return this.callbackHandler.makeCompleteReturnCall(functionId, nbParameters,
 			new VariantStruct.ByValue[] { parameter1, parameter2, parameter3,
 				parameter4, parameter5, parameter6, parameter7, parameter8 });
 	}
