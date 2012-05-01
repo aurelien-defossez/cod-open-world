@@ -17,18 +17,13 @@ void setCommander(Commander *com);
 // -------------------------------------------------------------------------
 
 extern "C" {
-	void registerCallbacks(
-		prepareCallCallback prepareCall,
-		addParameterCallback addParameter,
-		makeCallCallback makeCall
-	);
+	void registerCallbacks(makeCallCallback makeCall);
 	void init(int nbParameters, char *parameters[]);
 	void addAi(short aiId, char *aiName, char *playerName);
 	void play();
 	void endGame();
 	void aiTimedOut(short aiId);
-	Variant performGameFunction(int functionId, int nbParameters,
-			Variant parameters[]);
+	Variant performGameFunction(int functionId, int nbParameters, Variant parameters[]);
 }
 
 #endif

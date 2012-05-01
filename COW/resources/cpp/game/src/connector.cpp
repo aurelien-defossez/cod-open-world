@@ -40,10 +40,8 @@ void setCommander(Commander *com) {
 // -------------------------------------------------------------------------
 
 extern "C" {
-	EXPORT void registerCallbacks(prepareCallCallback prepareCall,
-			addParameterCallback addParameter,
-			makeCallCallback makeCall) {
-		commander->registerCallbacks(prepareCall, addParameter, makeCall);
+	EXPORT void registerCallbacks(makeCallCallback makeCall) {
+		commander->registerCallbacks(makeCall);
 	}
 	
 	EXPORT void init(int nbParameters, char *parameters[]) {

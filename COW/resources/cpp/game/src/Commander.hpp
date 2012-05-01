@@ -33,9 +33,8 @@
 // Callback function types
 // -------------------------------------------------------------------------
 
-typedef void prepareCallCallback(int, int);
-typedef void addParameterCallback(Variant);
-typedef void makeCallCallback();
+typedef void makeCallCallback(int, int,
+	Variant, Variant, Variant, Variant, Variant, Variant, Variant, Variant);
 
 // -------------------------------------------------------------------------
 // Commander class
@@ -43,15 +42,12 @@ typedef void makeCallCallback();
 
 class Commander {
 protected:
-	prepareCallCallback *prepareCall;
-	addParameterCallback *addParameter;
 	makeCallCallback *makeCall;
 
 public:
 	Commander();
 	
-	void registerCallbacks(prepareCallCallback prepareCall,
-			addParameterCallback addParameter, makeCallCallback makeCall);
+	void registerCallbacks(makeCallCallback makeCall);
 	void setFrame();
 	void setTimeout(int timeout);
 	void setScore(short aiId, int score);
@@ -73,6 +69,10 @@ public:
 
 protected:
 	void callAiFunction(short aiId, int function, int nbParameters,
+			Variant parameters[]);
+
+private:
+	void doMakeCall(int functionId, int nbParameters,
 			Variant parameters[]);
 };
 

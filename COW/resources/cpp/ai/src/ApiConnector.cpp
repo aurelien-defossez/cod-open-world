@@ -7,28 +7,12 @@ ApiConnector::ApiConnector() {
 	setApiConnector(this);
 }
 
-void ApiConnector::registerCallbacks(prepareCallCallback prepareCall,
-			addParameterCallback addParameter, makeCallCallback makeCall,
-			makeCompleteCallCallback makeCompleteCall) {
-	this->prepareCall = prepareCall;
-	this->addParameter = addParameter;
+void ApiConnector::registerCallbacks(makeReturnCallCallback makeCall) {
 	this->makeCall = makeCall;
-	this->makeCompleteCall = makeCompleteCall;
 }
 
 Variant ApiConnector::callGameFunction(int functionId, int nbParameters,
 			Variant parameters[]) {
-	/*
-	prepareCall(functionId, nbParameters);
-	
-	for(int i = 0; i < nbParameters; i++) {
-		addParameter(parameters[i]);
-	}
-	
-	//TODO: Don't return only int values
-	return toVariant(makeCall());
-	*/
-	
 	int nbCalls = floor(nbParameters / 8);
 	
 	for (int i = 0; i < nbCalls; ++i) {
@@ -43,7 +27,7 @@ Variant ApiConnector::callGameFunction(int functionId, int nbParameters,
 		Variant parameter7 = (remainingParameters > 6) ? parameters[6] : Variant();
 		Variant parameter8 = (remainingParameters > 7) ? parameters[7] : Variant();
 		
-		return toVariant(makeCompleteCall(
+		return toVariant(makeReturnCall(
 			functionId,
 			nbParameters,
 			parameter1,

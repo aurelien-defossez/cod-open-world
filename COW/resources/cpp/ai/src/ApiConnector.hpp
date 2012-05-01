@@ -8,10 +8,7 @@
 // Callback function types
 // -------------------------------------------------------------------------
 
-typedef void prepareCallCallback(int, int);
-typedef void addParameterCallback(Variant);
-typedef int makeCallCallback();
-typedef int makeCompleteCallCallback(int, int,
+typedef int makeReturnCallCallback(int, int,
 	Variant, Variant, Variant, Variant, Variant, Variant, Variant, Variant);
 
 // -------------------------------------------------------------------------
@@ -20,17 +17,12 @@ typedef int makeCompleteCallCallback(int, int,
 
 class ApiConnector {
 protected:
-	prepareCallCallback *prepareCall;
-	addParameterCallback *addParameter;
-	makeCallCallback *makeCall;
-	makeCompleteCallCallback *makeCompleteCall;
+	makeReturnCallCallback *makeCall;
 
 public:
 	ApiConnector();
 	
-	void registerCallbacks(prepareCallCallback prepareCall,
-			addParameterCallback addParameter, makeCallCallback makeCall,
-			makeCompleteCallCallback makeCompleteCall);
+	void registerCallbacks(makeReturnCallCallback makeCall);
 	
 	virtual std::string decode(int code) = 0;
 

@@ -17,12 +17,7 @@ void setApiConnector(ApiConnector *com);
 // -------------------------------------------------------------------------
 
 extern "C" {
-	void registerCallbacks(
-		prepareCallCallback prepareCall,
-		addParameterCallback addParameter,
-		makeCallCallback makeCall,
-		makeCompleteCallCallback makeCompleteCall
-	);
+	void registerCallbacks(makeReturnCallCallback makeCall);
 	void performAiFunction(int functionId, int nbParameters,
 			Variant parameters[]);
 	void stop();

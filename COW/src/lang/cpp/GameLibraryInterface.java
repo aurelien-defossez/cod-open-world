@@ -1,15 +1,11 @@
 
 package lang.cpp;
 
-import lang.cpp.callback.AddParameterCallback;
 import lang.cpp.callback.MakeCallCallback;
-import lang.cpp.callback.PrepareCallCallback;
 import com.sun.jna.Library;
 
 public interface GameLibraryInterface extends Library {
-	public void registerCallbacks(PrepareCallCallback prepareCallcallback,
-		AddParameterCallback setParameterCallback,
-		MakeCallCallback makeCallCallback);
+	public void registerCallbacks(MakeCallCallback makeCallCallback);
 	
 	public void init(int nbParameters, String[] parameters);
 	

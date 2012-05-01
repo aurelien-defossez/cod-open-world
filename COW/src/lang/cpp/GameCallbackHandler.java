@@ -1,10 +1,7 @@
 
 package lang.cpp;
 
-import lang.cpp.callback.AddParameterCallbackImpl;
 import lang.cpp.callback.MakeCallCallbackImpl;
-import lang.cpp.callback.PrepareCallCallbackImpl;
-
 import com.ApiCall;
 import com.Variant;
 import com.game.GameConnector;
@@ -15,8 +12,6 @@ public class GameCallbackHandler implements CallbackHandler {
 	private int parametersCt;
 	
 	private GameLibraryInterface gameLib;
-	private PrepareCallCallbackImpl prepareCallback;
-	private AddParameterCallbackImpl addParameterCallback;
 	private MakeCallCallbackImpl makeCallCallback;
 	
 	public GameCallbackHandler(CppGameConnector connector,
@@ -26,23 +21,12 @@ public class GameCallbackHandler implements CallbackHandler {
 		
 		// Store callback references so they're not deleted by Java garbage
 		// collector
-		prepareCallback = new PrepareCallCallbackImpl(this);
-		addParameterCallback = new AddParameterCallbackImpl(this);
 		makeCallCallback = new MakeCallCallbackImpl(this);
 	}
 	
 	public void registerCallbacks() {
 		// Register callbacks
-		gameLib.registerCallbacks(prepareCallback, addParameterCallback,
-			makeCallCallback);
-	}
-	
-	public void prepareCall(int functionId, int nbParameters) {
-		call = new ApiCall((short) functionId, nbParameters);
-	}
-	
-	public void addParameter(VariantStruct parameter) {
-		call.add(new Variant(parameter));
+		gameLib.registerCallbacks(makeCallCallback);
 	}
 	
 	public void makeCall() {
@@ -95,12 +79,7 @@ public class GameCallbackHandler implements CallbackHandler {
 		}
 	}
 	
-	public int makeReturnCall() {
-		// Not used by game
-		return 0;
-	}
-	
-	public void makeCompleteCall(int functionId, int nbParameters, VariantStruct.ByValue[] parameters) {
+	public void makeCall(int functionId, int nbParameters, VariantStruct.ByValue[] parameters) {
 		if (parametersCt == 0) {
 			call = new ApiCall((short) functionId, nbParameters);
 			parametersCt = nbParameters;
@@ -118,7 +97,7 @@ public class GameCallbackHandler implements CallbackHandler {
 	}
 	
 	@Override
-	public int makeCompleteReturnCall(int functionId, int nbParameters, VariantStruct.ByValue[] parameters) {
+	public int makeReturnCall(int functionId, int nbParameters, VariantStruct.ByValue[] parameters) {
 		// Not used
 		return 0;
 	}

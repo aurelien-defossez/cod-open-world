@@ -40,11 +40,8 @@ void setApiConnector(ApiConnector *com) {
 // -------------------------------------------------------------------------
 
 extern "C" {
-	EXPORT void registerCallbacks(prepareCallCallback prepareCall,
-			addParameterCallback addParameter,
-			makeCallCallback makeCall,
-			makeCompleteCallCallback makeCompleteCall) {
-		commander->registerCallbacks(prepareCall, addParameter, makeCall, makeCompleteCall);
+	EXPORT void registerCallbacks(makeReturnCallCallback makeCall) {
+		commander->registerCallbacks(makeCall);
 	}
 	
 	EXPORT void performAiFunction(int functionId, int nbParameters,
