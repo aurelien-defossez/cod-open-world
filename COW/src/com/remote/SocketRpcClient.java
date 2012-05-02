@@ -92,7 +92,9 @@ public abstract class SocketRpcClient implements RpcClient {
 				// Play while not ordered otherwise
 			}
 		} catch (IOException e) {
-			logger.fatal(e.getMessage(), e);
+			if (listening) {
+				logger.fatal(e.getMessage(), e);
+			}
 		}
 		
 		// Close communication objects and socket
@@ -104,7 +106,7 @@ public abstract class SocketRpcClient implements RpcClient {
 			logger.error(e.getMessage(), e);
 		}
 		
-		logger.info("Remote AI stopped.");
+		logger.info("Remote process stopped.");
 	}
 	
 	/**

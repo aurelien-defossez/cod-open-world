@@ -37,8 +37,7 @@ public class ScorePanel extends JPanel {
 		this.chart = new Chart2D();
 		
 		ChartPanel chartPanel = new ChartPanel(chart);
-		chartPanel.setPreferredSize(new Dimension(0, 160));
-		chartPanel.setMinimumSize(new Dimension(0, 80));
+		chartPanel.setMinimumSize(new Dimension(0, 160));
 		
 		add(chartPanel, BorderLayout.CENTER);
 	}

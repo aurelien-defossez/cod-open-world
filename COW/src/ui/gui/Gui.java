@@ -10,9 +10,8 @@ import java.awt.event.WindowListener;
 import java.util.Collection;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
+import javax.swing.JSplitPane;
 import main.CowException;
-import com.ai.Ai;
 import sim.Scheduler;
 import ui.Ui;
 import view.KeyboardController;
@@ -21,6 +20,7 @@ import view.View;
 import view.View.ViewType;
 import view.text.ViewText;
 import view.v2d.View2D;
+import com.ai.Ai;
 
 public class Gui extends Ui {
 	// -------------------------------------------------------------------------
@@ -29,7 +29,6 @@ public class Gui extends Ui {
 	
 	private JFrame window;
 	
-	private JPanel viewPanel;
 	private ControlPanel controlPanel;
 	private ScorePanel scorePanel;
 	private View view;
@@ -101,7 +100,7 @@ public class Gui extends Ui {
 		
 		case V2D:
 			view =
-				new View2D(scheduler.getSimulator().getGameName(),
+				new View2D(scheduler.getOrchestrator().getGameName(),
 					keyboardController, mouseController);
 			break;
 		
@@ -111,16 +110,19 @@ public class Gui extends Ui {
 		}
 		
 		// Create view panel
-		viewPanel = new JPanel(new BorderLayout());
 		controlPanel = new ControlPanel(scheduler);
 		scorePanel = new ScorePanel();
-		viewPanel.add(controlPanel, BorderLayout.NORTH);
-		viewPanel.add(scorePanel, BorderLayout.SOUTH);
-		viewPanel.add(view.getComponent(), BorderLayout.CENTER);
+		
+		JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, view.getComponent(), scorePanel);
+		splitPane.setDividerLocation(1.0);
+		splitPane.setResizeWeight(1);
+		splitPane.setEnabled(false);
+		
 		keyboardController.addListener(controlPanel);
 		
 		// Add panels
-		window.add(viewPanel, BorderLayout.CENTER);
+		window.add(controlPanel, BorderLayout.CENTER);
+		window.add(splitPane, BorderLayout.CENTER);
 		window.setVisible(true);
 	}
 	

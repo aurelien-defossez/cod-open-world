@@ -275,7 +275,7 @@ public class Scheduler extends Thread {
 	 * 
 	 * @return the game simulator.
 	 */
-	public GameOrchestrator getSimulator() {
+	public GameOrchestrator getOrchestrator() {
 		return simulator;
 	}
 	

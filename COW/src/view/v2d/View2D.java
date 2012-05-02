@@ -2,6 +2,7 @@
 package view.v2d;
 
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.Collection;
@@ -47,6 +48,9 @@ public class View2D extends View {
 		
 		// Create canvas (1;1 is for automatic resolution adjustment)
 		canvas = (LWJGLCanvas) display.createCanvas(1, 1);
+		canvas.setMinimumSize(new Dimension(0, 200));
+		canvas.setPreferredSize(new Dimension(0, 800));
+		
 		canvas.setTargetRate(FRAME_RATE);
 		
 		// Bind keyboard and mouse controllers
@@ -64,7 +68,6 @@ public class View2D extends View {
 		canvas.addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentResized(ComponentEvent ce) {
-				System.out.println("componentResized");
 				doResize();
 			}
 		});

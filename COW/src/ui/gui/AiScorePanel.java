@@ -78,20 +78,27 @@ public class AiScorePanel extends JPanel {
 		if (nbFrames >= nextDisplayedPointFrame) {
 			trace.addPoint(nbFrames, score);
 			nextDisplayedPointFrame = nbFrames + framesPerDisplayedPoints;
-		} else {
-			System.out.println("skip");
 		}
 		
 		// Too many points displayed, sample trace
 		if (trace.getSize() > MAX_DISPLAYED_POINTS) {
+			NavigableMap<Long, Integer> newPoints = new TreeMap<Long, Integer>();
+			newPoints.put(0L, 0);
+			
 			displayedPointsRatio *= SAMPLE_RATE;
-			framesPerDisplayedPoints = (int) (nbFrames / trace.getSize() * SAMPLE_RATE);
+			framesPerDisplayedPoints = (int) Math.round(displayedPointsRatio * nbFrames / trace.getSize());
 			
 			trace.removeAllPoints();
 			
 			for (long i = 0; i <= nbFrames; i += framesPerDisplayedPoints) {
-				trace.addPoint(i, points.floorEntry(i).getValue());
+				Integer point = points.floorEntry(i).getValue();
+				
+				trace.addPoint(i, point);
+				newPoints.put(i, point);
 			}
+			
+			points.clear();
+			points = newPoints;
 		}
 	}
 	
