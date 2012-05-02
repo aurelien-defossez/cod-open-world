@@ -121,7 +121,7 @@ public class Gui extends Ui {
 		keyboardController.addListener(controlPanel);
 		
 		// Add panels
-		window.add(controlPanel, BorderLayout.CENTER);
+		window.add(controlPanel, BorderLayout.NORTH);
 		window.add(splitPane, BorderLayout.CENTER);
 		window.setVisible(true);
 	}
